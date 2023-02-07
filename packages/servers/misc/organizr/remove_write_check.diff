@@ -1,0 +1,18 @@
+diff --git a/api/classes/organizr.class.php b/api/classes/organizr.class.php
+index 2842034f..24373bcd 100644
+--- a/api/classes/organizr.class.php
++++ b/api/classes/organizr.class.php
+@@ -1520,11 +1520,11 @@ class Organizr
+ 		if (!file_exists($this->userConfigPath)) {
+ 			$status['status'] = 'wizard';//wizard - ok for test
+ 		}
+-		if (count($dependenciesInactive) > 0 || !is_writable(dirname(__DIR__, 2)) || !(version_compare(PHP_VERSION, $this->minimumPHP) >= 0)) {
++		if (count($dependenciesInactive) > 0 || !(version_compare(PHP_VERSION, $this->minimumPHP) >= 0)) {
+ 			$status['status'] = 'dependencies';
+ 		}
+ 		$status['status'] = ($status['status']) ?? 'ok';
+-		$status['writable'] = is_writable(dirname(__DIR__, 2)) ? 'yes' : 'no';
++		$status['writable'] = 'yes';
+ 		$status['minVersion'] = (version_compare(PHP_VERSION, $this->minimumPHP) >= 0) ? 'yes' : 'no';
+ 		$status['dependenciesActive'] = $dependenciesActive;
+ 		$status['dependenciesInactive'] = $dependenciesInactive;

@@ -1,0 +1,21 @@
+keys:
+  - &camille age1htuulgnjtfwzha4upfdqgdae52nwc34n3udvkj9z0sw9lvz9adyqvajxht 
+  - &zeppelin age180ugaktgckhj55wkkz57m7vv9z9rr9mvzu46svgwt5qxp0hd83pq50nevs
+  - &radiogaga age1xeqks7t4pk8venmpqarxlywy5qu3u53r3nyywrqm22rk5j0hyq5qkddshc
+  - &offspring age13k66dk39er2q54n2xqs6hvg9qm6kdvlwj4eask4wx0aecr4a5cjqjc629a
+  - &genesis age1jz4w6zxx97sx5d64hpk9kntm758nqwmpqc3eqlq68d3htvltpa5qypr5j7
+creation_rules:
+  - path_regex: secrets/[^/]+\.yaml$
+    key_groups:
+    - age:
+      - *camille
+  - key_groups: 
+    - age:
+      - *camille
+      - *zeppelin
+      - *radiogaga
+      - *genesis
+  - path_regex: secrets/cache2.*$
+    key_groups:
+    - age:
+      - *offspring
