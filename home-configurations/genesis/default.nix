@@ -52,6 +52,8 @@ in
       # sageWithDoc # Maths
     ];
 
+    sessionVariables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
+
     stateVersion = "23.05";
   };
 

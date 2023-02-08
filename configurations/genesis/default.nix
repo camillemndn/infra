@@ -67,6 +67,8 @@
     nix-software-center
   ];
 
+  environment.variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
+
   programs = {
     firefox.enable = true;
     steam.enable = true;

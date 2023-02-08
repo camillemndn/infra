@@ -1,0 +1,64 @@
+diff --git a/src/main/org/audiveris/omr/classifier/ui/resources/SampleBrowser.properties b/src/main/org/audiveris/omr/classifier/ui/resources/SampleBrowser.properties
+index 894d4b318..94790080f 100644
+--- a/src/main/org/audiveris/omr/classifier/ui/resources/SampleBrowser.properties
++++ b/src/main/org/audiveris/omr/classifier/ui/resources/SampleBrowser.properties
+@@ -13,7 +13,7 @@ Application.name = Audiveris
+ Application.id = audiveris
+ Application.vendorId = AudiverisLtd
+ Application.icon = /org/audiveris/omr/ui/resources/icon-24.png
+-Application.lookAndFeel = com.jgoodies.looks.plastic.Plastic3DLookAndFeel
++Application.lookAndFeel = com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+ icons.root = /crystal/22x22
+ 
+ #SampleBrowserFrame.title = Sample Browser
+diff --git a/src/main/org/audiveris/omr/classifier/ui/resources/Trainer.properties b/src/main/org/audiveris/omr/classifier/ui/resources/Trainer.properties
+index 26be4c1e6..397e0debb 100644
+--- a/src/main/org/audiveris/omr/classifier/ui/resources/Trainer.properties
++++ b/src/main/org/audiveris/omr/classifier/ui/resources/Trainer.properties
+@@ -13,7 +13,7 @@ Application.name = Audiveris
+ Application.id = audiveris
+ Application.vendorId = AudiverisLtd
+ Application.icon = /org/audiveris/omr/ui/resources/icon-24.png
+-Application.lookAndFeel = com.jgoodies.looks.plastic.Plastic3DLookAndFeel
++Application.lookAndFeel = com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+ icons.root = /crystal/22x22
+ 
+ TrainerFrame.title = Classifier training
+diff --git a/src/main/org/audiveris/omr/ui/resources/MainGui.properties b/src/main/org/audiveris/omr/ui/resources/MainGui.properties
+index f9e9d52ce..3b41821c4 100644
+--- a/src/main/org/audiveris/omr/ui/resources/MainGui.properties
++++ b/src/main/org/audiveris/omr/ui/resources/MainGui.properties
+@@ -21,7 +21,7 @@ Application.id = audiveris
+ Application.vendorId = AudiverisLtd
+ Application.icon = icon-24.png
+ 
+-Application.lookAndFeel = com.jgoodies.looks.plastic.Plastic3DLookAndFeel
++Application.lookAndFeel = com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+ #Application.lookAndFeel = com.jgoodies.looks.plastic.PlasticXPLookAndFeel
+ #Application.lookAndFeel = com.jgoodies.looks.plastic.PlasticLookAndFeel
+ #Application.lookAndFeel = com.jgoodies.looks.windows.WindowsLookAndFeel
+diff --git a/src/main/org/audiveris/omr/ui/symbol/resources/SymbolRipper.properties b/src/main/org/audiveris/omr/ui/symbol/resources/SymbolRipper.properties
+index ea2a686cb..79f8bd1b1 100644
+--- a/src/main/org/audiveris/omr/ui/symbol/resources/SymbolRipper.properties
++++ b/src/main/org/audiveris/omr/ui/symbol/resources/SymbolRipper.properties
+@@ -10,6 +10,6 @@
+ 
+ # References (needed when run stand-alone, w/o MainGui)
+ Application.icon = /org/audiveris/omr/ui/resources/icon-24.png
+-Application.lookAndFeel = com.jgoodies.looks.plastic.Plastic3DLookAndFeel
++Application.lookAndFeel = com.sun.java.swing.plaf.gtk.GTKLookAndFeel
+ 
+ SymbolRipperFrame.title = Symbol Ripper
+diff --git a/src/main/org/audiveris/omr/ui/util/UILookAndFeel.java b/src/main/org/audiveris/omr/ui/util/UILookAndFeel.java
+index 5cd2e90ca..f779ef42d 100644
+--- a/src/main/org/audiveris/omr/ui/util/UILookAndFeel.java
++++ b/src/main/org/audiveris/omr/ui/util/UILookAndFeel.java
+@@ -133,7 +133,7 @@ public class UILookAndFeel
+     {
+ 
+         private final Constant.String lookAndFeel = new Constant.String(
+-                "com.jgoodies.looks.plastic.Plastic3DLookAndFeel",
++                "com.sun.java.swing.plaf.gtk.GTKLookAndFeel",
+                 "Full class path to the desired UI Look & Feel");
+     }
+ }

@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  audiveris = pkgs.callPackage ./servers/misc/audiveris { };
   hammond = pkgs.callPackage ./servers/misc/hammond { };
   koel = pkgs.callPackage ./servers/misc/koel { };
   webtrees = pkgs.callPackage ./servers/misc/webtrees { };
