@@ -63,6 +63,8 @@
     no-activities-button
     custom-hot-corners-extended
     hide-universal-access
+    arrange-windows
+    window-state-manager
     gnome.dconf-editor
     nix-software-center
   ];
