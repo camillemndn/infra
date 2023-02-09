@@ -20,7 +20,7 @@ with lib;
 
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
     kernelModules = [ "kvm-amd" ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.kernel.linuxPackages_latest;
     kernelPatches = [
       {
         name = "asus-rog-flow-x13-tablet-mode";

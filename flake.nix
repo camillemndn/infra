@@ -61,13 +61,20 @@
       inputs.nixpkgs.follows = "unstable";
       inputs.utils.follows = "utils";
     };
+
+    kernel.url = "nixpkgs/bafc851daff10fdda5eb6ed068234c46baeb4d0f";
   };
 
   outputs = inputs@{ self, nixpkgs, unstable, home-manager, utils, deploy-rs, sops-nix, neovim-nightly-overlay, nixos-wsl, phps, ... }:
     with builtins;
     (utils.lib.eachDefaultSystem
       (system:
-        let pkgs = nixpkgs.legacyPackages.${system}; in
+        let
+          pkgs = nixpkgs.legacyPackages.${system}.extend
+            (final: prev: {
+              unstable = unstable.legacyPackages.${system};
+            });
+        in
         rec {
           packages = nixpkgs.lib.attrsets.filterAttrs (name: value: (elem (toString system) value.meta.platforms)) (import ./packages { inherit pkgs; });
         }) // {
