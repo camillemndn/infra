@@ -8,6 +8,6 @@
   sheetable = pkgs.callPackage ./servers/misc/sheetable { };
   organizr = pkgs.callPackage ./servers/misc/organizr { };
   readarr = pkgs.callPackage ./servers/readarr { };
-  lazylibrarian = pkgs.callPackage ./servers/lazylibrarian { };
+  lazylibrarian = pkgs.unstable.callPackage ./servers/lazylibrarian { };
   filerun = pkgs.callPackage ./servers/filerun { };
 }

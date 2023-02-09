@@ -34,24 +34,28 @@ in
       description = "LazyLibrarian";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      path = [
-        python
-        python310Packages.urllib3
-        python310Packages.charset-normalizer
-        python310Packages.certifi
-        python310Packages.idna
-        python310Packages.levenshtein
-      ];
       serviceConfig = {
         Type = "simple";
-        User = cfg.user;
-        Group = cfg.group;
-        Environment = "PYTHONPATH='${python310Packages.urllib3}/lib/python3.10/site-packages ${python310Packages.charset-normalizer}/lib/python3.10/site-packages ${python310Packages.certifi}/lib/python3.10/site-packages ${python310Packages.idna}/lib/python3.10/site-packages ${python310Packages.levenshtein}/lib/python3.10/site-packages'";
+        StateDirectory = "lazylibrarian";
+        DynamicUser = true;
+        ExecStart = "${pkgs.lazylibrarian}/bin/lazylibrarian --datadir $STATE_DIRECTORY";
         Restart = "on-failure";
+        ProtectHome = true;
+        ProtectSystem = "strict";
+        PrivateTmp = true;
+        PrivateDevices = true;
+        ProtectHostname = true;
+        ProtectClock = true;
+        ProtectKernelTunables = true;
+        ProtectKernelModules = true;
+        ProtectKernelLogs = true;
+        ProtectControlGroups = true;
+        NoNewPrivileges = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        RemoveIPC = true;
+        PrivateMounts = true;
       };
-      script = ''
-        python ${pkgs.lazylibrarian}/LazyLibrarian.py --datadir /var/lib/lazylibrarian
-      '';
     };
 
     networking.firewall = mkIf cfg.openFirewall {

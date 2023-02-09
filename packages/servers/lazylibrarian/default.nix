@@ -1,26 +1,62 @@
-{ lib, stdenv, fetchFromGitLab, ... }:
+{ lib, stdenv, python3, pkgs, makeWrapper, fetchFromGitLab }:
+
+let
+  python_env = python3.withPackages
+    (p: with p; [
+      apprise
+      beautifulsoup4
+      cherrypy
+      deluge-client
+      html5lib
+      httpagentparser
+      httplib2
+      Mako
+      pillow
+      pyopenssl
+      pypdf3
+      python-magic
+      requests
+      thefuzz
+      levenshtein
+      urllib3
+      webencodings
+      magic
+    ]);
+in
 
 stdenv.mkDerivation rec {
   pname = "lazylibrarian";
-  version = "master";
+  version = "2022.12.5";
 
   src = fetchFromGitLab {
     owner = "LazyLibrarian";
-    repo = pname;
-    rev = "e3013f311f36e0b7c3756cb2424e61060712e6cf";
-    sha256 = "01x3vrxl4rwc72wgq1nqw4394xbsvjfsnbrf98316rzla6f569v9";
+    repo = "LazyLibrarian";
+    rev = "6b5daeb0d863162e0bdbeb14d10b46714e0ad528";
+    hash = "sha256-ebLpi5IG/sVy23KvZfsAdWaGFwaBJy2KDd6tS5R00QE=";
   };
 
+  buildInputs = [ makeWrapper ];
+
+  patches = [ ./deps.patch ];
+
   installPhase = ''
-    mkdir -p $out
-    mv * $out/.
+    runHook preInstall
+    mkdir -p $out/share
+    cp -r . $out/share
+    runHook postInstall
+  '';
+
+  postFixup = ''
+    makeWrapper ${python_env}/bin/python $out/bin/lazylibrarian \
+      --add-flags $out/share/LazyLibrarian.py \
+      --chdir $out/share/
   '';
 
   meta = with lib; {
     description = "LazyLibrarian is a SickBeard, CouchPotato, Headphones-like application for ebooks, audiobooks and magazines";
-    homepage = "https://lazylibrarian.gitlab.io/";
+    homepage = "https://gitlab.com/LazyLibrarian/LazyLibrarian";
     license = licenses.gpl3Only;
-    # maintainers = with maintainers; [ camillemndn ];
-    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
+    maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.all;
   };
 }

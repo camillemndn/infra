@@ -1,0 +1,57 @@
+diff --git a/lazylibrarian/cleanup.py b/lazylibrarian/cleanup.py
+index 92c176a4..c90bec97 100644
+--- a/lazylibrarian/cleanup.py
++++ b/lazylibrarian/cleanup.py
+@@ -27,7 +27,6 @@ ll_dependencies = (
+     ('urllib3', '', ''),
+     ('pyOpenSSL', '', 'OpenSSL'),
+     ('cherrypy', '', ''),
+-    ('cherrypy_cors', 'cherrypy_cors.py', ''),
+     ('httpagentparser', '', ''),
+     ('mako', '', ''),
+     ('httplib2', '', ''),
+diff --git a/pyproject.toml b/pyproject.toml
+index 4d3d3730..a37263ca 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -16,14 +16,13 @@ classifiers = [
+ ]
+ 
+ dependencies = [
+-    'bs4',
++    'beautifulsoup4',
+     'html5lib',
+     'webencodings',
+     'requests',
+     'urllib3',
+     'pyOpenSSL',
+     'cherrypy',
+-    'cherrypy_cors',
+     'httpagentparser',
+     'mako',
+     'httplib2',
+@@ -31,7 +30,7 @@ dependencies = [
+     'apprise',
+     'PyPDF3',
+     'python_magic',
+-    'thefuzz[speedup]',
++    'thefuzz',
+     'deluge_client',
+ ]
+ 
+@@ -39,6 +38,8 @@ dependencies = [
+ "Documentation" = "https://lazylibrarian.gitlab.io/"
+ "Issue Tracker" = "https://gitlab.com/LazyLibrarian/LazyLibrarian/-/issues"
+ 
++[project.scripts]
++lazylibrarian = "lazylibrarian:__init__"
+ # Config file for pytest
+ [tool.pytest.ini_options]
+ pythonpath = "."
+@@ -47,4 +48,4 @@ filterwarnings = [
+     '''ignore:'cgi' is deprecated''',
+     # Ignore numerous warnings from cherrypy
+     "ignore::DeprecationWarning: invalid escape sequence"
+-]
+\ No newline at end of file
++]
