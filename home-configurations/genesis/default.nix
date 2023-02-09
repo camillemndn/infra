@@ -1,19 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  qpageview = pkgs.callPackage ./test.nix { };
-  kms.frescobaldi = pkgs.frescobaldi.overrideAttrs (old: {
-    version = "3.2";
-    src = pkgs.fetchFromGitHub {
-      owner = "wbsoft";
-      repo = "frescobaldi";
-      rev = "v3.2";
-      sha256 = "sha256-q340ChF7VZcbLMW/nd1so7WScsPfbdeJUjTzsY5dkec=";
-    };
-    propagatedBuildInputs = old.propagatedBuildInputs ++ [ qpageview ];
-  });
-in
-
 {
   imports = [ ../base ];
 
@@ -43,7 +29,7 @@ in
       sonixd
       spotify
       spotifywm
-      kms.frescobaldi
+      frescobaldi
       lilypond-with-fonts # Media
       python3 # Coding
       neomutt # Internet
