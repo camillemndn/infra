@@ -50,8 +50,8 @@ with lib;
       jackett = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.trackers.port = 9117;
 
-      # lazylibrarian = { enable = true; group = "mediasrv"; };
-      # vpnVirtualHosts.books2.port = 5299;
+      lazylibrarian = { enable = true; group = "mediasrv"; };
+      vpnVirtualHosts.books2.port = 5299;
     };
 
     # systemd.services.jellyfin.serviceConfig = {
