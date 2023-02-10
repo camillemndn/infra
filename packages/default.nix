@@ -2,12 +2,13 @@
 
 {
   audiveris = pkgs.callPackage ./servers/misc/audiveris { };
+  filerun = pkgs.callPackage ./servers/filerun { };
   hammond = pkgs.callPackage ./servers/misc/hammond { };
+  jellyseerr = pkgs.unstable.callPackage ./servers/jellyseerr { };
   koel = pkgs.callPackage ./servers/misc/koel { };
-  webtrees = pkgs.callPackage ./servers/misc/webtrees { };
-  sheetable = pkgs.callPackage ./servers/misc/sheetable { };
+  lazylibrarian = pkgs.unstable.callPackage ./servers/lazylibrarian { };
   organizr = pkgs.callPackage ./servers/misc/organizr { };
   readarr = pkgs.callPackage ./servers/readarr { };
-  lazylibrarian = pkgs.unstable.callPackage ./servers/lazylibrarian { };
-  filerun = pkgs.callPackage ./servers/filerun { };
+  sheetable = pkgs.callPackage ./servers/misc/sheetable { };
+  webtrees = pkgs.callPackage ./servers/misc/webtrees { };
 }

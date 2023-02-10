@@ -1,0 +1,86 @@
+{ lib
+, stdenv
+, fetchFromGitHub
+, fetchYarnDeps
+, makeWrapper
+, mkYarnPackage
+, nodejs
+, sqlite
+, pkgs
+, python3
+, removeReferencesTo
+, srcOnly
+, which
+}:
+
+let
+  pin = lib.importJSON ./pin.json;
+  nodeSources = srcOnly nodejs;
+in
+
+mkYarnPackage rec {
+  pname = "jellyseerr";
+  version = "1.4.0";
+
+  src = fetchFromGitHub {
+    owner = "Fallenbagel";
+    repo = "jellyseerr";
+    rev = "v${version}";
+    sha256 = "sha256-GiorcqJbviZ+R18icSSXJEPaOEEGnHkMR4Au1rFRRDM=";
+  };
+
+  packageJSON = ./package.json;
+
+  offlineCache = fetchYarnDeps {
+    yarnLock = "${src}/yarn.lock";
+    sha256 = pin.yarnSha256;
+  };
+
+  configurePhase = ''
+    cp -r "$node_modules" node_modules
+    chmod -R u+w node_modules
+  '';
+
+  #preBuild = ''
+  #  pushd node_modules/sqlite3
+  #  export CPPFLAGS="-I${nodejs}/include/node"
+  #  npm run install --build-from-source --nodedir=${nodejs}/include/node
+  #  popd
+  #'';
+
+  nativeBuildInputs = [
+    which
+    nodejs
+    makeWrapper
+    sqlite
+    python3
+  ];
+
+  doDist = false;
+
+  buildPhase = ''
+    runHook preBuild
+    yarn build
+    runHook postBuild
+  '';
+
+  postInstall = ''
+    makeWrapper '${nodejs}/bin/node' "$out/bin/jellyseerr" --add-flags \
+        "$out/libexec/jellyseerr/deps/jellyseerr/dist/index.js" \
+        --set NODE_ENV production
+  '';
+
+  passthru.updateScript = ./update.sh;
+
+  meta = with lib; {
+    description = "Fork of overseerr for jellyfin support";
+    homepage = "https://github.com/Fallenbagel/jellyseerr";
+    longDescription = ''
+      Jellyseerr is a free and open source software application for managing
+      requests for your media library. It is a a fork of Overseerr built to
+      bring support for Jellyfin & Emby media servers!
+    '';
+    license = licenses.mit;
+    maintainers = with maintainers; [ camillemndn ];
+  };
+}
