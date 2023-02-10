@@ -14,6 +14,7 @@ with inputs;
     radiogaga = {
       hostname = "radiogaga.lan";
       profiles.system.path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.radiogaga;
+      remoteBuild = false;
     };
 
     rush = {
