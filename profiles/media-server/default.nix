@@ -36,7 +36,7 @@ with lib;
       vpnVirtualHosts.movies.port = 7878;
 
       readarr = { enable = true; group = "mediasrv"; };
-      vpnVirtualHosts.books.port = 8787;
+      vpnVirtualHosts.books2.port = 8787;
 
       lidarr = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.music.port = 8686;
@@ -51,7 +51,7 @@ with lib;
       vpnVirtualHosts.trackers.port = 9117;
 
       lazylibrarian = { enable = true; group = "mediasrv"; };
-      vpnVirtualHosts.books2.port = 5299;
+      vpnVirtualHosts.books = { port = 5299; restricted = false; };
     };
 
     # systemd.services.jellyfin.serviceConfig = {

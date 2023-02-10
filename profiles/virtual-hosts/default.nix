@@ -110,14 +110,17 @@ in
     };
   };
 
-  config = #let service = mapAttrs' (x:v: nameValuePair (v.service) {enable = true;}) config.services.vpnVirtualHosts; in 
+  config =
     {
       services.nginx = {
         enable = mkIf (cfg.virtualHosts != { } || cfg.acmeVirtualHosts != { } || cfg.vpnVirtualHosts != { }) true;
-        recommendedProxySettings = true;
+        recommendedOptimisation = mkDefault true;
+        recommendedProxySettings = mkDefault true;
+        recommendedGzipSettings = mkDefault true;
+        recommendedTlsSettings = mkDefault true;
+
 
         virtualHosts = mkMerge (
-          #foldl recursiveUpdate {} <==> mkMerge 
           (mapVirtualHosts mkVirtualHost cfg.virtualHosts)
           ++
           (mapVirtualHosts mkACMEVirtualHost cfg.acmeVirtualHosts)
