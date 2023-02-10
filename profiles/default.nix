@@ -3,6 +3,7 @@
   ./binary-cache
   ./code-server
   ./feeds
+  ./gdm
   ./mail-server
   ./media-server
   ./meet

@@ -24,7 +24,17 @@
 
   services.xserver = {
     enable = true;
-    displayManager.gdm.enable = true;
+    displayManager.gdm = {
+      wayland = true;
+      enable = true;
+      extraConfig = ''
+        [org/gnome/desktop/interface]
+        cursor-size=40
+        text-scaling-factor=1.5
+        scaling-factor=2
+        show-battery-percentage=true
+      '';
+    };
     desktopManager.gnome.enable = true;
 
     layout = "fr";
