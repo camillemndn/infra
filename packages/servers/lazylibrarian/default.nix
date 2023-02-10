@@ -31,8 +31,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitLab {
     owner = "LazyLibrarian";
     repo = "LazyLibrarian";
-    rev = "6b5daeb0d863162e0bdbeb14d10b46714e0ad528";
-    hash = "sha256-ebLpi5IG/sVy23KvZfsAdWaGFwaBJy2KDd6tS5R00QE=";
+    rev = "862c2c86a0aa9a114ae3113d95c0a9278371abb0";
+    hash = "sha256-+prd8OtqBDH/9JDTKpavmV0C3ELGvGlUtsTkHPwMcDw=";
   };
 
   buildInputs = [ makeWrapper ];
