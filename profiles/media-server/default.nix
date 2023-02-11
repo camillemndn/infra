@@ -17,6 +17,9 @@ with lib;
       jellyfin = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.media = { port = 8096; restricted = false; };
 
+      jellyseerr = { enable = true; group = "mediasrv"; };
+      vpnVirtualHosts.requests = { port = 5055; restricted = false; };
+
       calibre-server = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.library.port = 8080;
 
