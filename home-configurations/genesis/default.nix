@@ -5,6 +5,7 @@
 
   home = {
     packages = with pkgs; [
+      caprine-bin
       write_stylus
       minecraft
       digikam
