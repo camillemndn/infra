@@ -11,22 +11,26 @@
 , python3
 }:
 
+let
+  pin = lib.importJSON ./pin.json;
+in
+
 mkYarnPackage rec {
   pname = "jellyseerr";
-  version = "1.4.0";
+  version = pin.version;
 
   src = fetchFromGitHub {
     owner = "Fallenbagel";
     repo = "jellyseerr";
     rev = "v${version}";
-    sha256 = "sha256-GiorcqJbviZ+R18icSSXJEPaOEEGnHkMR4Au1rFRRDM=";
+    sha256 = pin.srcSha256;
   };
 
-  packageJSON = ./package.json;
+  importJSON = ./package.json;
 
   offlineCache = fetchYarnDeps {
     yarnLock = "${src}/yarn.lock";
-    sha256 = (lib.importJSON ./pin.json).yarnSha256;
+    sha256 = pin.yarnSha256;
   };
 
   doDist = false;
