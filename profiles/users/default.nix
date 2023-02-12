@@ -22,7 +22,7 @@ with lib;
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
   programs.fish.promptInit = ''
-    any-nix-shell fish --info-right | source
+    ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
   '';
 
   programs.neovim = {
@@ -45,12 +45,12 @@ with lib;
     zip
     unzip
     ntfs3g
-    any-nix-shell
     oh-my-fish
     age
     sops
     unstable.deploy-rs
     unstable.nixos-option
+    unstable.nix-tree
   ];
 
   services.mysql = {
