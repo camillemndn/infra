@@ -49,5 +49,6 @@
     "nvidia-settings"
     "minecraft-launcher"
     "discord"
+    "mongodb"
   ];
 }

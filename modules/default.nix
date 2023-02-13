@@ -8,6 +8,7 @@
   logiops = import ./services/misc/logiops;
   readarr = import ./services/misc/readarr;
   organizr = import ./services/web-apps/organizr;
+  overleaf = import ./services/misc/overleaf;
   sheetable = import ./services/web-apps/sheetable;
   webtrees = import ./services/web-apps/webtrees;
   yarr = import ./services/networking/yarr;

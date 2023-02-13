@@ -13,8 +13,6 @@ creation_rules:
     - age:
       - *camille
       - *zeppelin
-      - *radiogaga
-      - *genesis
   - path_regex: secrets/cache2.*$
     key_groups:
     - age:
