@@ -14,6 +14,7 @@ let
             unstable = unstable.legacyPackages.${system};
             kernel = kernel.legacyPackages.${system};
             nix-software-center = nix-software-center.defaultPackage.${system};
+            nix-init = nix-init.packages.${system}.default;
           } //
           self.packages."${system}"
           )

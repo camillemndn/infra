@@ -51,6 +51,7 @@ with lib;
     unstable.deploy-rs
     unstable.nixos-option
     unstable.nix-tree
+    nix-init
   ];
 
   services.mysql = {

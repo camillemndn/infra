@@ -62,6 +62,8 @@
       inputs.utils.follows = "utils";
     };
 
+    nix-init.url = "github:nix-community/nix-init/c433a3b73869a66c8267c84425b8e0f9990c59e9";
+
     kernel.url = "nixpkgs/bafc851daff10fdda5eb6ed068234c46baeb4d0f";
   };
 
