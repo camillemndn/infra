@@ -6,7 +6,6 @@
 , nodejs
 , nodePackages
 , sqlite
-, pkgs
 , fetchYarnDeps
 , python3
 }:
@@ -26,7 +25,7 @@ mkYarnPackage rec {
     sha256 = pin.srcSha256;
   };
 
-  importJSON = ./package.json;
+  packageJSON = ./package.json;
 
   offlineCache = fetchYarnDeps {
     yarnLock = "${src}/yarn.lock";
@@ -42,7 +41,7 @@ mkYarnPackage rec {
     python3
   ];
 
-  # Fixes "SQLite package has not been found installed" at launch 
+  # Fixes "SQLite package has not been found installed" at launch
   pkgConfig.sqlite3.postInstall = ''
     export CPPFLAGS="-I${nodejs}/include/node"
     ${nodePackages.node-pre-gyp}/bin/node-pre-gyp install --prefer-offline --build-from-source --python=${python3}/bin/python --nodedir=${nodejs}/include/node
@@ -81,5 +80,6 @@ mkYarnPackage rec {
     '';
     license = licenses.mit;
     maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.linux;
   };
 }

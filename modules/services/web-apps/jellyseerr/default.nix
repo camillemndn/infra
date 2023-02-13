@@ -5,42 +5,44 @@ let
   cfg = config.services.jellyseerr;
 in
 {
+  meta.maintainers = [ maintainers.camillemndn ];
+
   options = {
     services.jellyseerr = {
-      enable = mkEnableOption "Jellyseerr";
+      enable = mkEnableOption (mdDoc ''Jellyseerr, a requests manager for Jellyfin'');
 
       openFirewall = mkOption {
         type = types.bool;
         default = false;
-        description = "Open ports in the firewall for the Jellyseerr web interface.";
+        description = mdDoc ''Open port in the firewall for the Jellyseerr web interface.'';
       };
 
-      user = mkOption {
-        type = types.str;
-        default = "jellyseerr";
-        description = "User under which Jellyseerr runs.";
+      port = mkOption {
+        type = types.port;
+        default = 5055;
+        description = mdDoc ''The port which the Jellyseerr web UI should listen to.'';
       };
 
-      group = mkOption {
-        type = types.str;
-        default = "jellyseerr";
-        description = "Group under which Jellyseerr runs.";
+      extraGroups = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = mdDoc ''Supplementary groups under which Jellyseerr runs.'';
       };
     };
   };
 
   config = mkIf cfg.enable {
     systemd.services.jellyseerr = {
-      description = "Jellyseerr";
+      description = "Jellyseerr, a requests manager for Jellyfin";
       after = [ "network.target" ];
-      environment = { "NODE_ENV" = "dev"; "DEBUG" = "*"; };
       wantedBy = [ "multi-user.target" ];
+      environment.PORT = toString cfg.port;
       serviceConfig = {
         Type = "exec";
         StateDirectory = "jellyseerr";
         WorkingDirectory = "${pkgs.jellyseerr}/libexec/jellyseerr/deps/jellyseerr";
         DynamicUser = true;
-        SupplementaryGroups = [ cfg.group ];
+        SupplementaryGroups = cfg.extraGroups;
         ExecStart = "${pkgs.jellyseerr}/bin/jellyseerr";
         BindPaths = [ "/var/lib/jellyseerr/:${pkgs.jellyseerr}/libexec/jellyseerr/deps/jellyseerr/config/" ];
         Restart = "on-failure";
@@ -63,7 +65,7 @@ in
     };
 
     networking.firewall = mkIf cfg.openFirewall {
-      allowedTCPPorts = [ 5055 ];
+      allowedTCPPorts = [ cfg.port ];
     };
   };
 }
