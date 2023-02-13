@@ -44,7 +44,6 @@ let
 
     nativeBuildInputs = [ nodejs yarn ];
 
-
     npmFlags = [ "--legacy-peer-deps" ];
 
     npmRebuildFlags = [ ];
