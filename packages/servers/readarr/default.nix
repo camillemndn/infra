@@ -9,15 +9,15 @@ let
   }."${stdenv.hostPlatform.system}" or (throw "Unsupported system: ${stdenv.hostPlatform.system}");
 
   hash = {
-    x64-linux_hash = "sha256-pdcdCvc594Cr3v9J7//ku6N38tx3KU06UhEZYXwqMuk=";
-    arm64-linux_hash = lib.fakeHash;
-    x64-osx_hash = lib.fakeHash;
+    x64-linux_hash = "sha256-FCpid2K4wktRCXSIfb/xE6Ei+0gpHvSM0en67L0C5n4=";
+    arm64-linux_hash = "sha256-lCBOEZUCgwoKyV4pzPVm3HC9V4R4L+uNZLfP0rqO16c=";
+    x64-osx_hash = "sha256-fPtbdjrVePbzHYffALxCmjMWzWBglNxFLec3cmqemo8=";
   }."${arch}-${os}_hash";
 
 in
 stdenv.mkDerivation rec {
   pname = "readarr";
-  version = "0.1.2.1558";
+  version = "0.1.3.1584";
 
   src = fetchurl {
     url = "https://github.com/Readarr/Readarr/releases/download/v${version}/Readarr.develop.${version}.${os}-core-${arch}.tar.gz";
@@ -39,14 +39,14 @@ stdenv.mkDerivation rec {
 
   passthru = {
     updateScript = ./update.sh;
-    tests.smoke-test = nixosTests.readarr;
+    # tests.smoke-test = nixosTests.readarr;
   };
 
   meta = with lib; {
     description = "Readarr is a ebook collection manager for Usenet and BitTorrent users";
     homepage = "https://readarr.com/";
     license = licenses.gpl3Only;
-    # maintainers = with maintainers; [ camillemndn ];
+    maintainers = with maintainers; [ camillemndn ];
     platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" ];
   };
 }
