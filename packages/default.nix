@@ -12,4 +12,5 @@
   readarr = pkgs.callPackage ./servers/readarr { };
   sheetable = pkgs.callPackage ./servers/misc/sheetable { };
   webtrees = pkgs.callPackage ./servers/misc/webtrees { };
+  zotero-web-library = pkgs.unstable.callPackage ./servers/zotero-web-library { };
 }
