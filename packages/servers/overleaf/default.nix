@@ -8,26 +8,6 @@
   pname = "overleaf";
   version = "unstable-2023-02-11";
 
-  #sourceRoot = "source/services/web";
-
-  patches = [ ./package-lock.patch ];
-
-  #postPatch = ''
-  #  grep urun ./package-lock.json
-  #${nodejs-16_x}/bin/npm ci -loglevel=verbose --package-lock-only --ignore-scripts
-  #'';
-
-  preConfig = ''
-    ls -all
-    cp zeifzofez
-  '';
-
-  makeCacheWritable = true;
-
-  npmDepsHash = "sha256-wrTp6bfcKJgHwkYToXunTYRNGnfMaKHwjGv7mXQXsLU=";
-
-  npmFlags = [ "legacy-peer-deps" ];
-
   src = fetchFromGitHub {
     owner = "overleaf";
     repo = "overleaf";
@@ -35,24 +15,20 @@
     hash = "sha256-PazUG3qcc9Utu6pYjppXe5A2N6pqZ+D42o7BDLzyJfQ=";
   };
 
-  nativeBuildInputs = [ nodejs-16_x ];
+  sourceRoot = "source/services/web";
 
-  npmInstallFlags = [ ];
+  npmDepsHash = "sha256-9y+zEnhDTyQWEkPbRHw9Tw/FMMRgH73o8RJ+INjx30E=";
 
-  npmRebuildFlags = [ ];
+  npmFlags = [ "--prefix ./" "--legacy-peer-deps" "--loglevel=verbose" "--include dev" "--production=false" ];
 
-  preBuild = ''
-    export NODE_OPTIONS=--openssl-legacy-provider
+  postPatch = ''
+    install -m644 ${./package-lock.json} package-lock.json
+    cp ${./package.json} package.json
   '';
 
   npmBuildScript = "webpack:production";
 
-  installPhase = ''
-    cd dist
-    ls -all
-    mkdir $out
-    cp -r * $out
-  '';
+  npmRebuildFlags = [ ];
 
   meta = with lib; {
     description = "A web-based collaborative LaTeX editor";
