@@ -75,6 +75,7 @@
     hide-universal-access
     arrange-windows
     window-state-manager
+    tray-icons-reloaded
     gnome.dconf-editor
     nix-software-center
   ];

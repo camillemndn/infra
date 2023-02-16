@@ -12,7 +12,7 @@
       wine-wayland
       heroic
       joplin-desktop
-      whatsapp-for-linux
+      zapzap
       signal-desktop-beta
       libreoffice-fresh
       nextcloud-client
@@ -91,18 +91,6 @@
       name = "";
       exec = "";
       noDisplay = true;
-    };
-
-    sonixd.settings = {
-      Name = "Sonixd";
-      Exec = "AppRun --no-sandbox %U";
-      Terminal = "false";
-      Type = "Application";
-      Icon = "sonixd";
-      StartupWMClass = "Sonixd";
-      X-AppImage-Version = "0.15.3";
-      Comment = "A full-featured Subsonic/Jellyfin compatible desktop client";
-      Categories = "Development";
     };
   };
 }
