@@ -16,6 +16,7 @@ with lib;
       privateKeyFile = "/etc/secureboot/keys/db/db.key"; # DB private key
       pkiBundle = "/etc/secureboot/";
       enrollKeys = true;
+      configurationLimit = 5;
     };
 
     initrd.availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
