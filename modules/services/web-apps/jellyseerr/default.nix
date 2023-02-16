@@ -7,27 +7,19 @@ in
 {
   meta.maintainers = [ maintainers.camillemndn ];
 
-  options = {
-    services.jellyseerr = {
-      enable = mkEnableOption (mdDoc ''Jellyseerr, a requests manager for Jellyfin'');
+  options.services.jellyseerr = {
+    enable = mkEnableOption (mdDoc ''Jellyseerr, a requests manager for Jellyfin'');
 
-      openFirewall = mkOption {
-        type = types.bool;
-        default = false;
-        description = mdDoc ''Open port in the firewall for the Jellyseerr web interface.'';
-      };
+    openFirewall = mkOption {
+      type = types.bool;
+      default = false;
+      description = mdDoc ''Open port in the firewall for the Jellyseerr web interface.'';
+    };
 
-      port = mkOption {
-        type = types.port;
-        default = 5055;
-        description = mdDoc ''The port which the Jellyseerr web UI should listen to.'';
-      };
-
-      extraGroups = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = mdDoc ''Supplementary groups under which Jellyseerr runs.'';
-      };
+    port = mkOption {
+      type = types.port;
+      default = 5055;
+      description = mdDoc ''The port which the Jellyseerr web UI should listen to.'';
     };
   };
 
@@ -42,7 +34,6 @@ in
         StateDirectory = "jellyseerr";
         WorkingDirectory = "${pkgs.jellyseerr}/libexec/jellyseerr/deps/jellyseerr";
         DynamicUser = true;
-        SupplementaryGroups = cfg.extraGroups;
         ExecStart = "${pkgs.jellyseerr}/bin/jellyseerr";
         BindPaths = [ "/var/lib/jellyseerr/:${pkgs.jellyseerr}/libexec/jellyseerr/deps/jellyseerr/config/" ];
         Restart = "on-failure";
