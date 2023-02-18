@@ -33,16 +33,17 @@ with lib;
       };
     };
 
+    services.vpnVirtualHosts.write.port = 3032;
     services.mongodb = {
       enable = true;
       package = pkgs.mongodb-4_2;
-      bind_ip = "100.73.69.100";
+      # bind_ip = "100.73.69.100";
     };
 
     services.redis.servers."" = {
       enable = true;
-      openFirewall = true;
-      bind = "100.73.69.100";
+      # openFirewall = true;
+      # bind = "100.73.69.100";
       requirePassFile = "/run/secrets/redis";
     };
 

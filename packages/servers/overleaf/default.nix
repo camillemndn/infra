@@ -1,39 +1,101 @@
 { lib
-, buildNpmPackage
+, stdenv
 , fetchFromGitHub
-, nodejs-16_x
+, makeWrapper
+, nodejs
+, nodePackages
+, sqlite
+, fetchYarnDeps
+, python3
+, jq
+, yarn2nix-moretea
 }:
 
-(buildNpmPackage.override { nodejs = nodejs-16_x; }) rec {
-  pname = "overleaf";
-  version = "unstable-2023-02-11";
+let
+  yarn2nix = yarn2nix-moretea //
+    {
+      mkYarnPackage.installPhase = let pname = yarn2nix-moretea.mkYarnPackage.pname; in
+        ''
+          runHook preInstall
 
-  src = fetchFromGitHub {
-    owner = "overleaf";
-    repo = "overleaf";
-    rev = "b0bd070018d181696092dec3d4431181aad17b01";
-    hash = "sha256-PazUG3qcc9Utu6pYjppXe5A2N6pqZ+D42o7BDLzyJfQ=";
+          mkdir -p $out/{bin,libexec/${pname}}
+          mv node_modules $out/libexec/${pname}/node_modules
+          mv deps $out/libexec/${pname}/deps
+
+
+          runHook postInstall
+        '';
+    };
+  workspace = yarn2nix-moretea.mkYarnWorkspace
+    {
+      src = fetchFromGitHub {
+        owner = "overleaf";
+        repo = "overleaf";
+        rev = "4f89588fb4195b1314155557d0497563acf4a1b4";
+        sha256 = "sha256-Le+BaxKBKm4zYb9GIOxWkl8AezptqgRmJiu/2/tK0AI=";
+      };
+      version = "unstable";
+
+      nativeBuildInputs = [ jq ];
+
+      postPatch = ''
+        #for i in $(find . -name "package.json")
+        #do
+        i="package.json"
+        if [ -z $(jq '.version // empty' "$i") ]
+          then
+            cat <<< "$(jq '. + { version: "1.0.0" }' "$i")" > "$i"
+        fi
+        #done
+        cat $i 
+      '';
+
+      yarnLock = ./yarn.lock;
+    };
+in
+let
+  work = workspace // {
+    overleaf-ranges-tracker = workspace.overleaf-ranges-tracker.overrideAttrs (final: prev: {
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out/{bin,libexec/@overleaf/ranges-tracker}
+        mv node_modules $out/libexec/@overleaf/ranges-tracker/node_modules
+        mv deps $out/libexec/@overleaf/ranges-tracker/deps
+
+        runHook postInstall
+      '';
+    });
+    overleaf-o-error = workspace.overleaf-o-error.overrideAttrs (final: prev: {
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out/{bin,libexec/@overleaf/o-error}
+        mv node_modules $out/libexec/@overleaf/o-error/node_modules
+        mv deps $out/libexec/@overleaf/o-error/deps
+
+        runHook postInstall
+      '';
+    });
   };
 
-  sourceRoot = "source/services/web";
+  overleaf-chat = work.overleaf-chat.overrideAttrs (final: prev: {
+    doDist = false;
+    pname = "overleaf-chat";
+    buildInputs = [ nodejs makeWrapper ];
+    postInstall = ''
+      makeWrapper '${nodejs}/bin/node' "$out/bin/overleaf-chat" \
+        --add-flags "$out/libexec/@overleaf/chat/deps/@overleaf/chat/app.js" \
+        --set NODE_ENV production
+    '';
+  });
+in
 
-  npmDepsHash = "sha256-9y+zEnhDTyQWEkPbRHw9Tw/FMMRgH73o8RJ+INjx30E=";
-
-  npmFlags = [ "--prefix ./" "--legacy-peer-deps" "--loglevel=verbose" "--include dev" "--production=false" ];
-
-  postPatch = ''
-    install -m644 ${./package-lock.json} package-lock.json
-    cp ${./package.json} package.json
+workspace.overleaf-web.overrideAttrs (final: prev: {
+  doDist = false;
+  nativeBuildInputs = [ nodePackages.webpack ];
+  installPhase = ''
+    cd deps/@overleaf/web
+    yarn run webpack:production  
   '';
-
-  npmBuildScript = "webpack:production";
-
-  npmRebuildFlags = [ ];
-
-  meta = with lib; {
-    description = "A web-based collaborative LaTeX editor";
-    homepage = "https://github.com/overleaf/overleaf/tree/main/services/web";
-    license = licenses.agpl3Only;
-    maintainers = with maintainers; [ ];
-  };
-}
+})
