@@ -4,10 +4,11 @@
 , makeWrapper
 , mkYarnPackage
 , nodejs
-, nodePackages
 , sqlite
 , fetchYarnDeps
 , python3
+, pkg-config
+, glib
 }:
 
 let
@@ -37,35 +38,40 @@ mkYarnPackage rec {
   nativeBuildInputs = [
     nodejs
     makeWrapper
-    sqlite
-    python3
   ];
 
   # Fixes "SQLite package has not been found installed" at launch
-  pkgConfig.sqlite3.postInstall = ''
-    export CPPFLAGS="-I${nodejs}/include/node"
-    ${nodePackages.node-pre-gyp}/bin/node-pre-gyp install --prefer-offline --build-from-source --python=${python3}/bin/python --nodedir=${nodejs}/include/node
-  '';
+  pkgConfig.sqlite3 = {
+    nativeBuildInputs = [ nodejs.pkgs.node-pre-gyp python3 ];
+    postInstall = ''
+      export CPPFLAGS="-I${nodejs}/include/node"
+      node-pre-gyp install --prefer-offline --build-from-source --nodedir=${nodejs}/include/node
+    '';
+  };
 
-  pkgConfig.bcrypt.postInstall = ''
-    export CPPFLAGS="-I${nodejs}/include/node"
-    ${nodePackages.node-pre-gyp}/bin/node-pre-gyp install --prefer-offline --build-from-source --python=${python3}/bin/python --nodedir=${nodejs}/include/node
-  '';
+  pkgConfig.bcrypt = {
+    nativeBuildInputs = [ nodejs.pkgs.node-pre-gyp python3 ];
+    postInstall = ''
+      export CPPFLAGS="-I${nodejs}/include/node"
+      node-pre-gyp install --prefer-offline --build-from-source --nodedir=${nodejs}/include/node
+    '';
+  };
 
   buildPhase = ''
     runHook preBuild
-    shopt -s dotglob
-    pushd deps/jellyseerr
-    rm -r config/*
-    yarn build
-    popd
+    (
+      shopt -s dotglob
+      cd deps/jellyseerr
+      rm -r config/*
+      yarn build
+    )
     runHook postBuild
   '';
 
   postInstall = ''
-    makeWrapper '${nodejs}/bin/node' "$out/bin/jellyseerr" --add-flags \
-        "$out/libexec/jellyseerr/deps/jellyseerr/dist/index.js" \
-        --set NODE_ENV production
+    makeWrapper '${nodejs}/bin/node' "$out/bin/jellyseerr" \
+      --add-flags "$out/libexec/jellyseerr/deps/jellyseerr/dist/index.js" \
+      --set NODE_ENV production
   '';
 
   passthru.updateScript = ./update.sh;
