@@ -10,8 +10,6 @@
   services = {
     openssh.enable = true;
 
-    overleaf.enable = true;
-
     resolved.enable = true;
     tailscale.enable = true;
 
@@ -38,6 +36,7 @@
     mail-server.enable = true;
     media-server.enable = true;
     office.enable = true;
+    photos.enable = true;
     player.enable = true;
     websites.enable = true;
   };
