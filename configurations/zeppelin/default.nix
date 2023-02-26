@@ -42,6 +42,5 @@
   };
 
   system.stateVersion = "21.11";
-  system.autoUpgrade.enable = true;
 }
 

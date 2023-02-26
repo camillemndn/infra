@@ -28,6 +28,9 @@ with lib;
           hashedPasswordFile = "/run/secrets/mail-server/braithwaite.fr/emma";
           aliases = [ "@braitwaite.fr" ];
         };
+        "verso@saumon.network" = {
+          hashedPasswordFile = "/run/secrets/mail-server/saumon.network/verso";
+        };
       };
       localDnsResolver = false;
       certificateScheme = 3;
@@ -144,6 +147,11 @@ with lib;
       "mail-server/braithwaite.fr/emma" = {
         format = "yaml";
         key = "emma-braithwaite-fr";
+        sopsFile = ../../secrets/mail-server.yaml;
+      };
+      "mail-server/saumon.network/verso" = {
+        format = "yaml";
+        key = "verso-saumon-network";
         sopsFile = ../../secrets/mail-server.yaml;
       };
       acme-dns-challenge = {
