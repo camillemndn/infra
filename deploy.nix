@@ -12,7 +12,7 @@ with inputs;
     };
 
     radiogaga = {
-      hostname = "radiogaga.lan";
+      hostname = "radiogaga.local";
       profiles.system.path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.radiogaga;
       remoteBuild = false;
     };
