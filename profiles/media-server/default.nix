@@ -32,8 +32,9 @@ with lib;
       # calibre-web-tangente = { enable = true; group = "mediasrv"; };
       # vpnVirtualHosts."tangente.library" = { port = 8085; restricted = false; };
 
-      deluge = { enable = true; group = "mediasrv"; };
+      deluge = { enable = true; group = "mediasrv"; storm.enable = true; };
       vpnVirtualHosts.torrents.port = 8112;
+      vpnVirtualHosts.storm.port = 8221;
 
       radarr = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.movies.port = 7878;

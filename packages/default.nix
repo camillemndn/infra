@@ -2,6 +2,7 @@
 
 {
   audiveris = pkgs.callPackage ./servers/misc/audiveris { };
+  deluge-storm = pkgs.callPackage ./servers/deluge-storm { };
   filerun = pkgs.callPackage ./servers/filerun { };
   hammond = pkgs.callPackage ./servers/misc/hammond { };
   jellyseerr = pkgs.unstable.callPackage ./servers/jellyseerr { };
