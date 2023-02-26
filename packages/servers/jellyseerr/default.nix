@@ -69,8 +69,9 @@ mkYarnPackage rec {
   '';
 
   postInstall = ''
-    makeWrapper '${nodejs}/bin/node' "$out/bin/jellyseerr" \
-      --add-flags "$out/libexec/jellyseerr/deps/jellyseerr/dist/index.js" \
+    makeWrapper '${nodejs}/bin/node' $out/bin/jellyseerr \
+      --add-flags dist/index.js \
+      --chdir $out/libexec/jellyseerr/deps/jellyseerr \
       --set NODE_ENV production
   '';
 
