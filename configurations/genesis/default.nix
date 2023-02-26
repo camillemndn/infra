@@ -41,7 +41,10 @@
     xkbVariant = "";
   };
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.brlaser ];
+  };
 
   sound.enable = true;
   hardware.pulseaudio.enable = false;
