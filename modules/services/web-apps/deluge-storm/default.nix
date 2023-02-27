@@ -23,21 +23,21 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.storm.enable {
     systemd.services.deluge-storm = {
       description = "A Modern Deluge Interface";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      environment.PORT = toString cfg.port;
+      path = [ pkgs.coreutils ];
+      script = ''
+        export DELUGE_RPC_USERNAME=$(cat "''${CREDENTIALS_DIRECTORY}/auth" | cut -d: -f1)
+        export DELUGE_RPC_PASSWORD=$(cat "''${CREDENTIALS_DIRECTORY}/auth" | cut -d: -f2)
+        export STORM_API_KEY=$(cat "''${CREDENTIALS_DIRECTORY}/auth" | cut -d: -f2)
+        exec ${pkgs.deluge-storm}/bin/deluge-storm -l :${toString cfg.storm.port} --log-style=production -H localhost --deluge-version=v2
+      '';
       serviceConfig = {
-        Type = "exec";
         User = "deluge";
-        ExecStart = pkgs.writeShellScript "overleaf-${service}" ''
-          export $DELUGE_RPC_USER=$(cat $CREDENTIALS_DIRECTORY/$DELUGE_RPC_AUTH | cut -d: -f1)
-          export $DELUGE_RPC_PASSWORD=$(cat $CREDENTIALS_DIRECTORY/$DELUGE_RPC_AUTH | cut -d: -f2)
-          exec "${pkgs.deluge-storm}/bin/deluge-storm -H localhost --deluge-version=v2";
-        '';
-        LoadCredential = [ "DELUGE_RPC_AUTH:${cfg.dataDir}/.config/deluge/auth" ];
+        LoadCredential = [ "auth:${cfg.dataDir}/.config/deluge/auth" ];
         Restart = "on-failure";
         ProtectHome = true;
         ProtectSystem = "strict";
@@ -57,8 +57,8 @@ in
       };
     };
 
-    networking.firewall = mkIf cfg.openFirewall {
-      allowedTCPPorts = [ cfg.port ];
+    networking.firewall = mkIf cfg.storm.openFirewall {
+      allowedTCPPorts = [ cfg.storm.port ];
     };
   };
 }
