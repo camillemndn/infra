@@ -13,13 +13,14 @@ with lib;
   config = mkIf cfg.enable {
     services.photoprism = {
       enable = true;
-      importPath = "import";
-      originalsPath = "/srv/photos";
+      originalsPath = "/srv/cloud/camille/Pictures";
       passwordFile = "/run/secrets/photos";
       settings = {
         PHOTOPRISM_ADMIN_USER = "camille";
       };
     };
+
+    systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "filerun" ];
 
     services.nginx.virtualHosts."photos.kms".locations."/".proxyWebsockets = true;
 
