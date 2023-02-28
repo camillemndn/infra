@@ -46,6 +46,7 @@ mkYarnPackage rec {
     postInstall = ''
       export CPPFLAGS="-I${nodejs}/include/node"
       node-pre-gyp install --prefer-offline --build-from-source --nodedir=${nodejs}/include/node
+      rm -r build-tmp-napi-v6  
     '';
   };
 
@@ -64,6 +65,7 @@ mkYarnPackage rec {
       cd deps/jellyseerr
       rm -r config/*
       yarn build
+      rm -r .next/cache
     )
     runHook postBuild
   '';
