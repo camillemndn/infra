@@ -13,7 +13,7 @@ let
             php74Extensions = phps.packages.${system}.php74.extensions;
             unstable = unstable.legacyPackages.${system};
             kernel = kernel.legacyPackages.${system};
-            nix-software-center = nix-software-center.defaultPackage.${system};
+            nix-software-center = nix-software-center.packages.${system}.default;
             nix-init = nix-init.packages.${system}.default;
           } //
           self.packages."${system}"

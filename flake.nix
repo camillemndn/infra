@@ -2,9 +2,9 @@
   description = "A flake for my personnal configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -62,7 +62,7 @@
 
     nix-init.url = "github:nix-community/nix-init/c433a3b73869a66c8267c84425b8e0f9990c59e9";
 
-    kernel.url = "nixpkgs/bafc851daff10fdda5eb6ed068234c46baeb4d0f";
+    kernel.url = "nixpkgs/7f5639fa3b68054ca0b062866dc62b22c3f11505";
   };
 
   outputs = inputs@{ self, nixpkgs, unstable, home-manager, utils, deploy-rs, sops-nix, neovim-nightly-overlay, nixos-wsl, phps, ... }:
