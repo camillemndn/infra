@@ -7,7 +7,7 @@
     packages = with pkgs; [
       caprine-bin
       write_stylus
-      minecraft
+      prismlauncher
       digikam
       wine-wayland
       heroic
