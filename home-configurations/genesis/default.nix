@@ -5,6 +5,7 @@
 
   home = {
     packages = with pkgs; [
+      lutris
       prismlauncher
 
       zapzap
