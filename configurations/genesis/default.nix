@@ -35,6 +35,10 @@
         show-battery-percentage=true
       '';
     };
+    displayManager.setupCommands = ''
+      xrandr --setprovideroutputsource modesetting NVIDIA-0
+      xrandr --auto
+    '';
     desktopManager.gnome.enable = true;
 
     layout = "fr";
@@ -95,6 +99,7 @@
     tailscale.enable = true;
     power-profiles-daemon.enable = false;
     tlp.enable = true;
+    logind.killUserProcesses = true;
   };
 
   sops.age.keyFile = "/home/camille/.config/sops/age/keys.txt";

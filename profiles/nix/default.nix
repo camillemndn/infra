@@ -48,6 +48,5 @@
     "nvidia-x11"
     "nvidia-settings"
     "discord"
-    "mongodb"
   ];
 }

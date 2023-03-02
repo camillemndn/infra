@@ -5,18 +5,23 @@
 
   home = {
     packages = with pkgs; [
-      caprine-bin
-      write_stylus
       prismlauncher
-      digikam
-      wine-wayland
-      heroic
-      joplin-desktop
+
       zapzap
       signal-desktop-beta
+      discord
+      caprine-bin
+
       libreoffice-fresh
+      write_stylus
+      zotero
+
+      joplin-desktop
       nextcloud-client
+
       inkscape-with-extensions
+      digikam
+
       vlc
       jellyfin-media-player
       sonixd
@@ -24,10 +29,9 @@
       spotifywm
       frescobaldi
       lilypond-with-fonts
+
       python3
       neomutt
-      zotero
-      discord
     ];
 
     sessionVariables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";

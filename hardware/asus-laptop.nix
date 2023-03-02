@@ -37,7 +37,9 @@ with lib;
     };
 
     kernelModules = [ "kvm-amd" ];
+    blacklistedKernelModules = [ "nouveau" ];
     kernelPackages = pkgs.kernel.linuxPackages_latest;
+    kernelParams = [ "supergfxd.mode=integrated" ];
 
     kernelPatches = [{
       name = "asus-rog-flow-x13-tablet-mode";
@@ -53,21 +55,43 @@ with lib;
     cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
     video.hidpi.enable = mkDefault true;
     sensor.iio.enable = true;
-    opengl.enable = true;
 
-    # nvidia.modesetting.enable = true;
-    # nvidia.open = true;
-    # nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    # nvidia.prime = {
-    #   amdgpuBusId = "PCI:8:0:0";
-    #   nvidiaBusId = "PCI:1:0:0";
-    # };
+    opengl = {
+      enable = true;
+      driSupport32Bit = true;
+      extraPackages = with pkgs; [ vaapiVdpau ];
+    };
+
+    nvidia.modesetting.enable = true;
+    nvidia.prime = {
+      offload.enable = true;
+      offload.enableOffloadCmd = true;
+      amdgpuBusId = "PCI:8:0:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
   };
 
   environment.systemPackages = with pkgs; [ sbctl ];
   programs.xwayland.enable = true;
+
+  services.supergfxd = {
+    enable = true;
+    settings = {
+      mode = "Integrated";
+      vfio_enable = true;
+      vfio_save = false;
+      hotplug_type = "Asus";
+      always_reboot = true;
+      no_logind = true;
+    };
+  };
+
   services.asusd.enable = true;
+  systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
   services.fprintd.enable = true;
+
+  nixpkgs.config.allowUnfree = mkForce true;
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
