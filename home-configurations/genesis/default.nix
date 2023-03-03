@@ -7,6 +7,7 @@
     packages = with pkgs; [
       lutris
       prismlauncher
+      cemu
 
       zapzap
       signal-desktop-beta

@@ -83,6 +83,7 @@
     arrange-windows
     window-state-manager
     tray-icons-reloaded
+    miniview
     gnome.dconf-editor
     nix-software-center
   ];
