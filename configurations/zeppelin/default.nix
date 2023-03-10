@@ -28,7 +28,7 @@
 
   profiles = {
     binary-cache = { enable = true; hostName = "cache"; };
-    meet.enable = true;
+    meet = { enable = true; hostName = "meet.mondon.xyz"; };
     feeds.enable = true;
     sync.enable = true;
     code-server.enable = true;
