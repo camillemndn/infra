@@ -15,6 +15,7 @@
   ./nextcloud
   ./nix
   ./office
+  ./passwords
   ./photos
   ./player
   ./spotify

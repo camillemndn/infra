@@ -36,6 +36,7 @@
     mail-server.enable = true;
     media-server.enable = true;
     office.enable = true;
+    passwords.enable = true;
     photos.enable = true;
     player.enable = true;
     websites.enable = true;

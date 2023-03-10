@@ -18,6 +18,8 @@
       write_stylus
       zotero
 
+      bitwarden
+      bitwarden-cli
       joplin-desktop
       nextcloud-client
 
