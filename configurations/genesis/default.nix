@@ -90,6 +90,12 @@
 
   environment.variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      firefox = prev.firefox.override { cfg.enableFirefoxPwa = true; };
+    })
+  ];
+
   programs = {
     firefox.enable = true;
     steam.enable = true;
