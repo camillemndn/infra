@@ -9,10 +9,10 @@
       prismlauncher
       cemu
 
-      zapzap
       signal-desktop-beta
       discord
-      caprine-bin
+      # caprine-bin
+      # zapzap
 
       libreoffice-fresh
       write_stylus
