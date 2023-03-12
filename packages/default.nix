@@ -6,7 +6,6 @@
   deluge-storm = pkgs.callPackage ./servers/deluge-storm { };
   filerun = pkgs.callPackage ./servers/filerun { };
   hammond = pkgs.callPackage ./servers/misc/hammond { };
-  jellyseerr = pkgs.unstable.callPackage ./servers/jellyseerr { };
   koel = pkgs.callPackage ./servers/misc/koel { };
   lazylibrarian = pkgs.unstable.callPackage ./servers/lazylibrarian { };
   organizr = pkgs.callPackage ./servers/misc/organizr { };

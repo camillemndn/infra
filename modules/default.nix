@@ -1,6 +1,4 @@
 {
-  # Update using $> find . -iname "default.nix" -type f
-  jellyseerr = import ./services/web-apps/jellyseerr;
   filerun = import ./services/web-apps/filerun;
   hammond = import ./services/misc/hammond;
   koel = import ./services/audio/koel;
