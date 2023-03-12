@@ -76,7 +76,7 @@
             });
         in
         rec {
-          packages = nixpkgs.lib.attrsets.filterAttrs (name: value: (elem (toString system) value.meta.platforms)) (import ./packages { inherit pkgs; });
+          packages = nixpkgs.lib.attrsets.filterAttrs (name: value: (elem (toString system) value.meta.platforms)) (import ./pkgs/top-level { inherit pkgs; });
         }) // {
       deploy = import ./deploy.nix inputs;
 
