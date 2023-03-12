@@ -82,12 +82,16 @@
     hide-universal-access
     arrange-windows
     window-state-manager
-    # tray-icons-reloaded
     appindicator
     miniview
     gnome.dconf-editor
     nix-software-center
   ];
+
+  virtualisation = {
+    # waydroid.enable = true;
+    # lxd.enable = true;
+  };
 
   environment.variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
 
