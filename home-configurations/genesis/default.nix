@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 
+with lib;
+
 {
   imports = [ ../base ];
 
@@ -22,6 +24,7 @@
       bitwarden-cli
       joplin-desktop
       nextcloud-client
+      # syncthingtray
 
       inkscape-with-extensions
       digikam
@@ -46,9 +49,40 @@
   services = {
     nextcloud-client = {
       enable = true;
+      #package = pkgs.owncloud-client;
       startInBackground = true;
     };
-    syncthing.enable = true;
+
+    syncthing = {
+      # enable = true;
+      # tray.enable = true;
+    };
+  };
+
+  systemd.user.targets.tray = {
+    Unit = {
+      Description = "Home Manager System Tray";
+      Requires = [ "graphical-session-pre.target" ];
+    };
+  };
+
+  systemd.user.services.nextcloud-client = {
+    Service.ExecStartPre = mkForce "${pkgs.coreutils}/bin/sleep 5";
+    Unit = {
+      After = mkForce [ "org.gnome.Shell.target" ];
+      PartOf = mkForce [ ];
+    };
+    Install.WantedBy = mkForce [ "org.gnome.Shell.target" ];
+  };
+
+  systemd.user.services.syncthingtray = mkIf config.services.syncthing.tray.enable {
+    Service.ExecStartPre = mkForce "${pkgs.coreutils}/bin/sleep 5";
+    Unit = {
+      After = mkForce [ "org.gnome.Shell.target" ];
+      PartOf = mkForce [ ];
+      Requires = mkForce [ ];
+    };
+    Install.WantedBy = mkForce [ "org.gnome.Shell.target" ];
   };
 
   programs = {
