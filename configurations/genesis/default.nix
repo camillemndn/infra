@@ -95,11 +95,11 @@
 
   environment.variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      firefox = prev.firefox.override { cfg.enableFirefoxPwa = true; };
-    })
-  ];
+  nixpkgs.config.firefox = {
+    ffmpegSupport = true;
+    enableGnomeExtensions = true;
+    enableFirefoxPwa = true;
+  };
 
   programs = {
     firefox.enable = true;
