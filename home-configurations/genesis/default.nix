@@ -17,8 +17,8 @@ with lib;
       # zapzap
 
       libreoffice-fresh
-      write_stylus
       zotero
+      xournalpp
 
       bitwarden
       bitwarden-cli

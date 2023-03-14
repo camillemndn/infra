@@ -36,17 +36,16 @@
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "filerun"
     "mac"
-    "write_stylus"
     "corefonts"
     "unrar"
+    "filerun"
     "spotify"
+    "discord"
     "steam"
     "steam-original"
     "steam-run"
     "nvidia-x11"
     "nvidia-settings"
-    "discord"
   ];
 }
