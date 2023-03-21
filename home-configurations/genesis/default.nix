@@ -90,6 +90,11 @@ with lib;
       enable = true;
       profiles."camille".isDefault = true;
     };
+
+    chromium = {
+      enable = true;
+      package = pkgs.ungoogled-chromium;
+    };
   };
 
   accounts.email.accounts."ENS" = {

@@ -68,7 +68,9 @@
     (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
   ];
 
-  environment.systemPackages = with pkgs; with gnomeExtensions; [
+  environment.systemPackages = with pkgs; with gnome; with gnomeExtensions; [
+    nix-software-center
+    dconf-editor
     tailscale-status
     screen-rotate
     nextcloud-folder
@@ -84,9 +86,10 @@
     window-state-manager
     appindicator
     miniview
-    gnome.dconf-editor
-    nix-software-center
+    alphabetical-app-grid
   ];
+
+  environment.gnome.excludePackages = with pkgs; with gnome; [ geary epiphany ];
 
   virtualisation = {
     # waydroid.enable = true;
