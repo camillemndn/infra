@@ -4,7 +4,6 @@
   koel = import ./services/audio/koel;
   lazylibrarian = import ./services/misc/lazylibrarian;
   logiops = import ./services/misc/logiops;
-  readarr = import ./services/misc/readarr;
   organizr = import ./services/web-apps/organizr;
   overleaf = import ./services/misc/overleaf;
   sheetable = import ./services/web-apps/sheetable;

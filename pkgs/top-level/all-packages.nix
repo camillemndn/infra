@@ -12,7 +12,6 @@ with pkgs;
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
   overleaf = callPackage ../servers/overleaf { };
-  readarr = callPackage ../servers/readarr { };
   sheetable = callPackage ../servers/sheetable { };
   webtrees = callPackage ../servers/webtrees { };
   zapzap = callPackage ../applications/networking/instant-messengers/zapzap { };
