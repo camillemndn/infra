@@ -1,0 +1,41 @@
+diff --git a/fetch_xulrunner.sh b/fetch_xulrunner.sh
+index cef6b78..6adcf9e 100755
+--- a/fetch_xulrunner.sh
++++ b/fetch_xulrunner.sh
+@@ -234,34 +234,12 @@ if [ $BUILD_WIN32 == 1 ]; then
+ fi
+ 
+ if [ $BUILD_LINUX == 1 ]; then
+-	GECKO_VERSION="$GECKO_VERSION_LINUX"
+-	DOWNLOAD_URL="https://ftp.mozilla.org/pub/firefox/releases/$GECKO_VERSION"
+-	
+-	rm -rf firefox
+-	
+-	curl -O "$DOWNLOAD_URL/linux-i686/en-US/firefox-$GECKO_VERSION.tar.bz2"
+-	rm -rf firefox-i686
+-	tar xvf firefox-$GECKO_VERSION.tar.bz2
+-	mv firefox firefox-i686
+-	
+-	cd firefox-i686
+-	modify_omni linux32
+-	extract_devtools
+-	cd ..
+-	
+-	rm "firefox-$GECKO_VERSION.tar.bz2"
+-	
+-	curl -O "$DOWNLOAD_URL/linux-x86_64/en-US/firefox-$GECKO_VERSION.tar.bz2"
+-	rm -rf firefox-x86_64
+-	tar xvf firefox-$GECKO_VERSION.tar.bz2
+-	mv firefox firefox-x86_64
+ 	
+-	cd firefox-x86_64
+-	modify_omni linux64
++	cd firefox
++	modify_omni linux
+ 	extract_devtools
+ 	cd ..
+ 	
+-	rm "firefox-$GECKO_VERSION.tar.bz2"
+ fi
+ 
+ echo Done

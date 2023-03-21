@@ -15,5 +15,6 @@ with pkgs;
   sheetable = callPackage ../servers/sheetable { };
   webtrees = callPackage ../servers/webtrees { };
   zapzap = callPackage ../applications/networking/instant-messengers/zapzap { };
+  zotero = unstable.callPackage ../applications/office/zotero { };
   zotero-web-library = callPackage ../servers/zotero-web-library { };
 }
