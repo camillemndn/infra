@@ -7,7 +7,6 @@
 , fetchzip
 , fetchurl
 , firefox-esr-102-unwrapped
-, chromedriver
 , git
 , callPackage
 , python3
@@ -136,14 +135,15 @@ let
 
     translators = buildNpmPackage {
       pname = "${pname}-translators";
-      inherit src version npmFlags NODE_OPTIONS meta;
+      inherit src version NODE_OPTIONS meta;
       sourceRoot = "source/translators";
       npmDepsHash = "sha256-zAf19V7X1ujzWcdCe0xIYFCpmHy3Sj7rDa3bEhEXF34=";
-      CHROMEDRIVER_FILEPATH = "${chromedriver}/bin/chromedriver";
+      #CHROMEDRIVER_FILEPATH = "${chromedriver}/bin/chromedriver";
       postPatch = ''
         rm package-lock.json
         cp ${./translator-lock.json} package-lock.json
         sed -i '/eslint-plugin-zotero-translator/d' package.json
+        echo "chromedriver_skip_download=true" >> .npmrc  
       '';
       dontNpmBuild = true;
     };
