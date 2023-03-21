@@ -11,6 +11,17 @@
 , git
 , callPackage
 , python3
+, pkg-config
+, pixman
+, freetype
+, glib
+, harfbuzz
+, cairo
+, pango
+, libpng
+, libjpeg
+, giflib
+, librsvg
 , unzip
 , zip
 , perl
@@ -25,8 +36,8 @@ let
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "zotero";
-    rev = "6117221cbc868f88ce0a0fb56fec2b1da6e9b466";
-    hash = "sha256-OIZosa4eMvY9YUb54DOxJVFEEFP8J5nfsZc9zt9rXws=";
+    rev = "b1595cdd1d7edcf8382cc26fef92a86606df94da";
+    hash = "sha256-+Ilg94S1Qk3JFEl+cAtUONiwDWC1NPYPQbF+HjKq31c=";
     fetchSubmodules = true;
     leaveDotGit = true;
   };
@@ -127,8 +138,13 @@ let
       pname = "${pname}-translators";
       inherit src version npmFlags NODE_OPTIONS meta;
       sourceRoot = "source/translators";
-      npmDepsHash = "sha256-APEvmHDudSE6Mc8GeDtP0mG30V8iDVs+vItCJSzlG7M=";
+      npmDepsHash = "sha256-zAf19V7X1ujzWcdCe0xIYFCpmHy3Sj7rDa3bEhEXF34=";
       CHROMEDRIVER_FILEPATH = "${chromedriver}/bin/chromedriver";
+      postPatch = ''
+        rm package-lock.json
+        cp ${./translator-lock.json} package-lock.json
+        sed -i '/eslint-plugin-zotero-translator/d' package.json
+      '';
       dontNpmBuild = true;
     };
 
@@ -177,12 +193,14 @@ let
     pdf-worker-pdfjs = buildNpmPackage {
       pname = "${pname}-pdf-worker-pdfjs";
       inherit src version npmFlags NODE_OPTIONS meta;
-      sourceRoot = "source/pdf-worker/pdf.js";
+      sourceRoot = "source/pdf-reader/pdf.js";
       npmDepsHash = "sha256-SiFBK/sUuqUki+WgzQ8Z0Mzzr2kj0eJN0L1tf6TVuh8=";
-
+      #PUPPETEER_SKIP_DOWNLOAD = 1;
+      #PKG_CONFIG_PATH = lib.makeSearchPathOutput "dev" "lib/pkgconfig" [ glib freetype pixman harfbuzz cairo pango libpng libjpeg giflib librsvg ];
+      #nativeBuildInputs = [ python3 pkg-config ];
       postPatch = ''
         rm package-lock.json
-        cp ${./pdf-worker-pdfjs-lock.json} package-lock.json
+        cp ${./pdf-reader-pdfjs-lock.json} package-lock.json
       '';
       dontNpmBuild = true;
       buildPhase = ''
@@ -243,7 +261,7 @@ let
   zotero-client = buildNpmPackage {
     pname = "${pname}-client";
     inherit src version npmFlags NODE_OPTIONS meta;
-    npmDepsHash = "sha256-FbHx05aYir3y2TDnbxjfZbK5S8IQNoqCJ1agkC3EYsE=";
+    npmDepsHash = "sha256-w75fDpHQ1T39US9bDoSl8gKtF0cswkvNu/FIl/2/508=";
 
     nativeBuildInputs = [ git ];
 
@@ -297,8 +315,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "zotero-standalone-build";
-    rev = "ea60c6deb021f46f5396ea752e8da772b7350a72";
-    hash = "sha256-VS7ecRpYTTPYNW4uCiml/TFM60BoDlE36AKzjz0ZZX8=";
+    rev = "e9ef6bf21d39cc66f1edefdd5b7429bbaf0c5247";
+    hash = "sha256-NcnbqCN6Pti2KuVX79QLrTk2V/3sMxMrbgRzSTluOtM=";
     fetchSubmodules = true;
   };
 
@@ -315,7 +333,7 @@ stdenv.mkDerivation {
     sed -i -E 's|(.*hash=).*|\1${hash}|' scripts/dir_build
     sed -i '/build_xpi/d' scripts/dir_build
     
-    sed -i -E 's|(rsync -a.*)|\1; chmod -R +w $BUILD_DIR/zotero|' build.sh 
+    sed -i -E 's|(rsync -a.*)|\1; chmod -R +w $BUILD_DIR|' build.sh 
     #sed -i 's|BUILD_DIR=.*|BUILD_DIR=/build|' build.sh 
     #sed -i '/trap/d' build.sh 
     sed -i 's|MaxVersion=.*|MaxVersion=111.0|' assets/application.ini 
@@ -339,7 +357,7 @@ stdenv.mkDerivation {
   '';
   installPhase = ''
     mkdir -p $out/bin
-    cp -Lr staging/Zotero_linux-x86_64 $out/lib
+    cp -Lr staging/Zotero_linux $out/lib
 
     ln -s $out/lib/zotero $out/bin/zotero
   '';
