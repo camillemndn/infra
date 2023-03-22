@@ -67,6 +67,7 @@
   fonts.fonts = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
   ];
+  fonts.fontconfig.antialias = true;
 
   environment.systemPackages = with pkgs; with gnome; with gnomeExtensions; [
     nix-software-center
