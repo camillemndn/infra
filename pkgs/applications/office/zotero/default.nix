@@ -36,7 +36,7 @@ let
     owner = "zotero";
     repo = "zotero";
     rev = "b1595cdd1d7edcf8382cc26fef92a86606df94da";
-    hash = "sha256-+Ilg94S1Qk3JFEl+cAtUONiwDWC1NPYPQbF+HjKq31c=";
+    hash = "sha256-CmEU2f/t5/XJ1nzRILzsFZuQZQlsqvWAys9oi+ZT1b4=";
     fetchSubmodules = true;
     leaveDotGit = true;
   };
