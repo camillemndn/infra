@@ -41,6 +41,7 @@ with lib;
     htop
     lsof
     neofetch
+    du-dust
     wget
     zip
     unzip
