@@ -12,6 +12,7 @@ with pkgs;
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
   overleaf = callPackage ../servers/overleaf { };
+  piclodio3 = callPackage ../servers/piclodio3 { };
   signal-desktop = unstable.callPackage ../applications/networking/instant-messengers/signal-desktop { };
   sheetable = callPackage ../servers/sheetable { };
   webtrees = callPackage ../servers/webtrees { };
