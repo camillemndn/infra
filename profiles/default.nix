@@ -18,6 +18,7 @@
   ./passwords
   ./photos
   ./player
+  ./radiogaga
   ./spotify
   ./sync
   ./uptime
