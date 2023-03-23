@@ -13,6 +13,8 @@ with lib;
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
+    services.piclodio3.enable = true;
+
     services.nginx = {
       enable = true;
 
