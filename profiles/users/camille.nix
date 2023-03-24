@@ -13,7 +13,7 @@ in
   users.users.camille = {
     isNormalUser = true;
     description = "Camille";
-    extraGroups = [ "networkmanager" "wheel" "mediasrv" "audio" "pulse-access" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "networkmanager" "wheel" "mediasrv" "audio" "pipewire" ]; # Enable ‘sudo’ for the user.
     passwordFile = "/run/secrets-for-users/camille";
     openssh.authorizedKeys.keys = sshPubKeys;
   };

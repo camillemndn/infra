@@ -23,9 +23,18 @@ in
   config = mkIf cfg.enable {
     sound.enable = true;
 
-    hardware.pulseaudio = {
+    # hardware.pulseaudio = {
+    #   enable = true;
+    #   package = pkgs.pulseaudio;
+    #   systemWide = true;
+    # };
+    hardware.pulseaudio.enable = false;
+    security.rtkit.enable = true;
+    services.pipewire = {
       enable = true;
-      package = pkgs.pulseaudio;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
       systemWide = true;
     };
 
@@ -34,7 +43,7 @@ in
       spotifyd = {
         enable = true;
         settings.global = {
-          backend = "pulseaudio";
+          backend = "alsa";
           device_name = "RadioGaGa";
           bitrate = 320;
           volume-normalisation = true;
@@ -53,7 +62,7 @@ in
     systemd.services."spotifyd".serviceConfig = {
       # ExecStart = mkForce "${pkgs.spotifyd}/bin/spotifyd --no-daemon --config-path ${spotifydConf}";
       DynamicUser = mkForce false;
-      SupplementaryGroups = [ "audio" "pulse-access" ];
+      SupplementaryGroups = mkForce [ "audio" "pipewire" ];
     };
   };
 }
