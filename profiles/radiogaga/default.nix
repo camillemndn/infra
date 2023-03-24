@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
 
     services.piclodio3.enable = true;
 
@@ -21,11 +21,14 @@ with lib;
       recommendedProxySettings = true;
 
       virtualHosts."radiogaga.local" = {
-        forceSSL = true;
-        sslCertificateKey = "/etc/ssl/certs/radiogaga-local-key.pem";
-        sslCertificate = "/etc/ssl/certs/radiogaga-local.pem";
+        #forceSSL = true;
+        #sslCertificateKey = "/etc/ssl/certs/radiogaga-local-key.pem";
+        #sslCertificate = "/etc/ssl/certs/radiogaga-local.pem";
         root = "${pkgs.piclodio3}/share/piclodio3-front";
         default = true;
+        locations."/".extraConfig = ''
+          try_files $uri $uri/ /index.html =404;
+        '';
       };
     };
   };
