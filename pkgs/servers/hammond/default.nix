@@ -14,7 +14,7 @@ let
     description = "Hammond is a self hosted vehicle management system to track fuel and other expenses related to all of your vehicles.";
     inherit (src.meta) homepage;
     license = licenses.mit;
-    # maintainers = with maintainers; [ camillemndn ];
+    maintainers = with maintainers; [ camillemndn ];
     platforms = platforms.linux;
   };
 
