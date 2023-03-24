@@ -32,25 +32,22 @@ let
 in
 
 stdenv.mkDerivation rec {
-  pname = "piclodio3";
-  version = "unstable-2022-02-13";
+  pname = "radiogaga";
+  version = "unstable-2023-03-24";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
     inherit version src;
     sourceRoot = "source/front";
-    npmDepsHash = "sha256-AA8EkXotHT6Gnqvs7JWyEzbWm0R4YhC/vKKHjbSqz7A=";
+    npmDepsHash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
     npmFlags = [ "--legacy-peer-deps" ];
     npmBuildFlags = [ "--prod" ];
-    NODE_OPTIONS = "--openssl-legacy-provider";
+    #NODE_OPTIONS = "--openssl-legacy-provider";
+    nativeBuildInputs = [ python3 ];
 
     postPatch = ''
-      rm package-lock.json
-      cp ${./package-lock.json} package-lock.json
-      sed -i "s/Piclodio/RadioGaGa | Hi my love!/g" \
+      sed -i "s/RadioGaGa/RadioGaGa | Hi my love!/g" \
         src/app/top-bar/top-bar.component.html 
-      sed -i "s/Piclodio3Front/RadioGaGa/g" \
-        src/index.html
     '';
 
     installPhase = ''
@@ -60,19 +57,15 @@ stdenv.mkDerivation rec {
   };
 
   src = fetchFromGitHub {
-    owner = "Sispheor";
-    repo = "piclodio3";
-    rev = "5ca7f2637f9bf1070c5c2e21b2198bc878b11b28";
-    hash = "sha256-yUrFnBBPK2ByIGImwZsNQW8hNC+RwIO9iBnixS2DvDo=";
+    owner = "camillemndn";
+    repo = "radiogaga";
+    rev = "2df2f5ce08ff5c058aa8a0c3f81305635337cf1f";
+    hash = "sha256-jjr6STAEXtVud+4fcLhNPF34ebJr4oXHgGhAZOls0/g=";
   };
 
   postPatch = ''
     sed -i "s/\(BASE_DIR\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
-      back/piclodio3/settings.py
-    sed -i "s|/usr/bin/mplayer|mpg123|g" \
-      back/utils/player_manager.py
-    sed -i "s|mplayer|mpg123|g" \
-      back/utils/player_manager.py
+      back/radiogaga/settings.py
     patchShebangs .
   '';
 
@@ -85,14 +78,18 @@ stdenv.mkDerivation rec {
   '';
 
   postFixup = ''
-    makeWrapper $out/share/${pname}/entrypoint.sh $out/bin/${pname} \
+    makeWrapper $out/share/${pname}/entrypoint.sh $out/bin/${pname}-init \
       --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
+      --chdir $out/share/${pname}
+    makeWrapper ${python_env}/bin/gunicorn $out/bin/${pname} \
+      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
+      --add-flags "--bind 0.0.0.0:8000 radiogaga.wsgi:application" \
       --chdir $out/share/${pname}
   '';
 
   meta = with lib; {
     description = "Raspberry Pi Clock Radio";
-    homepage = "https://github.com/Sispheor/piclodio3/";
+    homepage = "https://github.com/camillemndn/radiogaga";
     license = licenses.mit;
     maintainers = with maintainers; [ camillemndn ];
     platforms = platforms.all;

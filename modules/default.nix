@@ -8,7 +8,7 @@
   organizr = import ./services/web-apps/organizr;
   overleaf = import ./services/misc/overleaf;
   sheetable = import ./services/web-apps/sheetable;
-  piclodio3 = import ./services/web-apps/piclodio3;
+  radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;
   yarr = import ./services/networking/yarr;
   zfs-ssh = import ./services/misc/zfs-ssh;

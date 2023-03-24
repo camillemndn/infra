@@ -13,7 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
 
-    services.piclodio3.enable = true;
+    services.radiogaga.enable = true;
 
     services.nginx = {
       enable = true;
@@ -24,7 +24,7 @@ with lib;
         #forceSSL = true;
         #sslCertificateKey = "/etc/ssl/certs/radiogaga-local-key.pem";
         #sslCertificate = "/etc/ssl/certs/radiogaga-local.pem";
-        root = "${pkgs.piclodio3}/share/piclodio3-front";
+        root = "${pkgs.radiogaga}/share/radiogaga-front";
         default = true;
         locations."/".extraConfig = ''
           try_files $uri $uri/ /index.html =404;
