@@ -44,13 +44,16 @@ in
       description = "piclodio3";
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-
+      environment.BASE_DIR = "${cfg.dataDir}";
       serviceConfig = {
         Type = "simple";
         User = cfg.user;
         Group = cfg.group;
-        ExecStart = "${pkgs.piclodio3}/bin/piclodio3 --env DATA_DIR=${cfg.dataDir}";
-        WorkingDirectory = "${pkgs.piclodio3}/share/piclodio3 --env DATA_DIR=${cfg.dataDir}";
+        ExecStart = "${pkgs.piclodio3}/bin/piclodio3";
+        CacheDirectory = "piclodio3";
+        StateDirectory = "piclodio3";
+        SupplementaryGroups = [ "audio" "pipewire" ];
+        WorkingDirectory = "${pkgs.piclodio3}/share/piclodio3";
         Restart = "on-failure";
       };
     };
