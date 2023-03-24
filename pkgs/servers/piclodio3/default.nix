@@ -5,9 +5,14 @@
 , python3
 , makeWrapper
 , sqlite
+, callPackage
+, mpg123
+, killall
+, curl
 }:
 
 let
+  customPackages = callPackage ../../top-level/python-packages.nix { };
   python_env = python3.withPackages
     (p: with p; [
       django
@@ -18,10 +23,11 @@ let
       apscheduler
       sqlalchemy
       psutil
-      #pyalsaaudio
       django-cors-headers
       gunicorn
       pyyaml
+      packaging
+      customPackages.pyalsaaudio
     ]);
 in
 
@@ -41,6 +47,10 @@ stdenv.mkDerivation rec {
     postPatch = ''
       rm package-lock.json
       cp ${./package-lock.json} package-lock.json
+      sed -i "s/Piclodio/RadioGaGa | Hi my love!/g" \
+        src/app/top-bar/top-bar.component.html 
+      sed -i "s/Piclodio3Front/RadioGaGa/g" \
+        src/index.html
     '';
 
     installPhase = ''
@@ -57,30 +67,27 @@ stdenv.mkDerivation rec {
   };
 
   postPatch = ''
-    #sed -i "s/^\([A-Z0-9_]*\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
     sed -i "s/\(BASE_DIR\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
       back/piclodio3/settings.py
-    #cat back/piclodio3/settings.py
-    #cp zefzoeijj  
+    sed -i "s|/usr/bin/mplayer|mpg123|g" \
+      back/utils/player_manager.py
+    sed -i "s|mplayer|mpg123|g" \
+      back/utils/player_manager.py
+    patchShebangs .
   '';
 
   buildInputs = [ makeWrapper ];
 
   installPhase = ''
     mkdir -p $out/share
-    cp -r . $out/share/${pname}
+    cp -r back $out/share/${pname}
     ln -s $front/share/${pname}-front $out/share
   '';
 
   postFixup = ''
-    makeWrapper ${python_env}/bin/python $out/bin/${pname}-migrations \
-      --prefix PATH : ${lib.makeBinPath [ sqlite ]} \
-      --add-flags 'manage.py showmigrations' \
-      --chdir $out/share/${pname}/back
-    makeWrapper ${python_env}/bin/gunicorn $out/bin/${pname} \
-      --prefix PATH : ${lib.makeBinPath [ sqlite ]} \
-      --add-flags '--bind 0.0.0.0:8000 piclodio3.wsgi:application' \
-      --chdir $out/share/${pname}/back
+    makeWrapper $out/share/${pname}/entrypoint.sh $out/bin/${pname} \
+      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
+      --chdir $out/share/${pname}
   '';
 
   meta = with lib; {

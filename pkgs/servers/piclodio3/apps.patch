@@ -1,0 +1,16 @@
+diff --git a/back/restapi/apps.py b/back/restapi/apps.py
+index 00d7e5f..c610014 100644
+--- a/back/restapi/apps.py
++++ b/back/restapi/apps.py
+@@ -18,7 +18,9 @@ class RestapiConfig(AppConfig):
+         if not any(x in list_banned_argument for x in argv):
+             # start the scheduler
+             scheduler_manager = SchedulerManager()
+-            scheduler_manager.start()
+-
++            try:
++                scheduler_manager.start()
++            except:
++                print("error while starting scheduler")
+             # active signals
+             import restapi.signals
