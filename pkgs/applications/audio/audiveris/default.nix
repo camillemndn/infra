@@ -18,7 +18,7 @@ buildGradle {
   src = fetchgit {
     url = "https://github.com/Audiveris/audiveris";
     rev = "5.2.5";
-    hash = "sha256-lGJMtsDsKk/Z08XI23BEpbSARYbFQKn3zs83AZvLhQY=";
+    hash = "sha256-/WJz00muu+gqXodV6G+zqQ/o6hoYZPqzMecEOg62XQg=";
     leaveDotGit = true;
   };
 
