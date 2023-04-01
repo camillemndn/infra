@@ -50,10 +50,11 @@ with lib;
     }];
   };
 
+  environment.systemPackages = with pkgs; [ sbctl ];
+
   hardware = {
-    enableRedistributableFirmware = mkDefault true;
-    cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
-    video.hidpi.enable = mkDefault true;
+    enableRedistributableFirmware = true;
+    cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
     sensor.iio.enable = true;
 
     opengl = {
@@ -62,36 +63,50 @@ with lib;
       extraPackages = with pkgs; [ vaapiVdpau ];
     };
 
-    nvidia.modesetting.enable = true;
-    nvidia.prime = {
-      offload.enable = true;
-      offload.enableOffloadCmd = true;
-      amdgpuBusId = "PCI:8:0:0";
-      nvidiaBusId = "PCI:1:0:0";
+    nvidia = {
+      modesetting.enable = true;
+      prime = {
+        offload.enable = true;
+        offload.enableOffloadCmd = true;
+        amdgpuBusId = "PCI:8:0:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
     };
   };
 
-  environment.systemPackages = with pkgs; [ sbctl ];
-  programs.xwayland.enable = true;
-
-  services.supergfxd = {
+  # Enable sound
+  hardware.pulseaudio.enable = false;
+  sound.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
     enable = true;
-    settings = {
-      mode = "Integrated";
-      vfio_enable = true;
-      vfio_save = false;
-      hotplug_type = "Asus";
-      always_reboot = true;
-      no_logind = true;
-    };
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
 
-  services.asusd.enable = true;
-  systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
-  services.fprintd.enable = true;
+  services = {
+    asusd.enable = true;
+    fprintd.enable = true;
 
-  nixpkgs.config.allowUnfree = mkForce true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+    supergfxd = {
+      enable = true;
+      settings = {
+        mode = "Integrated";
+        vfio_enable = true;
+        vfio_save = false;
+        hotplug_type = "Asus";
+        always_reboot = true;
+        no_logind = true;
+      };
+    };
+
+    xserver.videoDrivers = [ "nvidia" ];
+  };
+
+  systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
+
+  #nixpkgs.config.allowUnfree = mkForce true;
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";

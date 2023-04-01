@@ -23,7 +23,6 @@
   };
 
   programs.dconf.enable = true;
-  hardware.video.hidpi.enable = true;
   environment.variables = {
     GDK_SCALE = "3";
     GDK_DPI_SCALE = "0.333";
