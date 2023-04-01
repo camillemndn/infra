@@ -34,6 +34,7 @@ with lib;
       sonixd
       spotify
       spotifywm
+      spicetify-cli
       frescobaldi
       lilypond-with-fonts
 
