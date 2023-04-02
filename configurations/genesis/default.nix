@@ -16,7 +16,11 @@
     enableFirefoxPwa = true;
   };
 
-  profiles.gnome.enable = true;
+  profiles = {
+    gdm.enable = true;
+    gnome.enable = true;
+    hyprland.enable = true;
+  };
 
   programs = {
     firefox.enable = true;

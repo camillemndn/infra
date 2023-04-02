@@ -1,9 +1,12 @@
-{ config, pkgs, lib, ... }:
+inputs: { config, pkgs, lib, ... }:
 
 with lib;
 
 {
-  imports = [ ../base ];
+  imports = [
+    ../base
+    #(import ../../home-modules/desktop/windowManagers/hyprland inputs)
+  ];
 
   home = {
     packages = with pkgs; [
@@ -27,7 +30,7 @@ with lib;
       # syncthingtray
 
       inkscape-with-extensions
-      digikam
+      # digikam
 
       vlc
       jellyfin-media-player
@@ -114,12 +117,12 @@ with lib;
     };
   };
 
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style.name = "adwaita-dark";
-    style.package = pkgs.adwaita-qt;
-  };
+  #qt = {
+  #  enable = true;
+  #  platformTheme = "gnome";
+  #  style.name = "adwaita-dark";
+  #  style.package = pkgs.adwaita-qt;
+  #};
 
   xdg.desktopEntries = {
     spotify.settings = {

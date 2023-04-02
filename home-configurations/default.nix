@@ -1,4 +1,6 @@
-{ system ? "x86_64-linux", unstable, home-manager, ... }:
+{ system ? "x86_64-linux", inputs, ... }:
+
+with inputs;
 
 let
   username = "camille";
@@ -12,8 +14,9 @@ let
     # overlays = [ .overlay ];
   };
 in
+
 {
-  genesis = home-manager.lib.homeManagerConfiguration {
+  "camille@genesis" = home-manager.lib.homeManagerConfiguration {
     # inherit pkgs;
     # Specify your home configuration modules here, for example,
     # the path to your home.nix.
@@ -22,7 +25,8 @@ in
       ../home-modules
     ];
   };
-  base = home-manager.lib.homeManagerConfiguration {
+
+  "camille" = home-manager.lib.homeManagerConfiguration {
     # inherit pkgs;
     # Specify your home configuration modules here, for example,
     # the path to your home.nix.

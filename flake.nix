@@ -12,6 +12,9 @@
       inputs.utils.follows = "utils";
     };
 
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-contrib.url = "github:hyprwm/contrib";
+
     utils.url = "github:numtide/flake-utils";
 
     deploy-rs = {
@@ -65,7 +68,7 @@
     kernel.url = "nixpkgs/4c83fe7ec352c9b81cf8220bd1653a1bce970069";
   };
 
-  outputs = inputs@{ self, nixpkgs, unstable, home-manager, utils, deploy-rs, sops-nix, neovim-nightly-overlay, nixos-wsl, phps, ... }:
+  outputs = inputs@{ self, nixpkgs, unstable, home-manager, hyprland, hyprland-contrib, utils, deploy-rs, sops-nix, neovim-nightly-overlay, nixos-wsl, phps, ... }:
     with builtins;
     (utils.lib.eachDefaultSystem
       (system:
@@ -80,7 +83,7 @@
         }) // {
       deploy = import ./deploy.nix inputs;
 
-      homeConfigurations = import ./home-configurations { inherit unstable home-manager; };
+      homeConfigurations = import ./home-configurations inputs;
 
       nixosConfigurations = import ./configurations.nix inputs;
 

@@ -33,8 +33,9 @@ in
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/asus-laptop.nix)
       (import ./configurations/genesis)
-      { home-manager.users.camille = import ./home-configurations/genesis; }
+      { home-manager.users.camille = import ./home-configurations/genesis inputs; }
       lanzaboote.nixosModules.lanzaboote
+      hyprland.nixosModules.default
       # nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
     ];
   };

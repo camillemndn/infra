@@ -13,23 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      displayManager.gdm = {
-        wayland = true;
-        enable = true;
-        extraConfig = ''
-          [org/gnome/desktop/interface]
-          cursor-size=40
-          text-scaling-factor=1.5
-          scaling-factor=2
-          show-battery-percentage=true
-        '';
-      };
-      displayManager.setupCommands = ''
-        xrandr --setprovideroutputsource modesetting NVIDIA-0
-        xrandr --auto
-      '';
       desktopManager.gnome.enable = true;
-
       layout = "fr";
       xkbVariant = "";
     };

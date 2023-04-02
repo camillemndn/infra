@@ -5,6 +5,9 @@ with pkgs;
 {
   audiveris = callPackage ../applications/audio/audiveris { };
   cal-com = callPackage ../servers/cal-com { };
+  catppuccin-gtk = callPackage ../applications/catppuccin/catppuccin-gtk.nix { };
+  catppuccin-cursors = callPackage ../applications/catppuccin/catppuccin-cursors.nix { };
+  catppuccin-folders = callPackage ../applications/catppuccin/catppuccin-folders.nix { };
   deluge-storm = callPackage ../servers/deluge-storm { };
   filerun = callPackage ../servers/filerun { };
   hammond = callPackage ../servers/hammond { };

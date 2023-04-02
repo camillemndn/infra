@@ -3,7 +3,9 @@
   ./binary-cache
   ./code-server
   ./feeds
+  ./gdm
   ./gnome
+  ./hyprland
   ./mail-server
   ./media-server
   ./meet
