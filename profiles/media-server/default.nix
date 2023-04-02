@@ -21,7 +21,7 @@ with lib;
       vpnVirtualHosts.requests = { port = 5055; restricted = false; };
 
       calibre-server = { enable = true; group = "mediasrv"; };
-      vpnVirtualHosts.library.port = 8080;
+      vpnVirtualHosts.library.port = 8079;
 
       # calibre-web-litterature = { enable = true; group = "mediasrv"; };
       # vpnVirtualHosts."litterature.library" = { port = 8083; restricted = false; }; 
@@ -66,7 +66,7 @@ with lib;
     services.nginx.virtualHosts."media.${config.services.publicDomain}".locations."/".proxyWebsockets = true;
 
     services.calibre-server.libraries = [ "/srv/media/Bibliotheque" "/srv/media/Bibliotheque-universitaire" ];
-    systemd.services.calibre-server.serviceConfig.ExecStart = mkForce ("${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries}");
+    systemd.services.calibre-server.serviceConfig.ExecStart = mkForce ("${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079");
 
     services.deluge.web.enable = true;
     services.nginx.virtualHosts."torrents.${config.services.vpnDomain}".locations."/".extraConfig = ''
