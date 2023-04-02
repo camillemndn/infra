@@ -13,7 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     services.nextcloud = {
       enable = true;
-      package = pkgs.nextcloud25;
+      package = pkgs.nextcloud26;
       hostName = "social.kms";
       config.adminpassFile = "/run/secrets/nextcloud";
       enableBrokenCiphersForSSE = false;
