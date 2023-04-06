@@ -5,7 +5,7 @@ with lib;
 {
   imports = [
     ../base
-    #(import ../../home-modules/desktop/windowManagers/hyprland inputs)
+    #(import ../../modules/desktop/windowManagers/hyprland inputs)
   ];
 
   home = {

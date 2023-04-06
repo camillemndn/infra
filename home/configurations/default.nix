@@ -22,7 +22,7 @@ in
     # the path to your home.nix.
     modules = [
       ./genesis
-      ../home-modules
+      ../modules
     ];
   };
 
@@ -32,7 +32,7 @@ in
     # the path to your home.nix.
     modules = [
       ./base
-      ../home-modules
+      ../modules
     ];
   };
 }

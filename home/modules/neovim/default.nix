@@ -34,19 +34,43 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "nix" "rust" "sql" "python" ];
+          coc.preferences.formatOnSaveFiletypes = [ "r" "ccls" "nix" "rust" "sql" "python" ];
+
           languageserver =
             {
+              R = {
+                command = "${pkgs.rWrapper.override{ packages = with pkgs.rPackages; [ languageserver ]; }}/bin/R";
+                args = [ "--slave" "-e" "languageserver::run()" ];
+                filetypes = [ "r" ];
+              };
+
+              ccls = {
+                command = "ccls";
+                filetypes = [ "c" "cpp" "cuda" "objc" "objcpp" ];
+                rootPatterns = [ ".ccls-root" "compile_commands.json" ];
+                initializationOptions = {
+                  cache = {
+                    directory = ".ccls-cache";
+                  };
+                  client = {
+                    snippetSupport = true;
+                  };
+                };
+              };
               python = {
                 command = "pyright";
                 filetypes = [ "py" "python" ];
               };
 
               nix = {
-                command = "rnix-lsp";
-                filetypes = [
-                  "nix"
-                ];
+                command = "nil";
+                filetypes = [ "nix" ];
+                rootPatterns = [ "flake.nix" ];
+                settings = {
+                  nil = {
+                    formatting = { command = [ "nixpkgs-fmt" ]; };
+                  };
+                };
               };
             };
         };
@@ -76,7 +100,6 @@ with lib;
           tree-sitter-python
         ]))
 
-
         vim-lastplace
         vim-nix
         vim-nixhash
@@ -92,7 +115,7 @@ with lib;
         rust-vim
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer rnix-lsp ];
+      extraPackages = with pkgs; [ rust-analyzer nil nixpkgs-fmt ccls ];
 
       extraConfig = ''
         luafile ${./settings.lua}

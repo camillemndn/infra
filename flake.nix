@@ -83,7 +83,7 @@
         }) // {
       deploy = import ./deploy.nix inputs;
 
-      homeConfigurations = import ./home-configurations inputs;
+      homeConfigurations = import ./home/configurations inputs;
 
       nixosConfigurations = import ./configurations.nix inputs;
 

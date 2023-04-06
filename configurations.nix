@@ -33,7 +33,7 @@ in
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/asus-laptop.nix)
       (import ./configurations/genesis)
-      { home-manager.users.camille = import ./home-configurations/genesis inputs; }
+      { home-manager.users.camille = import ./home/configurations/genesis inputs; }
       lanzaboote.nixosModules.lanzaboote
       hyprland.nixosModules.default
       # nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
@@ -45,7 +45,7 @@ in
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/external-usb.nix)
       (import ./configurations/icecube)
-      { home-manager.users.camille = import ./home-configurations/icecube; }
+      { home-manager.users.camille = import ./home/configurations/icecube; }
     ];
   };
 
@@ -88,7 +88,7 @@ in
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/wsl.nix)
       (import ./configurations/wutang)
-      { home-manager.users.camille = import ./home-configurations/base; }
+      { home-manager.users.camille = import ./home/configurations/base; }
       nixos-wsl.nixosModules.wsl
     ];
   };
@@ -99,7 +99,7 @@ in
       (import ./hardware/proxmox-vm.nix)
       (import ./configurations/zeppelin)
       (import ./profiles/users/manu.nix)
-      { home-manager.users.camille = import ./home-configurations/base; }
+      { home-manager.users.camille = import ./home/configurations/base; }
     ];
   };
 }

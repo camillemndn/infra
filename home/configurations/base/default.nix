@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = import ../../home-modules;
+  imports = import ../../modules;
 
   home = {
     username = "camille";
