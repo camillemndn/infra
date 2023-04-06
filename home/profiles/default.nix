@@ -1,0 +1,4 @@
+[
+  ./kitty.nix
+  ./neovim
+]

@@ -33,7 +33,7 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
-        kitty
+        #kitty
         wofi
         waybar
         hyprpaper

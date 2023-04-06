@@ -10,6 +10,12 @@ with lib;
 
   home = {
     packages = with pkgs; [
+      (writeShellScriptBin "gnome-terminal" ''
+        #!/bin/bash
+
+        kitty $@
+      '')
+
       lutris
       prismlauncher
       cemu

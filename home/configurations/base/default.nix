@@ -1,7 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ lib, ... }:
 
 {
-  imports = import ../../modules;
+  imports = import ../../modules ++ import ../../profiles;
 
   home = {
     username = "camille";
@@ -12,6 +12,7 @@
   };
 
   profiles.neovim.enable = true;
+  profiles.kitty.enable = true;
 
   programs.home-manager.enable = true;
 }
