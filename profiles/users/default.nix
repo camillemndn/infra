@@ -35,6 +35,7 @@ with lib;
   programs.fish.enable = true;
   programs.fish.promptInit = ''
     ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+    ${pkgs.direnv}/bin/direnv hook fish | source  
   '';
 
   programs.neovim = {
@@ -65,6 +66,7 @@ with lib;
     unstable.nixos-option
     unstable.nix-tree
     nix-init
+    direnv
   ];
 
   services.mysql = {
