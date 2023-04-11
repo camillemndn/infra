@@ -21,6 +21,7 @@ with lib;
 
     initrd = {
       availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
+      systemd.enable = true;
 
       # Setup keyfile
       secrets."/crypto_keyfile.bin" = null;
@@ -48,6 +49,12 @@ with lib;
         sha256 = "sha256:08qw7qq88dy96jxa0f4x33gj2nb4qxa6fh2f25lcl8bgmk00k7l2";
       };
     }];
+  };
+
+  console = {
+    earlySetup = true;
+    font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
+    packages = with pkgs; [ terminus_font ];
   };
 
   environment.systemPackages = with pkgs; [ sbctl ];
