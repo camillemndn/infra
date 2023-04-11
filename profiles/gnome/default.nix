@@ -56,7 +56,6 @@ with lib;
         appindicator
         miniview
         alphabetical-app-grid
-        paperwm
       ];
     };
   };

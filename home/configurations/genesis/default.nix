@@ -1,10 +1,12 @@
 inputs: { config, pkgs, lib, ... }:
 
 with lib;
+with inputs;
 
 {
   imports = [
     ../base
+    spicetify-nix.homeManagerModule
     #(import ../../modules/desktop/windowManagers/hyprland inputs)
   ];
 
@@ -41,9 +43,6 @@ with lib;
       vlc
       jellyfin-media-player
       sonixd
-      spotify
-      spotifywm
-      spicetify-cli
       frescobaldi
       lilypond-with-fonts
 
@@ -107,6 +106,8 @@ with lib;
     };
   };
 
+  profiles.spicetify.enable = true;
+
   accounts.email.accounts."ENS" = {
     address = "camille.mondon@ens.fr";
     primary = true;
@@ -137,7 +138,7 @@ with lib;
       GenericName = "Music Player";
       Icon = "spotify-client";
       TryExec = "spotify";
-      Exec = "spotify --force-device-scale-factor=3 %U";
+      Exec = "spotify --enable-features=UseOzonePlatform --ozone-platform=x11 %U";
       Terminal = "false";
       MimeType = "x-scheme-handler/spotify;";
       Categories = "Audio;Music;Player;AudioVideo;";

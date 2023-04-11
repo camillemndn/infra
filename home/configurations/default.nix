@@ -23,6 +23,7 @@ in
     modules = [
       ./genesis
       ../modules
+      spicetify-nix.homeManagerModule
     ];
   };
 

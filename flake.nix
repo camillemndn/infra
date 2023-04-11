@@ -66,6 +66,8 @@
     nix-init.url = "github:nix-community/nix-init/c433a3b73869a66c8267c84425b8e0f9990c59e9";
 
     kernel.url = "nixpkgs/4c83fe7ec352c9b81cf8220bd1653a1bce970069";
+
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
   };
 
   outputs = inputs@{ self, nixpkgs, unstable, home-manager, hyprland, hyprland-contrib, utils, deploy-rs, sops-nix, neovim-nightly-overlay, nixos-wsl, phps, ... }:

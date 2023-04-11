@@ -15,6 +15,7 @@ let
             kernel = import kernel { system = system; config.allowUnfree = true; };
             nix-software-center = nix-software-center.packages.${system}.default;
             nix-init = nix-init.packages.${system}.default;
+            spicetify-nix = spicetify-nix.packages.${system}.default;
           } //
           self.packages."${system}"
           )
