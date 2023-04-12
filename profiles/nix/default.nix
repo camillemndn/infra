@@ -17,6 +17,11 @@
       ];
     };
 
+    extraOptions = ''
+      keep-outputs = true
+      keep-derivations = true
+    '';
+
     distributedBuilds = true;
 
     buildMachines = [

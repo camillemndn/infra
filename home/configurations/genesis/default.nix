@@ -95,14 +95,19 @@ with inputs;
   };
 
   programs = {
-    thunderbird = {
-      enable = true;
-      profiles."camille".isDefault = true;
-    };
-
     chromium = {
       enable = true;
       package = pkgs.ungoogled-chromium;
+    };
+
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    thunderbird = {
+      enable = true;
+      profiles."camille".isDefault = true;
     };
   };
 
