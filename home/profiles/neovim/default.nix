@@ -1,7 +1,18 @@
-{ pkgs, home, lib, config, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.profiles.neovim;
+
+  nvim-r = pkgs.vimUtils.buildVimPlugin {
+    name = "nvim-r";
+    src = pkgs.fetchgit {
+      url = "https://github.com/jalvesaq/nvim-r";
+      rev = "f34eebfab6692483f2ee721abdb3d757be79fc7e";
+      sha256 = "sha256-h2f7xyhMGfI7xR1KolyP/NcFDVjTyAaz2z0ZUTJgAdM=";
+    };
+    buildInputs = with pkgs; [ which vim zip ];
+  };
+
   catppuccin = pkgs.vimUtils.buildVimPlugin {
     pname = "catppuccin";
     version = "0.2.9";
@@ -113,6 +124,8 @@ with lib;
         coc-prettier
         coc-pyright
         rust-vim
+
+        nvim-r
       ];
 
       extraPackages = with pkgs; [ rust-analyzer nil nixpkgs-fmt ccls ];
