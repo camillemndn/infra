@@ -26,9 +26,10 @@ with inputs;
       discord
       # caprine-bin
       # zapzap
+      zoom-us
 
       libreoffice-fresh
-      zotero
+      zotero-dev
       xournalpp
 
       bitwarden
