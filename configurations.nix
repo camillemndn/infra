@@ -99,7 +99,7 @@ in
       (import ./hardware/proxmox-vm.nix)
       (import ./configurations/zeppelin)
       (import ./profiles/users/manu.nix)
-      { home-manager.users.camille = import ./home/configurations/base; }
+      { home-manager.users.camille = import ./home/configurations/base inputs; }
     ];
   };
 }

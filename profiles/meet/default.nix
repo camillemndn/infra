@@ -86,6 +86,8 @@ with lib;
         }
       }
     '';
+
+    networking.firewall.allowedUDPPorts = [ 10000 ];
   };
 }
 

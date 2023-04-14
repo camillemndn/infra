@@ -1,7 +1,13 @@
-{ lib, ... }:
+inputs: { lib, ... }:
+
+with inputs;
 
 {
-  imports = import ../../modules ++ import ../../profiles;
+  imports = import ../../modules
+    ++ import ../../profiles
+    ++ [
+    spicetify-nix.homeManagerModule
+  ];
 
   home = {
     username = "camille";

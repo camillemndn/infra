@@ -5,9 +5,8 @@ with inputs;
 
 {
   imports = [
-    ../base
-    spicetify-nix.homeManagerModule
-    #(import ../../modules/desktop/windowManagers/hyprland inputs)
+    (import ../base inputs)
+    # (import ../../modules/desktop/windowManagers/hyprland inputs)
   ];
 
   home = {
