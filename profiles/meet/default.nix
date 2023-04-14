@@ -21,6 +21,7 @@ with lib;
       nginx.enable = true;
       prosody.enable = true;
       videobridge.enable = true;
+      jicofo.enable = true;
       config.hosts.anonymousdomain = "guest.${cfg.hostName}";
     };
 
@@ -56,38 +57,25 @@ with lib;
       };
     };
 
+    services.jicofo = {
+      config = {
+        jicofo = {
+          authentication = {
+            enabled = "true";
+            type = "XMPP";
+            login-url = "meet.mondon.xyz";
+          };
+          xmpp.client.client-proxy = "focus.${cfg.hostName}";
+        };
+      };
+    };
+
     services.nginx.virtualHosts."${cfg.hostName}" = {
       enableACME = false;
       forceSSL = false;
     };
 
-    systemd.services.jicofo.environment.JAVA_SYS_PROPS =
-      let
-        jicofoProps = {
-          "-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION" = "/etc/jitsi";
-          "-Dnet.java.sip.communicator.SC_HOME_DIR_NAME" = "jicofo";
-          "-Djava.util.logging.config.file" = "/etc/jitsi/jicofo/logging.properties";
-          "-Dconfig.file" = "/etc/jitsi/jicofo/jicofo.conf";
-        };
-      in
-      mkForce (concatStringsSep " " (mapAttrsToList (k: v: "${k}=${toString v}") jicofoProps));
-
-    environment.etc."jitsi/jicofo/jicofo.conf".text = ''
-      jicofo {
-        xmpp: {
-          client: {
-            client-proxy: focus.${cfg.hostName}
-          }
-        }
-        authentication: {
-          enabled: true
-          type: XMPP
-          login-url: meet.mondon.xyz
-        }
-      }
-    '';
-
-    networking.firewall.allowedUDPPorts = [ 10000 ];
+    # networking.firewall.allowedUDPPorts = [ 10000 ];
   };
 }
 
