@@ -15,7 +15,6 @@
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "unstable";
-      inputs.utils.follows = "utils";
     };
 
     hyprland = {
