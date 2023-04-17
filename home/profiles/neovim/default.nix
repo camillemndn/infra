@@ -45,14 +45,14 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "r" "ccls" "nix" "rust" "sql" "python" ];
+          coc.preferences.formatOnSaveFiletypes = [ "r" "rmd" "ccls" "nix" "rust" "sql" "python" ];
 
           languageserver =
             {
               R = {
                 command = "${pkgs.rWrapper.override{ packages = with pkgs.rPackages; [ languageserver ]; }}/bin/R";
                 args = [ "--slave" "-e" "languageserver::run()" ];
-                filetypes = [ "r" ];
+                filetypes = [ "r" "rmd" ];
               };
 
               ccls = {
