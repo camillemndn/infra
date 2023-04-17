@@ -17,6 +17,7 @@
   ./nextcloud
   ./nix
   ./office
+  ./paperless
   ./passwords
   ./photos
   ./player
