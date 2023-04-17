@@ -55,24 +55,39 @@ let
 
       single-file = buildNpmPackage {
         pname = "${pname}-single-file";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/resource/SingleFile";
+        src = fetchFromGitHub {
+          owner = "gildas-lormeau";
+          repo = "SingleFile";
+          rev = "999976a20afb51a18da4abb42f434eac99796e84";
+          hash = "sha256-fHKVn9DTwshfBXf0nxCk0MLY1fEiQXD/SZPG1bICHo8=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-L4LuD7n8c42TPpbLWuJzeM27xcsXVdBnMTqNvRZMdz8=";
         dontNpmBuild = true;
       };
 
       xpcom-utilities = buildNpmPackage {
         pname = "${pname}-xpcom-utilities";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/chrome/content/zotero/xpcom/utilities";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "utilities";
+          rev = "b93f16dba483891c0ab4627cbaa303de5c7fa0c0";
+          hash = "sha256-Oz3h6aGorAm+Y5JZSclfz40YRj+uSPW2a5jgQWszLsk=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-tWDADhAeXG0HSvFnpdGOya3CjSb0i2aR3E1Y3r1J81o=";
         dontNpmBuild = true;
       };
 
       note-editor = buildNpmPackage {
         pname = "${pname}-note-editor";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/note-editor";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "note-editor";
+          rev = "076f5b3d3609051b9cba3cd68c4bb22746187834";
+          hash = "sha256-ZDmb3DQttftfS4w5+HlkTXRxhRYftBh1bm6MI+RBvII=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-yu2s4V2hB07eS0INVxQXU7YeWYmR3p4JPxKWuCK3Iys=";
 
         postInstall = ''
@@ -82,8 +97,13 @@ let
 
       translators = buildNpmPackage {
         pname = "${pname}-translators";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/translators";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "translators";
+          rev = "3a9544d7b0b6fdcb6cdcbc8c08392f91d20d99b4";
+          hash = "sha256-XX1iBjuaFpmtkKTHuFPTtZOcFZk+oF8C8d2DPnENjV4=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-WDMOsklYKIurQw80Yh/mYQ9xmcHo3Yfkjj5+btqeie0=";
 
         postPatch = ''
@@ -98,8 +118,13 @@ let
 
       pdf-reader-pdfjs = buildNpmPackage {
         pname = "${pname}-pdf-reader-pdfjs";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/pdf-reader/pdf.js";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "pdf.js";
+          rev = "336247a15be77f2e253599f810a8cda107171566";
+          hash = "sha256-GBEBTyFMh+zi0KiHLNGfZi/XW9mhm3x0uCJkA7ml7mk=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-9e90iIKwWyBq68q/CKn+7laJwPFtJaZtblcWpIEDSXw=";
         makeCacheWritable = true;
 
@@ -121,10 +146,16 @@ let
 
       pdf-worker-pdfjs = buildNpmPackage {
         pname = "${pname}-pdf-worker-pdfjs";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/pdf-reader/pdf.js";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "pdf.js";
+          rev = "e198a17afc6f56e0a9d48b07e42ec80645a7a0a8";
+          hash = "sha256-FlKII11oPMPka+96Wo9ZjBuNp40i3OMuvlNz8X/r0Lw=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-9e90iIKwWyBq68q/CKn+7laJwPFtJaZtblcWpIEDSXw=";
         makeCacheWritable = true;
+
         postPatch = ''
           sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package.json
           sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package-lock.json
@@ -143,8 +174,13 @@ let
 
       pdf-reader = buildNpmPackage {
         pname = "${pname}-pdf-reader";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/pdf-reader";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "pdf-reader";
+          rev = "3b7f54727fdd8f238281a555988ada4615679b9c";
+          hash = "sha256-Y49bT08Z9ESK3yVkRQT67oU9jygr5xblHgUiX/SwyLE=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-tDr2WLnpltWPrlF21M8G/We4zzAXBp4px5xceOVLbhQ=";
 
         postPatch = ''
@@ -165,8 +201,13 @@ let
 
       pdf-worker = buildNpmPackage {
         pname = "${pname}-pdf-worker";
-        inherit src version npmFlags NODE_OPTIONS meta;
-        sourceRoot = "source/pdf-worker";
+        src = fetchFromGitHub {
+          owner = "zotero";
+          repo = "pdf-worker";
+          rev = "582f5d6cf91c5f09fc7898c3eced0ad32cbfccb1";
+          hash = "sha256-y1nEYGbtZzsc1Hn9B/Cvom3f7+OsYgwOuWFfp5U4gjc=";
+        };
+        inherit version npmFlags NODE_OPTIONS meta;
         npmDepsHash = "sha256-rO/P7/22erxNeOpR8ph7taKyCeOEG9+U06oOfmPSa3w=";
 
         postPatch = ''
