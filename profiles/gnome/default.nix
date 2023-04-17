@@ -56,6 +56,7 @@ with lib;
         appindicator
         miniview
         alphabetical-app-grid
+        color-picker
       ];
     };
   };
