@@ -23,7 +23,7 @@
 let
   pname = "zotero-dev";
   version = "7.0.0";
-  rev = "b1595cdd1d7edcf8382cc26fef92a86606df94da";
+  rev = "096a3c5f2f57fffdecf001981129e13a1791ad89";
 
   meta = with lib; {
     description = "Zotero is a free, easy-to-use tool to help you collect, organize, cite, and share your research sources";
@@ -46,9 +46,8 @@ let
         owner = "zotero";
         repo = "zotero";
         inherit rev;
-        hash = "sha256-/J4iXao46McJtzmzLW12cLxEmRTgWBwUAyEhp1aw6P8=";
+        hash = "sha256-XGpk2CYgdaFCJJJc2XhW2fVD+dbACUkGClgwLoNMOoM=";
         fetchSubmodules = true;
-        #leaveDotGit = true;
       };
 
       npmFlags = [ "--legacy-peer-deps" ];
@@ -85,7 +84,7 @@ let
         pname = "${pname}-translators";
         inherit src version npmFlags NODE_OPTIONS meta;
         sourceRoot = "source/translators";
-        npmDepsHash = "sha256-zAf19V7X1ujzWcdCe0xIYFCpmHy3Sj7rDa3bEhEXF34=";
+        npmDepsHash = "sha256-WDMOsklYKIurQw80Yh/mYQ9xmcHo3Yfkjj5+btqeie0=";
 
         postPatch = ''
           rm package-lock.json
@@ -101,17 +100,18 @@ let
         pname = "${pname}-pdf-reader-pdfjs";
         inherit src version npmFlags NODE_OPTIONS meta;
         sourceRoot = "source/pdf-reader/pdf.js";
-        npmDepsHash = "sha256-SiFBK/sUuqUki+WgzQ8Z0Mzzr2kj0eJN0L1tf6TVuh8=";
+        npmDepsHash = "sha256-9e90iIKwWyBq68q/CKn+7laJwPFtJaZtblcWpIEDSXw=";
+        makeCacheWritable = true;
 
         postPatch = ''
-          rm package-lock.json
-          cp ${./pdfjs-lock.json} package-lock.json
+          sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package.json
+          sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package-lock.json
         '';
 
         #dontNpmBuild = true;
 
         buildPhase = ''
-          node_modules/.bin/gulp generic-legacy
+          node_modules/.bin/gulp generic
         '';
 
         postInstall = ''
@@ -123,11 +123,11 @@ let
         pname = "${pname}-pdf-worker-pdfjs";
         inherit src version npmFlags NODE_OPTIONS meta;
         sourceRoot = "source/pdf-reader/pdf.js";
-        npmDepsHash = "sha256-SiFBK/sUuqUki+WgzQ8Z0Mzzr2kj0eJN0L1tf6TVuh8=";
-
+        npmDepsHash = "sha256-9e90iIKwWyBq68q/CKn+7laJwPFtJaZtblcWpIEDSXw=";
+        makeCacheWritable = true;
         postPatch = ''
-          rm package-lock.json
-          cp ${./pdfjs-lock.json} package-lock.json
+          sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package.json
+          sed -i '/"name": "pdf.js"/a "version": "1.0.0",' package-lock.json
         '';
 
         #dontNpmBuild = true;
@@ -188,8 +188,8 @@ let
     buildNpmPackage {
       pname = "${pname}-client";
       inherit src version npmFlags NODE_OPTIONS meta;
-      npmDepsHash = "sha256-w75fDpHQ1T39US9bDoSl8gKtF0cswkvNu/FIl/2/508=";
-      #nativeBuildInputs = [ git ];
+      npmDepsHash = "sha256-b9MCHtt4Ewpt/prEMKtzSbLv3xnP2lnhclu4xDh1QGQ=";
+      nativeBuildInputs = [ rsync ];
 
       postPatch = ''
         rm -rf resource/SingleFile 
