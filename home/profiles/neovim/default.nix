@@ -45,7 +45,7 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "r" "rmd" "ccls" "nix" "rust" "sql" "python" ];
+          coc.preferences.formatOnSaveFiletypes = [ "R" "ccls" "nix" "python" ];
 
           languageserver =
             {
@@ -68,6 +68,7 @@ with lib;
                   };
                 };
               };
+
               python = {
                 command = "pyright";
                 filetypes = [ "py" "python" ];
@@ -88,20 +89,24 @@ with lib;
       };
 
       withPython3 = true;
+
       plugins = with pkgs.vimPlugins; [
-        #theme
+        # Theme
         catppuccin
+
         # LSP
         nvim-lspconfig
+        coc-pyright
+        rust-vim
 
         plenary-nvim
 
-        #Telescope
+        # Telescope
         telescope-nvim
 
         nvim-web-devicons
 
-        pkgs.unstable.vimPlugins.bufferline-nvim
+        bufferline-nvim
         nvim-colorizer-lua
         pears-nvim
         nvim-tree-lua
@@ -122,13 +127,11 @@ with lib;
         vim-scriptease
         semshi
         coc-prettier
-        coc-pyright
-        rust-vim
 
         nvim-r
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer nil nixpkgs-fmt ccls ];
+      extraPackages = with pkgs; [ rust-analyzer nil nixpkgs-fmt ccls pyright ];
 
       extraConfig = ''
         luafile ${./settings.lua}
