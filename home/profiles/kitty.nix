@@ -26,6 +26,7 @@ with lib;
         #linux_display_server = "x11";
         #hide_window_decorations = "yes";
         wayland_titlebar_color = "background";
+        background_opacity = "0.8";
       };
     };
   };
