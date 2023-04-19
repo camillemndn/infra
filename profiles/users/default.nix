@@ -50,6 +50,7 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     htop
+    powertop
     lsof
     neofetch
     du-dust
