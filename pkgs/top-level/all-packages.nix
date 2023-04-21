@@ -11,6 +11,7 @@ with pkgs;
   deluge-storm = callPackage ../servers/deluge-storm { };
   filerun = callPackage ../servers/filerun { };
   hammond = callPackage ../servers/hammond { };
+  jitsi-excalidraw = callPackage ../servers/jitsi-excalidraw { };
   koel = callPackage ../servers/koel { };
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
