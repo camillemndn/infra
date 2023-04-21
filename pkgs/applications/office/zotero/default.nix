@@ -18,10 +18,11 @@
 , gtk3
 , gnome
 , dconf
+, coreutils
 }:
 
 let
-  pname = "zotero-dev";
+  pname = "zotero";
   version = "7.0.0";
   rev = "096a3c5f2f57fffdecf001981129e13a1791ad89";
 
@@ -104,7 +105,7 @@ let
           hash = "sha256-XX1iBjuaFpmtkKTHuFPTtZOcFZk+oF8C8d2DPnENjV4=";
         };
         inherit version npmFlags NODE_OPTIONS meta;
-        npmDepsHash = "sha256-WDMOsklYKIurQw80Yh/mYQ9xmcHo3Yfkjj5+btqeie0=";
+        npmDepsHash = "sha256-lHSUID8Gv+Rw6Ed+3SbxzdjvxFoCGiyY6BXb0U2A1eo=";
 
         postPatch = ''
           rm package-lock.json
@@ -231,6 +232,7 @@ let
       inherit src version npmFlags NODE_OPTIONS meta;
       npmDepsHash = "sha256-b9MCHtt4Ewpt/prEMKtzSbLv3xnP2lnhclu4xDh1QGQ=";
       nativeBuildInputs = [ rsync ];
+      patches = [ ./dark-tabs.patch ];
 
       postPatch = ''
         rm -rf resource/SingleFile 
@@ -338,6 +340,7 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ makeWrapper python3 unzip zip perl rsync wrapGAppsHook ];
   buildInputs = [ gsettings-desktop-schemas glib gtk3 gnome.adwaita-icon-theme dconf ];
+
   configurePhase = ''
     mkdir xulrunner
     cp -Lr ${firefox-esr-102-unwrapped}/lib/firefox xulrunner
@@ -366,11 +369,16 @@ stdenv.mkDerivation {
         categories = [ "Office" "Database" ];
         startupNotify = true;
         mimeTypes = [ "x-scheme-handler/zotero" "text/plain" ];
+        extraConfig = {
+          X-GNOME-SingleWindow = "true";
+        };
       };
     in
     ''
       mkdir -p $out/bin
-      cp -Lr staging/Zotero_linux $out/lib
+      mkdir -p $out/usr/lib
+      cp -Lr staging/Zotero_linux $out/usr/lib/zotero-bin-${version}
+      ln -s $out/usr/lib/zotero-bin-${version}/zotero $out/bin
 
       mkdir -p $out/share/applications
       cp ${desktopItem}/share/applications/* $out/share/applications/
@@ -379,7 +387,14 @@ stdenv.mkDerivation {
           $out/share/icons/hicolor/''${size}x''${size}/apps/zotero.png
       done
 
-      makeWrapper "$out/lib/zotero" "$out/bin/${pname}" \
-        --set-default MOZ_ENABLE_WAYLAND 1
+      #makeWrapper "$out/lib/zotero" "$out/bin/${pname}" \
+      #  --set-default MOZ_ENABLE_WAYLAND 1
     '';
+
+  preFixup = ''
+    gappsWrapperArgs+=(
+      --prefix PATH : ${lib.makeBinPath [ coreutils ]}
+      --set-default MOZ_ENABLE_WAYLAND 1
+    )
+  '';
 }
