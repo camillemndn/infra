@@ -66,6 +66,7 @@ with lib;
     unstable.nix-tree
     nix-init
     direnv
+    tldr
   ];
 
   services.mysql = {
