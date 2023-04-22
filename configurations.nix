@@ -93,7 +93,7 @@ in
     ];
   };
 
-  zeppelin = nixpkgs.lib.nixosSystem {
+  zeppelin = unstable.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/proxmox-vm.nix)
