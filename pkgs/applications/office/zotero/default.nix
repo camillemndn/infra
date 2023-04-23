@@ -3,7 +3,6 @@
 , buildNpmPackage
 , fetchFromGitHub
 , fetchzip
-, fetchurl
 , firefox-esr-102-unwrapped
 , makeWrapper
 , makeDesktopItem
@@ -360,7 +359,7 @@ stdenv.mkDerivation {
   installPhase =
     let
       desktopItem = makeDesktopItem {
-        name = "${pname}-${version}";
+        name = pname;
         exec = "${pname} -url %U";
         icon = "zotero";
         comment = meta.description;
@@ -368,9 +367,14 @@ stdenv.mkDerivation {
         genericName = "Reference Management";
         categories = [ "Office" "Database" ];
         startupNotify = true;
+        startupWMClass = pname;
         mimeTypes = [ "x-scheme-handler/zotero" "text/plain" ];
-        extraConfig = {
-          X-GNOME-SingleWindow = "true";
+        terminal = false;
+        actions = {
+          profile-manager-window = {
+            name = "Profile Manager";
+            exec = "${pname} -P";
+          };
         };
       };
     in
@@ -386,9 +390,6 @@ stdenv.mkDerivation {
         install -Dm444 staging/Zotero_linux/chrome/icons/default/default$size.png \
           $out/share/icons/hicolor/''${size}x''${size}/apps/zotero.png
       done
-
-      #makeWrapper "$out/lib/zotero" "$out/bin/${pname}" \
-      #  --set-default MOZ_ENABLE_WAYLAND 1
     '';
 
   preFixup = ''
