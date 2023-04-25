@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     description = "The web’s leading online collaborative genealogy application";
     homepage = "https://webtrees.net/";
     license = licenses.gpl2Only;
-    # maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.linux;
   };
 }

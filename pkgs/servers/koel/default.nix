@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "koel";
-  version = "6.11.0";
+  version = "6.11.2";
 
   src = fetchurl {
     url = "https://github.com/koel/koel/releases/download/v${version}/koel-v${version}.tar.gz";
-    sha256 = "sha256-IE/utNfyi+18oUFpoAz5HBZYdFltMoOmqMl+OizlrzU=";
+    sha256 = "sha256-2zRLknvnpANxLD9BmCiMAXkt0dxUr5t2tOoW1uYuXcc=";
   };
 
   installPhase = ''
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     description = "A simple web-based personal audio streaming service written in Vue and Laravel.";
     homepage = "https://koel.dev/";
     license = licenses.mit;
-    # maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.linux;
   };
 }

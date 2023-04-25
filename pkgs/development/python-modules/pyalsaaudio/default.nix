@@ -22,8 +22,8 @@ python3.pkgs.buildPythonPackage rec {
   meta = with lib; {
     description = "ALSA bindings";
     homepage = "https://pypi.org/project/pyalsaaudio/";
-    license = with licenses; [ ];
+    license = licenses.psfl;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 }

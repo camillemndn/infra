@@ -48,6 +48,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/signalapp/Signal-Desktop";
     license = licenses.agpl3Only;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 }

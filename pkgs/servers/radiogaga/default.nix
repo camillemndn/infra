@@ -8,6 +8,7 @@
 , callPackage
 , mpg123
 , killall
+, spotify-tui
 , curl
 }:
 
@@ -33,7 +34,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "radiogaga";
-  version = "unstable-2023-03-24";
+  version = "unstable-2023-04-24";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
@@ -59,8 +60,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
-    rev = "2df2f5ce08ff5c058aa8a0c3f81305635337cf1f";
-    hash = "sha256-jjr6STAEXtVud+4fcLhNPF34ebJr4oXHgGhAZOls0/g=";
+    rev = "ad2f9c07dfe39d284d26b20f6ffad83780404db3";
+    hash = "sha256-3cSntqLPaJvKZZXaavPOxE9Snv9GkTcChW4J9bX/P8I=";
   };
 
   postPatch = ''
@@ -82,7 +83,7 @@ stdenv.mkDerivation rec {
       --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
       --chdir $out/share/${pname}
     makeWrapper ${python_env}/bin/gunicorn $out/bin/${pname} \
-      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
+      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 spotify-tui python_env ]} \
       --add-flags "--bind 0.0.0.0:8000 radiogaga.wsgi:application" \
       --chdir $out/share/${pname}
   '';
@@ -92,6 +93,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/camillemndn/radiogaga";
     license = licenses.mit;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 }

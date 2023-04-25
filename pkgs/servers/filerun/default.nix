@@ -54,7 +54,7 @@ stdenv.mkDerivation rec {
     description = "Probably the best File Manager in the world with desktop Sync and File Sharing";
     homepage = "https://filerun.com/";
     # license = licenses.unfree;
-    # maintainers = with maintainers; [ camillemndn ];
+    maintainers = with maintainers; [ camillemndn ];
     platforms = mapAttrsToList (name: value: (toString name)) availablePlats;
   };
 }

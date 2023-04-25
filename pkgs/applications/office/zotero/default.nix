@@ -30,7 +30,7 @@ let
     homepage = "https://github.com/zotero/zotero";
     license = licenses.agpl3Only;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 
   pdftools = let pdftools-version = "0.0.5"; in

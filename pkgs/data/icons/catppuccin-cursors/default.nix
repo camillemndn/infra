@@ -1,8 +1,7 @@
-{
-  lib,
-  stdenv,
-  fetchzip,
-  ...
+{ lib
+, stdenv
+, fetchzip
+, ...
 }:
 stdenv.mkDerivation rec {
   pname = "catppuccin-cursors";
@@ -22,6 +21,6 @@ stdenv.mkDerivation rec {
     description = "Soothing pastel mouse cursors";
     homepage = "https://github.com/catppuccin/cursors";
     license = lib.licenses.gpl3;
-    platforms = lib.platforms.unix;
+    platforms = lib.platforms.linux;
   };
 }

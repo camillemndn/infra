@@ -1,9 +1,8 @@
-{
-  lib,
-  stdenv,
-  fetchzip,
-  pkgs,
-  ...
+{ lib
+, stdenv
+, fetchzip
+, pkgs
+, ...
 }:
 stdenv.mkDerivation rec {
   pname = "cattpuccin-gtk";
@@ -29,6 +28,6 @@ stdenv.mkDerivation rec {
     description = "Soothing pastel theme for GTK3";
     homepage = "https://github.com/catppuccin/gtk";
     license = lib.licenses.gpl3;
-    platforms = lib.platforms.unix;
+    platforms = lib.platforms.linux;
   };
 }

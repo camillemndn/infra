@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
     description = "Organizr is a php based web front-end to help organize your services";
     homepage = "https://organizr.app/";
     license = licenses.mit;
-    # maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.linux;
   };
 }

@@ -52,5 +52,6 @@ mkYarnPackage rec {
     homepage = "https://github.com/calcom/cal.com";
     license = licenses.agpl3Only;
     maintainers = with maintainers; [ camillemndn ];
+    platforms = platforms.linux;
   };
 }

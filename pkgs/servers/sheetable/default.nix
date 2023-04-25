@@ -58,7 +58,7 @@ stdenv.mkDerivation rec {
     description = "Self-hosted music sheet organizing software";
     homepage = "https://sheetable.net/";
     license = licenses.gpl3Only;
-    # maintainers = with maintainers; [ camillemndn ];
+    maintainers = with maintainers; [ camillemndn ];
     platforms = mapAttrsToList (name: value: (toString name)) availablePlats;
   };
 }

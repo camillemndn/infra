@@ -57,6 +57,6 @@ stdenv.mkDerivation rec {
     homepage = "https://gitlab.com/LazyLibrarian/LazyLibrarian";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 }

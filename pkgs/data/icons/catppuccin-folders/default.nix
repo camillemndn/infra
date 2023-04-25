@@ -23,5 +23,5 @@ stdenv.mkDerivation rec {
     bash ./papirus-folders -C cat-mocha-mauve --theme $out/share/icons/Papirus -o
   '';
 
-  meta.platforms = lib.platforms.unix;
+  meta.platforms = lib.platforms.linux;
 }
