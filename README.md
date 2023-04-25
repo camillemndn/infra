@@ -1,4 +1,22 @@
-# My machines' configuration.
+# My NixOS configurations <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Nix_snowflake.svg" alt= "❄" width="20px" height="20px">
+
+[![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
+
+This repository contains the configurations of my machines using NixOS. 
+
+## *What is NixOS ?*
+
+NixOS is a linux distribution based on the Nix package manager. It allows fully reproducible builds and a declarative configuration style, using a functional langage called Nix.
+
+## *What is a flake ?*
+
+This whole repository is a flake. It is an experimental feature of Nix, allowing for pure evaluation of code. Dependencies are fully specified and locked.
+
+## Inspirations
+
+This project is freely inspired by [JulienMalka/nix-config](https://github.com/JulienMalka/nix-config).
+
+## My configurations:
 
 - **zeppelin**, a NUC with a multimedia server and many other things
 - **genesis**, an Asus ROG X13 convertible laptop with secure boot, Gnome and fully functional hardware except for fingerprint sensor
@@ -6,15 +24,13 @@
 - **wutang**, a Windows Subsystem for Linux machine
 - **rush**, a Raspberry Pi 4B with UEFI
 - **offspring**, an Oracle VM with monitoring services
-- **radiogaga**, a Raspberry Pi 3B used as a smart alarm clock (*work in progress*)
+- **radiogaga**, a Raspberry Pi 3B used as a smart alarm clock
 
-## Install Secure Boot with sbctl
+## Toolbox
 
-https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md
+### [Install Secure Boot with ```sbctl```](https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md)
 
-## Speed up LUKS encryption on USB
-
-https://www.reddit.com/r/Fedora/comments/zlrmmt/disable_dmcrypt_workqeues_to_improve_ssd/
+### Speed up LUKS encryption on USB ([source](https://www.reddit.com/r/Fedora/comments/zlrmmt/disable_dmcrypt_workqeues_to_improve_ssd/))
 
 ```
 sudo su -
@@ -23,7 +39,7 @@ cryptsetup luksOpen /dev/<disk> <name>
 cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh <name>
 ```
 
-## Install NixOS with ZFS
+### Install NixOS with ZFS
 
 ```
 DISK=/dev/disk/by-id/<id>
@@ -54,7 +70,7 @@ umount /mnt/boot
 zpool export rpool
 ```
 
-## Build NixOS Image with GUI for aarch64
+### Build NixOS Image with GUI for aarch64
 
 ```
 docker run -it --platform linux/arm64 nixos/nix
