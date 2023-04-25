@@ -28,8 +28,9 @@ with inputs;
       zoom-us
 
       libreoffice-fresh
-      zotero-dev
+      zotero
       xournalpp
+      pdftocgen
 
       bitwarden
       bitwarden-cli
