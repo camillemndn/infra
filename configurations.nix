@@ -3,12 +3,15 @@ inputs:
 with inputs; with builtins;
 let
   baseModules = system: [
+
     ({ pkgs, ... }:
       {
+        # Adds all the modules from this flake
         imports = (import ./profiles) ++ attrValues (import ./modules);
 
         nixpkgs.overlays = [
           (final: prev: {
+            # Adds some packages from other flakes
             php74 = phps.packages.${system}.php74;
             php74Extensions = phps.packages.${system}.php74.extensions;
             unstable = unstable.legacyPackages.${system};
@@ -16,11 +19,13 @@ let
             nix-software-center = nix-software-center.packages.${system}.default;
             spicetify-nix = spicetify-nix.packages.${system}.default;
           } //
+          # Adds all the package from this flake
           self.packages."${system}"
           )
         ];
       })
 
+    # Adds some modules from other flakes
     sops-nix.nixosModules.sops
     home-manager.nixosModules.home-manager
     simple-nixos-mailserver.nixosModule
@@ -36,16 +41,15 @@ in
       { home-manager.users.camille = import ./home/configurations/genesis inputs; }
       lanzaboote.nixosModules.lanzaboote
       hyprland.nixosModules.default
-      # nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
     ];
   };
 
-  icecube = nixpkgs.lib.nixosSystem {
+  icecube = unstable.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/external-usb.nix)
       (import ./configurations/icecube)
-      { home-manager.users.camille = import ./home/configurations/icecube; }
+      { home-manager.users.camille = import ./home/configurations/icecube inputs; }
     ];
   };
 
@@ -57,7 +61,7 @@ in
     ];
   };
 
-  radiogaga = nixpkgs.lib.nixosSystem {
+  radiogaga = unstable.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       (import ./hardware/raspberrypi-3b.nix)
@@ -65,7 +69,7 @@ in
     ];
   };
 
-  radiogagaImage = nixpkgs.lib.nixosSystem {
+  radiogagaImage = unstable.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
@@ -75,7 +79,7 @@ in
     ];
   };
 
-  rush = nixpkgs.lib.nixosSystem {
+  rush = unstable.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       (import ./hardware/raspberrypi-4b.nix)
@@ -83,12 +87,12 @@ in
     ];
   };
 
-  wutang = nixpkgs.lib.nixosSystem {
+  wutang = unstable.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/wsl.nix)
       (import ./configurations/wutang)
-      { home-manager.users.camille = import ./home/configurations/base; }
+      { home-manager.users.camille = import ./home/configurations/base inputs; }
       nixos-wsl.nixosModules.wsl
     ];
   };

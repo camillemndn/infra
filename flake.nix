@@ -76,8 +76,8 @@
     utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = inputs@{ nixpkgs, unstable, utils, ... }:
-    with builtins;
+  outputs = inputs@{ ... }:
+    with inputs; with builtins;
     (utils.lib.eachDefaultSystem
       (system:
         let
@@ -94,12 +94,10 @@
     {
       deploy = import ./deploy.nix inputs;
 
-      homeConfigurations = import ./home/configurations inputs;
+      homeConfigurations = import ./home/configurations.nix inputs;
 
       nixosConfigurations = import ./configurations.nix inputs;
 
       nixosModules = import ./modules;
-
-      # checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     });
 }
