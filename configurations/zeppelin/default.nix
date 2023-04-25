@@ -10,20 +10,19 @@
   services = {
     openssh.enable = true;
 
-    resolved.enable = true;
     tailscale.enable = true;
 
     filerun.enable = true;
 
     hammond.enable = true;
 
+    resolved.enable = true;
+
     sheetable.enable = true;
     vpnVirtualHosts.sheets = { port = 7777; restricted = false; };
 
     webtrees.enable = true;
     vpnVirtualHosts.family = { port = 3228; restricted = false; };
-
-    organizr.enable = true;
   };
 
   profiles = {
