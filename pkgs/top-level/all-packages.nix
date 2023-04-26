@@ -4,7 +4,7 @@ with pkgs;
 
 {
   audiveris = callPackage ../applications/audio/audiveris { };
-  cal-com = callPackage ../servers/cal-com { };
+  # cal-com = callPackage ../servers/cal-com { };
   catppuccin-gtk = callPackage ../data/themes/catppuccin-gtk { };
   catppuccin-cursors = callPackage ../data/icons/catppuccin-cursors { };
   catppuccin-folders = callPackage ../data/icons/catppuccin-folders { };
