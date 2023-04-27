@@ -28,7 +28,7 @@ with lib;
 
 {
   options.profiles.neovim = {
-    enable = mkEnableOption "activate neovim program";
+    enable = mkEnableOption "Activate neovim program";
   };
 
   config = mkIf cfg.enable {
@@ -45,14 +45,27 @@ with lib;
       coc = {
         enable = true;
         settings = {
-          coc.preferences.formatOnSaveFiletypes = [ "R" "ccls" "nix" "python" ];
+          coc.preferences.formatOnSaveFiletypes = [
+            "ccls"
+            "nix"
+            "python"
+            "r"
+            "rmd"
+          ];
+
+          python.linting.flake8Enabled = true;
 
           languageserver =
             {
-              R = {
-                command = "${pkgs.rWrapper.override{ packages = with pkgs.rPackages; [ languageserver ]; }}/bin/R";
-                args = [ "--slave" "-e" "languageserver::run()" ];
+              r = let r-lsp = pkgs.rWrapper.override { packages = with pkgs.rPackages; [ languageserver ]; }; in {
+                command = "${r-lsp}/bin/R";
+                args = [ "-s" "-e" "languageserver::run()" ];
                 filetypes = [ "r" "rmd" ];
+              };
+
+              python = {
+                command = "pyright";
+                filetypes = [ "py" ];
               };
 
               ccls = {
@@ -67,11 +80,6 @@ with lib;
                     snippetSupport = true;
                   };
                 };
-              };
-
-              python = {
-                command = "pyright";
-                filetypes = [ "py" "python" ];
               };
 
               nix = {
@@ -131,7 +139,14 @@ with lib;
         nvim-r
       ];
 
-      extraPackages = with pkgs; [ rust-analyzer nil nixpkgs-fmt ccls pyright ];
+      extraPackages = with pkgs; [
+        ccls
+        nil
+        nixpkgs-fmt
+        pyright
+        python3.pkgs.autopep8
+        python3.pkgs.flake8
+      ];
 
       extraConfig = ''
         luafile ${./settings.lua}
