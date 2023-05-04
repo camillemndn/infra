@@ -106,4 +106,15 @@ in
       { home-manager.users.camille = import ./home/configurations/base inputs; }
     ];
   };
+
+  pinkfloyd = unstable.lib.nixosSystem {
+    system = "aarch64-linux";
+    modules = (baseModules "x86_64-linux") ++ [
+      (import ./hardware/pinephone.nix)
+      (import ./configurations/pinkfloyd)
+      { home-manager.users.camille = import ./home/configurations/base inputs; }
+      (import "${mobile-nixos}/lib/configuration.nix" { device = "pine64-pinephone"; })
+      (import "${mobile-nixos}/examples/phosh/phosh.nix")
+    ];
+  };
 }

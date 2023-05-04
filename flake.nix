@@ -29,6 +29,8 @@
 
     lanzaboote.url = "github:nix-community/lanzaboote";
 
+    mobile-nixos = { url = "github:NixOS/mobile-nixos"; flake = false; };
+
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "unstable";
