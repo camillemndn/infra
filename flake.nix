@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
-    kernel.url = "nixpkgs/4c83fe7ec352c9b81cf8220bd1653a1bce970069";
+    kernel.url = "nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
 
     deploy-rs = {
       url = "github:serokell/deploy-rs";
