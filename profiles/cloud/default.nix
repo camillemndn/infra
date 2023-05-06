@@ -1,12 +1,12 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.profiles.nextcloud;
+  cfg = config.profiles.cloud;
 in
 with lib;
 
 {
-  options.profiles.nextcloud = {
+  options.profiles.cloud = {
     enable = mkEnableOption "Activate my Nextcloud instance";
   };
 
@@ -14,9 +14,11 @@ with lib;
     services.nextcloud = {
       enable = true;
       package = pkgs.nextcloud26;
-      hostName = "social.kms";
+      hostName = "cloud.kms";
       config.adminpassFile = "/run/secrets/nextcloud";
       enableBrokenCiphersForSSE = false;
+      https = true;
+      database.createLocally = true;
     };
 
     sops.secrets.nextcloud = {
@@ -26,6 +28,6 @@ with lib;
       group = "nextcloud";
     };
 
-    services.nginx.virtualHosts."social.kms" = { enableACME = true; forceSSL = true; };
+    services.nginx.virtualHosts."cloud.kms" = { enableACME = true; forceSSL = true; };
   };
 }

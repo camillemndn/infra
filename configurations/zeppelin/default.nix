@@ -8,37 +8,30 @@
   };
 
   services = {
-    openssh.enable = true;
-
-    tailscale.enable = true;
-
-    filerun.enable = true;
-
     hammond.enable = true;
-
+    openssh.enable = true;
     resolved.enable = true;
-
     sheetable.enable = true;
     vpnVirtualHosts.sheets = { port = 7777; restricted = false; };
-
+    tailscale.enable = true;
     webtrees.enable = true;
     vpnVirtualHosts.family = { port = 3228; restricted = false; };
   };
 
   profiles = {
     binary-cache = { enable = true; hostName = "cache"; };
-    meet = { enable = true; hostName = "meet.mondon.xyz"; };
-    feeds.enable = true;
-    sync.enable = true;
+    cloud.enable = true;
     code-server.enable = true;
-    nextcloud.enable = true;
+    feeds.enable = true;
     mail-server.enable = true;
     media-server.enable = true;
+    meet = { enable = true; hostName = "meet.mondon.xyz"; };
     office.enable = true;
     paperless.enable = true;
     passwords.enable = true;
     photos.enable = true;
     player.enable = true;
+    sync.enable = true;
     websites.enable = true;
   };
 

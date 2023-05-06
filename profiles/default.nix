@@ -1,6 +1,7 @@
 [
   ./auth
   ./binary-cache
+  ./cloud
   ./code-server
   ./feeds
   ./gdm
@@ -14,7 +15,6 @@
   ./neovim/1
   ./neovim/2
   ./neovim/3
-  ./nextcloud
   ./nix
   ./office
   ./paperless

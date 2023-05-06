@@ -13,18 +13,16 @@ with lib;
   config = mkIf cfg.enable {
     services.photoprism = {
       enable = true;
-      originalsPath = "/srv/cloud/camille/Pictures";
+      originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
       passwordFile = "/run/secrets/photos";
       settings = {
         PHOTOPRISM_ADMIN_USER = "camille";
       };
     };
 
-    systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "filerun" ];
+    systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
 
     services.nginx.virtualHosts."photos.kms".locations."/".proxyWebsockets = true;
-
-    #systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "filerun" ];
 
     services.vpnVirtualHosts.photos.port = 2342;
 
