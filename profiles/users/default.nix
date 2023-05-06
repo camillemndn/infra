@@ -67,6 +67,7 @@ with lib;
     nix-init
     direnv
     tldr
+    comma
   ];
 
   services.mysql = {
