@@ -60,8 +60,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
-    rev = "ad2f9c07dfe39d284d26b20f6ffad83780404db3";
-    hash = "sha256-3cSntqLPaJvKZZXaavPOxE9Snv9GkTcChW4J9bX/P8I=";
+    rev = "9165b84fca4d5bc900805c5c4cb9882055f06328";
+    hash = "sha256-VTDZwNuFm9MPAMHPsXxXMi1t9Gxi/VVokDpCM/rzdpE=";
   };
 
   postPatch = ''
