@@ -1,5 +1,5 @@
 diff --git a/build.sh b/build.sh
-index a86a4d3..dd7f7d8 100755
+index a86a4d3..b96ec91 100755
 --- a/build.sh
 +++ b/build.sh
 @@ -50,6 +50,7 @@ DONE
@@ -32,16 +32,15 @@ index a86a4d3..dd7f7d8 100755
  # Move some Firefox files that would be overwritten out of the way
  mv chrome.manifest chrome.manifest-fx
  mv components components-fx
-@@ -372,7 +374,7 @@ fi
+@@ -372,7 +374,6 @@ fi
  
  mv omni.ja ..
  cd "$CALLDIR"
 -rm -rf "$omni_dir"
-+#rm -rf "$omni_dir"
  
  # Copy updater.ini
  cp "$CALLDIR/assets/updater.ini" "$base_dir"
-@@ -794,12 +796,12 @@ fi
+@@ -794,12 +795,12 @@ fi
  
  # Linux
  if [ $BUILD_LINUX == 1 ]; then
@@ -57,22 +56,20 @@ index a86a4d3..dd7f7d8 100755
  		rm -rf "$APPDIR"
  		mkdir "$APPDIR"
  		
-@@ -815,11 +817,11 @@ if [ $BUILD_LINUX == 1 ]; then
+@@ -814,12 +815,7 @@ if [ $BUILD_LINUX == 1 ]; then
+ 		cp "$CALLDIR/linux/zotero.desktop" "$APPDIR"
  		cp "$CALLDIR/linux/set_launcher_icon" "$APPDIR"
  		
- 		# Use our own updater, because Mozilla's requires updates signed by Mozilla
+-		# Use our own updater, because Mozilla's requires updates signed by Mozilla
 -		cp "$CALLDIR/linux/updater-$arch" "$APPDIR"/updater
-+		#cp "$CALLDIR/linux/updater$arch" "$APPDIR"/updater
- 
+-
  		# Copy PDF tools and data
 -		cp "$CALLDIR/pdftools/pdftotext-linux-$arch" "$APPDIR/pdftotext"
 -		cp "$CALLDIR/pdftools/pdfinfo-linux-$arch" "$APPDIR/pdfinfo"
-+		#cp "$CALLDIR/pdftools/pdftotext-linux-$arch" "$APPDIR/pdftotext"
-+		#cp "$CALLDIR/pdftools/pdfinfo-linux-$arch" "$APPDIR/pdfinfo"
  		cp -R "$CALLDIR/pdftools/poppler-data" "$APPDIR/"
  		
  		# Copy app files
-@@ -828,7 +830,8 @@ if [ $BUILD_LINUX == 1 ]; then
+@@ -828,7 +824,8 @@ if [ $BUILD_LINUX == 1 ]; then
  		# Add word processor plug-ins
  		mkdir "$APPDIR/integration"
  		cp -RH "$CALLDIR/modules/zotero-libreoffice-integration/install" "$APPDIR/integration/libreoffice"
@@ -82,7 +79,7 @@ index a86a4d3..dd7f7d8 100755
  		# Delete extraneous files
  		find "$APPDIR" -depth -type d -name .git -exec rm -rf {} \;
  		find "$APPDIR" \( -name .DS_Store -or -name update.rdf \) -exec rm -f {} \;
-@@ -841,5 +844,5 @@ if [ $BUILD_LINUX == 1 ]; then
+@@ -841,5 +838,5 @@ if [ $BUILD_LINUX == 1 ]; then
  		fi
  	done
  fi
