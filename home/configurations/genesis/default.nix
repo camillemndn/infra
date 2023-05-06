@@ -108,6 +108,7 @@ with inputs;
 
     thunderbird = {
       enable = true;
+      package = pkgs.unstable-working.thunderbird;
       profiles."camille".isDefault = true;
     };
   };

@@ -15,10 +15,10 @@ with pkgs;
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
   radiogaga = callPackage ../servers/radiogaga { };
-  signal-desktop = unstable.callPackage ../applications/networking/instant-messengers/signal-desktop { };
+  signal-desktop = callPackage ../applications/networking/instant-messengers/signal-desktop { };
   sheetable = callPackage ../servers/sheetable { };
   webtrees = callPackage ../servers/webtrees { };
   zapzap = callPackage ../applications/networking/instant-messengers/zapzap { };
-  zotero = callPackage ../applications/office/zotero { };
+  zotero = unstable-working.callPackage ../applications/office/zotero { };
   zotero-web-library = callPackage ../servers/zotero-web-library { };
 }

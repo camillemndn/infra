@@ -1,9 +1,10 @@
 {
-  description = "A flake for my personnal configurations";
+  description = "A flake for my personal configurations";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
+    unstable-working.url = "github:camillemndn/nixpkgs/b47c5fe5f762dff6f68c2fa450a3c5d5db36668e";
     kernel.url = "nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
 
     deploy-rs = {
@@ -86,6 +87,7 @@
           pkgs = nixpkgs.legacyPackages.${system}.extend
             (final: prev: {
               unstable = unstable.legacyPackages.${system};
+              unstable-working = unstable-working.legacyPackages.${system};
             });
         in
         {
