@@ -2,11 +2,6 @@ local opt = vim.opt
 local g = vim.g
 local keyset = vim.keymap.set
 
-opt.backup = false
-opt.writebackup = false
-opt.updatetime = 300
-opt.signcolumn = "yes"
-
 vim.cmd [[
     syntax on
     set scrolloff=4
@@ -20,48 +15,60 @@ vim.cmd [[
     colorscheme catppuccin
 ]]
 
-require("catppuccin").setup({
-    flavour = "macchiato",
-    transparent_background = true,
-})
-
-require("nvim-tree").setup()
-local builtin = require('telescope.builtin')
-vim.keymap.set('n', 'ff', builtin.find_files, {})
-vim.keymap.set('n', 'fg', builtin.live_grep, {})
-vim.keymap.set('n', 'fb', builtin.buffers, {})
-vim.keymap.set('n', 'fh', builtin.help_tags, {})
-
-require'nvim-web-devicons'.setup()
-
-vim.opt.termguicolors = true
 require("bufferline").setup{}
 
-require('colorizer').setup()
+require("catppuccin").setup{
+    flavour = "macchiato",
+    transparent_background = true,
+}
+
+require('colorizer').setup{}
+
+require("nvim-tree").setup{}
+
+-- Telescope
+local builtin = require('telescope.builtin')
+keyset('n', 'ff', builtin.find_files, {})
+keyset('n', 'fg', builtin.live_grep, {})
+keyset('n', 'fb', builtin.buffers, {})
+keyset('n', 'fh', builtin.help_tags, {})
 
 -- Treesitter settings
-require'nvim-treesitter.configs'.setup {
+require'nvim-treesitter.configs'.setup{
     ensure_installed = "", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
     highlight = {
         enable = true
     },
 }
 
+require'nvim-web-devicons'.setup{}
 
+require'quarto'.setup{}
+
+g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'R=r', 'tex'}
+
+local tabsize = 2
+opt.expandtab = true
+opt.shiftwidth = tabsize
+opt.tabstop = tabsize
+
+opt.termguicolors = true
+
+-- Use system clipboard
+opt.clipboard = "unnamedplus"
 
 -- Some servers have issues with backup files, see #649.
-vim.opt.backup = false
-vim.opt.writebackup = false
+opt.backup = false
+opt.writebackup = false
 
 -- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
-vim.opt.updatetime = 300
+opt.updatetime = 300
 
 -- Always show the signcolumn, otherwise it would shift the text each time
 -- diagnostics appear/become resolved.
-vim.opt.signcolumn = "yes"
+opt.signcolumn = "yes"
 
-local keyset = vim.keymap.set
 -- Auto complete
 function _G.check_back_space()
     local col = vim.fn.col('.') - 1
@@ -96,7 +103,6 @@ keyset("n", "gd", "<Plug>(coc-definition)", {silent = true})
 keyset("n", "gy", "<Plug>(coc-type-definition)", {silent = true})
 keyset("n", "gi", "<Plug>(coc-implementation)", {silent = true})
 keyset("n", "gr", "<Plug>(coc-references)", {silent = true})
-
 
 -- Use K to show documentation in preview window.
 function _G.show_docs()
@@ -208,7 +214,7 @@ vim.api.nvim_create_user_command("OR", "call CocActionAsync('runCommand', 'edito
 -- Add (Neo)Vim's native statusline support.
 -- NOTE: Please see `:h coc-status` for integrations with external plugins that
 -- provide custom statusline: lightline.vim, vim-airline.
-vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}")
+opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}")
 
 -- Mappings for CoCList
 -- code actions and coc stuff
