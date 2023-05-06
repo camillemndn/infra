@@ -16,18 +16,30 @@ with lib;
     services.nginx = {
       enable = true;
 
+      recommendedTlsSettings = true;
       recommendedProxySettings = true;
+      recommendedOptimisation = true;
+      recommendedGzipSettings = true;
 
       virtualHosts."camille.mondon.me" = {
-        enableACME = true;
         forceSSL = true;
+        enableACME = true;
         root = "/srv/sites/camille-www";
-        default = true;
         locations."/".extraConfig = ''
           add_header 'Access-Control-Allow-Origin' 'http://home.kms';
           add_header 'Access-Control-Allow-Credentials' true;
           allow 100.10.10.0/8;
           deny all;
+        '';
+      };
+
+      virtualHosts.default = {
+        default = true;
+        addSSL = true;
+        sslCertificate = "/var/lib/acme/default/cert.pem";
+        sslCertificateKey = "/var/lib/acme/default/key.pem";
+        extraConfig = ''
+          return 444;
         '';
       };
 
