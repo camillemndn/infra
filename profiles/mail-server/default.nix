@@ -9,7 +9,8 @@ with lib;
 
 {
   options.profiles.mail-server = {
-    enable = mkEnableOption "Activate my mail server";
+    enable = mkEnableOption "Mail server";
+    sogo.enable = mkEnableOption "SoGo groupware";
   };
 
   config = mkIf cfg.enable {
@@ -56,7 +57,40 @@ with lib;
       enableACME = mkForce false;
     };
 
-    services.sogo = {
+    services.fail2ban = {
+      enable = true;
+
+      package = pkgs.fail2ban.overrideAttrs (final: prev: {
+        preConfigure = prev.preConfigure + ''
+          for i in config/action.d/nftable*.conf; do
+            substituteInPlace $i \
+              --replace "type <addr_type>\;" "type <addr_type>\; flags interval\;"
+          done
+        '';
+      });
+
+      ignoreIP = [
+        "192.168.0.0/16"
+        "100.100.45.0/24"
+      ];
+
+      jails = {
+        postfix = ''
+          enabled = true
+          mode = extra
+        '';
+        dovecot = ''
+          # block IPs which failed to log-in
+          # aggressive mode add blocking for aborted connections
+          enabled = true
+          filter = dovecot[mode=aggressive]
+          maxretry = 3
+        '';
+      };
+      bantime = "-1";
+    };
+
+    services.sogo = mkIf cfg.sogo.enable {
       enable = true;
       timezone = "Europe/Paris";
       language = "French";
@@ -89,7 +123,7 @@ with lib;
     };
 
     services.nginx.enable = true;
-    services.nginx.virtualHosts."${sogoDomain}" = {
+    services.nginx.virtualHosts."${sogoDomain}" = mkIf cfg.sogo.enable {
       forceSSL = true;
       enableACME = true;
       locations."^~/SOGo".extraConfig = mkForce ''
@@ -116,8 +150,8 @@ with lib;
       '';
     };
 
-    services.memcached.enable = true;
-    services.mysql = {
+    services.memcached.enable = mkIf cfg.sogo.enable true;
+    services.mysql = mkIf cfg.sogo.enable {
       enable = true;
       package = mkDefault pkgs.mariadb;
       ensureUsers = [{
