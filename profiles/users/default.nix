@@ -46,8 +46,10 @@ with lib;
 
   services.eternal-terminal.enable = true;
 
-  networking.firewall.checkReversePath = mkIf config.services.tailscale.enable "loose";
-
+  networking = {
+    firewall.checkReversePath = mkIf config.services.tailscale.enable "loose";
+    nftables.enable = true;
+  };
   environment.systemPackages = with pkgs; [
     htop
     powertop
@@ -72,7 +74,10 @@ with lib;
 
   services.mysql = {
     package = mkForce pkgs.mariadb;
-    settings.mysql.pager = "${pkgs.less}/bin/less -SFX";
+    settings = {
+      mysql.pager = "${pkgs.less}/bin/less -SFX";
+      mysqld.init-connect = "'SET NAMES utf8mb4'";
+    };
   };
 
   sops.defaultSopsFile = ../../secrets/passwords.yaml;
