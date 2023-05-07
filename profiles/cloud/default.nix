@@ -15,10 +15,27 @@ with lib;
       enable = true;
       package = pkgs.nextcloud26;
       hostName = "cloud.kms";
-      config.adminpassFile = "/run/secrets/nextcloud";
+
+      autoUpdateApps.enable = true;
+      caching.redis = true;
+      database.createLocally = true;
       enableBrokenCiphersForSSE = false;
       https = true;
-      database.createLocally = true;
+      maxUploadSize = "4G";
+
+      config = {
+        adminuser = "Camille";
+        adminpassFile = "/run/secrets/nextcloud";
+        dbtype = "mysql";
+        defaultPhoneRegion = "FR";
+        overwriteProtocol = "https";
+      };
+    };
+
+    services.redis.servers.nextcloud = {
+      enable = true;
+      user = "nextcloud";
+      port = 0;
     };
 
     sops.secrets.nextcloud = {
