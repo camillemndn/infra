@@ -15,6 +15,8 @@
         "cache.mondon.xyz:6o1j93GkK5gj0PfYouSA4WPAEEnOuPGTebLCWc/jKfQ="
         "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
       ];
+
+      nix-path = [ "nixpkgs=flake:nixpkgs" ];
     };
 
     extraOptions = ''
@@ -39,6 +41,8 @@
       })
     ];
   };
+
+  programs.command-not-found.enable = false;
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "mac"

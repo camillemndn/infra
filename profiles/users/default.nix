@@ -70,6 +70,7 @@ with lib;
     direnv
     tldr
     comma
+    lazygit
   ];
 
   services.mysql = {

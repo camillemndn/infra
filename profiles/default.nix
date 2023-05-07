@@ -24,6 +24,7 @@
   ./radiogaga
   ./spotify
   ./sync
+  ./tmux
   ./uptime
   ./users
   ./virtual-hosts
