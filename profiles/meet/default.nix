@@ -39,6 +39,12 @@ with lib;
       forceSSL = false;
     };
 
+    services.prosody.extraConfig = ''
+      log = {
+        warn = "*syslog";
+      }
+    '';
+
     nixpkgs.overlays = [
       (final: prev: {
         jicofo = prev.jicofo.overrideAttrs (old: {
