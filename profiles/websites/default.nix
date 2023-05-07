@@ -15,7 +15,8 @@ with lib;
 
     services.nginx = {
       enable = true;
-
+      serverNamesHashBucketSize = 64;
+      serverNamesHashMaxSize = 512;
       recommendedTlsSettings = true;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
