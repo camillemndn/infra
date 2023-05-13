@@ -15,19 +15,19 @@ vim.cmd [[
     colorscheme catppuccin
 ]]
 
-require("bufferline").setup{}
+require'bufferline'.setup{}
 
-require("catppuccin").setup{
+require'catppuccin'.setup{
     flavour = "macchiato",
     transparent_background = true,
 }
 
-require('colorizer').setup{}
+require'colorizer'.setup{}
 
-require("nvim-tree").setup{}
+require'nvim-tree'.setup{}
 
 -- Telescope
-local builtin = require('telescope.builtin')
+local builtin = require'telescope.builtin'
 keyset('n', 'ff', builtin.find_files, {})
 keyset('n', 'fg', builtin.live_grep, {})
 keyset('n', 'fb', builtin.buffers, {})
@@ -39,13 +39,37 @@ require'nvim-treesitter.configs'.setup{
     highlight = {
         enable = true
     },
+    indent = {
+      enable = true,
+    },
 }
 
 require'nvim-web-devicons'.setup{}
 
-require'quarto'.setup{}
+local quarto = require'quarto'
+quarto.setup{
+  debug = false,
+  closePreviewOnExit = true,
+  lspFeatures = {
+    enabled = true,
+    languages = { 'r', 'python', 'julia', 'bash', 'latex' },
+    chunks = 'curly', -- 'curly' or 'all'
+    diagnostics = {
+      enabled = true,
+      triggers = { "BufWritePost" }
+    },
+    completion = {
+      enabled = true,
+    },
+  },
+  keymap = {
+    hover = 'K',
+    definition = 'gd'
+  }
+}
+keyset('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 
-g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'R=r', 'tex'}
+g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'R=r', 'latex'}
 
 local tabsize = 2
 opt.expandtab = true
