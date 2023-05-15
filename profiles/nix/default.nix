@@ -16,7 +16,7 @@
         "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
       ];
 
-      nix-path = [ "nixpkgs=flake:nixpkgs" ];
+      nix-path = [ "nixpkgs=flake:nixpkgs/nixos-unstable" ];
     };
 
     extraOptions = ''
