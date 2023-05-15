@@ -8,6 +8,7 @@
 
   environment.systemPackages = with pkgs; [
     nix-software-center
+    amdctl
   ];
 
   nixpkgs.config.firefox = {
