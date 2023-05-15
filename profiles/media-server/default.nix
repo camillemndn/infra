@@ -39,8 +39,8 @@ with lib;
       radarr = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.movies.port = 7878;
 
-      readarr = { enable = true; group = "mediasrv"; };
-      vpnVirtualHosts.books2.port = 8787;
+      # readarr = { enable = true; group = "mediasrv"; };
+      # vpnVirtualHosts.books2.port = 8787;
 
       lidarr = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.music.port = 8686;
