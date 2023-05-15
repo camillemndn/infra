@@ -17,6 +17,13 @@ with inputs;
     stateVersion = lib.mkDefault "22.11";
   };
 
+
+  programs.nix-index = {
+    enable = true;
+    enableBashIntegration = true;
+    enableFishIntegration = true;
+  };
+
   profiles.neovim.enable = true;
   profiles.kitty.enable = true;
 
