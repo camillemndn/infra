@@ -1,6 +1,7 @@
 [
   ./auth
   ./binary-cache
+  ./ca
   ./cloud
   ./code-server
   ./feeds
