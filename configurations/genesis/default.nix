@@ -35,6 +35,7 @@
     printing = { enable = true; drivers = [ pkgs.brlaser ]; };
     tailscale.enable = true;
     tlp.enable = true;
+    udev.packages = [ pkgs.android-udev-rules ];
   };
 
   sops.age.keyFile = "/home/camille/.config/sops/age/keys.txt";
@@ -42,7 +43,9 @@
   # virtualisation = {
   #   waydroid.enable = true;
   #   lxd.enable = true;
+  #   virtualbox.host.enable = true;
   # };
+  # users.extraGroups.vboxusers.members = [ "camille" ];
 
   system.stateVersion = "23.05";
 }
