@@ -103,5 +103,12 @@
       nixosConfigurations = import ./configurations.nix inputs;
 
       nixosModules = import ./modules;
+
+      dnsRecords.zeppelin = with unstable.lib;
+        let domains = filter (hasSuffix "kms") (attrNames self.nixosConfigurations.zeppelin.config.services.nginx.virtualHosts);
+        in
+        {
+          kms.subdomains = genAttrs (map (removeSuffix ".kms") domains) (n: { A = [ "100.100.45.24" ]; });
+        };
     });
 }
