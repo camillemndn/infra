@@ -20,10 +20,10 @@
 
   profiles = {
     binary-cache = { enable = true; hostName = "cache"; };
-    ca.enable = true;
     cloud.enable = true;
     code-server.enable = true;
     feeds.enable = true;
+    graphs.enable = true;
     mail-server.enable = true;
     media-server.enable = true;
     meet = { enable = true; hostName = "meet.mondon.xyz"; };

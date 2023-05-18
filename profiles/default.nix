@@ -7,6 +7,7 @@
   ./feeds
   ./gdm
   ./gnome
+  ./graphs
   ./hyprland
   ./mail-server
   ./media-server
