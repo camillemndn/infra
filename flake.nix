@@ -104,11 +104,37 @@
 
       nixosModules = import ./modules;
 
-      dnsRecords.zeppelin = with unstable.lib;
-        let domains = filter (hasSuffix "kms") (attrNames self.nixosConfigurations.zeppelin.config.services.nginx.virtualHosts);
+      dnsRecords = with unstable.lib;
+        let
+          machineInfo = {
+            zeppelin = { vpn = "100.100.45.24"; public = "78.192.168.230"; };
+            radiogaga = { vpn = "100.100.45.20"; };
+            offspring = { };
+          };
+
+          splitSuffix = len: sep: string:
+            let l = splitString sep string;
+            in
+            [ (concatStringsSep sep (drop (length l - len) l)) (concatStringsSep sep (take (length l - len) l)) ];
+
+          isVPN = x: hasSuffix "kms" x || hasSuffix "saumon" x;
+
+          extractDomain = x:
+            if (isVPN x) then (splitSuffix 1 "." x) else
+            splitSuffix 2 "." x;
+
+          domainToRecord = machine: x:
+            if !(hasInfix "." x) then { } else
+            let
+              domain = head (extractDomain x);
+              subdomain = last (extractDomain x);
+            in
+            { ${domain}.${subdomain}.A = with machineInfo.${machine}; if isVPN x then [ vpn ] else [ public ]; };
+
+          domains = concatMap (machine: attrNames self.nixosConfigurations.${machine}.config.services.nginx.virtualHosts);
+
+          recursiveUpdateManyAttrs = foldl recursiveUpdate { };
         in
-        {
-          kms.subdomains = genAttrs (map (removeSuffix ".kms") domains) (n: { A = [ "100.100.45.24" ]; });
-        };
+        recursiveUpdateManyAttrs (map (domainToRecord "zeppelin") (domains [ "offspring" ]));
     });
 }
