@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
+    unstable.url = "github:camillemndn/nixpkgs/nixos-23.05";
     unstable-working.url = "github:camillemndn/nixpkgs/b47c5fe5f762dff6f68c2fa450a3c5d5db36668e";
     kernel.url = "nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
 
