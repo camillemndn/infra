@@ -50,7 +50,6 @@
     "unrar"
     "filerun"
     "spotify"
-    "discord"
     "steam"
     "steam-original"
     "steam-run"

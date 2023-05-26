@@ -22,7 +22,7 @@ with inputs;
       cemu
 
       signal-desktop-beta
-      discord
+      # discord
       # caprine-bin
       # zapzap
       zoom-us
