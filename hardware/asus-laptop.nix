@@ -93,7 +93,10 @@ with lib;
   };
 
   services = {
-    asusd.enable = true;
+    asusd = {
+      enable = true;
+      fanCurvesConfig = readFile ./fan_curves.ron;
+    };
     fprintd.enable = true;
 
     supergfxd = {
