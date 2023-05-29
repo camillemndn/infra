@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, fetchFromGitHub, buildGoModule, go, nodejs, yarn, buildNpmPackage }:
+{ stdenv, lib, fetchFromGitHub, buildGoModule, go, nodejs, python3, yarn, buildNpmPackage }:
 
 let
   version = "2022.07.26";
@@ -34,15 +34,16 @@ let
     name = "hammond-frontend-${version}";
     inherit src version meta;
     sourceRoot = "source/ui";
-    npmDepsHash = "sha256-W1M6tta56iUn2a+oBW3Qayn9TguBBnNPwaCcblOBGMg=";
+    npmDepsHash = "sha256-rUEXJ10ZD1X5/98ZS1Z017hmA5lw+k0p/ZsPXh2X990=";
 
-    patches = [ ./lock.patch ];
+    patches = [ ./package-json.lock ./lock.patch ];
 
     postPatch = ''
       substituteInPlace package.json --replace '"version": "0.0.0"' '"version": "${version}"'
+      sed '/imagemin-lint-staged/d' lint-staged.config.js 
     '';
 
-    nativeBuildInputs = [ nodejs yarn ];
+    nativeBuildInputs = [ nodejs python3 yarn ];
 
     npmFlags = [ "--legacy-peer-deps" ];
 
@@ -63,7 +64,7 @@ let
   };
 in
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   inherit src version meta;
   pname = "hammond";
 
