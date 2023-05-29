@@ -113,6 +113,7 @@ with inputs;
     };
   };
 
+  profiles.code.enable = true;
   profiles.spicetify.enable = true;
 
   accounts.email.accounts."ENS" = {
