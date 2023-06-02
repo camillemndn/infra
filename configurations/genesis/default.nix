@@ -17,6 +17,20 @@
     enableFirefoxPwa = true;
   };
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      thunderbird-bin-unwrapped = prev.thunderbird-bin-unwrapped.overrideAttrs (old:
+        let version = "115.0a1"; in {
+          inherit version;
+          src = pkgs.fetchurl {
+            url = "https://ftp.mozilla.org/pub/thunderbird/nightly/latest-comm-central-l10n/thunderbird-${version}.fr.linux-x86_64.tar.bz2";
+            sha256 = "sha256-lPwtgerS1rheSJoMuQUx1RoYNikJoDuc19gE8od3q50=";
+          };
+        });
+
+    })
+  ];
+
   profiles = {
     gdm.enable = true;
     gnome.enable = true;

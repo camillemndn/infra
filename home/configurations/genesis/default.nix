@@ -59,7 +59,7 @@ with inputs;
   services = {
     nextcloud-client = {
       enable = true;
-      #package = pkgs.owncloud-client;
+      # package = pkgs.owncloud-client;
       startInBackground = true;
     };
 
@@ -108,13 +108,16 @@ with inputs;
 
     thunderbird = {
       enable = true;
-      package = pkgs.unstable-working.thunderbird;
+      package = pkgs.thunderbird-bin;
       profiles."camille".isDefault = true;
     };
   };
 
-  profiles.code.enable = true;
-  profiles.spicetify.enable = true;
+  profiles = {
+    code.enable = true;
+    neovim.enable = true;
+    spicetify.enable = true;
+  };
 
   accounts.email.accounts."ENS" = {
     address = "camille.mondon@ens.fr";
