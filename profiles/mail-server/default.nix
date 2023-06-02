@@ -34,7 +34,7 @@ with lib;
         };
       };
       localDnsResolver = false;
-      certificateScheme = 3;
+      certificateScheme = "acme-nginx";
     };
 
     services.roundcube = {

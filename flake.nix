@@ -2,30 +2,30 @@
   description = "A flake for my personal configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    unstable.url = "github:camillemndn/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:camillemndn/nixpkgs/nixos-23.05";
+    unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
     unstable-working.url = "github:camillemndn/nixpkgs/b47c5fe5f762dff6f68c2fa450a3c5d5db36668e";
     kernel.url = "nixpkgs/0d8145a5d81ebf6698077b21042380a3a66a11c7";
 
     deploy-rs = {
       url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland = {
       url = "github:hyprwm/Hyprland/2df0d034bc4a18fafb3524401eeeceaa6b23e753";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     hyprland-contrib = {
       url = "github:hyprwm/contrib";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     lanzaboote.url = "github:nix-community/lanzaboote";
@@ -34,12 +34,12 @@
 
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-software-center = {
       url = "github:vlinkz/nix-software-center";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
 
@@ -53,26 +53,26 @@
 
     phps = {
       url = "github:fossar/nix-phps";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
 
     simple-nixos-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-22.11";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.05";
       inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-22_11.follows = "nixpkgs";
+      inputs.nixpkgs-23_05.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
     spicetify-nix = {
       url = "github:the-argus/spicetify-nix";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
 
@@ -104,7 +104,7 @@
 
       nixosModules = import ./modules;
 
-      dnsRecords = with unstable.lib;
+      dnsRecords = with nixpkgs.lib;
         let
           machineInfo = {
             zeppelin = { vpn = "100.100.45.24"; public = "78.192.168.230"; };

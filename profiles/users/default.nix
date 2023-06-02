@@ -63,9 +63,9 @@ with lib;
     oh-my-fish
     age
     sops
-    unstable.deploy-rs
-    unstable.nixos-option
-    unstable.nix-tree
+    deploy-rs
+    nixos-option
+    nix-tree
     nix-init
     direnv
     tldr

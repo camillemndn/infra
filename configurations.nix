@@ -34,7 +34,7 @@ let
 in
 
 {
-  genesis = unstable.lib.nixosSystem {
+  genesis = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/asus-laptop.nix)
@@ -45,7 +45,7 @@ in
     ];
   };
 
-  icecube = unstable.lib.nixosSystem {
+  icecube = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/external-usb.nix)
@@ -54,7 +54,7 @@ in
     ];
   };
 
-  offspring = unstable.lib.nixosSystem {
+  offspring = nixpkgs.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       (import ./hardware/oracle-vm.nix)
@@ -62,7 +62,7 @@ in
     ];
   };
 
-  radiogaga = unstable.lib.nixosSystem {
+  radiogaga = nixpkgs.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       (import ./hardware/raspberrypi-3b.nix)
@@ -70,7 +70,7 @@ in
     ];
   };
 
-  radiogagaImage = unstable.lib.nixosSystem {
+  radiogagaImage = nixpkgs.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
@@ -80,7 +80,7 @@ in
     ];
   };
 
-  rush = unstable.lib.nixosSystem {
+  rush = nixpkgs.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "aarch64-linux") ++ [
       (import ./hardware/raspberrypi-4b.nix)
@@ -88,7 +88,7 @@ in
     ];
   };
 
-  wutang = unstable.lib.nixosSystem {
+  wutang = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/wsl.nix)
@@ -98,7 +98,7 @@ in
     ];
   };
 
-  zeppelin = unstable.lib.nixosSystem {
+  zeppelin = nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/proxmox-vm.nix)
@@ -108,7 +108,7 @@ in
     ];
   };
 
-  pinkfloyd = unstable.lib.nixosSystem {
+  pinkfloyd = nixpkgs.lib.nixosSystem {
     system = "aarch64-linux";
     modules = (baseModules "x86_64-linux") ++ [
       (import ./hardware/pinephone.nix)

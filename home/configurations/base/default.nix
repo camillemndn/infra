@@ -24,7 +24,6 @@ with inputs;
     enableFishIntegration = true;
   };
 
-  profiles.neovim.enable = true;
   profiles.kitty.enable = true;
 
   programs.home-manager.enable = true;
