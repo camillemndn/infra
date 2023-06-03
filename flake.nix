@@ -107,9 +107,9 @@
       dnsRecords = with nixpkgs.lib;
         let
           machineInfo = {
-            zeppelin = { vpn = "100.100.45.24"; public = "78.192.168.230"; };
+            zeppelin = { vpn = "100.100.45.2"; public = "78.192.168.230"; };
             radiogaga = { vpn = "100.100.45.20"; };
-            offspring = { };
+            offspring = { public = "141.145.197.42"; };
           };
 
           splitSuffix = len: sep: string:
@@ -131,10 +131,10 @@
             in
             { ${domain}.${subdomain}.A = with machineInfo.${machine}; if isVPN x then [ vpn ] else [ public ]; };
 
-          domains = concatMap (machine: attrNames self.nixosConfigurations.${machine}.config.services.nginx.virtualHosts);
+          getDomains = machine: with self.nixosConfigurations.${machine}.config; attrNames services.nginx.virtualHosts ++ optional services.tailscale.enable "${machine}.kms";
 
           recursiveUpdateManyAttrs = foldl recursiveUpdate { };
         in
-        recursiveUpdateManyAttrs (map (domainToRecord "zeppelin") (domains [ "offspring" ]));
+        recursiveUpdateManyAttrs (concatMap (machine: map (domainToRecord machine) (getDomains machine)) (attrNames machineInfo));
     });
 }
