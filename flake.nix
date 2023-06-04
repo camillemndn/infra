@@ -107,7 +107,7 @@
       dnsRecords = with nixpkgs.lib;
         let
           machineInfo = {
-            zeppelin = { vpn = "100.100.45.2"; public = "78.192.168.230"; };
+            zeppelin = { vpn = "100.100.45.7"; public = "78.192.168.230"; };
             radiogaga = { vpn = "100.100.45.20"; };
             offspring = { public = "141.145.197.42"; };
           };
