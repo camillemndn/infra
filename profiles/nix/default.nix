@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, ... }:
 
 {
   nix = {
@@ -16,7 +16,7 @@
         "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
       ];
 
-      nix-path = [ "nixpkgs=flake:nixpkgs/nixos-unstable" ];
+      nix-path = [ "nixpkgs=flake:nixpkgs/nixos-23.05" ];
     };
 
     extraOptions = ''

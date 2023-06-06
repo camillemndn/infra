@@ -51,26 +51,26 @@ with lib;
     nftables.enable = true;
   };
   environment.systemPackages = with pkgs; [
+    age
+    comma
+    deploy-rs
+    direnv
+    du-dust
     htop
-    powertop
+    lazygit
     lsof
     neofetch
-    du-dust
-    wget
-    zip
-    unzip
+    nix-init
+    nix-tree
+    nixos-option
     ntfs3g
     oh-my-fish
-    age
+    powertop
     sops
-    deploy-rs
-    nixos-option
-    nix-tree
-    nix-init
-    direnv
     tldr
-    comma
-    lazygit
+    unzip
+    wget
+    zip
   ];
 
   services.mysql = {

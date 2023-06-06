@@ -7,7 +7,7 @@ with inputs;
 # homeDirectory = "/home/${username}";
 # configHome = "${homeDirectory}/.config";
 
-# pkgs = import unstable {
+# pkgs = import nixpkgs {
 # inherit system;
 # config.allowUnfree = true;
 # config.xdg.configHome = configHome;
