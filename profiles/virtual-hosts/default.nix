@@ -129,7 +129,8 @@ in
         );
       };
 
-      security.acme.defaults.server = cfg.acmeServer;
+      security.acme.certs = mapAttrs (n: v: mkIf (hasSuffix ".kms" n && (!hasPrefix "www." n)) { server = cfg.acmeServer; }) config.services.nginx.virtualHosts; # Use VPN CA only on .kms domains
+
       networking.firewall.allowedTCPPorts = [ 80 443 ];
     };
 }

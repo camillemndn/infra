@@ -31,8 +31,6 @@ with lib;
       acmeVirtualHosts.ntfy.port = 3002;
     };
 
-    security.acme.defaults.server = mkForce "https://acme-v02.api.letsencrypt.org/directory";
-
     systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
     services.nginx.virtualHosts."uptime.mondon.xyz".locations."/".proxyWebsockets = true;
 
