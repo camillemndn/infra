@@ -1,8 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 let
   cfg = config.services;
+  virtualHostsEnabled = cfg.virtualHosts != { } || cfg.acmeVirtualHosts != { } || cfg.vpnVirtualHosts != { };
 
   mapVirtualHosts = f: x: (mapAttrsToList (name: value: f { name = name; port = x.${name}.port; domain = x.${name}.domain; }) x);
   mapVPNVirtualHosts = g: x: (mapAttrsToList (name: value: g { name = name; port = x.${name}.port; restricted = x.${name}.restricted; exposedDomain = x.${name}.exposedDomain; }) x);
@@ -113,12 +114,11 @@ in
   config =
     {
       services.nginx = {
-        enable = mkIf (cfg.virtualHosts != { } || cfg.acmeVirtualHosts != { } || cfg.vpnVirtualHosts != { }) true;
+        enable = mkIf virtualHostsEnabled true;
         recommendedOptimisation = mkDefault true;
         recommendedProxySettings = mkDefault true;
         recommendedGzipSettings = mkDefault true;
         recommendedTlsSettings = mkDefault true;
-
 
         virtualHosts = mkMerge (
           (mapVirtualHosts mkVirtualHost cfg.virtualHosts)
@@ -131,6 +131,6 @@ in
 
       security.acme.certs = mapAttrs (n: v: mkIf (hasSuffix ".kms" n && (!hasPrefix "www." n)) { server = cfg.acmeServer; }) config.services.nginx.virtualHosts; # Use VPN CA only on .kms domains
 
-      networking.firewall.allowedTCPPorts = [ 80 443 ];
+      networking.firewall.allowedTCPPorts = mkIf virtualHostsEnabled [ 80 443 ];
     };
 }
