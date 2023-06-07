@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.profiles.media-server;
@@ -57,6 +57,8 @@ with lib;
       lazylibrarian = { enable = true; group = "mediasrv"; };
       vpnVirtualHosts.books = { port = 5299; restricted = false; };
     };
+
+    systemd.services.lazylibrarian.serviceConfig.TimeoutStopSec = 5;
 
     # systemd.services.jellyfin.serviceConfig = {
     #   MemoryHigh = "512M";
