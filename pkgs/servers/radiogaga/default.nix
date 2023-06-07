@@ -34,7 +34,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "radiogaga";
-  version = "unstable-2023-04-24";
+  version = "unstable-2023-06-07";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
@@ -60,8 +60,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
-    rev = "9165b84fca4d5bc900805c5c4cb9882055f06328";
-    hash = "sha256-VTDZwNuFm9MPAMHPsXxXMi1t9Gxi/VVokDpCM/rzdpE=";
+    rev = "838e883d3d640063f79ffe6bd2ecc4eb6efcc8a7";
+    hash = "sha256-EgSizMWXZ+P1onn2Ibw47WsOG40KlThPPqiVeMHtJM8=";
   };
 
   postPatch = ''
@@ -96,3 +96,4 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
   };
 }
+
