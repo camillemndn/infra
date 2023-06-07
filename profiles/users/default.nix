@@ -81,8 +81,6 @@ with lib;
     };
   };
 
-  sops.defaultSopsFile = ../../secrets/passwords.yaml;
-
   home-manager.useGlobalPkgs = true;
 
   security.pki.certificateFiles = [ ./saumonnet.crt ];
