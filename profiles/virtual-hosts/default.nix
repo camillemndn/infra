@@ -71,7 +71,8 @@ let
     (mkACMEVirtualHost { name = name; port = port; domain = "kms"; })
     {
       "${name}.${cfg.vpnDomain}".locations."/".extraConfig = ''
-        allow 100.10.10.0/8;
+        allow 100.100.45.0/24;
+        allow fd7a:115c:a1e0::/48;
         deny all;
       '';
     }
