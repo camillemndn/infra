@@ -104,53 +104,32 @@
 
       nixosModules = import ./modules;
 
-      dnsRecords = with nixpkgs.lib;
-        let
-          machineInfo = {
-            zeppelin = { vpn = "100.100.45.7"; public = "78.192.168.230"; };
-            radiogaga = { vpn = "100.100.45.19"; };
-            offspring = { public = "141.145.197.42"; };
+
+      machines = {
+        offspring = {
+          ipv4.public = "141.145.197.42";
+          ipv6 = { };
+        };
+        radiogaga = {
+          tld = "kms";
+          ipv4 = {
+            public = "129.199.158.3";
+            vpn = "100.100.45.19";
           };
-
-          splitSuffix = len: sep: string:
-            let l = splitString sep string;
-            in
-            [ (concatStringsSep sep (drop (length l - len) l)) (concatStringsSep sep (take (length l - len) l)) ];
-
-          isVPN = x: hasSuffix "luj" x || hasSuffix "kms" x || hasSuffix "saumon" x;
-
-          extractDomain = x:
-            if (isVPN x) then (splitSuffix 1 "." x) else
-            splitSuffix 2 "." x;
-
-          domainToRecord = machine: x:
-            if (!(hasInfix "." x) || hasInfix ".local" x) then { } else
-            let
-              zone = head (extractDomain x);
-              subdomain = last (extractDomain x);
-            in
-            {
-              ${zone} = {
-                TTL = 60 * 60;
-                NS = [ "@" ];
-                SOA = {
-                  nameServer = "@";
-                  adminEmail = "dns@saumon.network";
-                  serial = 0;
-                };
-              } //
-              (if (subdomain == "") then {
-                A = with machineInfo.${machine};
-                  (if isVPN x then [ vpn ] else [ public ]);
-              } else {
-                subdomains.${subdomain}.A = with machineInfo.${machine}; if isVPN x then [ vpn ] else [ public ];
-              });
-            };
-
-          getDomains = machine: with self.nixosConfigurations.${machine}.config; attrNames services.nginx.virtualHosts ++ optional services.tailscale.enable "${machine}.kms";
-
-          recursiveUpdateManyAttrs = foldl recursiveUpdate { };
-        in
-        recursiveUpdateManyAttrs (concatMap (machine: map (domainToRecord machine) (getDomains machine)) (attrNames machineInfo));
+          ipv6 = { };
+        };
+        zeppelin = {
+          tld = "kms";
+          ipv4 = {
+            local = "192.168.0.137";
+            public = "78.194.168.230";
+            vpn = "100.100.45.7";
+          };
+          ipv6 = {
+            public = "2a01:e34:ec2a:8e60:c4f0:fbff:fe8c:d6da";
+            vpn = "fd7a:115c:a1e0::7";
+          };
+        };
+      };
     });
 }
