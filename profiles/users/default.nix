@@ -50,10 +50,13 @@ with lib;
     firewall.checkReversePath = mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };
+  services.resolved.enable = true;
+
   environment.systemPackages = with pkgs; [
     age
     comma
     deploy-rs
+    dig
     direnv
     du-dust
     htop
@@ -63,6 +66,7 @@ with lib;
     nix-init
     nix-tree
     nixos-option
+    nmap
     ntfs3g
     oh-my-fish
     powertop
