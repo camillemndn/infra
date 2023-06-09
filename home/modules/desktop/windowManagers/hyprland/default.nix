@@ -1,9 +1,5 @@
-inputs:
-{ lib
-, config
-, pkgs
-, ...
-}:
+{ lib, pkgs, ... }:
+
 let
   # use OCR and copy to clipboard
   ocrScript =
@@ -16,10 +12,9 @@ let
       ${_ libnotify} "$(${wl-clipboard}/bin/wl-paste)"
     '';
 in
+
 {
   imports = [
-    inputs.hyprland.homeManagerModules.default
-
     ../../dunst
     ../../waybar
     ../../gtk.nix
@@ -40,8 +35,7 @@ in
       wf-recorder
       wl-clipboard
       xorg.xprop
-      inputs.hyprland-contrib.packages.${pkgs.system}.grimblast
-    ];
+    ] ++ lib.optional (pkgs.system == "x86_64-linux") grimblast;
 
     sessionVariables = {
       # XDG Specifications
@@ -68,7 +62,7 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.default.override { nvidiaPatches = true; };
+    package = pkgs.hyprland;
     systemdIntegration = true;
     extraConfig = import ./config.nix;
   };

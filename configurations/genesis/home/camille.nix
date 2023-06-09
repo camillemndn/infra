@@ -1,14 +1,8 @@
-inputs: { config, pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
-with inputs;
 
 {
-  imports = [
-    (import ../base inputs)
-    # (import ../../modules/desktop/windowManagers/hyprland inputs)
-  ];
-
   home = {
     packages = with pkgs; [
       (writeShellScriptBin "gnome-terminal" ''

@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
-with pkgs;
+let
+  callPackage = pkgs.callPackage;
+in
 
 {
   audiveris = callPackage ../applications/audio/audiveris { };

@@ -1,11 +1,16 @@
-inputs:
-with inputs;
+{ self, deploy-rs, ... }:
+
 {
   sshUser = "root";
   user = "root";
   remoteBuild = true;
 
   nodes = {
+    genesis = {
+      hostname = "localhost";
+      profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.genesis;
+    };
+
     offspring = {
       hostname = "offspring.mondon.xyz";
       profiles.system.path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.offspring;
@@ -20,11 +25,6 @@ with inputs;
     rush = {
       hostname = "rush.kms";
       profiles.system.path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.rush;
-    };
-
-    genesis = {
-      hostname = "localhost";
-      profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.genesis;
     };
 
     zeppelin = {

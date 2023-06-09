@@ -1,4 +1,5 @@
 [
+  ./base
   ./code.nix
   ./kitty.nix
   ./neovim

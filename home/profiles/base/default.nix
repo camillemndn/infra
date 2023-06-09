@@ -1,14 +1,6 @@
-inputs: { lib, ... }:
-
-with inputs;
+{ lib, ... }:
 
 {
-  imports = import ../../modules
-    ++ import ../../profiles
-    ++ [
-    spicetify-nix.homeManagerModule
-  ];
-
   home = {
     username = "camille";
     homeDirectory = "/home/camille";
@@ -17,14 +9,13 @@ with inputs;
     stateVersion = lib.mkDefault "22.11";
   };
 
+  profiles.kitty.enable = true;
 
   programs.nix-index = {
     enable = true;
     enableBashIntegration = true;
     enableFishIntegration = true;
   };
-
-  profiles.kitty.enable = true;
 
   programs.home-manager.enable = true;
 }

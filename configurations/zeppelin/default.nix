@@ -27,7 +27,6 @@
     mail-server.enable = true;
     media-server.enable = true;
     meet = { enable = true; hostName = "meet.mondon.xyz"; };
-    office.enable = true;
     paperless.enable = true;
     passwords.enable = true;
     photos.enable = true;

@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [ (final: prev: { spotify = pkgs.spotify.overrideAttrs { deviceScaleFactor = 3; }; }) ];
+    # nixpkgs.overlays = [ (final: prev: { spotify = prev.spotify.overrideAttrs { deviceScaleFactor = 3; }; }) ];
     programs.spicetify =
       {
         enable = true;

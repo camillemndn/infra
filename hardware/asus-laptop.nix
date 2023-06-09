@@ -39,7 +39,7 @@ with lib;
 
     kernelModules = [ "kvm-amd" ];
     blacklistedKernelModules = [ "nouveau" ];
-    kernelPackages = pkgs.kernel.linuxPackages;
+    kernelPackages = pkgs.pinned.linuxPackages;
     kernelParams = [ "supergfxd.mode=integrated" ];
 
     kernelPatches = [{
