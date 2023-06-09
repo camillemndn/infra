@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ 80 443 8000 ];
+    networking.firewall.allowedTCPPorts = [ 80 ];
 
     services.radiogaga.enable = true;
 

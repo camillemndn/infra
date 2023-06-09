@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.allowedTCPPorts = [ 443 ];
 
     services.nginx = {
       enable = true;
@@ -44,7 +44,11 @@ with lib;
         '';
       };
 
-      virtualHosts."yali.es".root = "/srv/sites/yali-www";
+      virtualHosts."yali.es" = {
+        forceSSL = true;
+        enableACME = true;
+        root = "/srv/sites/yali-www";
+      };
     };
   };
 }

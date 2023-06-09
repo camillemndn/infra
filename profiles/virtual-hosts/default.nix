@@ -76,7 +76,7 @@ let
         deny all;
       '';
     }
-    (mkIf (!restricted) (mkVirtualHost { name = name; port = port; domain = exposedDomain; }))
+    (mkIf (!restricted) (mkACMEVirtualHost { name = name; port = port; domain = exposedDomain; }))
   ];
 in
 
@@ -130,8 +130,11 @@ in
         );
       };
 
-      security.acme.certs = mapAttrs (n: v: mkIf (hasSuffix ".kms" n && (!hasPrefix "www." n)) { server = cfg.acmeServer; }) config.services.nginx.virtualHosts; # Use VPN CA only on .kms domains
+      # Use VPN CA only on .kms domains
+      security.acme.certs = mapAttrs
+        (n: v: mkIf (hasSuffix ".kms" n && (!hasPrefix "www." n)) { server = cfg.acmeServer; })
+        config.services.nginx.virtualHosts;
 
-      networking.firewall.allowedTCPPorts = mkIf virtualHostsEnabled [ 80 443 ];
+      networking.firewall.allowedTCPPorts = mkIf virtualHostsEnabled [ 443 ];
     };
 }

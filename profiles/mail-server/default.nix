@@ -52,10 +52,10 @@ with lib;
       '';
     };
 
-    services.nginx.virtualHosts."webmail.${mailDomain}" = {
-      forceSSL = mkForce false;
-      enableACME = mkForce false;
-    };
+    # services.nginx.virtualHosts."webmail.${mailDomain}" = {
+    #   forceSSL = mkForce false;
+    #   enableACME = mkForce false;
+    # };
 
     services.fail2ban = {
       enable = true;
@@ -163,14 +163,14 @@ with lib;
       ensureDatabases = [ "sogo" ];
     };
 
-    services.nginx.virtualHosts."mail.${mailDomain}".acmeRoot = mkForce null;
-    security.acme.certs."mail.${mailDomain}" = {
-      server = "https://acme-v02.api.letsencrypt.org/directory";
-      dnsProvider = "ovh";
-      dnsResolver = "dns200.anycast.me:53";
-      dnsPropagationCheck = false;
-      credentialsFile = "/run/secrets/acme-dns-challenge";
-    };
+    # services.nginx.virtualHosts."mail.${mailDomain}".acmeRoot = mkForce null;
+    # security.acme.certs."mail.${mailDomain}" = {
+    #   server = "https://acme-v02.api.letsencrypt.org/directory";
+    #   dnsProvider = "ovh";
+    #   dnsResolver = "dns200.anycast.me:53";
+    #   dnsPropagationCheck = false;
+    #   credentialsFile = "/run/secrets/acme-dns-challenge";
+    # };
 
     sops.secrets = {
       "mail-server/mondon.me/camille" = {
@@ -188,12 +188,12 @@ with lib;
         key = "verso-saumon-network";
         sopsFile = ../../secrets/mail-server.yaml;
       };
-      acme-dns-challenge = {
-        format = "binary";
-        sopsFile = ../../secrets/acme-dns-challenge;
-      };
+      # acme-dns-challenge = {
+      #   format = "binary";
+      #   sopsFile = ../../secrets/acme-dns-challenge;
+      # };
     };
 
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    networking.firewall.allowedTCPPorts = [ 443 ];
   };
 }

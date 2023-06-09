@@ -34,10 +34,10 @@ with lib;
       };
     };
 
-    services.nginx.virtualHosts."${cfg.hostName}" = {
-      enableACME = false;
-      forceSSL = false;
-    };
+    # services.nginx.virtualHosts."${cfg.hostName}" = {
+    #   enableACME = false;
+    #   forceSSL = false;
+    # };
 
     services.prosody.extraConfig = ''
       log = {
