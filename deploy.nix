@@ -7,7 +7,7 @@ with inputs;
 
   nodes = {
     offspring = {
-      hostname = "offspring.saumon.network";
+      hostname = "offspring.mondon.xyz";
       profiles.system.path = deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.offspring;
     };
 

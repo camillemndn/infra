@@ -109,6 +109,7 @@
         offspring = {
           ipv4.public = "141.145.197.42";
           ipv6 = { };
+          subdomains = [ "offspring.mondon.xyz" ];
         };
         radiogaga = {
           tld = "kms";
