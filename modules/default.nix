@@ -7,7 +7,6 @@
   lazylibrarian = import ./services/misc/lazylibrarian;
   logiops = import ./services/misc/logiops;
   organizr = import ./services/web-apps/organizr;
-  overleaf = import ./services/misc/overleaf;
   sheetable = import ./services/web-apps/sheetable;
   radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;

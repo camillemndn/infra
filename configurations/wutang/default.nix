@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+_:
 
 {
   networking.hostName = "wutang";

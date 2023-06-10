@@ -6,16 +6,12 @@ let
 
   availablePlats = {
     x86_64-linux = "linux_amd64";
-    # x86_64-darwin = "darwin_amd64";
     aarch64-linux = "linux_arm64";
-    # aarch64-darwin = "darwin_arm64";
     armv7l-linux = "linux_armv7";
     armv6l-linux = "linux_armv6";
   };
 
   plat = availablePlats.${system} or throwSystem;
-
-  archive_fmt = if stdenv.isDarwin then "zip" else "tar.gz";
 
   sha256 = {
     x86_64-linux = "sha256-dxazml2t7nqWPnWUOhN2k5YoxzqZ8LzhLTs19sTmbdU=";
@@ -43,12 +39,8 @@ stdenv.mkDerivation rec {
     mv * $out/bin/.
   '';
 
-  # Required for compilation
-  nativeBuildInputs = [
-    autoPatchelfHook # Automatically setup the loader, and do the magic
-  ];
+  nativeBuildInputs = [ autoPatchelfHook ];
 
-  # Required at running time
   buildInputs = [
     glibc
     gcc-unwrapped
@@ -59,6 +51,6 @@ stdenv.mkDerivation rec {
     homepage = "https://sheetable.net/";
     license = licenses.gpl3Only;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = mapAttrsToList (name: value: (toString name)) availablePlats;
+    platforms = mapAttrsToList (name: _: (toString name)) availablePlats;
   };
 }

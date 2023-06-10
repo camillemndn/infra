@@ -1,4 +1,4 @@
-{ pkgs, stdenv, lib, fetchzip, ... }:
+{ stdenv, lib, fetchzip, ... }:
 
 let
   commit = "fa58690db99f6b19174278085b369b926ada42be";

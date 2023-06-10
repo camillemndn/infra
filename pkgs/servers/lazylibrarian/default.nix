@@ -1,4 +1,4 @@
-{ lib, stdenv, python3, pkgs, makeWrapper, fetchFromGitLab }:
+{ lib, stdenv, python3, makeWrapper, fetchFromGitLab }:
 
 let
   python_env = python3.withPackages

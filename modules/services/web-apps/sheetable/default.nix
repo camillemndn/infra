@@ -84,7 +84,7 @@ with lib;
         home = "/var/lib/sheetable";
         createHome = true;
         isSystemUser = true;
-        group = cfg.group;
+        inherit (cfg) group;
       };
     };
 

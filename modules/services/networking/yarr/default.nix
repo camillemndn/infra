@@ -56,7 +56,7 @@ in
 
     users.users = mkIf (cfg.user == "yarr") {
       yarr = {
-        group = cfg.group;
+        inherit (cfg) group;
         home = cfg.dataDir;
         isSystemUser = true;
       };

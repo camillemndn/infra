@@ -1,12 +1,12 @@
 {
   genesis = {
-    hardware = "asus-laptop";
+    hardware = "asus/gv301qe";
     users = [ "camille" ];
   };
 
   offspring = {
     system = "aarch64-linux";
-    hardware = "oracle-vm";
+    hardware = "virtual/oracle";
     users = [ ];
     ipv4.public = "141.145.197.42";
     ipv6 = { };
@@ -15,7 +15,7 @@
 
   radiogaga = {
     system = "aarch64-linux";
-    hardware = "raspberrypi-3b";
+    hardware = "raspberrypi/3b";
     users = [ ];
     tld = "kms";
     ipv4 = {
@@ -26,7 +26,7 @@
   };
 
   zeppelin = {
-    hardware = "proxmox-vm";
+    hardware = "virtual/proxmox";
     users = [ ];
     tld = "kms";
     ipv4 = {

@@ -2,11 +2,12 @@
   description = "A flake for my personal configurations";
 
   inputs = {
-    # Nix packages
+    # Nix packages and modules
 
     nixpkgs.url = "github:camillemndn/nixpkgs/nixos-23.05";
     pinned.url = "github:camillemndn/nixpkgs/b47c5fe5f762dff6f68c2fa450a3c5d5db36668e";
     unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
+    home-manager = { url = "home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     # Flake utils
 
@@ -25,9 +26,8 @@
     utils = { url = "flake-utils"; inputs.systems.follows = "systems"; };
     systems = { url = "path:./systems.nix"; flake = false; };
 
-    # Necessary dependencies
+    # Hardware dependencies
 
-    home-manager = { url = "home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
     lanzaboote.url = "github:nix-community/lanzaboote";
     mobile-nixos = { url = "github:camillemndn/mobile-nixos"; flake = false; };
 
@@ -37,7 +37,7 @@
       inputs.flake-utils.follows = "utils";
     };
 
-    # Other apps
+    # Sofware dependencies 
 
     hyprland = { url = "github:hyprwm/Hyprland?ref=v0.26.0"; inputs.nixpkgs.follows = "nixpkgs"; };
     hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
@@ -62,35 +62,35 @@
     };
   };
 
-  outputs = inputs@{ ... }: with inputs;
-    let
-      lib = nixpkgs.lib.extend (final: prev: import ./lib { lib = prev; inherit utils; });
-    in
+  outputs = inputs: with inputs;
+
+    let lib = nixpkgs.lib.extend (_: prev: import ./lib { lib = prev; inherit utils; }); in
+
     lib.mergeDefaultSystems (system:
+
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ self.overlays.default ];
-          config.allowUnsupportedSystem = true;
+          overlays = [ self.overlays.${system} ];
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-            "mac"
             "corefonts"
-            "unrar"
             "filerun"
+            "mac"
+            "nvidia-settings"
+            "nvidia-x11"
             "spotify"
             "steam"
             "steam-original"
             "steam-run"
-            "nvidia-x11"
-            "nvidia-settings"
+            "unrar"
             "zoom"
           ];
         };
 
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
-          spicetify-nix.homeManagerModule
           hyprland.homeManagerModules.default
-        ] ++ (import ./home/profiles);
+          spicetify-nix.homeManagerModule
+        ] ++ (import ./profiles/home);
 
         extraModules = lib.attrValues self.nixosModules ++ [
           home-manager.nixosModules.home-manager
@@ -101,21 +101,22 @@
           sops-nix.nixosModules.sops
         ] ++ (import ./profiles);
       in
+
       {
         inherit lib pkgs;
 
         packages.${system} = import ./pkgs/top-level { inherit pkgs; };
-        overlays.default = final: prev: lib.updateManyAttrs [
+        overlays.${system} = _: _: lib.updateManyAttrs [
           { inherit lib; }
           {
-            pinned = pinned.legacyPackages.${system};
+            pinned = import pinned { inherit system; inherit (pkgs) config; };
             unstable = unstable.legacyPackages.${system};
           }
           # Adds all the packages from this flake
           self.packages.${system}
           # Adds some packages from other flakes
           {
-            grimblast = hyprland-contrib.packages.x86_64-linux.grimblast;
+            inherit (hyprland-contrib.packages.x86_64-linux) grimblast;
             hyperland = hyprland.packages.x86_64-linux.default.override { nvidiaPatches = true; };
             nix-software-center = nix-software-center.packages.${system}.default;
             spicetify-nix = spicetify-nix.packages.${system}.default;
@@ -124,8 +125,8 @@
 
         machines = import ./machines.nix;
 
-        homeConfigurations = import ./configurations/home.nix { inherit (inputs) self home-manager; inherit lib pkgs extraHomeModules; };
-        homeManagerModules = import ./home/modules;
+        homeConfigurations = import ./configurations/home.nix { inherit (inputs) self home-manager nixpkgs; inherit lib pkgs extraHomeModules; };
+        homeManagerModules = import ./modules/home;
 
         nixosConfigurations = import ./configurations { inherit (inputs) self; inherit lib pkgs extraModules extraHomeModules; };
         nixosModules = import ./modules;

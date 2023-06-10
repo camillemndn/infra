@@ -14,8 +14,6 @@ let
 
   plat = availablePlats.${system} or throwSystem;
 
-  archive_fmt = if stdenv.isDarwin then "zip" else "tar.gz";
-
   sha256 = {
     x86_64-linux = "sha256-gP+urlOzNSf7woaFNXlG6TjB0eXrEJaT/uRZjDjWcCk=";
     x86_64-darwin = "0l5s7ba3gd7f73dag52ccd26076a37jvr5a3npyd0078nby0d5n4";
@@ -53,8 +51,8 @@ stdenv.mkDerivation rec {
   meta = with lib; {
     description = "Probably the best File Manager in the world with desktop Sync and File Sharing";
     homepage = "https://filerun.com/";
-    # license = licenses.unfree;
+    license = licenses.unfree;
     maintainers = with maintainers; [ camillemndn ];
-    platforms = mapAttrsToList (name: value: (toString name)) availablePlats;
+    platforms = mapAttrsToList (name: _: (toString name)) availablePlats;
   };
 }

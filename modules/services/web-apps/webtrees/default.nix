@@ -2,7 +2,6 @@
 
 let
   app = "webtrees";
-  domain = "family.kms";
   dataDir = "/var/lib/${app}";
   cfg = config.services.webtrees;
 in

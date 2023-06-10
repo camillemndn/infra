@@ -1,9 +1,7 @@
 { lib
 , buildNpmPackage
 , fetchFromGitHub
-, fetchurl
 , rsync
-, nodejs
 }:
 
 buildNpmPackage rec {

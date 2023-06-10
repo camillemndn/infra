@@ -71,7 +71,7 @@ with lib;
   config = mkIf cfg.enable {
     services.phpfpm.pools.koel = {
       user = "koel";
-      group = cfg.group;
+      inherit (cfg) group;
       settings = {
         "listen.owner" = config.services.nginx.user;
         "pm" = "dynamic";
@@ -168,7 +168,7 @@ with lib;
 
     users.users.koel = {
       isSystemUser = true;
-      group = cfg.group;
+      inherit (cfg) group;
       packages = [ pkgs.php ];
     };
 

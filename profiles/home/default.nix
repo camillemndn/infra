@@ -1,0 +1,9 @@
+[
+  ./base
+  ./desktop/alacritty
+  ./desktop/code
+  ./desktop/hyprland
+  ./desktop/kitty
+  ./desktop/spicetify
+  ./neovim
+]

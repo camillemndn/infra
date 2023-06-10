@@ -18,8 +18,8 @@
   };
 
   nixpkgs.overlays = [
-    (final: prev: {
-      thunderbird-bin-unwrapped = prev.thunderbird-bin-unwrapped.overrideAttrs (old:
+    (_final: prev: {
+      thunderbird-bin-unwrapped = prev.thunderbird-bin-unwrapped.overrideAttrs (_old:
         let version = "115.0a1"; in {
           inherit version;
           src = pkgs.fetchurl {

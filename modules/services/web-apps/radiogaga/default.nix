@@ -60,7 +60,7 @@ in
 
     users.users = mkIf (cfg.user == "radiogaga") {
       radiogaga = {
-        group = cfg.group;
+        inherit (cfg) group;
         home = cfg.dataDir;
         isSystemUser = true;
       };

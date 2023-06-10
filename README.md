@@ -16,15 +16,15 @@ This whole repository is a flake. It is an experimental feature of Nix, allowing
 
 This project is freely inspired by [JulienMalka/nix-config](https://github.com/JulienMalka/nix-config).
 
-## My configurations:
+## My machines:
 
-- **zeppelin**, a NUC with a multimedia server and many other things
-- **genesis**, an Asus ROG X13 convertible laptop with secure boot, Gnome and fully functional hardware except for fingerprint sensor
-- **icecube**, a USB stick with ZFS, i3 and *finally* secure boot
-- **wutang**, a Windows Subsystem for Linux machine
-- **rush**, a Raspberry Pi 4B with UEFI
+- **genesis**, an Asus ROG X13 convertible laptop with secure boot, Gnome (*soon Hyprland*) and fully functional hardware except for fingerprint sensor
 - **offspring**, an Oracle VM with monitoring services
+- **pinkfloyd**, a PinePhone with Mobile NixOS (*decommissioned*) 
 - **radiogaga**, a Raspberry Pi 3B used as a smart alarm clock
+- **rush**, a Raspberry Pi 4B with UEFI
+- **wutang**, a Windows Subsystem for Linux machine (*decommissioned*)
+- **zeppelin**, a NUC with a multimedia server and many other things
 
 ## Toolbox
 

@@ -1,5 +1,4 @@
 { lib
-, stdenv
 , fetchgit
 , pkgs
 , jre

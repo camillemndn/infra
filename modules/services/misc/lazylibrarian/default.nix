@@ -64,7 +64,7 @@ in
 
     users.users = mkIf (cfg.user == "lazylibrarian") {
       lazylibrarian = {
-        group = cfg.group;
+        inherit (cfg) group;
         home = "/var/lib/lazylibrarian";
         createHome = true;
         isSystemUser = true;

@@ -3,7 +3,6 @@
 let
   app = "organizr";
   domain = "home.kms";
-  dataDir = "/var/lib/${app}";
   cfg = config.services.${app};
 in
 with lib;

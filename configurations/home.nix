@@ -1,18 +1,21 @@
-{ lib, pkgs, extraHomeModules, self, home-manager, ... }:
+{ lib, pkgs, extraHomeModules, self, home-manager, nixpkgs, ... }:
 
 let
-  homeManagerConfiguration' = args@{ user, configuration, ... }: home-manager.lib.homeManagerConfiguration (lib.recursiveUpdate
+  homeManagerConfiguration' = args@{ user, configuration, system, ... }: home-manager.lib.homeManagerConfiguration (lib.recursiveUpdate
     {
-      inherit pkgs lib;
-      # specialArgs = { inherit self; };
+      inherit lib;
+      pkgs = import nixpkgs { inherit system; inherit (pkgs) config overlays; };
+      extraSpecialArgs = { inherit self; };
       modules = extraHomeModules ++ [ (import ./${configuration}/home/${user}.nix) ];
     }
-    (builtins.removeAttrs args [ "configuration" "user" ]));
+    (builtins.removeAttrs args [ "configuration" "user" "system" ]));
 
   mapHmConfigFromMachines = lib.mapAttrs'
-    (configuration: args: lib.nameValuePair
-      "camille@${configuration}"
-      (homeManagerConfiguration' { inherit configuration; user = "camille"; })
+    (configuration: args:
+      let system = args.system or "x86_64-linux"; in
+      lib.nameValuePair
+        "camille@${configuration}"
+        (homeManagerConfiguration' { inherit configuration system; user = "camille"; })
     );
 
 in
