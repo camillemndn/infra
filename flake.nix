@@ -24,7 +24,7 @@
     };
 
     utils = { url = "flake-utils"; inputs.systems.follows = "systems"; };
-    systems = { url = "https://raw.githubusercontent.com/camillemndn/nixos-config/new/systems.nix"; flake = false; };
+    systems = { url = "https://raw.githubusercontent.com/camillemndn/nixos-config/main/systems.nix"; flake = false; };
 
     # Hardware dependencies
 
