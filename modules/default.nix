@@ -1,6 +1,5 @@
 {
   deluge-storm = import ./services/web-apps/deluge-storm;
-  filerun = import ./services/web-apps/filerun;
   gdm = import ./services/x11/display-managers/gdm.nix;
   hammond = import ./services/misc/hammond;
   koel = import ./services/audio/koel;

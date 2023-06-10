@@ -74,7 +74,6 @@
           overlays = [ self.overlays.${system} ];
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "corefonts"
-            "filerun"
             "mac"
             "nvidia-settings"
             "nvidia-x11"

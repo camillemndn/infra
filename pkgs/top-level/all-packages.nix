@@ -10,7 +10,6 @@ in
   catppuccin-cursors = callPackage ../data/icons/catppuccin-cursors { };
   catppuccin-folders = callPackage ../data/icons/catppuccin-folders { };
   deluge-storm = callPackage ../servers/deluge-storm { };
-  filerun = callPackage ../servers/filerun { };
   hammond = callPackage ../servers/hammond { };
   koel = callPackage ../servers/koel { };
   lazylibrarian = callPackage ../servers/lazylibrarian { };
