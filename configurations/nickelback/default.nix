@@ -4,7 +4,7 @@ _:
   networking = {
     hostName = "nickelback";
     hostId = "c5cdb5c5";
-    wireless.enable = true;
+    networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
