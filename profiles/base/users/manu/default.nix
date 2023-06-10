@@ -1,13 +1,26 @@
-_:
+{ config, lib, ... }:
+
+let
+  cfg = config.profiles.manu;
+in
+with lib;
 
 {
-  users.users.manu = {
-    isNormalUser = true;
+  options.profiles.manu = {
+    enable = mkEnableOption "Manu user";
   };
 
-  services.openssh.extraConfig = ''
-    PasswordAuthentication no
-    Match User manu
-    PasswordAuthentication yes
-  '';
+  config = mkIf cfg.enable {
+    users.mutableUsers = lib.mkForce false;
+
+    users.users.manu = {
+      isNormalUser = true;
+      description = "Manu";
+    };
+
+    services.openssh.extraConfig = ''
+      Match User manu
+      PasswordAuthentication yes 
+    '';
+  };
 }

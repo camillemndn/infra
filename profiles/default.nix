@@ -2,6 +2,7 @@
   ./base/nix
   ./base/tmux
   ./base/users
+  ./base/users/manu
   ./base/wifi
   ./desktop/gdm
   ./desktop/gnome
