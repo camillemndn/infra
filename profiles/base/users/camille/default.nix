@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
   sshPubKeys = [
@@ -25,7 +25,7 @@ in
     neededForUsers = true;
   };
 
-  sops.age.keyFile = "/home/camille/.config/sops/age/keys.txt";
+  sops.age.keyFile = lib.mkIf (!config.services.openssh.enable && config.sops.secrets != { }) "/home/camille/.config/sops/age/keys.txt";
 
   users.users.root = {
     extraGroups = [ "audio" "pulse-access" ];
