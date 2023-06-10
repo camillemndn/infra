@@ -2,6 +2,7 @@
 
 let
   cfg = config.profiles.media-server;
+  group = "media";
 in
 with lib;
 
@@ -11,51 +12,51 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    users.groups.mediasrv.name = "mediasrv";
+    users.groups.${group}.name = group;
 
     services = {
-      jellyfin = { enable = true; group = "mediasrv"; };
+      jellyfin = { enable = true; inherit group; };
       vpnVirtualHosts.media = { port = 8096; restricted = false; };
 
       jellyseerr.enable = true;
       vpnVirtualHosts.requests = { port = 5055; restricted = false; };
 
-      calibre-server = { enable = true; group = "mediasrv"; };
+      calibre-server = { enable = true; inherit group; };
       vpnVirtualHosts.library.port = 8079;
 
-      # calibre-web-litterature = { enable = true; group = "mediasrv"; };
+      # calibre-web-litterature = { enable = true; inherit group; };
       # vpnVirtualHosts."litterature.library" = { port = 8083; restricted = false; }; 
 
-      # calibre-web-university = { enable = true; group = "mediasrv"; };
+      # calibre-web-university = { enable = true; inherit group; };
       # vpnVirtualHosts."university.library" = { port = 8084; restricted = false; };
 
-      # calibre-web-tangente = { enable = true; group = "mediasrv"; };
+      # calibre-web-tangente = { enable = true; inherit group; };
       # vpnVirtualHosts."tangente.library" = { port = 8085; restricted = false; };
 
-      deluge = { enable = true; group = "mediasrv"; storm.enable = true; };
+      deluge = { enable = true; inherit group; storm.enable = true; };
       vpnVirtualHosts.torrents.port = 8112;
       vpnVirtualHosts.storm.port = 8221;
 
-      radarr = { enable = true; group = "mediasrv"; };
+      radarr = { enable = true; inherit group; };
       vpnVirtualHosts.movies.port = 7878;
 
-      # readarr = { enable = true; group = "mediasrv"; };
-      # vpnVirtualHosts.books2.port = 8787;
-
-      lidarr = { enable = true; group = "mediasrv"; };
+      lidarr = { enable = true; inherit group; };
       vpnVirtualHosts.music.port = 8686;
 
-      sonarr = { enable = true; group = "mediasrv"; };
+      sonarr = { enable = true; inherit group; };
       vpnVirtualHosts.series.port = 8989;
 
-      bazarr = { enable = true; group = "mediasrv"; };
+      bazarr = { enable = true; inherit group; };
       vpnVirtualHosts.subtitles.port = 6767;
 
-      jackett = { enable = true; group = "mediasrv"; };
+      jackett = { enable = true; inherit group; };
       vpnVirtualHosts.trackers.port = 9117;
 
-      lazylibrarian = { enable = true; group = "mediasrv"; };
+      lazylibrarian = { enable = true; inherit group; };
       vpnVirtualHosts.books = { port = 5299; restricted = false; };
+
+      # readarr = { enable = true; inherit group; };
+      # vpnVirtualHosts.books2.port = 8787;
     };
 
     systemd.services.lazylibrarian.serviceConfig.TimeoutStopSec = 5;
@@ -81,6 +82,7 @@ with lib;
     '';
 
     services.nginx.virtualHosts."music.${config.services.vpnDomain}".locations."/".proxyWebsockets = true;
+
     environment.systemPackages = with pkgs; [ shntool cuetools mac flac ];
   };
 }
