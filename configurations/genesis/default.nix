@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   networking = {
@@ -34,7 +34,6 @@
   profiles = {
     gdm.enable = true;
     gnome.enable = true;
-    hyprland.enable = true;
   };
 
   programs = {
@@ -51,8 +50,6 @@
     tlp.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
   };
-
-  sops.age.keyFile = "/home/camille/.config/sops/age/keys.txt";
 
   # virtualisation = {
   #   waydroid.enable = true;

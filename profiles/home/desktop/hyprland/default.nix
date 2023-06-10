@@ -62,7 +62,6 @@ with lib;
 
     wayland.windowManager.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
       systemdIntegration = true;
       extraConfig = import ./config.nix;
     };

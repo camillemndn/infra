@@ -25,6 +25,8 @@ in
     neededForUsers = true;
   };
 
+  sops.age.keyFile = "/home/camille/.config/sops/age/keys.txt";
+
   users.users.root = {
     extraGroups = [ "audio" "pulse-access" ];
     openssh.authorizedKeys.keys = sshPubKeys;

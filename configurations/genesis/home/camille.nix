@@ -16,9 +16,6 @@ with lib;
       cemu
 
       signal-desktop-beta
-      # discord
-      # caprine-bin
-      # zapzap
       zoom-us
 
       libreoffice-fresh
@@ -53,13 +50,7 @@ with lib;
   services = {
     nextcloud-client = {
       enable = true;
-      # package = pkgs.owncloud-client;
       startInBackground = true;
-    };
-
-    syncthing = {
-      # enable = true;
-      # tray.enable = true;
     };
   };
 
@@ -71,7 +62,7 @@ with lib;
   };
 
   systemd.user.services.nextcloud-client = {
-    Service.ExecStartPre = mkForce "${pkgs.coreutils}/bin/sleep 5";
+    Service.ExecStartPre = mkForce "${pkgs.coreutils}/bin/sleep 10";
     Unit = {
       After = mkForce [ "org.gnome.Shell.target" ];
       PartOf = mkForce [ ];
@@ -128,13 +119,6 @@ with lib;
       port = 465;
     };
   };
-
-  #qt = {
-  #  enable = true;
-  #  platformTheme = "gnome";
-  #  style.name = "adwaita-dark";
-  #  style.package = pkgs.adwaita-qt;
-  #};
 
   xdg.desktopEntries = {
     spotify.settings = {

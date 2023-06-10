@@ -103,8 +103,6 @@
       in
 
       {
-        inherit lib pkgs;
-
         packages.${system} = import ./pkgs/top-level { inherit pkgs; };
         overlays.${system} = _: _: lib.updateManyAttrs [
           { inherit lib; }
