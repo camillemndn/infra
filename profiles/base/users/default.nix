@@ -3,9 +3,9 @@
 with lib;
 
 {
-  imports = [
-    ./camille
-  ];
+  imports = [ ./camille ];
+
+  console.keyMap = "fr";
 
   time.timeZone = "Europe/Paris";
 
@@ -26,33 +26,49 @@ with lib;
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  console.keyMap = "fr";
-
-  users.mutableUsers = false;
-
-  users.defaultUserShell = pkgs.fish;
-  programs.fish.enable = true;
-  programs.fish.promptInit = ''
-    ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
-  '';
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    vimAlias = true;
-    viAlias = true;
-    withRuby = false;
+  users = {
+    mutableUsers = false;
+    defaultUserShell = pkgs.fish;
   };
 
-  programs.nix-index-database.comma.enable = true;
+  programs = {
+    fish = {
+      enable = true;
+      promptInit = ''
+        ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
+      '';
+    };
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      vimAlias = true;
+      viAlias = true;
+      withRuby = false;
+    };
 
-  services.eternal-terminal.enable = true;
+    nix-index-database.comma.enable = true;
+  };
+
+  services = {
+    eternal-terminal.enable = true;
+
+    openssh.settings.PasswordAuthentication = false;
+
+    mysql = {
+      package = mkForce pkgs.mariadb;
+      settings = {
+        mysql.pager = "${pkgs.less}/bin/less -SFX";
+        mysqld.init-connect = "'SET NAMES utf8mb4'";
+      };
+    };
+
+    resolved.enable = true;
+  };
 
   networking = {
     firewall.checkReversePath = mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };
-  services.resolved.enable = true;
 
   environment.systemPackages = with pkgs; [
     age
@@ -78,16 +94,6 @@ with lib;
     wget
     zip
   ];
-
-  services.mysql = {
-    package = mkForce pkgs.mariadb;
-    settings = {
-      mysql.pager = "${pkgs.less}/bin/less -SFX";
-      mysqld.init-connect = "'SET NAMES utf8mb4'";
-    };
-  };
-
-  home-manager.useGlobalPkgs = true;
 
   security.pki.certificateFiles = [ ./saumonnet.crt ];
 }

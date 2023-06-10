@@ -14,8 +14,19 @@ in
   users.users.camille = {
     isNormalUser = true;
     description = "Camille";
-    extraGroups = [ "networkmanager" "wheel" "mediasrv" "audio" "pipewire" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "audio"
+      "media"
+      "networkmanager"
+      "pipewire"
+      "wheel"
+    ];
     passwordFile = "/run/secrets-for-users/camille";
+    openssh.authorizedKeys.keys = sshPubKeys;
+  };
+
+  users.users.root = {
+    extraGroups = [ "audio" "pulse-access" ];
     openssh.authorizedKeys.keys = sshPubKeys;
   };
 
@@ -27,10 +38,6 @@ in
 
   sops.age.keyFile = lib.mkIf (!config.services.openssh.enable && config.sops.secrets != { }) "/home/camille/.config/sops/age/keys.txt";
 
-  users.users.root = {
-    extraGroups = [ "audio" "pulse-access" ];
-    openssh.authorizedKeys.keys = sshPubKeys;
-  };
 
   programs.git = {
     enable = true;
