@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, self, ... }:
 
 {
   nix = {
@@ -28,13 +28,13 @@
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "zeppelin") {
-        hostName = "zeppelin.kms";
+        hostName = self.machines.zeppelin.ipv6.public;
         sshUser = "root";
         system = "x86_64-linux";
         maxJobs = 24;
       })
       (lib.mkIf (config.networking.hostName != "offspring") {
-        hostName = "offspring.saumon.network";
+        hostName = self.machines.offspring.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
         maxJobs = 8;

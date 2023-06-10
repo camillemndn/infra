@@ -114,19 +114,19 @@
         machines = import ./machines.nix;
 
         homeConfigurations = import ./configurations/home.nix {
-          inherit (inputs) self home-manager nixpkgs;
           inherit lib pkgs extraHomeModules;
+          inherit (inputs) self home-manager nixpkgs;
         };
 
         homeManagerModules = import ./modules/home;
 
         nixosConfigurations = import ./configurations {
-          inherit (inputs) self nixpkgs mobile-nixos;
           inherit lib pkgs extraModules extraHomeModules;
+          inherit (inputs) self nixpkgs mobile-nixos;
         };
 
         nixosModules = import ./modules;
 
-        deploy = import ./deploy.nix { inherit (inputs) self deploy-rs; };
+        deploy = import ./deploy.nix { inherit lib; inherit (inputs) self deploy-rs; };
       });
 }

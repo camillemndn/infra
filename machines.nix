@@ -14,7 +14,6 @@ let tld = "kms"; in {
     hardware = "virtual/oracle";
     inherit tld;
     ipv4.public = "141.145.197.42";
-    ipv6 = { };
     subdomains = [ "offspring.mondon.xyz" ];
   };
 
@@ -24,6 +23,7 @@ let tld = "kms"; in {
     inherit tld;
     ipv4 = { public = "129.199.158.3"; vpn = "100.100.45.19"; };
     ipv6 = { vpn = "fd7a:115c:a1e0::13"; };
+    remoteBuild = false;
   };
 
   rush = {
