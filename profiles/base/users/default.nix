@@ -44,6 +44,8 @@ with lib;
     withRuby = false;
   };
 
+  programs.nix-index-database.comma.enable = true;
+
   services.eternal-terminal.enable = true;
 
   networking = {

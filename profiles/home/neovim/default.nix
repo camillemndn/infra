@@ -8,6 +8,7 @@ with lib;
 {
   options.profiles.neovim = {
     enable = mkEnableOption "Activate neovim program";
+    full.enable = mkEnableOption "Activate neovim program as IDE";
   };
 
   config = mkIf cfg.enable {
@@ -17,7 +18,7 @@ with lib;
       vimAlias = true;
       vimdiffAlias = true;
 
-      coc = {
+      coc = mkIf cfg.full.enable {
         enable = true;
         settings = {
           coc.preferences.formatOnSaveFiletypes = [
@@ -97,16 +98,6 @@ with lib;
             };
           };
 
-          # nvim-r = pkgs.vimUtils.buildVimPlugin {
-          #   name = "nvim-r";
-          #   src = pkgs.fetchgit {
-          #     url = "https://github.com/jalvesaq/nvim-r";
-          #     rev = "f34eebfab6692483f2ee721abdb3d757be79fc7e";
-          #     sha256 = "sha256-h2f7xyhMGfI7xR1KolyP/NcFDVjTyAaz2z0ZUTJgAdM=";
-          #   };
-          #   buildInputs = with pkgs; [ which vim zip ];
-          # };
-
           otter-nvim = pkgs.vimUtils.buildVimPlugin {
             name = "otter-nvim";
             src = pkgs.fetchgit {
@@ -114,7 +105,6 @@ with lib;
               rev = "2f03fb749527c9b53b9b132a4a9819e6edfe5487";
               sha256 = "sha256-wRSuiaNIaNsB2MF3sjDYj3B5RJLy4xYghgpOZL3KTAc=";
             };
-            # buildInputs = with pkgs; [ which vim zip ];
           };
 
           quarto-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -125,18 +115,8 @@ with lib;
               sha256 = "sha256-MkoJORN7ad0Rb9mImyc8nmHWX4e73G4/AwGbGb/Qbck=";
             };
           };
-
-          # quarto-nvim-kickstarter = pkgs.vimUtils.buildVimPlugin {
-          #   name = "quarto-nvim-kickstarter";
-          #   src = pkgs.fetchgit {
-          #     url = "https://github.com/quarto-dev/quarto-nvim";
-          #     rev = "5281051ded85a9dc41d72cd31af30a0cd9639216";
-          #     sha256 = lib.fakeHash;
-          #   };
-          #   nativeBuildInputs = with pkgs; [ quarto-nvim git ];
-          # };
         in
-        with pkgs.vimPlugins; [
+        with pkgs.vimPlugins; mkIf cfg.full.enable [
           bufferline-nvim
           catppuccin
           coc-prettier
@@ -145,7 +125,6 @@ with lib;
           nvim-colorizer-lua
           nvim-cmp
           nvim-lspconfig
-          # nvim-r
           (nvim-treesitter.withPlugins (ps: with ps; [
             tree-sitter-bash
             tree-sitter-css
@@ -169,7 +148,6 @@ with lib;
           pears-nvim
           plenary-nvim
           quarto-nvim
-          # quarto-nvim-kickstarter
           rust-vim
           semshi
           telescope-nvim
@@ -184,7 +162,7 @@ with lib;
           zig-vim
         ];
 
-      extraPackages = with pkgs; [
+      extraPackages = with pkgs; mkIf cfg.full.enable [
         ccls
         lua.pkgs.lua-lsp
         lua.pkgs.luarocks-nix

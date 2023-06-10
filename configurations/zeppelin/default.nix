@@ -3,16 +3,14 @@ _:
 {
   networking = {
     hostName = "zeppelin";
-    hostId = "c5cdb5c5";
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
   services = {
-    hammond.enable = true;
+    hammond = { enable = true; hostName = "car.kms"; };
     openssh.enable = true;
     tailscale.enable = true;
-    webtrees.enable = true;
-    vpnVirtualHosts.family = { port = 3228; restricted = false; };
+    webtrees = { enable = true; hostName = "family.mondon.xyz"; };
   };
 
   profiles = {

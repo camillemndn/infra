@@ -1,16 +1,19 @@
 { config, lib, pkgs, ... }:
 
 let
-  app = "hammond";
-  domain = "car.kms";
-  dataDir = "/var/lib/${app}";
   cfg = config.services.hammond;
+  dataDir = "/var/lib/hammond";
 in
 with lib;
 
 {
   options.services.hammond = {
     enable = mkEnableOption "Hammond";
+
+    hostName = mkOption {
+      type = types.str;
+      description = lib.mdDoc "FQDN for the Hammond instance.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -19,10 +22,10 @@ with lib;
       recommendedOptimisation = mkDefault true;
       recommendedGzipSettings = mkDefault true;
 
-      virtualHosts.${domain} = {
+      virtualHosts.${cfg.hostName} = {
         enableACME = true;
         forceSSL = true;
-        root = "${pkgs.${app}}/dist";
+        root = "${pkgs.hammond}/dist";
         locations."/".extraConfig = ''
           try_files $uri /index.html;
         '';
@@ -32,20 +35,20 @@ with lib;
       };
     };
 
-    users.users.${app} = {
+    users.users.hammond = {
       isSystemUser = true;
-      group = app;
+      group = "hammond";
       home = dataDir;
       createHome = true;
     };
-    users.groups.${app} = { };
+    users.groups.hammond = { };
 
-    systemd.services."${app}" = {
+    systemd.services.hammond = {
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.${app}}/bin/${app}";
+        ExecStart = "${pkgs.hammond}/bin/hammond";
         WorkingDirectory = "${dataDir}";
-        User = "${app}";
+        User = "hammond";
         Type = "simple";
       };
       environment = {

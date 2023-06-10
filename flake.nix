@@ -42,6 +42,8 @@
     hyprland = { url = "github:hyprwm/Hyprland?ref=v0.26.0"; inputs.nixpkgs.follows = "nixpkgs"; };
     hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
 
+    nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
+
     nix-software-center = {
       url = "github:vlinkz/nix-software-center";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -98,42 +100,31 @@
           nixos-wsl.nixosModules.wsl
           simple-nixos-mailserver.nixosModule
           sops-nix.nixosModules.sops
+          nix-index-database.nixosModules.nix-index
+          { programs.nix-index-database.comma.enable = true; }
         ] ++ (import ./profiles);
       in
 
       {
+        inherit lib;
         packages.${system} = import ./pkgs/top-level { inherit pkgs; };
-        overlays.${system} = _: prev: lib.updateManyAttrs [
-          # Adds all the packages from this flake
-          self.packages.${system}
-          {
-            inherit lib;
-            pinned = import pinned { inherit system; inherit (pkgs) config; };
-            unstable = unstable.legacyPackages.${system};
 
-            # Adds some packages from other flakes
-            hyperland = hyprland.packages.x86_64-linux.default.override { nvidiaPatches = true; };
-            spicetify-nix = spicetify-nix.packages.${system}.default;
-            inherit (hyprland-contrib.packages.${system}) grimblast;
-            inherit (nix-software-center.packages.${system}) nix-software-center;
-
-            thunderbird-bin-unwrapped = prev.thunderbird-bin-unwrapped.overrideAttrs (_:
-              let version = "116.0a1"; in {
-                inherit version;
-                src = pkgs.fetchurl {
-                  url = "https://ftp.mozilla.org/pub/thunderbird/nightly/latest-comm-central-l10n/thunderbird-${version}.fr.linux-x86_64.tar.bz2";
-                  sha256 = "sha256-556n/7KWMAERoovXsG6ulDLQQoUTk1XAfVporpUk7Js=";
-                };
-              });
-          }
-        ];
+        overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };
 
         machines = import ./machines.nix;
 
-        homeConfigurations = import ./configurations/home.nix { inherit (inputs) self home-manager nixpkgs; inherit lib pkgs extraHomeModules; };
+        homeConfigurations = import ./configurations/home.nix {
+          inherit (inputs) self home-manager nixpkgs;
+          inherit lib pkgs extraHomeModules;
+        };
+
         homeManagerModules = import ./modules/home;
 
-        nixosConfigurations = import ./configurations { inherit (inputs) self; inherit lib pkgs extraModules extraHomeModules; };
+        nixosConfigurations = import ./configurations {
+          inherit (inputs) self nixpkgs mobile-nixos;
+          inherit lib pkgs extraModules extraHomeModules;
+        };
+
         nixosModules = import ./modules;
 
         deploy = import ./deploy.nix { inherit (inputs) self deploy-rs; };

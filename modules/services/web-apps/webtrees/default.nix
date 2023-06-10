@@ -1,22 +1,26 @@
 { config, lib, pkgs, ... }:
 
 let
-  app = "webtrees";
-  dataDir = "/var/lib/${app}";
   cfg = config.services.webtrees;
+  dataDir = "/var/lib/webtrees";
 in
 with lib;
 
 {
   options.services.webtrees = {
     enable = mkEnableOption "Webtrees";
+
+    hostName = mkOption {
+      type = types.str;
+      description = lib.mdDoc "FQDN for the Webtrees instance.";
+    };
   };
 
   config = mkIf cfg.enable {
     services.nginx.recommendedOptimisation = true;
     services.nginx.recommendedGzipSettings = true;
-    services.phpfpm.pools.${app} = {
-      user = app;
+    services.phpfpm.pools.webtrees = {
+      user = "webtrees";
       settings = {
         "listen.owner" = config.services.nginx.user;
         "pm" = "dynamic";
@@ -35,16 +39,14 @@ with lib;
         upload_max_filesize = 5M
       '';
     };
-    systemd.services."phpfpm-${app}".serviceConfig.BindPaths = [ "/var/lib/${app}/:${pkgs.${app}}/data/" ];
+    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [ "/var/lib/webtrees/:${pkgs.webtrees}/data/" ];
 
     services.nginx = {
       enable = true;
-      virtualHosts.${app} = {
-        root = "${pkgs.${app}}";
-        listen = [{
-          addr = "localhost";
-          port = 3228;
-        }];
+      virtualHosts.${cfg.hostName} = {
+        forceSSL = true;
+        enableACME = true;
+        root = "${pkgs.webtrees}";
         locations."/public/".extraConfig = ''
           expires 365d;
           access_log off;
@@ -52,11 +54,11 @@ with lib;
         locations."/".extraConfig = ''
           rewrite ^ /index.php last;
         '';
-        locations."~ ^/(data|app|modules|resources|vendor)/".extraConfig = ''
+        locations."~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
           deny all;
         '';
         locations."/index.php".extraConfig = ''
-          fastcgi_pass unix:${config.services.phpfpm.pools.${app}.socket};
+          fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
           include ${pkgs.nginx}/conf/fastcgi_params;
           include ${pkgs.nginx}/conf/fastcgi.conf;
           fastcgi_param HTTP_PROXY "";
@@ -70,33 +72,33 @@ with lib;
       package = mkDefault pkgs.mariadb;
       ensureUsers = [
         {
-          name = app;
+          name = "webtrees";
           ensurePermissions = {
-            "${app}.*" = "ALL PRIVILEGES";
+            "webtrees.*" = "ALL PRIVILEGES";
           };
         }
       ];
-      ensureDatabases = [ "${app}" ];
+      ensureDatabases = [ "webtrees" ];
     };
 
-    users.users.${app} = {
+    users.users.webtrees = {
       isSystemUser = true;
-      group = app;
+      group = "webtrees";
     };
-    users.groups.${app} = { };
+    users.groups.webtrees = { };
 
-    systemd.services."${app}-config" = {
+    systemd.services.webtrees-config = {
       wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-${app}.service" ];
+      before = [ "phpfpm-webtrees.service" ];
       serviceConfig = {
-        StateDirectory = "${app}";
-        User = "${app}";
+        StateDirectory = "webtrees";
+        User = "webtrees";
         Type = "oneshot";
       };
       script = ''
         if [ ! -f ${dataDir}/index.php ]; then
-          cp -r ${pkgs.${app}}/data/* ${dataDir}
-          chown -R ${app} ${dataDir}
+          cp -r ${pkgs.webtrees}/data/* ${dataDir}
+          chown -R webtrees ${dataDir}
           chmod -R ugo=rX ${dataDir}
           chmod -R ug+w ${dataDir}
         fi

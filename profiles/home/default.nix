@@ -4,6 +4,6 @@
   ./desktop/code
   ./desktop/hyprland
   ./desktop/kitty
-  ./desktop/spicetify
+  ./desktop/spotify
   ./neovim
 ]

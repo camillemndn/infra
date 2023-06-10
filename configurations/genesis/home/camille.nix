@@ -5,53 +5,51 @@ with lib;
 {
   home = {
     packages = with pkgs; [
-      (writeShellScriptBin "gnome-terminal" ''
-        #!/bin/bash
-
-        kitty $@
-      '')
-
+      # Games
       lutris
       prismlauncher
       cemu
 
+      # Social
       signal-desktop-beta
       zoom-us
 
+      # Desk
       libreoffice-fresh
       zotero
       xournalpp
       pdftocgen
 
+      # Sync
       bitwarden
       bitwarden-cli
       joplin-desktop
       nextcloud-client
-      # syncthingtray
 
+      # Graphics
       inkscape-with-extensions
-      # digikam
 
+      # Music & Video
       vlc
       jellyfin-media-player
       sonixd
       frescobaldi
       lilypond-with-fonts
 
+      # Computer
       python3
-      neomutt
+
+      (writeShellScriptBin "gnome-terminal" ''
+        #!/bin/bash
+        kitty $@
+      '')
     ];
 
     sessionVariables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
-
-    stateVersion = "23.05";
   };
 
   services = {
-    nextcloud-client = {
-      enable = true;
-      startInBackground = true;
-    };
+    nextcloud-client = { enable = true; startInBackground = true; };
   };
 
   systemd.user.targets.tray = {
@@ -86,11 +84,6 @@ with lib;
       package = pkgs.ungoogled-chromium;
     };
 
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-
     thunderbird = {
       enable = true;
       package = pkgs.thunderbird-bin;
@@ -100,40 +93,12 @@ with lib;
 
   profiles = {
     code.enable = true;
-    neovim.enable = true;
-    spicetify.enable = true;
-  };
-
-  accounts.email.accounts."ENS" = {
-    address = "camille.mondon@ens.fr";
-    primary = true;
-    userName = "cmondon02";
-
-    imap = {
-      host = "clipper.ens.fr";
-      port = 993;
-    };
-
-    smtp = {
-      host = "clipper.ens.fr";
-      port = 465;
-    };
+    kitty.enable = true;
+    neovim.full.enable = true;
+    spotify.enable = true;
   };
 
   xdg.desktopEntries = {
-    spotify.settings = {
-      Type = "Application";
-      Name = "Spotify";
-      GenericName = "Music Player";
-      Icon = "spotify-client";
-      TryExec = "spotify";
-      Exec = "spotify --enable-features=UseOzonePlatform --ozone-platform=x11 %U";
-      Terminal = "false";
-      MimeType = "x-scheme-handler/spotify;";
-      Categories = "Audio;Music;Player;AudioVideo;";
-      StartupWMClass = "spotify";
-    };
-
     "net.lutris.Lutris".settings = {
       Name = "Lutris";
       Comment = "Video Game Preservation Platform";
@@ -153,4 +118,6 @@ with lib;
       noDisplay = true;
     };
   };
+
+  home.stateVersion = "23.05";
 }

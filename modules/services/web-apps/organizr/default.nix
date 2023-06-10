@@ -1,22 +1,26 @@
 { config, lib, pkgs, ... }:
 
 let
-  app = "organizr";
-  domain = "home.kms";
-  cfg = config.services.${app};
+  "organizr" = "organizr";
+  cfg = config.services.organizr;
 in
 with lib;
 
 {
-  options.services.${app} = {
+  options.services.organizr = {
     enable = mkEnableOption "Organizr";
+
+    hostName = mkOption {
+      type = types.str;
+      description = lib.mdDoc "FQDN for the Organizr instance.";
+    };
   };
 
   config = mkIf cfg.enable {
     services.nginx.recommendedOptimisation = true;
     services.nginx.recommendedGzipSettings = true;
-    services.phpfpm.pools.${app} = {
-      user = app;
+    services.phpfpm.pools.organizr = {
+      user = "organizr";
       settings = {
         "listen.owner" = config.services.nginx.user;
         "pm" = "dynamic";
@@ -31,17 +35,17 @@ with lib;
       };
       phpEnv."PATH" = lib.makeBinPath [ pkgs.php ];
     };
-    systemd.services."phpfpm-${app}".serviceConfig.BindPaths = [ "/var/lib/${app}/:${pkgs.${app}}/data/" ];
-    systemd.services."nginx".serviceConfig.BindPaths = [ "/var/lib/${app}/:${pkgs.${app}}/data/" ];
+    systemd.services."phpfpm-organizr".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
+    systemd.services."nginx".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
     services.nginx = {
       enable = true;
-      virtualHosts.${domain} = {
+      virtualHosts.${cfg.hostName} = {
         enableACME = true;
         forceSSL = true;
-        root = "${pkgs.${app}}";
+        root = "${pkgs.organizr}";
         locations."~ (/|\.php)$".extraConfig = ''
           fastcgi_index index.php;
-          fastcgi_pass unix:${config.services.phpfpm.pools.${app}.socket};
+          fastcgi_pass unix:${config.services.phpfpm.pools.organizr.socket};
           include ${pkgs.nginx}/conf/fastcgi_params;
           include ${pkgs.nginx}/conf/fastcgi.conf;
           fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;  
@@ -54,10 +58,10 @@ with lib;
       };
     };
 
-    users.users.${app} = {
+    users.users.organizr = {
       isSystemUser = true;
-      group = app;
+      group = "organizr";
     };
-    users.groups.${app} = { };
+    users.groups.organizr = { };
   };
 }
