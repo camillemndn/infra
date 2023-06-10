@@ -4,7 +4,7 @@ let tld = "kms"; in {
   nickelback = {
     hardware = "intel/nuc5i5ryh";
     users = [ "camille" "manu" ];
-    inherit tld;
+    tld = "mondon.xyz";
     ipv4.public = "82.64.106.43";
     ipv6.public = "2a01:e0a:b3b:c0f0:baae:edff:fe74:5a4d";
   };
@@ -12,9 +12,8 @@ let tld = "kms"; in {
   offspring = {
     system = "aarch64-linux";
     hardware = "virtual/oracle";
-    inherit tld;
+    tld = "mondon.xyz";
     ipv4.public = "141.145.197.42";
-    subdomains = [ "offspring.mondon.xyz" ];
   };
 
   radiogaga = {
