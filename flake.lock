@@ -418,11 +418,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1685623103,
-        "narHash": "sha256-FkvalS3ymjHSPjl8AA5Sgk/R3l7mrW00i1rQB5WEjF0=",
+        "lastModified": 1686395994,
+        "narHash": "sha256-2Xixi+Defw4U+Nqpicp9GrdhMON9qr2NCanyYqTS95U=",
         "owner": "camillemndn",
         "repo": "nixpkgs",
-        "rev": "9be3dec1207d0aca4e35846c70578dc14fcbc849",
+        "rev": "1338b99bf8a7f3bebed89944aaf4d4cb44ef33ad",
         "type": "github"
       },
       "original": {
@@ -434,17 +434,17 @@
     },
     "pinned": {
       "locked": {
-        "lastModified": 1682422787,
-        "narHash": "sha256-fm+DsmP1mDgQgJQtZL9ViqRwSZVjV8geAdSvfxF6F2E=",
+        "lastModified": 1686331006,
+        "narHash": "sha256-hElRDWUNG655aqF0awu+h5cmDN+I/dQcChRt2tGuGGU=",
         "owner": "camillemndn",
         "repo": "nixpkgs",
-        "rev": "b47c5fe5f762dff6f68c2fa450a3c5d5db36668e",
+        "rev": "85bcb95aa83be667e562e781e9d186c57a07d757",
         "type": "github"
       },
       "original": {
         "owner": "camillemndn",
         "repo": "nixpkgs",
-        "rev": "b47c5fe5f762dff6f68c2fa450a3c5d5db36668e",
+        "rev": "85bcb95aa83be667e562e781e9d186c57a07d757",
         "type": "github"
       }
     },
