@@ -23,7 +23,7 @@ with lib;
           upstream-base-url = "https://ntfy.sh";
           auth-file = "/var/lib/ntfy-sh/user.db";
           auth-default-access = "deny-all";
-          listen-http = ":3002";
+          listen-http = "127.0.0.1:3002";
         };
       };
 
