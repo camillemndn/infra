@@ -1,4 +1,5 @@
 {
+  calibre-web = import ./services/web-apps/calibre-web.nix;
   deluge-storm = import ./services/web-apps/deluge-storm;
   gdm = import ./services/x11/display-managers/gdm.nix;
   hammond = import ./services/misc/hammond;
