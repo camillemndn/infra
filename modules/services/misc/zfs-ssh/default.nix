@@ -56,7 +56,7 @@ with lib;
         hostKeys = [ /etc/secrets/initrd/ssh_host_rsa_key ];
         # public ssh key used for login
         authorizedKeys = [
-          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCldNMW3TTRzcxoY3SQiF05K3p2XvKeh4HwAns28G0DyrLgP3pJ12z6ZH5g0wUBLwYnViri8diEr3DY0zGYHqYEvk40lKwj2hzd9g2Vm3M7BNHiC8f2cKy/4jOvgyT1czCMNc0Z8nZe4CEtNPO4bjX54QdBUod6FcgmAhXf7f3j3YC2YMkiRRKwBZ/oQ/p25IYaEp4zYMTyYbR6C1oW237152lqTMhVePEMaFC9Mh85zLAe33Y4cuDAS/GcrdPCyIBDkmuvl/DncAkfcETkb/JxkeoXx8ORt5mLdfXWFBPJQzzgkKCyRYbAEF2mD7RaK0Ow+afVHMV7fzYGdw5SRdxZzcVOzPwG9d2IVOe88vzePMqpIuqPHzsmlWhUQMkwGAGEV/l5tt0KKXWY3rrFay4RmkR32pKZoeTiLzya4tujGD2EnWNu08BK+F5zZNFk64I0O9PzQqk3yjwaE3aYLfrvcHkCf1Ze5p9KWcBFW16U50lpt8ngY2j+ibkOVhsaPnk= camille@LAPTOP-KTL0BN8G"
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCldNMW3TTRzcxoY3SQiF05K3p2XvKeh4HwAns28G0DyrLgP3pJ12z6ZH5g0wUBLwYnViri8diEr3DY0zGYHqYEvk40lKwj2hzd9g2Vm3M7BNHiC8f2cKy/4jOvgyT1czCMNc0Z8nZe4CEtNPO4bjX54QdBUod6FcgmAhXf7f3j3YC2YMkiRRKwBZ/oQ/p25IYaEp4zYMTyYbR6C1oW237152lqTMhVePEMaFC9Mh85zLAe33Y4cuDAS/GcrdPCyIBDkmuvl/DncAkfcETkb/JxkeoXx8ORt5mLdfXWFBPJQzzgkKCyRYbAEF2mD7RaK0Ow+afVHMV7fzYGdw5SRdxZzcVOzPwG9d2IVOe88vzePMqpIuqPHzsmlWhUQMkwGAGEV/l5tt0KKXWY3rrFay4RmkR32pKZoeTiLzya4tujGD2EnWNu08BK+F5zZNFk64I0O9PzQqk3yjwaE3aYLfrvcHkCf1Ze5p9KWcBFW16U50lpt8ngY2j+ibkOVhsaPnk= camille@k-1000-mobile"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBmuMNGkWQ7ozpC2UU0+jqMsRw1zVgT2Q9ORmLcTXpK2 camille@zeppelin"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINg9kUL5kFcPOWmGy/7kJZMlG2+Ls79XiWgvO8p+OQ3f camille@genesis"
         ];

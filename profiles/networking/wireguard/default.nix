@@ -15,17 +15,17 @@ with lib;
       wg1 = {
         privateKeyFile = "/srv/keys/wireguard";
         address = [ "192.168.27.65/32" ];
-        # dns = [ "212.27.38.253" ];
         mtu = 1420;
 
-        #postUp = ''
-        #  ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
-        #'';
+        postUp = ''
+          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
+        '';
 
         # This undoes the above command
-        #postDown = ''
-        #  ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
-        #'';
+        postDown = ''
+          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
+        '';
+
         peers = [
           {
             publicKey = "U7k8anMKzmiO98Yzsrc6f9uJBUqJRkM0JzjuPDdKsAo=";
