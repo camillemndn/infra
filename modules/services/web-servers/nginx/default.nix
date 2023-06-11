@@ -38,7 +38,7 @@ with lib;
           forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
           enableACME = mkDefault config.forceSSL;
           locations."/" = {
-            proxyPass = let p = config.port; in mkIf (p != 0) (mkDefault "http://localhost:${toString p}");
+            proxyPass = let p = config.port; in mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
             proxyWebsockets = mkDefault config.websockets;
           };
           # Firewall VPN domains
@@ -49,6 +49,7 @@ with lib;
               if ($bad_ip) {
                 return 444;
               }
+              ssl_stapling off;
             '';
         };
       }));
@@ -60,8 +61,6 @@ with lib;
       # Enable when some virtual hosts are declared
       enable = filter (hasInfix ".") (attrNames cfg.virtualHosts) != [ ];
 
-      serverNamesHashBucketSize = mkDefault 64;
-      serverNamesHashMaxSize = mkDefault 512;
       recommendedOptimisation = mkDefault true;
       recommendedProxySettings = mkDefault true;
       recommendedGzipSettings = mkDefault true;
@@ -74,7 +73,12 @@ with lib;
         100.100.45.0/24 0;
         fd7a:115c:a1e0::/48 0;
         }
+        
+        proxy_headers_hash_max_size 512;
+        proxy_headers_hash_bucket_size 128; 
       '';
+
+      clientMaxBodySize = "20m";
 
       # Do not fallback to default
       virtualHosts.default = mkIf cfg.noDefault.enable {
