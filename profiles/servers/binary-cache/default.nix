@@ -23,13 +23,11 @@ with lib;
       secretKeyFile = "/run/secrets/binary-cache";
     };
 
-    services.acmeVirtualHosts.${cfg.hostName}.port = 5001;
-    services.nginx.recommendedOptimisation = true;
-    services.nginx.recommendedGzipSettings = true;
+    services.nginx.virtualHosts.${cfg.hostName}.port = 5001;
 
     sops.secrets.binary-cache = {
       format = "binary";
-      sopsFile = ./${cfg.hostName}-priv-key.pem;
+      sopsFile = ./${cfg.hostName}.pem;
     };
   };
 }

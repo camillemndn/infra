@@ -7,14 +7,14 @@
   };
 
   environment.systemPackages = with pkgs; [
-    nix-software-center
     amdctl
+    nix-software-center
   ];
 
   nixpkgs.config.firefox = {
-    ffmpegSupport = true;
-    enableGnomeExtensions = true;
     enableFirefoxPwa = true;
+    enableGnomeExtensions = true;
+    ffmpegSupport = true;
   };
 
   profiles = {
@@ -23,9 +23,9 @@
   };
 
   programs = {
+    dconf.enable = true;
     firefox.enable = true;
     steam.enable = true;
-    dconf.enable = true;
   };
 
   services = {
@@ -36,13 +36,6 @@
     tlp.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
   };
-
-  # virtualisation = {
-  #   waydroid.enable = true;
-  #   lxd.enable = true;
-  #   virtualbox.host.enable = true;
-  # };
-  # users.extraGroups.vboxusers.members = [ "camille" ];
 
   system.stateVersion = "23.05";
 }

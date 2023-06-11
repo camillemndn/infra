@@ -15,16 +15,12 @@ with lib;
       enable = true;
       originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
       passwordFile = "/run/secrets/photos";
-      settings = {
-        PHOTOPRISM_ADMIN_USER = "camille";
-      };
+      settings.PHOTOPRISM_ADMIN_USER = "camille";
     };
 
+    services.nginx.virtualHosts."photos.kms" = { port = 2342; websockets = true; };
+
     systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
-
-    services.nginx.virtualHosts."photos.kms".locations."/".proxyWebsockets = true;
-
-    services.vpnVirtualHosts.photos.port = 2342;
 
     sops.secrets.photos = {
       format = "binary";

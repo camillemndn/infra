@@ -101,12 +101,10 @@
           simple-nixos-mailserver.nixosModule
           sops-nix.nixosModules.sops
           nix-index-database.nixosModules.nix-index
-          { programs.nix-index-database.comma.enable = true; }
         ] ++ (import ./profiles);
       in
 
       {
-        inherit lib;
         packages.${system} = import ./pkgs/top-level { inherit pkgs; };
 
         overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };

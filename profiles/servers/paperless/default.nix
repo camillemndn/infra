@@ -23,6 +23,6 @@ with lib;
       };
     };
 
-    services.vpnVirtualHosts.docs.port = 28981;
+    services.nginx.virtualHosts."docs.kms".port = 28981;
   };
 }

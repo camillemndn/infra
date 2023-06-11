@@ -33,7 +33,5 @@
   # User configuration
   users.users."camille".extraGroups = [ "dialout" "feedbackd" "video" ];
 
-  networking.nftables.enable = true;
-
   system.stateVersion = "23.05";
 }

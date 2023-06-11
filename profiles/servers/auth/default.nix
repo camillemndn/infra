@@ -11,7 +11,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.vpnVirtualHosts.auth = { service = "keycloak"; port = 8081; };
+    services.nginx.virtualHosts."auth.kms".port = 8081;
 
     services.keycloak = {
       enable = true;

@@ -1,11 +1,11 @@
 {
-  calibre-web = import ./services/web-apps/calibre-web.nix;
   deluge-storm = import ./services/web-apps/deluge-storm;
   gdm = import ./services/x11/display-managers/gdm.nix;
-  hammond = import ./services/misc/hammond;
+  hammond = import ./services/web-apps/hammond;
   koel = import ./services/audio/koel;
-  lazylibrarian = import ./services/misc/lazylibrarian;
+  lazylibrarian = import ./services/web-apps/lazylibrarian;
   logiops = import ./services/misc/logiops;
+  nginx = import ./services/web-servers/nginx;
   organizr = import ./services/web-apps/organizr;
   sheetable = import ./services/web-apps/sheetable;
   radiogaga = import ./services/web-apps/radiogaga;

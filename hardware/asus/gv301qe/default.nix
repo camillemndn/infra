@@ -117,8 +117,6 @@ with lib;
 
   systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
 
-  #nixpkgs.config.allowUnfree = mkForce true;
-
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
     fsType = "ext4";

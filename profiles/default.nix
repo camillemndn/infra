@@ -28,6 +28,4 @@
   ./servers/radiogaga
   ./servers/spotify
   ./servers/uptime
-  ./servers/virtual-hosts
-  ./servers/websites
 ]

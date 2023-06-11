@@ -16,7 +16,7 @@ with lib;
       authFile = "/run/secrets/feeds";
     };
 
-    services.vpnVirtualHosts.feeds.port = 7070;
+    services.nginx.virtualHosts."feeds.kms".port = 7070;
 
     sops.secrets.feeds = {
       format = "binary";

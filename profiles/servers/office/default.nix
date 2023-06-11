@@ -21,6 +21,6 @@ with lib;
       examplePort = 8001;
     };
 
-    services.vpnVirtualHosts.office.port = 8000;
+    services.nginx.virtualHosts."office.kms".port = 8000;
   };
 }

@@ -78,14 +78,6 @@ lib.mkIf config.profiles.hyprland.enable {
 
   services.dunst = {
     enable = true;
-    package = pkgs.dunst.overrideAttrs (_oldAttrs: {
-      #src = pkgs.fetchFromGitHub {
-      #  owner = "k-vernooy";
-      #  repo = "dunst";
-      #  rev = "61567d58855ba872f8237861ddcd786d03dd2631";
-      #  sha256 = "ttaaomjb3CclZG9JPdzDBj5XXlqRaKGPBY3ahFofqVM=";
-      #};
-    });
 
     iconTheme = {
       package = pkgs.papirus-icon-theme;

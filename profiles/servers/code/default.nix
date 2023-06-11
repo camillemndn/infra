@@ -22,8 +22,7 @@ with lib;
       LoadCrendential = "token:/run/secrets/code";
     };
 
-    services.vpnVirtualHosts.code.port = 4444;
-    services.nginx.virtualHosts."code.${config.services.vpnDomain}".locations."/".proxyWebsockets = true;
+    services.nginx.virtualHosts."code.kms" = { port = 4444; websockets = true; };
 
     environment.systemPackages = with pkgs; [ nixpkgs-fmt python310 rWrapper rPackages.languageserver ];
 

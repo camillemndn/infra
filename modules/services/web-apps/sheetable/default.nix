@@ -28,11 +28,6 @@ with lib;
         default = {
           API_SECRET = ""; # This can be any string you want with which your jwt key is going to be encrypted
           DB_DRIVER = "sqlite"; # mysql, postgres, sqlite
-          # DB_HOST = "localhost"; # Use mysql or postgres? Enter IP here.
-          # DB_USER = "sheetable"; # Use mysql or postgres? Enter db username here.
-          # DB_PASSWORD = "changeme"; # Use mysql or postgres? Enter db password here.
-          # DB_NAME = "sheetable"; # Use mysql or postgres? Enter db name here.
-          # DB_PORT = "3306"; # Use mysql or postgres? Enter db port here.
           ADMIN_EMAIL = "camille@mondon.me"; # Your admin email
           ADMIN_PASSWORD = "test"; # Your admin password
           PORT = "7777"; # Can be any port you want
@@ -58,7 +53,6 @@ with lib;
         Type = "simple";
         StateDirectory = "sheetable";
         User = cfg.user;
-        # DynamicUser = true;
         ExecStart = "${pkgs.sheetable}/bin/sheetable";
         Restart = "on-failure";
         ProtectHome = true;
@@ -88,8 +82,6 @@ with lib;
       };
     };
 
-    users.groups = optionalAttrs (cfg.group == "sheetable") {
-      sheetable = { };
-    };
+    users.groups = optionalAttrs (cfg.group == "sheetable") { sheetable = { }; };
   };
 }

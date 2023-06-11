@@ -95,63 +95,30 @@ with lib;
       '';
     };
 
-    systemd.services."phpfpm-koel".serviceConfig = {
-      EnvironmentFile = cfg.secretEnvFile;
-      BindPaths = [
-        "${dataDir}/storage:${pkgs.koel}/storage"
-        "${dataDir}/database:${pkgs.koel}/database"
-        "${dataDir}/public/img:${pkgs.koel}/public/img"
-      ];
-    };
-    systemd.services.nginx.serviceConfig.BindPaths = [
-      "${dataDir}/public/img:${pkgs.koel}/public/img"
-    ];
-
-    services.nginx = {
-      enable = true;
-      recommendedOptimisation = mkDefault true;
-      recommendedGzipSettings = mkDefault true;
-
-      virtualHosts.${cfg.hostName} = {
-        enableACME = true;
-        forceSSL = true;
+    services.nginx.virtualHosts.${cfg.hostName} = {
+      root = "${pkgs.koel}/public";
+      locations."~ (/|\.php)" = {
+        tryFiles = "$uri $uri/ /index.php?$args";
+        fastcgiParams = {
+          PATH_INFO = "$fastcgi_path_info";
+          PATH_TRANSLATED = "$document_root$fastcgi_path_info";
+        };
         extraConfig = ''
-          root            ${pkgs.koel}/public;
-          index           index.php;
-
-          gzip            on;
-          gzip_types      text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
-          gzip_comp_level  9;
-
-          location /media/ {
-            internal;
-
-            alias       $upstream_http_x_media_root;
-
-            #access_log /var/log/nginx/koel.access.log;
-            #error_log  /var/log/nginx/koel.error.log;
-          }
-
-          location / {
-            try_files   $uri $uri/ /index.php?$args;
-            allow 100.10.10.0/8;
-            deny all;
-          }  
-
-          location ~ \.php$ {
-            try_files $uri $uri/ /index.php?$args;
-
-            fastcgi_param     PATH_INFO $fastcgi_path_info;
-            fastcgi_param     PATH_TRANSLATED $document_root$fastcgi_path_info;
-            fastcgi_param     SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            include ${pkgs.nginx}/conf/fastcgi_params;
-            fastcgi_pass unix:${config.services.phpfpm.pools.koel.socket};
-            fastcgi_index             index.php;
-            fastcgi_split_path_info   ^(.+\.php)(/.+)$;
-            fastcgi_intercept_errors  on;
-          }
+          fastcgi_index index.php;
+          fastcgi_pass unix:${config.services.phpfpm.pools.koel.socket};
+          fastcgi_split_path_info ^(.+\.php)(/.+)$;
+          fastcgi_intercept_errors on;
         '';
       };
+      location."/media/" = {
+        alias = "$upstream_http_x_media_root";
+        extraConfig = ''
+          internal;
+        '';
+      };
+      extraConfig = ''
+        gzip_comp_level 9;
+      '';
     };
 
     services.mysql = {
@@ -166,11 +133,19 @@ with lib;
       ensureDatabases = [ "koel" ];
     };
 
-    users.users.koel = {
-      isSystemUser = true;
-      inherit (cfg) group;
-      packages = [ pkgs.php ];
+
+    systemd.services."phpfpm-koel".serviceConfig = {
+      EnvironmentFile = cfg.secretEnvFile;
+      BindPaths = [
+        "${dataDir}/storage:${pkgs.koel}/storage"
+        "${dataDir}/database:${pkgs.koel}/database"
+        "${dataDir}/public/img:${pkgs.koel}/public/img"
+      ];
     };
+
+    systemd.services.nginx.serviceConfig.BindPaths = [
+      "${dataDir}/public/img:${pkgs.koel}/public/img"
+    ];
 
     systemd.services."koel-config" = {
       wantedBy = [ "multi-user.target" ];
@@ -185,19 +160,17 @@ with lib;
         cd ${dataDir}
 
         if [ ! -d storage ]; then
-          shopt -s dotglob
-          
-          cp -r ${builtins.toFile "env-koel" envFile} .env
-          echo "APP_KEY=base64:$(${pkgs.openssl}/bin/openssl rand -base64 32)" >> .env
-          cp -r ${pkgs.koel}/storage .
-          cp -r ${pkgs.koel}/database .
-          mkdir -p public
-          cp -r ${pkgs.koel}/public/img public
-          
-          chown -R koel:mediasrv .
-          chmod -R ugo=rX .
-          chmod -R ug+w .
-        fi
+        shopt -s dotglob
+
+        cp -r ${builtins.toFile "env-koel" envFile} .env
+        echo "APP_KEY=base64:$(${pkgs.openssl}/bin/openssl rand -base64 32)" >> .env
+        cp -r ${pkgs.koel}/storage .
+        cp -r ${pkgs.koel}/database .
+        mkdir -p public
+        cp -r ${pkgs.koel}/public/img public
+
+        chown -R koel:mediasrv .
+        chmod -R ugo = rX.chmod - R ug + w.fi
       '';
     };
 
@@ -235,10 +208,22 @@ with lib;
       environment = envParams;
       script = ''
         cd ${dataDir}
-        if [ ! -f storage/logs/laravel.log ]; then
+        if [ ! -f storage/logs/laravel.log ];
+        then
           ${pkgs.php}/bin/php ${pkgs.koel}/artisan koel:init --no-interaction --no-assets
         fi
       '';
     };
+
+    users.users.koel = {
+      isSystemUser = true;
+      inherit (cfg) group;
+      packages = [ pkgs.php ];
+    };
   };
 }
+
+
+
+
+

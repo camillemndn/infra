@@ -3,6 +3,10 @@
 with lib;
 
 rec {
+  # Strings
+
+  hasSuffixIn = l: x: elem true (map (s: hasSuffix s x) l);
+
   # Attribute sets
   recursiveUpdateManyAttrs = foldl recursiveUpdate { };
 

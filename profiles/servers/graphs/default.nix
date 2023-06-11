@@ -17,7 +17,7 @@ with lib;
       declarativePlugins = with pkgs.grafanaPlugins; [ grafana-piechart-panel ];
     };
 
-    services.vpnVirtualHosts.graphs = { port = 3001; };
+    services.nginx.virtualHosts."graphs.kms".port = 3001;
 
     services.prometheus = {
       enable = true;

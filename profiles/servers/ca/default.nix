@@ -85,6 +85,4 @@ with lib;
       '';
     };
   };
-
-  #services.vpnVirtualHosts.ca.port = 8444;
 }

@@ -80,17 +80,7 @@ with lib;
       };
     };
 
-    services.nginx.virtualHosts."sync.zeppelin.kms" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://localhost:8384";
-        extraConfig = ''
-          allow 100.10.10.0/8;
-          deny all;
-        '';
-      };
-    };
+    services.nginx.virtualHosts."sync.zeppelin.kms".port = 8384;
 
     users.users."syncthing".extraGroups = [ "mediasrv" ];
 

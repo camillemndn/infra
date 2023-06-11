@@ -17,8 +17,6 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.nginx.recommendedOptimisation = true;
-    services.nginx.recommendedGzipSettings = true;
     services.phpfpm.pools.webtrees = {
       user = "webtrees";
       settings = {
@@ -39,30 +37,26 @@ with lib;
         upload_max_filesize = 5M
       '';
     };
-    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [ "/var/lib/webtrees/:${pkgs.webtrees}/data/" ];
 
-    services.nginx = {
-      enable = true;
-      virtualHosts.${cfg.hostName} = {
-        forceSSL = true;
-        enableACME = true;
-        root = "${pkgs.webtrees}";
-        locations."/public/".extraConfig = ''
-          expires 365d;
-          access_log off;
-        '';
-        locations."/".extraConfig = ''
-          rewrite ^ /index.php last;
-        '';
-        locations."~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
-          deny all;
-        '';
-        locations."/index.php".extraConfig = ''
+    services.nginx.virtualHosts.${cfg.hostName} = {
+      root = "${pkgs.webtrees}";
+      locations."/public/".extraConfig = ''
+        expires 365d;
+        access_log off;
+      '';
+      locations."/".extraConfig = ''
+        rewrite ^ /index.php last;
+      '';
+      locations."~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
+        deny all;
+      '';
+      locations."/index.php" = {
+        fastcgiParams = {
+          HTTP_PROXY = "";
+          SCRIPT_FILENAME = "$request_filename";
+        };
+        extraConfig = ''
           fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
-          include ${pkgs.nginx}/conf/fastcgi_params;
-          include ${pkgs.nginx}/conf/fastcgi.conf;
-          fastcgi_param HTTP_PROXY "";
-          fastcgi_param SCRIPT_FILENAME $request_filename;
         '';
       };
     };
@@ -81,11 +75,7 @@ with lib;
       ensureDatabases = [ "webtrees" ];
     };
 
-    users.users.webtrees = {
-      isSystemUser = true;
-      group = "webtrees";
-    };
-    users.groups.webtrees = { };
+    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [ "/var/lib/webtrees/:${pkgs.webtrees}/data/" ];
 
     systemd.services.webtrees-config = {
       wantedBy = [ "multi-user.target" ];
@@ -104,5 +94,12 @@ with lib;
         fi
       '';
     };
+
+    users.users.webtrees = {
+      isSystemUser = true;
+      group = "webtrees";
+    };
+
+    users.groups.webtrees = { };
   };
 }

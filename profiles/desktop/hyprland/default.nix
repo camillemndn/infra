@@ -33,7 +33,6 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
-        #kitty
         wofi
         waybar
         hyprpaper
@@ -41,10 +40,6 @@ with lib;
       variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
     };
 
-    programs.hyprland = {
-      enable = true;
-      #xwayland.hidpi = true;
-      #nvidiaPatches = true;
-    };
+    programs.hyprland.enable = true;
   };
 }

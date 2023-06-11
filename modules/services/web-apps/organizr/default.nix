@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  "organizr" = "organizr";
   cfg = config.services.organizr;
 in
 with lib;
@@ -17,8 +16,6 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.nginx.recommendedOptimisation = true;
-    services.nginx.recommendedGzipSettings = true;
     services.phpfpm.pools.organizr = {
       user = "organizr";
       settings = {
@@ -35,28 +32,20 @@ with lib;
       };
       phpEnv."PATH" = lib.makeBinPath [ pkgs.php ];
     };
+
+    services.nginx.virtualHosts.${cfg.hostName} = {
+      root = "${pkgs.organizr}";
+      locations."~ (/|\.php)$".extraConfig = ''
+        fastcgi_index index.php;
+        fastcgi_pass unix:${config.services.phpfpm.pools.organizr.socket};
+        fastcgi_buffers 32 32k;
+        fastcgi_buffer_size 32k;
+      '';
+      locations."/api/v2".tryFiles = "$uri /api/v2/index.php$is_args$args";
+    };
+
     systemd.services."phpfpm-organizr".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
     systemd.services."nginx".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
-    services.nginx = {
-      enable = true;
-      virtualHosts.${cfg.hostName} = {
-        enableACME = true;
-        forceSSL = true;
-        root = "${pkgs.organizr}";
-        locations."~ (/|\.php)$".extraConfig = ''
-          fastcgi_index index.php;
-          fastcgi_pass unix:${config.services.phpfpm.pools.organizr.socket};
-          include ${pkgs.nginx}/conf/fastcgi_params;
-          include ${pkgs.nginx}/conf/fastcgi.conf;
-          fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;  
-          fastcgi_buffers 32 32k;
-          fastcgi_buffer_size 32k;
-        '';
-        locations."/api/v2".extraConfig = ''
-          try_files $uri /api/v2/index.php$is_args$args;
-        '';
-      };
-    };
 
     users.users.organizr = {
       isSystemUser = true;

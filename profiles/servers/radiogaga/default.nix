@@ -15,21 +15,12 @@ with lib;
 
     services.radiogaga.enable = true;
 
-    services.nginx = {
-      enable = true;
-
-      recommendedProxySettings = true;
-
-      virtualHosts."radiogaga.local" = {
-        #forceSSL = true;
-        #sslCertificateKey = "/etc/ssl/certs/radiogaga-local-key.pem";
-        #sslCertificate = "/etc/ssl/certs/radiogaga-local.pem";
-        root = "${pkgs.radiogaga}/share/radiogaga-front";
-        default = true;
-        locations."/".extraConfig = ''
-          try_files $uri $uri/ /index.html =404;
-        '';
-      };
+    services.nginx.virtualHosts."radiogaga.local" = {
+      default = true;
+      forceSSL = mkForce false;
+      enableACME = mkForce false;
+      root = "${pkgs.radiogaga}/share/radiogaga-front";
+      locations."/".tryFiles = "$uri $uri/ /index.html =404";
     };
   };
 }

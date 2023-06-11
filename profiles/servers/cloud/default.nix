@@ -44,7 +44,5 @@ with lib;
       owner = "nextcloud";
       group = "nextcloud";
     };
-
-    services.nginx.virtualHosts."cloud.kms" = { enableACME = true; forceSSL = true; };
   };
 }

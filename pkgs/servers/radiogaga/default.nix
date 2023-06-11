@@ -43,7 +43,6 @@ stdenv.mkDerivation rec {
     npmDepsHash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
     npmFlags = [ "--legacy-peer-deps" ];
     npmBuildFlags = [ "--prod" ];
-    #NODE_OPTIONS = "--openssl-legacy-provider";
     nativeBuildInputs = [ python3 ];
 
     postPatch = ''

@@ -20,6 +20,6 @@ with lib;
       environmentFile = "/var/lib/bitwarden_rs/.env";
     };
 
-    services.vpnVirtualHosts.passwords.port = 8223;
+    services.nginx.virtualHosts."passwords.kms".port = 8223;
   };
 }

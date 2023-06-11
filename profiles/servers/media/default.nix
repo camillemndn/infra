@@ -3,6 +3,15 @@
 let
   cfg = config.profiles.media-server;
   group = "media";
+
+  delugeCSSFilter = ''
+    proxy_set_header Accept-Encoding "";
+    sub_filter
+      '</head>'
+      '<link rel="stylesheet" type="text/css" href="https://halianelf.github.io/Deluge-Dark/deluge.css">
+      </head>';
+    sub_filter_once on;
+  '';
 in
 with lib;
 
@@ -15,74 +24,48 @@ with lib;
     users.groups.${group}.name = group;
 
     services = {
-      jellyfin = { enable = true; inherit group; };
-      vpnVirtualHosts.media = { port = 8096; restricted = false; };
-
-      jellyseerr.enable = true;
-      vpnVirtualHosts.requests = { port = 5055; restricted = false; };
-
-      calibre-server = { enable = true; inherit group; };
-      vpnVirtualHosts.library.port = 8079;
-
-      # calibre-web-litterature = { enable = true; inherit group; };
-      # vpnVirtualHosts."litterature.library" = { port = 8083; restricted = false; }; 
-
-      # calibre-web-university = { enable = true; inherit group; };
-      # vpnVirtualHosts."university.library" = { port = 8084; restricted = false; };
-
-      # calibre-web-tangente = { enable = true; inherit group; };
-      # vpnVirtualHosts."tangente.library" = { port = 8085; restricted = false; };
-
-      deluge = { enable = true; inherit group; storm.enable = true; };
-      vpnVirtualHosts.torrents.port = 8112;
-      vpnVirtualHosts.storm.port = 8221;
-
-      radarr = { enable = true; inherit group; };
-      vpnVirtualHosts.movies.port = 7878;
-
-      lidarr = { enable = true; inherit group; };
-      vpnVirtualHosts.music.port = 8686;
-
-      sonarr = { enable = true; inherit group; };
-      vpnVirtualHosts.series.port = 8989;
-
       bazarr = { enable = true; inherit group; };
-      vpnVirtualHosts.subtitles.port = 6767;
+      nginx.virtualHosts."subtitles.kms" = { port = 6767; websockets = true; };
+
+      calibre-server = { enable = true; inherit group; libraries = [ "/srv/media/Bibliotheque" "/srv/media/Bibliotheque-universitaire" ]; };
+      nginx.virtualHosts."manage.library.kms".port = 8079;
+
+      calibre-web = { enable = true; inherit group; options.calibreLibrary = "/srv/media/Bibliotheque"; };
+      nginx.virtualHosts."library.kms".port = 8083;
+      nginx.virtualHosts."library.mondon.xyz".port = 8083;
+
+      deluge = { enable = true; inherit group; storm.enable = true; web.enable = true; };
+      nginx.virtualHosts."torrents.kms" = { port = 8112; extraConfig = delugeCSSFilter; };
+      nginx.virtualHosts."storm.kms".port = 8221;
 
       jackett = { enable = true; inherit group; };
-      vpnVirtualHosts.trackers.port = 9117;
+      nginx.virtualHosts."trackers.kms".port = 9117;
+
+      jellyfin = { enable = true; inherit group; };
+      nginx.virtualHosts."media.kms" = { port = 8096; websockets = true; };
+      nginx.virtualHosts."media.mondon.xyz" = { port = 8096; websockets = true; };
+
+      jellyseerr.enable = true;
+      nginx.virtualHosts."requests.kms".port = 5055;
+      nginx.virtualHosts."requests.mondon.xyz".port = 5055;
 
       lazylibrarian = { enable = true; inherit group; };
-      vpnVirtualHosts.books = { port = 5299; restricted = false; };
+      nginx.virtualHosts."books.kms".port = 5299;
 
-      # readarr = { enable = true; inherit group; };
-      # vpnVirtualHosts.books2.port = 8787;
+      lidarr = { enable = true; inherit group; };
+      nginx.virtualHosts."music.kms" = { port = 8686; websockets = true; };
+
+      radarr = { enable = true; inherit group; };
+      nginx.virtualHosts."movies.kms" = { port = 7878; websockets = true; };
+
+      sonarr = { enable = true; inherit group; };
+      nginx.virtualHosts."series.kms" = { port = 8989; websockets = true; };
     };
 
-    systemd.services.lazylibrarian.serviceConfig.TimeoutStopSec = 5;
+    environment.systemPackages = with pkgs; [ shntool cuetools mac flac ];
 
-    # systemd.services.jellyfin.serviceConfig = {
-    #   MemoryHigh = "512M";
-    #   MemoryMax = "1G";
-    # };
-    services.nginx.virtualHosts."media.${config.services.vpnDomain}".locations."/".proxyWebsockets = true;
-    services.nginx.virtualHosts."media.${config.services.publicDomain}".locations."/".proxyWebsockets = true;
-
-    services.calibre-server.libraries = [ "/srv/media/Bibliotheque" "/srv/media/Bibliotheque-universitaire" ];
     systemd.services.calibre-server.serviceConfig.ExecStart = mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
 
-    services.deluge.web.enable = true;
-    services.nginx.virtualHosts."torrents.${config.services.vpnDomain}".locations."/".extraConfig = ''
-      proxy_set_header Accept-Encoding "";
-      sub_filter
-        '</head>'
-        '<link rel="stylesheet" type="text/css" href="https://halianelf.github.io/Deluge-Dark/deluge.css">
-        </head>';
-      sub_filter_once on;
-    '';
-
-    services.nginx.virtualHosts."music.${config.services.vpnDomain}".locations."/".proxyWebsockets = true;
-
-    environment.systemPackages = with pkgs; [ shntool cuetools mac flac ];
+    systemd.services.lazylibrarian.serviceConfig.TimeoutStopSec = 5;
   };
 }

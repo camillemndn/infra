@@ -10,10 +10,11 @@ _:
 
   services = {
     openssh.enable = true;
+    nginx.noDefault.enable = true;
   };
 
   profiles = {
-    binary-cache = { enable = true; hostName = "cache2"; };
+    binary-cache = { enable = true; hostName = "cache2.mondon.xyz"; };
     uptime.enable = true;
   };
 

@@ -12,11 +12,9 @@ with lib;
 
   config = mkIf cfg.enable {
     services = {
-      uptime-kuma = {
-        enable = true;
-        settings.NODE_EXTRA_CA_CERTS = "/etc/nixos/users/saumonnet.crt";
-      };
-      acmeVirtualHosts.uptime.port = 3001;
+      uptime-kuma.enable = true;
+
+      nginx.virtualHosts."uptime.mondon.xyz" = { port = 3001; websockets = true; };
 
       ntfy-sh = {
         enable = true;
@@ -28,12 +26,10 @@ with lib;
           listen-http = ":3002";
         };
       };
-      acmeVirtualHosts.ntfy.port = 3002;
+
+      nginx.virtualHosts."ntfy.mondon.xyz".port = 3002;
     };
 
     systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
-    services.nginx.virtualHosts."uptime.mondon.xyz".locations."/".proxyWebsockets = true;
-
-    # sqlite3 /var/lib/uptime-kuma/kuma.db "select * from monitor;"
   };
 }

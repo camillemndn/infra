@@ -10,7 +10,6 @@ with lib;
     };
 
     extraModprobeConfig = ''
-      # options snd_bcm2835 enable_headphones=1 enable_compat_alsa=1
       options cfg80211 ieee80211_regdom="FR"
     '';
   };
