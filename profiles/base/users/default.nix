@@ -46,6 +46,8 @@ with lib;
       withRuby = false;
     };
 
+    command-not-found.enable = false;
+    nix-index.enable = true;
     nix-index-database.comma.enable = true;
   };
 
@@ -72,7 +74,6 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     age
-    comma
     deploy-rs
     dig
     direnv

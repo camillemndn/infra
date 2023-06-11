@@ -9,7 +9,12 @@
 
   profiles.neovim.enable = true;
 
-  programs.fish.enable = true;
+  programs = {
+    fish.enable = true;
 
-  programs.home-manager.enable = true;
+    nix-index.enable = true;
+    nix-index-database.comma.enable = true;
+
+    home-manager.enable = true;
+  };
 }

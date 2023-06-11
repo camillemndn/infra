@@ -90,6 +90,7 @@
 
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
           hyprland.homeManagerModules.default
+          nix-index-database.hmModules.nix-index
           spicetify-nix.homeManagerModule
         ] ++ (import ./profiles/home);
 
@@ -97,10 +98,10 @@
           home-manager.nixosModules.home-manager
           hyprland.nixosModules.default
           lanzaboote.nixosModules.lanzaboote
+          nix-index-database.nixosModules.nix-index
           nixos-wsl.nixosModules.wsl
           simple-nixos-mailserver.nixosModule
           sops-nix.nixosModules.sops
-          nix-index-database.nixosModules.nix-index
         ] ++ (import ./profiles);
       in
 
