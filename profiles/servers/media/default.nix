@@ -30,7 +30,7 @@ with lib;
       calibre-server = { enable = true; inherit group; libraries = [ "/srv/media/Bibliotheque" "/srv/media/Bibliotheque-universitaire" ]; };
       nginx.virtualHosts."manage.library.kms".port = 8079;
 
-      calibre-web = { enable = true; inherit group; options.calibreLibrary = "/srv/media/Bibliotheque"; };
+      calibre-web = { enable = true; inherit group; listen.ip = "127.0.0.1"; options.calibreLibrary = "/srv/media/Bibliotheque"; };
       nginx.virtualHosts."library.kms".port = 8083;
       nginx.virtualHosts."library.mondon.xyz".port = 8083;
 
