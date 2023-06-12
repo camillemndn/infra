@@ -6,7 +6,7 @@
 , makeWrapper
 , sqlite
 , callPackage
-, mpg123
+, mpv
 , killall
 , spotify-tui
 , curl
@@ -34,7 +34,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "radiogaga";
-  version = "unstable-2023-06-07";
+  version = "unstable-2023-06-12";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
@@ -59,8 +59,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
-    rev = "838e883d3d640063f79ffe6bd2ecc4eb6efcc8a7";
-    hash = "sha256-EgSizMWXZ+P1onn2Ibw47WsOG40KlThPPqiVeMHtJM8=";
+    rev = "c39adb3c2ca14e322663061400227351e3840d94";
+    hash = "sha256-KMZAL+qPxij4s7iR5+ZKlw3xyG7FaOOKcY9nR5WO+eA=";
   };
 
   postPatch = ''
@@ -79,10 +79,10 @@ stdenv.mkDerivation rec {
 
   postFixup = ''
     makeWrapper $out/share/${pname}/entrypoint.sh $out/bin/${pname}-init \
-      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 python_env ]} \
+      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpv python_env ]} \
       --chdir $out/share/${pname}
     makeWrapper ${python_env}/bin/gunicorn $out/bin/${pname} \
-      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpg123 spotify-tui python_env ]} \
+      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpv spotify-tui python_env ]} \
       --add-flags "--bind 0.0.0.0:8000 radiogaga.wsgi:application" \
       --chdir $out/share/${pname}
   '';
