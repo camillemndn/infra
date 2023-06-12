@@ -70,6 +70,10 @@ with lib;
       appendHttpConfig = ''
         geo $bad_ip {
         default 1;
+        127.0.0.1/32 0;
+        ::1/128 0;
+        192.168.0.0/16 0;
+        fc00::/7 0;
         100.100.45.0/24 0;
         fd7a:115c:a1e0::/48 0;
         }
@@ -95,13 +99,13 @@ with lib;
 
     # Use VPN CA only on VPN domains
     security.acme.certs = mapAttrs
-      (n: _v: mkIf (hasSuffixIn cfg.vpnDomains n && (!hasPrefix "www." n)) { server = cfg.vpnAcmeServer; })
+      (n: _: mkIf
+        (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n)
+        { server = mkDefault cfg.vpnAcmeServer; })
       cfg.virtualHosts;
 
     # Open port 443 only if necessary
-    networking.firewall.allowedTCPPorts = mkIf cfg.enable [ 443 ];
+    networking.firewall.allowedTCPPorts = mkIf cfg.enable [ 80 443 ];
+    networking.firewall.allowedUDPPorts = mkIf cfg.enable [ 80 443 ];
   };
 }
-
-
-
