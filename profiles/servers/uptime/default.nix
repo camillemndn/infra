@@ -15,6 +15,7 @@ with lib;
       uptime-kuma.enable = true;
 
       nginx.virtualHosts."uptime.mondon.xyz" = { port = 3001; websockets = true; };
+      nginx.virtualHosts."status.mondon.xyz" = { port = 3001; websockets = true; };
 
       ntfy-sh = {
         enable = true;
