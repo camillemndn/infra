@@ -10,7 +10,7 @@ with lib;
     noDefault.enable = mkEnableOption (mdDoc ''Don't fallback to default page'');
 
     publicDomains = mkOption {
-      default = [ "mondon.xyz" "yali.es" ];
+      default = [ "mondon.xyz" "saumon.network" "yali.es" ];
       type = types.listOf types.str;
     };
 
