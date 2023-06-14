@@ -22,14 +22,7 @@ with lib;
     services.prometheus = {
       enable = true;
       port = 9091;
-      scrapeConfigs = [
-        {
-          job_name = "unbound";
-          static_configs = [{
-            targets = [ "192.168.1.144:9167" ];
-          }];
-        }
-      ];
+      scrapeConfigs = [{ job_name = "unbound"; static_configs = [{ targets = [ "192.168.0.1:9167" ]; }]; }];
     };
   };
 }
