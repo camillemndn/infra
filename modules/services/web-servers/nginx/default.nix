@@ -20,7 +20,7 @@ with lib;
     };
 
     vpnAcmeServer = mkOption {
-      default = "https://ca.luj:8444/acme/acme/directory";
+      default = "https://ca.luj/acme/acme/directory";
       type = types.str;
     };
 
