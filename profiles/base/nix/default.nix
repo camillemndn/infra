@@ -1,10 +1,18 @@
-{ config, lib, self, ... }:
+{ config, lib, self, nixpkgs, ... }:
 
 {
   nix = {
+    registry = {
+      nixpkgs.flake = nixpkgs;
+      camille.flake = self;
+    };
+
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
       trusted-users = [ "camille" ];
+
+      auto-optimise-store = true;
+      builders-use-substitutes = true;
 
       substituters = [
         "https://cache.mondon.xyz?priority=45"
@@ -16,7 +24,7 @@
         "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
       ];
 
-      nix-path = [ "nixpkgs=flake:nixpkgs/nixos-23.05" ];
+      nix-path = [ "nixpkgs=${nixpkgs}" "nixos=${nixpkgs}" ];
     };
 
     extraOptions = ''

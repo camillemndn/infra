@@ -10,7 +10,7 @@ let
     }: lib.nixosSystem (lib.recursiveUpdate
       {
         inherit lib;
-        specialArgs = { inherit self; };
+        specialArgs = { inherit self nixpkgs; };
         modules = extraModules ++ [
           (import ./${configuration})
           (import ../hardware/${hardware})
