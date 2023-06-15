@@ -33,41 +33,7 @@ keyset('n', 'fg', builtin.live_grep, {})
 keyset('n', 'fb', builtin.buffers, {})
 keyset('n', 'fh', builtin.help_tags, {})
 
--- Treesitter settings
-require'nvim-treesitter.configs'.setup{
-    ensure_installed = "", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-    highlight = {
-        enable = true
-    },
-    indent = {
-      enable = true,
-    },
-}
-
 require'nvim-web-devicons'.setup{}
-
-local quarto = require'quarto'
-quarto.setup{
-  debug = false,
-  closePreviewOnExit = true,
-  lspFeatures = {
-    enabled = true,
-    languages = { 'r', 'python', 'julia', 'bash', 'latex' },
-    chunks = 'curly', -- 'curly' or 'all'
-    diagnostics = {
-      enabled = true,
-      triggers = { "BufWritePost" }
-    },
-    completion = {
-      enabled = true,
-    },
-  },
-  keymap = {
-    hover = 'K',
-    definition = 'gd'
-  }
-}
-keyset('n', '<leader>qp', quarto.quartoPreview, {silent = true, noremap = true})
 
 g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'R=r', 'latex'}
 

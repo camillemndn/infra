@@ -14,9 +14,12 @@ with lib;
   config = mkIf cfg.enable {
     programs.neovim = {
       enable = true;
+
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
+
+      withPython3 = true;
 
       coc = mkIf cfg.full.enable {
         enable = true;
@@ -83,8 +86,6 @@ with lib;
         };
       };
 
-      withPython3 = true;
-
       plugins =
         let
           catppuccin = pkgs.vimUtils.buildVimPlugin {
@@ -98,34 +99,7 @@ with lib;
             };
           };
 
-          otter-nvim = pkgs.vimUtils.buildVimPlugin {
-            name = "otter-nvim";
-            src = pkgs.fetchgit {
-              url = "https://github.com/jmbuhr/otter.nvim";
-              rev = "2f03fb749527c9b53b9b132a4a9819e6edfe5487";
-              sha256 = "sha256-wRSuiaNIaNsB2MF3sjDYj3B5RJLy4xYghgpOZL3KTAc=";
-            };
-          };
-
-          quarto-nvim = pkgs.vimUtils.buildVimPlugin {
-            name = "quarto-nvim";
-            src = pkgs.fetchgit {
-              url = "https://github.com/quarto-dev/quarto-nvim";
-              rev = "f03913ae9ff2d4b26ba8bc20da2bfa04e232509e";
-              sha256 = "sha256-MkoJORN7ad0Rb9mImyc8nmHWX4e73G4/AwGbGb/Qbck=";
-            };
-          };
-        in
-        with pkgs.vimPlugins; mkIf cfg.full.enable [
-          bufferline-nvim
-          catppuccin
-          coc-prettier
-          coc-pyright
-          coc-texlab
-          nvim-colorizer-lua
-          nvim-cmp
-          nvim-lspconfig
-          (nvim-treesitter.withPlugins (ps: with ps; [
+          nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (ps: with ps; [
             tree-sitter-bash
             tree-sitter-css
             tree-sitter-html
@@ -141,7 +115,39 @@ with lib;
             tree-sitter-vim
             tree-sitter-vimdoc
             tree-sitter-yaml
-          ]))
+          ]);
+
+          otter-nvim = pkgs.vimUtils.buildVimPlugin {
+            name = "otter-nvim";
+            src = pkgs.fetchgit {
+              url = "https://github.com/jmbuhr/otter.nvim";
+              rev = "v0.16.1";
+              sha256 = "sha256-QY1RimrDzoY2xbKv/3m89IsEd0NUbJNlGIW4vxPnQZo=";
+            };
+          };
+
+          quarto-nvim = pkgs.vimUtils.buildVimPlugin {
+            name = "quarto-nvim";
+            src = pkgs.fetchgit {
+              url = "https://github.com/quarto-dev/quarto-nvim";
+              rev = "v0.13.1";
+              sha256 = "sha256-aEJyhd+bBXsvyDDQT2W/ZtpJB4W+aeUszp8h0fzQnBs=";
+            };
+          };
+        in
+        with pkgs.vimPlugins; mkIf cfg.full.enable [
+          bufferline-nvim
+          catppuccin
+          cmp-nvim-lsp
+          coc-prettier
+          coc-pyright
+          coc-texlab
+          lspkind-nvim
+          luasnip
+          nvim-cmp
+          nvim-colorizer-lua
+          nvim-lspconfig
+          nvim-treesitter
           nvim-tree-lua
           nvim-web-devicons
           otter-nvim
@@ -159,29 +165,33 @@ with lib;
           vim-scriptease
           vim-toml
           vim-yaml
+          which-key-nvim
           zig-vim
         ];
 
       extraPackages = with pkgs; mkIf cfg.full.enable [
+        R
         ccls
+        fd
         lua.pkgs.lua-lsp
         lua.pkgs.luarocks-nix
+        marksman
         nil
         nixpkgs-fmt
         pyright
+        python3.pkgs.autopep8
+        python3.pkgs.flake8
         (quarto.override { extraRPackages = [ rPackages.plotly ]; extraPythonPackages = ps: with ps; [ plotly ]; })
-        R
         ripgrep
         texlab
         texlive.combined.scheme-full
         wl-clipboard
         wl-clipboard-x11
-        pkgs.python3.pkgs.autopep8
-        pkgs.python3.pkgs.flake8
       ];
 
       extraConfig = ''
         luafile ${./settings.lua}
+        ${optionalString cfg.full.enable "luafile ${./quarto.lua}"}
       '';
     };
   };

@@ -3,7 +3,7 @@ local Quarto_is_in_python_chunk = function()
   require 'otter.tools.functions'.is_otter_language_context('python')
 end
 
-require'otter'.dev_setup()
+-- require'otter'.dev_setup()
 
 require 'otter.config'.setup {
             lsp = {
@@ -182,11 +182,11 @@ vim.keymap.set('n', '<leader>qc', quarto.quartoClosePreview, {silent = true, nor
 
       -- -- another optional language server for grammar and spelling
       -- -- <https://github.com/valentjn/ltex-ls>
-      -- lspconfig.ltex.setup {
-      --   on_attach = on_attach2,
-      --   capabilities = capabilities,
-      --   filetypes = { "markdown", "tex", "quarto" },
-      -- }
+      lspconfig.texlab.setup {
+        on_attach = on_attach2,
+        capabilities = capabilities,
+        filetypes = { "markdown", "quarto" },
+      }
 
       lspconfig.r_language_server.setup {
         on_attach = on_attach,
