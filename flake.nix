@@ -28,7 +28,7 @@
 
     # Hardware dependencies
 
-    lanzaboote.url = "github:nix-community/lanzaboote";
+    lanzaboote.url = "github:nix-community/lanzaboote/45d04a45d3dfcdee5246f7c0dfed056313de2a61";
     mobile-nixos = { url = "github:camillemndn/mobile-nixos"; flake = false; };
 
     nixos-wsl = {
