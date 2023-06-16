@@ -15,8 +15,8 @@ with lib;
       enable = true;
 
       font = {
-        name = "FiraCode Nerd Font";
-        package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; });
+        name = "FiraCode Nerd Font Mono Reg";
+        package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
         size = 15;
       };
 
@@ -29,3 +29,4 @@ with lib;
     };
   };
 }
+
