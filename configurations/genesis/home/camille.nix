@@ -30,11 +30,12 @@ with lib;
       inkscape-with-extensions
 
       # Music & Video
-      vlc
-      jellyfin-media-player
-      sonixd
       frescobaldi
+      harmony-assistant
+      jellyfin-media-player
       lilypond-with-fonts
+      sonixd
+      vlc
 
       # Computer
       python3
