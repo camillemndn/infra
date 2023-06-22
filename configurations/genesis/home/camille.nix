@@ -86,7 +86,6 @@ with lib;
 
     thunderbird = {
       enable = true;
-      package = pkgs.thunderbird-bin;
       profiles."camille".isDefault = true;
     };
   };
