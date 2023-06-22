@@ -11,6 +11,7 @@ in
   catppuccin-folders = callPackage ../data/icons/catppuccin-folders { };
   deluge-storm = callPackage ../servers/deluge-storm { };
   hammond = callPackage ../servers/hammond { };
+  harmony-assistant = callPackage ../applications/audio/harmony-assistant { };
   koel = callPackage ../servers/koel { };
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
