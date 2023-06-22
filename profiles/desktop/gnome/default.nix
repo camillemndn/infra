@@ -36,7 +36,7 @@ with lib;
     environment = {
       variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
 
-      gnome.excludePackages = with pkgs; with gnome; [ geary epiphany gnome-console ];
+      gnome.excludePackages = with pkgs; with gnome; [ geary epiphany gnome-calendar gnome-console ];
 
       systemPackages = with pkgs.gnome; with pkgs.gnomeExtensions; [
         dconf-editor
