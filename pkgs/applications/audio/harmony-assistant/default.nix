@@ -24,11 +24,15 @@ let
     '';
 
     installPhase = ''
-      mkdir -p $out/{bin,share}
+      mkdir -p $out/{bin,share/icons/hicolor/256x256/apps}
       cd harmony-assistant-${version}.0/InstallFiles
       cp -r "usr/bin/Harmony Assistant x64" "$out/bin/harmony-assistant"
       cp -r usr/share/* $out/share
+      cp $out/share/{pixmaps/harmony-assistant.png,icons/hicolor/256x256/apps/}
       mv $out/share/{"Harmony Assistant",harmony-assistant}
+
+      substituteInPlace "$out/share/applications/harmony-assistant.desktop" \
+        --replace "/usr/bin/Harmony Assistant" "harmony-assistant"
     '';
 
     dontFixup = true;
@@ -36,7 +40,7 @@ let
     meta = with lib; {
       description = "Un logiciel indispensable pour l'écriture et la composition musicale assistée par ordinateur";
       homepage = "https://www.myriad-online.com/fr/products/harmony.htm";
-      # license = licenses.agpl3Only;
+      license = licenses.unfree;
       maintainers = with maintainers; [ camillemndn ];
       platforms = with platforms; linux;
     };
