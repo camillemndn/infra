@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.profiles.binary-cache;
@@ -18,7 +18,6 @@ with lib;
   config = mkIf cfg.enable {
     services.nix-serve = {
       enable = true;
-      package = pkgs.nix-serve-ng.override { nix = pkgs.nixVersions.nix_2_12; };
       port = 5001;
       secretKeyFile = "/run/secrets/binary-cache";
     };
