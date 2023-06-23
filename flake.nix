@@ -6,7 +6,7 @@
 
     nixpkgs.url = "github:camillemndn/nixpkgs/nixos-23.05";
     pinned.url = "github:camillemndn/nixpkgs/85bcb95aa83be667e562e781e9d186c57a07d757";
-    unstable.url = "github:camillemndn/nixpkgs/nixos-unstable";
+    unstable.url = "nixpkgs/nixos-unstable";
     home-manager = { url = "home-manager/release-23.05"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     # Flake utils
