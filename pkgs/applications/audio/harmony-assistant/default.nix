@@ -52,9 +52,9 @@ buildFHSEnv {
 
   runScript = "harmony-assistant";
 
-  targetPkgs = pkgs: [ harmony-assistant-unwrapped ];
+  targetPkgs = _: [ harmony-assistant-unwrapped ];
 
-  multiPkgs = pkgs: [ alsa-lib freetype fontconfig libX11 expat ];
+  multiPkgs = _: [ alsa-lib freetype fontconfig libX11 expat ];
 
   extraInstallCommands = ''
     mkdir -p $out/share
