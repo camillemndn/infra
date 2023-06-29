@@ -10,7 +10,6 @@ _:
     hammond = { enable = true; hostName = "car.kms"; };
     nginx.noDefault.enable = true;
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
-    nginx.virtualHosts."slides.camille.mondon.xyz".root = "/srv/sites/slides";
     openssh.enable = true;
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
