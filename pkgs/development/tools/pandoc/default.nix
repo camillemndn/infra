@@ -1,7 +1,6 @@
 { lib
 , stdenv
 , fetchurl
-, haskellPackages
 , autoPatchelfHook
 }:
 
@@ -10,11 +9,10 @@ stdenv.mkDerivation rec {
   version = "3.1.2";
 
   src = fetchurl {
-    url = "https://github.com/jgm/pandoc/releases/download/3.1.2/pandoc-3.1.2-linux-amd64.tar.gz";
+    url = "https://github.com/jgm/pandoc/releases/download/${version}/pandoc-${version}-linux-amd64.tar.gz";
     hash = "sha256-Thxgf35OkkP6Hh9bIIzU8dP2/QVdXYw5ugzcOGROHDU=";
   };
 
-  # ls -all ${haskellPackages.pandoc_3_1_2}
   buildInputs = [ autoPatchelfHook ];
   installPhase = ''
     mkdir $out

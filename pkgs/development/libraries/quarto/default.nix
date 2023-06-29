@@ -22,20 +22,7 @@ stdenv.mkDerivation rec {
   };
 
 
-  nativeBuildInputs = [
-    makeWrapper
-  ];
-
-  #patches = [
-  #  ./fix-deno-path.patch
-  #];
-
-  postPatch = ''
-    # Compat for Deno >=1.26
-    #substituteInPlace bin/quarto.js \
-    #  --replace 'Deno.setRaw(stdin.rid, ' 'Deno.stdin.setRaw(' \
-    #  --replace 'Deno.setRaw(Deno.stdin.rid, ' 'Deno.stdin.setRaw('
-  '';
+  nativeBuildInputs = [ makeWrapper ];
 
   dontStrip = true;
 
@@ -49,7 +36,6 @@ stdenv.mkDerivation rec {
       --prefix QUARTO_PYTHON : ${python3.withPackages (ps: with ps; [ jupyter ipython ] ++ (extraPythonPackages ps))}/bin/python3
   '';
 
-  # --prefix PATH : ${lib.makeBinPath [ deno ]} \
   installPhase = ''
     runHook preInstall
 
