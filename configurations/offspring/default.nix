@@ -11,7 +11,6 @@ _:
   services = {
     openssh.enable = true;
     nginx.noDefault.enable = true;
-    nginx.virtualHosts."slides.camille.mondon.xyz".root = "/srv/www/slides";
   };
 
   profiles = {
