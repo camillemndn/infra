@@ -13,7 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     services.nextcloud = {
       enable = true;
-      package = pkgs.nextcloud26;
+      package = pkgs.nextcloud27;
       hostName = "cloud.kms";
 
       autoUpdateApps.enable = true;
