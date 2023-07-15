@@ -7,8 +7,10 @@ with lib;
     packages = with pkgs; [
       # Games
       lutris
-      prismlauncher
+      prismlauncher-qt5
+      dolphin-emu
       cemu
+      citra-canary
 
       # Social
       signal-desktop-beta
