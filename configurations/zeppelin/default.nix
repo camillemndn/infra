@@ -9,7 +9,9 @@ _:
   services = {
     hammond = { enable = true; hostName = "car.kms"; };
     nginx.noDefault.enable = true;
+    nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
+    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     openssh.enable = true;
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
