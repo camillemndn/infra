@@ -14,12 +14,12 @@
       auto-optimise-store = true;
       builders-use-substitutes = true;
 
-      substituters = [
-        "https://cache.mondon.xyz?priority=45"
-        "https://cache2.mondon.xyz?priority=45"
+      extra-substituters = [
+        "https://cache.mondon.xyz"
+        "https://cache2.mondon.xyz"
       ];
 
-      trusted-public-keys = [
+      extra-trusted-public-keys = [
         "cache.mondon.xyz:6o1j93GkK5gj0PfYouSA4WPAEEnOuPGTebLCWc/jKfQ="
         "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
       ];
