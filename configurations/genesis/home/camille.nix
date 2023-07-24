@@ -36,6 +36,7 @@ with lib;
       harmony-assistant
       jellyfin-media-player
       lilypond-with-fonts
+      musescore
       sonixd
       vlc
 
