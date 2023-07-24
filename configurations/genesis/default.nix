@@ -31,7 +31,7 @@
   services = {
     logind.killUserProcesses = true;
     power-profiles-daemon.enable = false;
-    printing = { enable = true; drivers = [ pkgs.brlaser ]; };
+    printing = { enable = true; drivers = with pkgs; [ brlaser gutenprint ]; };
     tailscale.enable = true;
     tlp.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
