@@ -19,7 +19,7 @@
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "unstable";
       inputs.nixpkgs-stable.follows = "nixpkgs";
     };
 
@@ -39,8 +39,15 @@
 
     # Sofware dependencies 
 
-    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.26.0"; inputs.nixpkgs.follows = "nixpkgs"; };
-    hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
+    attic = {
+      url = "github:zhaofengli/attic";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs-stable.follows = "nixpkgs";
+      inputs.flake-utils.follows = "utils";
+    };
+
+    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.28.0"; }; # inputs.nixpkgs.follows = "unstable"; };
+    hyprland-contrib = { url = "github:hyprwm/contrib"; }; # inputs.nixpkgs.follows = "unstable"; };
 
     nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
 
