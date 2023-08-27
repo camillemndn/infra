@@ -1,7 +1,7 @@
 { lib
 , buildNpmPackage
 , fetchFromGitHub
-, firefox-esr
+, firefox-esr-102
 , makeDesktopItem
 , copyDesktopItems
 , python3
@@ -326,7 +326,7 @@ buildNpmPackage {
 
   postBuild = ''
     mkdir app/xulrunner
-    cp -Lr ${firefox-esr}/lib/firefox app/xulrunner
+    cp -Lr ${firefox-esr-102}/lib/firefox app/xulrunner
     chmod -R +w /build
     app/scripts/dir_build -p l
     
