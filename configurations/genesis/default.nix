@@ -8,6 +8,8 @@
 
   environment.systemPackages = with pkgs; [
     amdctl
+    ifuse
+    libimobiledevice
     nix-software-center
   ];
 
@@ -26,8 +28,8 @@
     dconf.enable = true;
     firefox.enable = true;
     steam.enable = true;
+    sway = { enable = true; wrapperFeatures.gtk = true; };
   };
-
   services = {
     logind.killUserProcesses = true;
     power-profiles-daemon.enable = false;
@@ -35,6 +37,7 @@
     tailscale.enable = true;
     tlp.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
+    usbmuxd.enable = true;
   };
 
   system.stateVersion = "23.05";

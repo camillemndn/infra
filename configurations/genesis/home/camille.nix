@@ -13,7 +13,7 @@ with lib;
       citra-canary
 
       # Social
-      signal-desktop-beta
+      signal-desktop
       zoom-us
 
       # Desk
@@ -90,6 +90,7 @@ with lib;
 
     thunderbird = {
       enable = true;
+      package = pkgs.unstable.thunderbird;
       profiles."camille".isDefault = true;
     };
   };
@@ -99,6 +100,7 @@ with lib;
     kitty.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
+    sway.enable = true;
   };
 
   xdg.desktopEntries = {
