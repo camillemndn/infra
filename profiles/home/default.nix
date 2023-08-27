@@ -3,7 +3,11 @@
   ./desktop/alacritty
   ./desktop/code
   ./desktop/hyprland
+  #./desktop/hyprland-heinz
   ./desktop/kitty
+  ./desktop/rofi
   ./desktop/spotify
+  ./desktop/sway
+  ./desktop/waybar
   ./neovim
 ]
