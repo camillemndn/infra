@@ -15,6 +15,7 @@ final: _: lib.updateManyAttrs [
     spicetify-nix = spicetify-nix.packages.${system}.default;
     inherit (hyprland-contrib.packages.${system}) grimblast;
     inherit (nix-software-center.packages.${system}) nix-software-center;
+    inherit (attic.packages.${system}) attic;
 
     photoprism = final.unstable.photoprism;
   }

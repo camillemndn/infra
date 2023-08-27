@@ -18,7 +18,6 @@ _:
   };
 
   profiles = {
-    binary-cache = { enable = true; hostName = "cache.mondon.xyz"; };
     cloud.enable = true;
     feeds.enable = true;
     graphs.enable = true;

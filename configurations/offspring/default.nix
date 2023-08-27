@@ -14,7 +14,7 @@ _:
   };
 
   profiles = {
-    binary-cache = { enable = true; hostName = "cache2.mondon.xyz"; };
+    binary-cache = { enable = false; hostName = "cache2.mondon.xyz"; };
     uptime.enable = true;
   };
 

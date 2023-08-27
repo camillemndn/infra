@@ -74,6 +74,7 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     age
+    attic
     deploy-rs
     dig
     direnv

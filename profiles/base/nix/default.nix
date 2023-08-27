@@ -1,7 +1,10 @@
-{ config, lib, self, nixpkgs, ... }:
+{ config, lib, pkgs, self, nixpkgs, ... }:
 
 {
   nix = {
+    gc.automatic = true;
+    optimise.automatic = true;
+
     registry = {
       nixpkgs.flake = nixpkgs;
       camille.flake = self;
@@ -14,15 +17,9 @@
       auto-optimise-store = true;
       builders-use-substitutes = true;
 
-      extra-substituters = [
-        "https://cache.mondon.xyz"
-        "https://cache2.mondon.xyz"
-      ];
+      extra-substituters = [ "https://cache.saumon.network/camille" ];
 
-      extra-trusted-public-keys = [
-        "cache.mondon.xyz:6o1j93GkK5gj0PfYouSA4WPAEEnOuPGTebLCWc/jKfQ="
-        "cache2.mondon.xyz:8zCLL6cuq3rX66LpesMMQRticIrMsewHXzl8NmPUvfs="
-      ];
+      extra-trusted-public-keys = [ "camille:r1ElbcicaLHPlvECyy3wS+CUj4KWHaCEV2Kt1LEaYI0=" ];
 
       nix-path = [ "nixpkgs=${nixpkgs}" "nixos=${nixpkgs}" ];
     };
@@ -35,12 +32,6 @@
     distributedBuilds = true;
 
     buildMachines = [
-      (lib.mkIf (config.networking.hostName != "zeppelin") {
-        hostName = self.machines.zeppelin.ipv6.public;
-        sshUser = "root";
-        system = "x86_64-linux";
-        maxJobs = 24;
-      })
       (lib.mkIf (config.networking.hostName != "offspring") {
         hostName = self.machines.offspring.ipv4.public;
         sshUser = "root";
@@ -48,5 +39,22 @@
         maxJobs = 8;
       })
     ];
+  };
+
+  systemd.services.attic-watch-store = {
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.attic}/bin/attic watch-store camille";
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      ProtectSystem = "strict";
+      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+    };
   };
 }
