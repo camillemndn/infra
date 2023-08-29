@@ -27,7 +27,7 @@ with lib;
         Type = "simple";
         ExecStart = "${pkgs.logiops}/bin/logid";
         User = "root";
-        ExecReload = "/bin/kill -HUP $MAINPID";
+        ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
         Restart = "on-failure";
       };
       wantedBy = [ "graphical.target" ];

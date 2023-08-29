@@ -2,6 +2,7 @@
 
 let
   cfg = config.profiles.waybar;
+  launcher = "fuzzel";
 in
 with lib;
 
@@ -84,7 +85,7 @@ with lib;
                 padding-right: 6px;
                 color: #7ebae4;
               }
-        #mode, #clock, #memory, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #pulseaudio, #network, #battery, #custom-powermenu, #custom-cava-internal {
+        #mode, #clock, #memory, #disk, #workspaces, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #pulseaudio, #network, #bluetooth, #battery, #custom-powermenu, #custom-cava-internal {
                 padding-left: 10px;
                 padding-right: 10px;
               }
@@ -152,31 +153,72 @@ with lib;
         modules-left = [
           "custom/launcher"
           "temperature"
-          "mpd"
-          "custom/cava-internal"
+          "cpu"
+          "memory"
+          "disk"
+          "sway/workspaces"
         ];
         modules-center = [
           "clock"
         ];
         modules-right = [
           "battery"
-          "pulseaudio"
           "backlight"
-          "memory"
-          "cpu"
+          "pulseaudio"
+          "bluetooth"
           "network"
-          "custom/powermenu"
+          "custom/tailscale"
+          "custom/nextcloud"
           "tray"
+          "custom/powermenu"
         ];
+        "backlight" = {
+          "format" = "{icon} {percent}%";
+          "format-icons" = [ "" "" ];
+        };
+        "sway/workspaces" = {
+          "disable-scroll" = true;
+          "all-outputs" = true;
+          "format" = "{name}: {icon}";
+          "format-icons" = {
+            "1" = "";
+            "2" = "";
+            "3" = "";
+            "4" = "";
+            "5" = "";
+            "high-priority-named" = [ "1" "2" ];
+            "urgent" = "";
+            "focused" = "";
+            "default" = "";
+          };
+        };
+        "bluetooth" = {
+          "format" = " {status}";
+          "format-connected" = " {device_alias}";
+          "format-connected-battery" = " {device_alias} {device_battery_percentage}%";
+          "on-click" = "STATE=`bluetoothctl show | grep Powered | awk '{print $2}'`; if [[ $STATE == 'yes' ]]; then bluetoothctl power off; else bluetoothctl power on; fi";
+          "tooltip-format" = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+          "tooltip-format-connected" = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+          "tooltip-format-enumerate-connected" = "{device_alias}\t{device_address}";
+          "tooltip-format-enumerate-connected-battery" = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+        };
         "custom/launcher" = {
           "format" = " ";
-          "on-click" = "pkill rofi || rofi2";
-          "on-click-middle" = "exec default_wall";
-          "on-click-right" = "exec wallpaper_random";
+          "on-click" = "pkill ${launcher} || ${launcher}";
+          # "on-click-middle" = "exec default_wall";
+          # "on-click-right" = "exec wallpaper_random";
           "tooltip" = false;
         };
         "custom/cava-internal" = {
           "exec" = "sleep 1s && cava-internal";
+          "tooltip" = false;
+        };
+        "custom/tailscale" = {
+          "exec" = "${pkgs.tailscale-systray}/bin/tailscale-systray";
+          "tooltip" = false;
+        };
+        "custom/nextcloud" = {
+          "exec" = "${pkgs.nextcloud-client}/bin/nextcloud";
           "tooltip" = false;
         };
         "battery" = {
@@ -186,9 +228,15 @@ with lib;
             "warning" = 30;
             "critical" = 15;
           };
-          "format" = "{capacity}% {icon}";
+          "format" = "{icon} {capacity}%";
+          "format-alt" = "{icon} {capacity}% ({power} W)";
           "format-icons" = [ "" "" "" "" "" ];
           "max-length" = 25;
+        };
+        "disk" = {
+          "path" = "/";
+          "interval" = 180;
+          "format" = "󰨣 {percentage_used}%";
         };
         "pulseaudio" = {
           "scroll-step" = 1;
@@ -196,6 +244,13 @@ with lib;
           "format-muted" = "󰖁 Muted";
           "format-icons" = {
             "default" = [ "" "" "" ];
+            "alsa_output.pci-0000_00_1f.3.analog-stereo" = "";
+            "headphones" = "";
+            "handsfree" = "";
+            "headset" = "";
+            "phone" = "";
+            "portable" = "";
+            "car" = "";
           };
           "on-click" = "${pkgs.pamixer}/bin/pamixer -t";
           "tooltip" = false;
@@ -252,12 +307,14 @@ with lib;
           "tooltip-format" = "{title} - {artist} ({elapsedTime:%M:%S}/{totalTime:%H:%M:%S})";
         };
         "network" = {
-          "format-disconnected" = "󰯡 Disconnected";
-          "format-ethernet" = "󰒢 Connected!";
+          "format-disconnected" = "";
+          "format-ethernet" = " Connected!";
           "format-linked" = "󰖪 {essid} (No IP)";
           "format-wifi" = "󰖩 {essid}";
           "interval" = 1;
-          "tooltip" = false;
+          "tooltip-format-wifi" = " {essid} ({signalStrength}%)\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}\rSignal: {signaldBm} dBm\rFrequency: {frequency} GHz";
+          "tooltip-format-ethernet" = " {ifname}\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}";
+          "tooltip-format-disconnected" = "Disconnected";
         };
         "custom/powermenu" = {
           "format" = "";

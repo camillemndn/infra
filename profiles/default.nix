@@ -7,6 +7,7 @@
   ./desktop/gdm
   ./desktop/gnome
   ./desktop/hyprland
+  ./desktop/sway
   ./networking/sync
   ./networking/wireguard
   ./servers/auth

@@ -22,14 +22,15 @@
   profiles = {
     gdm.enable = true;
     gnome.enable = true;
+    sway.enable = true;
   };
 
   programs = {
     dconf.enable = true;
     firefox.enable = true;
     steam.enable = true;
-    sway = { enable = true; wrapperFeatures.gtk = true; };
   };
+
   services = {
     logind.killUserProcesses = true;
     power-profiles-daemon.enable = false;

@@ -57,7 +57,7 @@ with lib;
     packages = with pkgs; [ terminus_font ];
   };
 
-  environment.systemPackages = with pkgs; [ sbctl ];
+  environment.systemPackages = with pkgs; [ sbctl bluetuith ];
 
   hardware = {
     enableRedistributableFirmware = true;
@@ -98,6 +98,7 @@ with lib;
       fanCurvesConfig = readFile ./fan_curves.ron;
     };
     fprintd.enable = true;
+    logiops.enable = true;
 
     supergfxd = {
       enable = true;
