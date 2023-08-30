@@ -252,7 +252,7 @@ with lib;
             "portable" = "";
             "car" = "";
           };
-          "on-click" = "${pkgs.pamixer}/bin/pamixer -t";
+          "on-click" = "amixer set Master toggle";
           "tooltip" = false;
         };
         "clock" = {
@@ -318,7 +318,7 @@ with lib;
         };
         "custom/powermenu" = {
           "format" = "";
-          "on-click" = "pkill rofi || ~/.config/rofi/powermenu/type-3/powermenu.sh";
+          "on-click" = "wlogout -p layer-shell";
           "tooltip" = false;
         };
         "tray" = {

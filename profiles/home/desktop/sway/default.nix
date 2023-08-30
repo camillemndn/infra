@@ -15,7 +15,130 @@ with lib;
     profiles.launcher.enable = true;
     profiles.kitty.enable = true;
 
-    home.packages = with pkgs; [ swww brightnessctl pamixer asusctl ];
+    programs.swaylock = {
+      enable = true;
+      package = pkgs.swaylock-effects;
+      settings = {
+        ignore-empty-password = true;
+        font = "FiraCode Nerd Font Mono";
+        clock = true;
+        timestr = "%R";
+        datestr = "%a %e %B";
+        screenshots = true;
+        fade-in = "0.2";
+        effect-blur = "20x4";
+        #effect-greyscale = true;
+        effect-scale = "0.3";
+        indicator = true;
+        indicator-radius = "200";
+        indicator-thickness = "20";
+        indicator-caps-lock = true;
+        #key-hl-color = "880033";
+        #separator-color = "00000000";
+        #inside-color = "00000099";
+        #inside-clear-color = "ffd20400";
+        #inside-caps-lock-color = "009ddc00";
+        #inside-ver-color = "d9d8d800";
+        #inside-wrong-color = "ee2e2400";
+        #ring-color = "231f20D9";
+        #ring-clear-color = "231f20D9";
+        #ring-caps-lock-color = "231f20D9";
+        #ring-ver-color = "231f20D9";
+        #ring-wrong-color = "231f20D9";
+        #line-color = "00000000";
+        #line-clear-color = "ffd204FF";
+        #line-caps-lock-color = "009ddcFF";
+        #line-ver-color = "d9d8d8FF";
+        #line-wrong-color = "ee2e24FF";
+        #text-clear-color = "ffd20400";
+        #text-ver-color = "d9d8d800";
+        #text-wrong-color = "ee2e2400";
+        #bs-hl-color = "ee2e24FF";
+        #caps-lock-key-hl-color = "ffd204FF";
+        #caps-lock-bs-hl-color = "ee2e24FF";
+        #disable-caps-lock-text = true;
+        #text-caps-lock-color = "009ddc";
+
+        #image = "~/Images/.cats.jpg";
+        color = "282a36";
+        inside-color = "1F202A";
+        line-color = "1F202A";
+        ring-color = "bd93f9";
+        text-color = "f8f8f2";
+        layout-bg-color = "1F202A";
+        layout-text-color = "f8f8f2";
+        inside-clear-color = "6272a4";
+        line-clear-color = "1F202A";
+        ring-clear-color = "6272a4";
+        text-clear-color = "1F202A";
+        inside-ver-color = "bd93f9";
+        line-ver-color = "1F202A";
+        ring-ver-color = "bd93f9";
+        text-ver-color = "1F202A";
+        inside-wrong-color = "ff5555";
+        line-wrong-color = "1F202A";
+        ring-wrong-color = "ff5555";
+        text-wrong-color = "1F202A";
+        bs-hl-color = "ff5555";
+        key-hl-color = "50fa7b";
+        text-caps-lock-color = "f8f8f2";
+      };
+    };
+
+    programs.wlogout = {
+      enable = true;
+      style = ''
+        @import url("${pkgs.wlogout}/etc/wlogout/style.css");
+        window {
+            font-family: "FiraCode Nerd Font Mono";
+            font-weight: bold;
+            font-size: 14pt;
+            color: #cdd6f4;
+            background-color: rgba(30, 30, 46, 0.85);
+        }
+        button {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 25%;
+            border: none;
+            background-color: rgba(30, 30, 46, 0);
+            margin: 5px;
+            transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+        }
+        button:hover {
+            background-color: rgba(49, 50, 68, 0.1);
+        }
+        button:focus {
+            background-color: #cba6f7;
+            color: #1e1e2e;
+        }
+        #lock:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/lock.svg"));
+        }
+        
+        #logout:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/logout.svg"));
+        }
+        
+        #suspend:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/suspend.svg"));
+        }
+        
+        #hibernate:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/hibernate.svg"));
+        }
+        
+        #shutdown:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/shutdown.svg"));
+        }
+        
+        #reboot:focus {
+            background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/reboot.svg"));
+        }
+      '';
+    };
+
+    home.packages = with pkgs; [ swww brightnessctl asusctl wl-clipboard grim slurp ];
 
     gtk = {
       enable = true;
@@ -37,7 +160,6 @@ with lib;
 
       gtk3.extraConfig = {
         gtk-xft-antialias = 1;
-        gtk-xft-hinting = 1;
         gtk-xft-hintstyle = "hintslight";
         gtk-xft-rgba = "rgb";
         gtk-decoration-layout = "menu:";
@@ -74,6 +196,9 @@ with lib;
 
     wayland.windowManager.sway = let cfg = config.wayland.windowManager.sway; in {
       enable = true;
+      extraConfig = ''
+        bindswitch --reload --locked lid:on exec swaylock
+      '';
       config = {
         bars = [ ];
         gaps.inner = 8;
@@ -145,9 +270,12 @@ with lib;
           "${cfg.config.modifier}+8" = "move container to workspace number 8";
           "${cfg.config.modifier}+9" = "move container to workspace number 9";
 
-          "XF86AudioMute" = "exec pamixer -t";
-          # "XF86AudioLowerVolume" = "";
-          # "XF86AudioRaiseVolume" = "";
+          "${cfg.config.modifier}+Shift+s" = "exec slurp | grim -g - - | wl-copy";
+          "${cfg.config.modifier}+Escape" = "exec swaylock";
+
+          "XF86AudioMute" = "exec amixer set Master toggle";
+          "XF86AudioLowerVolume" = "exec amixer set Master 1%-";
+          "XF86AudioRaiseVolume" = "exec amixer set Master 1%+";
           "XF86KbdBrightnessDown" = "exec asusctl -p";
           "XF86KbdBrightnessUp" = "exec asusctl -n";
           "XF86MonBrightnessDown" = "exec brightnessctl s '1%-'";
@@ -167,4 +295,5 @@ with lib;
     };
   };
 }
+
 

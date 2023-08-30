@@ -43,9 +43,10 @@
 
   systemd.services.attic-watch-store = {
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
+    after = [ "network-online.target" ];
     serviceConfig = {
       ExecStart = "${pkgs.attic}/bin/attic watch-store camille";
+      Restart = "on-failure";
       ProtectKernelLogs = true;
       ProtectKernelModules = true;
       ProtectKernelTunables = true;

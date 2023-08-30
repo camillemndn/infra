@@ -39,11 +39,13 @@ with lib;
       fontconfig.antialias = true;
     };
 
-    environment = {
-      variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
-      variables.XCURSOR_SIZE = "96";
-      variables.XCURSOR_THEME = "Adwaita";
-      variables.GDK_BACKEND = "wayland";
+    environment.variables = {
+      _JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
+      XCURSOR_SIZE = "96";
+      XCURSOR_THEME = "Adwaita";
+      GDK_BACKEND = "wayland";
+      GTK_THEME = "Adwaita-dark";
+      NIXOS_OZONE_WL = "1";
     };
   };
 }

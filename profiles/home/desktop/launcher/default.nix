@@ -26,7 +26,7 @@ with lib;
           # fuzzy=yes
           # show-actions=no
           terminal = "${pkgs.kitty}/bin/kitty"; # Note: you cannot actually use environment variables here
-          # launch-prefix=<not set>
+          # launch-prefix = "";
 
           lines = 10;
           # width=30
