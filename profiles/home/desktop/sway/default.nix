@@ -138,7 +138,7 @@ with lib;
       '';
     };
 
-    home.packages = with pkgs; [ swww brightnessctl asusctl wl-clipboard grim slurp ];
+    home.packages = with pkgs; [ swww brightnessctl asusctl wl-clipboard grim slurp swayest-workstyle ];
 
     gtk = {
       enable = true;
@@ -198,6 +198,9 @@ with lib;
       enable = true;
       extraConfig = ''
         bindswitch --reload --locked lid:on exec swaylock
+        bar { 
+          swaybar_command waybar
+        }
       '';
       config = {
         bars = [ ];
@@ -270,7 +273,7 @@ with lib;
           "${cfg.config.modifier}+8" = "move container to workspace number 8";
           "${cfg.config.modifier}+9" = "move container to workspace number 9";
 
-          "${cfg.config.modifier}+Shift+s" = "exec slurp | grim -g - - | wl-copy";
+          "${cfg.config.modifier}+Shift+s" = "exec slurp | grim -g - \"$(xdg-user-dir PICTURES)/Captures d’écran/$(date +%Y%m%d_%H%M%S.png)\"";
           "${cfg.config.modifier}+Escape" = "exec swaylock";
 
           "XF86AudioMute" = "exec amixer set Master toggle";
@@ -286,8 +289,10 @@ with lib;
         modifier = "Mod4";
         #output."*".scale = "2";
         startup = [
+          { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
           { command = "swww init; swww img ~/Images/.cats.jpg"; always = true; }
-          { command = "waybar"; always = true; }
+          # { command = "waybar"; always = true; }
+          { command = "sworkstyle &> /tmp/sworkstyle.log"; always = true; }
         ];
         terminal = "kitty";
         window.titlebar = false;

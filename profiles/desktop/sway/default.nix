@@ -18,7 +18,11 @@ with lib;
     };
 
     programs.xwayland.enable = true;
-    programs.sway = { enable = true; wrapperFeatures.gtk = true; };
+    programs.sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+      extraPackages = [ ];
+    };
 
     xdg.portal = {
       enable = true;

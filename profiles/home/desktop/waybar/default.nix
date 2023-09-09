@@ -179,18 +179,6 @@ with lib;
         "sway/workspaces" = {
           "disable-scroll" = true;
           "all-outputs" = true;
-          "format" = "{name}: {icon}";
-          "format-icons" = {
-            "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "";
-            "5" = "";
-            "high-priority-named" = [ "1" "2" ];
-            "urgent" = "";
-            "focused" = "";
-            "default" = "";
-          };
         };
         "bluetooth" = {
           "format" = " {status}";
