@@ -38,7 +38,7 @@ with lib;
       nginx.virtualHosts."torrents.kms" = { port = 8112; extraConfig = delugeCSSFilter; };
       nginx.virtualHosts."storm.kms".port = 8221;
 
-      jackett = { enable = true; inherit group; };
+      jackett = { enable = true; inherit group; package = pkgs.unstable.jackett; };
       nginx.virtualHosts."trackers.kms".port = 9117;
 
       jellyfin = { enable = true; inherit group; };
