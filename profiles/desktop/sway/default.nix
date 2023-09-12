@@ -26,8 +26,7 @@ with lib;
 
     xdg.portal = {
       enable = true;
-      wlr.enable = true;
-      extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-wlr pkgs.xdg-desktop-portal-gtk ];
     };
 
     qt = {
