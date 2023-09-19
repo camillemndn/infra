@@ -7,7 +7,7 @@ with lib;
 
 {
   options.profiles.code = {
-    enable = mkEnableOption "activate code program";
+    enable = mkEnableOption "Code program";
   };
 
   config = mkIf cfg.enable {

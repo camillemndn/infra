@@ -29,26 +29,11 @@ with lib;
       extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-wlr pkgs.xdg-desktop-portal-gtk ];
     };
 
-    qt = {
-      enable = true;
-      style = "adwaita-dark";
-      platformTheme = "gnome";
-    };
-
     fonts = {
       fonts = with pkgs; [
         (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
       ];
       fontconfig.antialias = true;
-    };
-
-    environment.variables = {
-      _JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
-      XCURSOR_SIZE = "96";
-      XCURSOR_THEME = "Adwaita";
-      GDK_BACKEND = "wayland";
-      GTK_THEME = "Adwaita-dark";
-      NIXOS_OZONE_WL = "1";
     };
   };
 }

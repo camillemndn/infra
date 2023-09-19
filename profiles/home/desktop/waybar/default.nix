@@ -100,7 +100,7 @@ with lib;
         #cpu {
                 color: rgb(245, 194, 231);
               }
-        #clock {
+        #clock, #disk, #battery, #bluetooth, #workspaces button {
                 color: rgb(217, 224, 238);
               }
         /* #idle_inhibitor {

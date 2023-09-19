@@ -36,28 +36,6 @@ with lib;
         wl-clipboard
         xorg.xprop
       ] ++ lib.optional (pkgs.system == "x86_64-linux") grimblast;
-
-      sessionVariables = {
-        # XDG Specifications
-        XDG_CURRENT_DESKTOP = "Hyprland";
-        XDG_SESSION_TYPE = "wayland";
-        XDG_SESSION_DESKTOP = "Hyprland";
-
-        # QT Variables
-        DISABLE_QT5_COMPAT = "0";
-        QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-        QT_QPA_PLATFORM = "wayland";
-        QT_QPA_PLATFORMTHEME = lib.mkForce "qt5ct";
-        QT_STYLE_OVERRIDE = lib.mkForce "kvantum";
-        QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-
-        # Toolkit Backend Variables
-        SDL_VIDEODRIVER = "wayland";
-        _JAVA_AWT_WM_NONREPARENTING = "1";
-        CLUTTER_BACKEND = "wayland";
-        GDK_BACKEND = "wayland";
-        MOZ_ENABLE_WAYLAND = "1";
-      };
     };
 
     wayland.windowManager.hyprland = {

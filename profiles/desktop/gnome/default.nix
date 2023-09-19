@@ -20,11 +20,11 @@ with lib;
 
     programs.xwayland.enable = true;
 
-    qt = {
-      enable = true;
-      style = "adwaita-dark";
-      platformTheme = "gnome";
-    };
+    #qt = {
+    #  enable = true;
+    #  style = "adwaita-dark";
+    #  platformTheme = "gnome";
+    #};
 
     fonts = {
       fonts = with pkgs; [
@@ -34,11 +34,9 @@ with lib;
     };
 
     environment = {
-      variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
-
       gnome.excludePackages = with pkgs; with gnome; [ geary epiphany gnome-calendar gnome-console ];
 
-      systemPackages = with pkgs.gnome; with pkgs.gnomeExtensions; [
+      systemPackages = with pkgs; with gnome; with gnomeExtensions; [
         dconf-editor
         tailscale-status
         screen-rotate
@@ -57,6 +55,11 @@ with lib;
         miniview
         alphabetical-app-grid
         color-picker
+
+        (writeShellScriptBin "gnome-terminal" ''
+          #!/bin/bash
+          kitty $@
+        '')
       ];
     };
   };

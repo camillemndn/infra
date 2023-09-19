@@ -7,7 +7,7 @@ with lib;
 
 {
   options.profiles.kitty = {
-    enable = mkEnableOption "activate kitty program";
+    enable = mkEnableOption "Kitty terminal";
   };
 
   config = mkIf cfg.enable {

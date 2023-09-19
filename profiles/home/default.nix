@@ -2,11 +2,16 @@
   ./base
   ./desktop/alacritty
   ./desktop/code
+  ./desktop/dunst
+  ./desktop/gtk-qt
   ./desktop/hyprland
   ./desktop/kitty
   ./desktop/launcher
   ./desktop/spotify
   ./desktop/sway
+  ./desktop/swayidle
+  ./desktop/swaylock
   ./desktop/waybar
+  ./desktop/wlogout
   ./neovim
 ]

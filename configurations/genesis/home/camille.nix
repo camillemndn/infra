@@ -42,14 +42,7 @@ with lib;
 
       # Computer
       python3
-
-      (writeShellScriptBin "gnome-terminal" ''
-        #!/bin/bash
-        kitty $@
-      '')
     ];
-
-    sessionVariables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
   };
 
   services = {
@@ -96,32 +89,11 @@ with lib;
   };
 
   profiles = {
-    code.enable = true;
     kitty.enable = true;
+    hyprland.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
     sway.enable = true;
-  };
-
-  xdg.desktopEntries = {
-    "net.lutris.Lutris".settings = {
-      Name = "Lutris";
-      Comment = "Video Game Preservation Platform";
-      Categories = "Game;";
-      Keywords = "gaming;wine;emulator;";
-      Exec = ''sh -c "xinput list --name-only | grep ^xwayland-pointer-gestures | xargs -n1 xinput disable; lutris %U"'';
-      Icon = "lutris";
-      Terminal = "false";
-      Type = "Application";
-      MimeType = "x-scheme-handler/lutris;";
-      X-GNOME-UsesNotifications = "true";
-    };
-
-    xterm = {
-      name = "";
-      exec = "";
-      noDisplay = true;
-    };
   };
 
   home.stateVersion = "23.05";

@@ -18,12 +18,6 @@ with lib;
       xkbVariant = "";
     };
 
-    qt = {
-      enable = true;
-      style = "adwaita-dark";
-      platformTheme = "gnome";
-    };
-
     fonts = {
       fonts = with pkgs; [
         (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
@@ -33,11 +27,9 @@ with lib;
 
     environment = {
       systemPackages = with pkgs; [
-        wofi
         waybar
         hyprpaper
       ];
-      variables._JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
     };
 
     programs.hyprland.enable = true;

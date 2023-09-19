@@ -21,20 +21,5 @@ with lib;
         shuffle
       ];
     };
-
-    xdg.desktopEntries = {
-      spotify.settings = {
-        Type = "Application";
-        Name = "Spotify";
-        GenericName = "Music Player";
-        Icon = "spotify-client";
-        TryExec = "spotify";
-        Exec = "spotify --enable-features=UseOzonePlatform --ozone-platform=x11 %U";
-        Terminal = "false";
-        MimeType = "x-scheme-handler/spotify;";
-        Categories = "Audio;Music;Player;AudioVideo;";
-        StartupWMClass = "spotify";
-      };
-    };
   };
 }

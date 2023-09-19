@@ -1,3 +1,4 @@
+let launcher = "fuzzel"; in
 ''
   # Monitors
   monitor = eDP-1, preferred, auto, auto
@@ -7,7 +8,7 @@
 
   # Input
   input {
-    kb_layout = us
+    kb_layout = fr
     kb_variant =
     kb_model =
     kb_options =
@@ -53,10 +54,10 @@
     inactive_opacity = 1.0
 
     # Blur
-    blur = true
-    blur_size = 10
-    blur_passes = 4
-    blur_new_optimizations = true
+    #blur = true
+    #blur_size = 10
+    #blur_passes = 4
+    #blur_new_optimizations = true
 
     # Shadow
     drop_shadow = true
@@ -159,7 +160,7 @@
   $browser = firefox
   $editor = code
   $files = nemo
-  $launcher = killall rofi || rofi -no-lazy-grab -show drun -theme index
+  $launcher = killall ${launcher} || ${launcher} # -no-lazy-grab -show drun -theme index
   $emoji = killall rofi || rofi -show emoji -emoji-format "{emoji}" -modi emoji -theme emoji
 
   # Apps

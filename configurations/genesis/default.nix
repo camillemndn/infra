@@ -22,6 +22,7 @@
   profiles = {
     gdm.enable = true;
     gnome.enable = true;
+    hyprland.enable = true;
     sway.enable = true;
   };
 

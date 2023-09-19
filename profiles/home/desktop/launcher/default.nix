@@ -7,7 +7,7 @@ with lib;
 
 {
   options.profiles.launcher = {
-    enable = mkEnableOption "activate launchermenu";
+    enable = mkEnableOption "Launcher menu";
   };
 
   config = mkIf cfg.enable {

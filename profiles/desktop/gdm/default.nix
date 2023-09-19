@@ -21,7 +21,6 @@ with lib;
 
           extraConfig = ''
             [org/gnome/desktop/interface]
-            cursor-size=24
             text-scaling-factor=1.5
             scaling-factor=2
             show-battery-percentage=true
