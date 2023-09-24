@@ -4,6 +4,7 @@ let launcher = "fuzzel"; in
   monitor = eDP-1, preferred, auto, auto
 
   # Autostart programs
+  exec-once = waybar
   exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
   # Input
