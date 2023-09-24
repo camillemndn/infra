@@ -16,9 +16,10 @@ with lib;
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         text-scaling-factor = mkIf cfg.hidpi.enable 1.5;
-        scaling-factor = mkIf cfg.hidpi.enable 2; 
+        scaling-factor = mkIf cfg.hidpi.enable 2;
         show-battery-percentage = true;
       };
+      "org/gnome/desktop/wm/preferences".button-layout = ":close";
     };
 
     gtk = {
@@ -96,26 +97,7 @@ with lib;
       #  MOZ_ENABLE_WAYLAND = "1";
     };
 
-    xdg.desktopEntries = {
-      "net.lutris.Lutris".settings = {
-        Name = "Lutris";
-        Comment = "Video Game Preservation Platform";
-        Categories = "Game;";
-        Keywords = "gaming;wine;emulator;";
-        Exec = ''sh -c "xinput list --name-only | grep ^xwayland-pointer-gestures | xargs -n1 xinput disable; lutris %U"'';
-        Icon = "lutris";
-        Terminal = "false";
-        Type = "Application";
-        MimeType = "x-scheme-handler/lutris;";
-        X-GNOME-UsesNotifications = "true";
-      };
-
-      xterm = {
-        name = "";
-        exec = "";
-        noDisplay = true;
-      };
-    };
+    xdg.desktopEntries.xterm = { name = ""; exec = ""; noDisplay = true; };
   };
 }
 
