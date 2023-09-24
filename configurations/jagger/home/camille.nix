@@ -6,11 +6,10 @@ with lib;
   home = {
     packages = with pkgs; [
       # Games
+      cemu
       lutris
       prismlauncher-qt5
-      dolphin-emu
-      cemu
-      citra-canary
+      (retroarch.override { cores = with libretro; [ dolphin citra ]; })
 
       # Social
       signal-desktop
