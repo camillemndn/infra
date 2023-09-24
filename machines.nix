@@ -1,5 +1,6 @@
 let tld = "kms"; in {
   genesis.hardware = "asus/gv301qe";
+  jagger.hardware = "asus/z170progaming";
 
   nickelback = {
     hardware = "intel/nuc5i5ryh";

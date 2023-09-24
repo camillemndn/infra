@@ -8,14 +8,15 @@ with lib;
 {
   options.profiles.gtk-qt = {
     enable = mkEnableOption "GTK & QT settings";
+    hidpi.enable = mkEnableOption "GTK & QT settings";
   };
 
   config = mkIf cfg.enable {
     dconf.settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
-        text-scaling-factor = 1.5;
-        scaling-factor = 2;
+        text-scaling-factor = mkIf cfg.hidpi.enable 1.5;
+        scaling-factor = mkIf cfg.hidpi.enable 2; 
         show-battery-percentage = true;
       };
     };

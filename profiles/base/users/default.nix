@@ -27,7 +27,7 @@ with lib;
   };
 
   users = {
-    mutableUsers = false;
+    mutableUsers = mkDefault false;
     defaultUserShell = pkgs.fish;
   };
 

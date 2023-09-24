@@ -90,7 +90,6 @@ with lib;
 
   profiles = {
     kitty.enable = true;
-    gtk-qt.hidpi.enable = true;
     hyprland.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;

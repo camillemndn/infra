@@ -8,6 +8,7 @@ with lib;
 {
   options.profiles.gdm = {
     enable = mkEnableOption "GDM";
+    hidpi.enable = mkEnableOption "High DPI";
   };
 
   config = mkIf cfg.enable {
@@ -21,8 +22,8 @@ with lib;
 
           extraConfig = ''
             [org/gnome/desktop/interface]
-            text-scaling-factor=1.5
-            scaling-factor=2
+            text-scaling-factor=${if cfg.hidpi.enable then "1.5" else "1.0"}
+            scaling-factor=${if cfg.hidpi.enable then "2" else "1"}
             show-battery-percentage=true
           '';
         };

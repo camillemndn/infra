@@ -1,8 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   networking = {
-    hostName = "genesis";
+    hostName = "jagger";
     networkmanager.enable = true;
   };
 
@@ -14,13 +14,13 @@
   ];
 
   nixpkgs.config.firefox = {
-    enableFirefoxPwa = true;
+    #enableFirefoxPwa = true;
     enableGnomeExtensions = true;
     ffmpegSupport = true;
   };
 
   profiles = {
-    gdm = { enable = true; hidpi.enable = true; };
+    gdm.enable = true;
     gnome.enable = true;
     hyprland.enable = true;
     sway.enable = true;
@@ -41,6 +41,7 @@
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
-
+users.mutableUsers = true;
+users.users.camille.passwordFile = null;
   system.stateVersion = "23.05";
 }
