@@ -23,10 +23,8 @@ with lib;
       availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
       systemd.enable = true;
 
-      # Setup keyfile
       secrets."/crypto_keyfile.bin" = null;
 
-      # Enable swap on luks
       luks.devices = {
         "luks-d0de046c-c584-4761-a3cb-66fc7a1802b8".device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
 
@@ -118,17 +116,17 @@ with lib;
 
   systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
-    fsType = "ext4";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
+      fsType = "ext4";
+    };
+
+    "/boot/efi" = {
+      device = "/dev/disk/by-uuid/A48C-7D48";
+      fsType = "vfat";
+    };
   };
 
-  fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-uuid/A48C-7D48";
-    fsType = "vfat";
-  };
-
-  swapDevices = [{
-    device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315";
-  }];
+  swapDevices = [{ device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; }];
 }
