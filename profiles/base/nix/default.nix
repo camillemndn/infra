@@ -2,7 +2,7 @@
 
 {
   nix = {
-    gc.automatic = true;
+    gc.automatic = lib.mkIf config.services.openssh.enable true;
     optimise.automatic = true;
 
     registry = {
