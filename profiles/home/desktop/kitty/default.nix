@@ -17,7 +17,7 @@ with lib;
       font = {
         name = "FiraCode Nerd Font Mono Reg";
         package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
-        #size = 15;
+        size = mkIf config.profiles.gtk-qt.hidpi.enable 15;
       };
 
       theme = "Catppuccin-Mocha";
