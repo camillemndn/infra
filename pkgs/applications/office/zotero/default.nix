@@ -1,7 +1,12 @@
 { lib
 , buildNpmPackage
 , fetchFromGitHub
-, firefox-esr-102
+, firefox-esr-102 ? (callPackage
+    (builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs/archive/50a7139fbd1acd4a3d4cfa695e694c529dd26f3a.tar.gz";
+      sha256 = "sha256:1rh75qfcdbczm2rdzqni21xj0wc8f92mhnpwq5mv3z0yy8f35krl";
+    })
+    { }).firefox-esr-102
 , makeDesktopItem
 , copyDesktopItems
 , python3
@@ -9,6 +14,7 @@
 , zip
 , perl
 , rsync
+, callPackage
 }:
 
 let
