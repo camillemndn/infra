@@ -52,6 +52,16 @@
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
   };
 
+  hardware.pulseaudio.enable = false;
+  sound.enable = true;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   environment.systemPackages = with pkgs; [ sbctl ];
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
