@@ -12,6 +12,12 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      (quarto.override { extraRPackages = [ rPackages.plotly ]; extraPythonPackages = ps: with ps; [ plotly ]; })
+      R
+      rPackages.languageserver
+    ];
+
     programs.neovim = {
       enable = true;
 
