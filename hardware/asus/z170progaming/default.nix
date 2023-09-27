@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
+  imports = [ ./clevis.nix ./luksroot.nix ];
+  disabledModules = [ "system/boot/luksroot.nix" ];
+
   boot = {
     loader = {
       systemd-boot.enable = false;
@@ -10,17 +13,21 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
-      configurationLimit = 5;
+      configurationLimit = 15;
     };
 
     initrd = {
-      availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+      availableKernelModules = [ "e1000e" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
       kernelModules = [ ];
-      systemd.enable = true;
+
+      clevis.enable = true;
+      clevis.devices."luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b".secretFile = ./luks.jwe;
 
       luks.devices = {
-        "luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b".device = "/dev/disk/by-uuid/90a7cca1-d6ee-48fb-b225-9519ad1e081b";
-
+        "luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b" = {
+          device = "/dev/disk/by-uuid/90a7cca1-d6ee-48fb-b225-9519ad1e081b";
+          # fallbackToPassword = true;
+        };
         "luks-3e4229db-fbe0-47f4-8f7c-285e2c55c268" = {
           device = "/dev/disk/by-uuid/3e4229db-fbe0-47f4-8f7c-285e2c55c268";
           keyFile = "/crypto_keyfile.bin";
@@ -28,9 +35,25 @@
       };
 
       secrets."/crypto_keyfile.bin" = null;
+      systemd = {
+        enable = true;
+        network = {
+          enable = true;
+          wait-online.enable = true;
+
+          networks."10-static" = {
+            matchConfig.Name = [ "en*" "eth*" ];
+            DHCP = "no";
+            address = [ "192.168.1.3/24" ];
+            linkConfig.RequiredForOnline = true;
+            networkConfig.IPv6PrivacyExtensions = "kernel";
+          };
+        };
+      };
     };
 
     kernelModules = [ ];
+    #kernelParams = [ "ip=192.168.1.3:::255.255.255.0::enp0s31f6:none" ];
   };
 
   fileSystems = {

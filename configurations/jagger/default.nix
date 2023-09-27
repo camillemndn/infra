@@ -3,7 +3,6 @@
 {
   networking = {
     hostName = "jagger";
-    networkmanager.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -35,9 +34,7 @@
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
-
   users.mutableUsers = true;
-  users.users.camille.hashedPasswordFile = null;
-
+  users.users.camille.passwordFile = null;
   system.stateVersion = "23.05";
 }
