@@ -73,9 +73,7 @@ with lib;
   };
 
   environment.systemPackages = with pkgs; [
-    age
     attic
-    deploy-rs
     dig
     direnv
     du-dust
@@ -90,7 +88,6 @@ with lib;
     ntfs3g
     oh-my-fish
     powertop
-    sops
     tldr
     unzip
     wget

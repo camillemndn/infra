@@ -38,27 +38,4 @@ let
   });
 
 in
-(mapSystemsFromMachines (lib.filterAttrs (configuration: _: builtins.pathExists ./${configuration}) self.machines)) //
-{
-  # pinkfloyd = nixosSystem' {
-  #   configuration = "pinkfloyd";
-  #   hardware = "pine64/pinephone";
-  #   system = "aarch64-linux";
-  #   modules = [
-  #     (import "${mobile-nixos}/lib/configuration.nix" { device = "pine64-pinephone"; })
-  #     "${mobile-nixos}/examples/phosh/phosh.nix"
-  #     (import ./pinkfloyd)
-  #   ];
-  # };
-
-  # radiogagaImage = nixosSystem' {
-  #   configuration = "radiogaga";
-  #   hardware = "raspberrypi/3b";
-  #   system = "aarch64-linux";
-  #   modules = [
-  #     "${nixpkgs}/nixos/modules/installer/sd-card/sd-image-aarch64.nix"
-  #     { sdImage.firmwareSize = 512; }
-  #   ];
-  # };
-}
-
+(mapSystemsFromMachines (lib.filterAttrs (configuration: _: builtins.pathExists ./${configuration}) self.machines))
