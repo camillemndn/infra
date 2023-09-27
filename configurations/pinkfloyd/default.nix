@@ -1,6 +1,11 @@
-{ pkgs, ... }:
+{ pkgs, self, ... }:
 
 {
+  imports = [
+    (import "${self.inputs.mobile-nixos}/lib/configuration.nix" { device = "pine64-pinephone"; })
+    "${self.inputs.mobile-nixos}/examples/phosh/phosh.nix"
+  ];
+
   networking.hostName = "pinkfloyd";
 
   # Use Network Manager
