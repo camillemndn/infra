@@ -13,12 +13,6 @@
 
     colmena.url = "github:zhaofengli/colmena";
 
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.utils.follows = "utils";
-    };
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "unstable";
@@ -138,14 +132,11 @@
 
         colmena = import ./colmena.nix { inherit lib pkgs self; };
 
-        deploy = import ./deploy.nix { inherit lib; inherit (inputs) self deploy-rs; };
-
         devShell.${system} = pkgs.mkShell {
           buildInputs = with pkgs; [
             age
             sops
             colmena
-            deploy-rs
             nixos-generators
           ];
         };
