@@ -21,6 +21,7 @@ _:
     cloud.enable = true;
     feeds.enable = true;
     graphs.enable = true;
+    meals.enable = true;
     mail-server.enable = true;
     media-server.enable = true;
     meet = { enable = true; hostName = "meet.mondon.xyz"; };

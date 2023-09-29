@@ -18,6 +18,7 @@
   ./servers/feeds
   ./servers/graphs
   ./servers/mail
+  ./servers/meals
   ./servers/media
   ./servers/meet
   ./servers/minecraft
