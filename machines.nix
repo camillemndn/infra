@@ -66,6 +66,7 @@ let tld = "kms"; in {
     inherit tld;
     ipv4 = { local = "192.168.0.137"; public = "78.194.168.230"; vpn = "100.100.45.7"; };
     ipv6 = { public = "2a01:e34:ec2a:8e60:c4f0:fbff:fe8c:d6da"; vpn = "fd7a:115c:a1e0::7"; };
+    mailServers = [ "braithwaite.fr" "mondon.me" "saumon.network" ];
     deployment = {
       tags = [ "available" ];
       targetHost = ipv6.public;
