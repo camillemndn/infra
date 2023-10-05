@@ -116,7 +116,8 @@ with lib;
         menu = "NIXOS_OZONE_WL=1 QT_QPA_PLATFORM='wayland;xcb' QT_QPA_PLATFORMTHEME=gnome _JAVA_OPTIONS=-Dsun.java2d.uiScale=3.0 fuzzel";
         # menu = "rofi -modi drun -show";
         modifier = "Mod4";
-        #output."*".scale = "2";
+        output."HDMI-A-1".scale = "0.8";
+        output."HDMI-A-1".position = "-2400 0";
         startup = [
           { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
           { command = "swww init; swww img ~/Images/.cats.jpg"; always = true; }
