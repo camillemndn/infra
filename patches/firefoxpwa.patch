@@ -1,8 +1,8 @@
 diff --git a/nixos/modules/programs/firefox.nix b/nixos/modules/programs/firefox.nix
-index ead048134d8d..47b99a9aab1f 100644
+index 83a3edaf813e..8f97a307e314 100644
 --- a/nixos/modules/programs/firefox.nix
 +++ b/nixos/modules/programs/firefox.nix
-@@ -209,6 +209,7 @@ in
+@@ -215,6 +215,7 @@ in
        passff = "PassFF support";
        tridactyl = "Tridactyl support";
        ugetIntegrator = "Uget Integrator support";
@@ -10,376 +10,36 @@ index ead048134d8d..47b99a9aab1f 100644
      };
    };
  
-@@ -237,6 +238,7 @@ in
-       enableTridactylNative = nmh.tridactyl;
-       enableUgetIntegrator = nmh.ugetIntegrator;
-       enableFXCastBridge = nmh.fxCast;
-+      enableFirefoxPwa = nmh.firefoxpwa;
-     };
- 
-     environment.etc =
+@@ -245,6 +246,7 @@ in
+             enableTridactylNative = nmh.tridactyl;
+             enableUgetIntegrator = nmh.ugetIntegrator;
+             enableFXCastBridge = nmh.fxCast;
++            enableFirefoxPwa = nmh.firefoxpwa;
+           };
+         in nixpkgsConfig // optionConfig // nmhConfig;
+       })
 diff --git a/pkgs/applications/networking/browsers/firefox/wrapper.nix b/pkgs/applications/networking/browsers/firefox/wrapper.nix
-index 6b08a891ec69..1de35024c1aa 100644
+index 12924180c25c..7c6e7434eb84 100644
 --- a/pkgs/applications/networking/browsers/firefox/wrapper.nix
 +++ b/pkgs/applications/networking/browsers/firefox/wrapper.nix
-@@ -1,11 +1,33 @@
--{ stdenv, lib, makeDesktopItem, makeWrapper, makeBinaryWrapper, lndir, config
-+{ stdenv
-+, lib
-+, makeDesktopItem
-+, makeWrapper
-+, makeBinaryWrapper
-+, lndir
-+, config
- , buildPackages
--, jq, xdg-utils, writeText
--
--## various stuff that can be plugged in
--, ffmpeg_5, xorg, alsa-lib, libpulseaudio, libcanberra-gtk3, libglvnd, libnotify, opensc
-+, jq
-+, xdg-utils
-+, writeText
-+
-+  ## various stuff that can be plugged in
-+, ffmpeg_5
-+, xorg
-+, alsa-lib
-+, libpulseaudio
-+, libcanberra-gtk3
-+, libglvnd
-+, libnotify
-+, opensc
+@@ -5,7 +5,7 @@
+ ## various stuff that can be plugged in
+ , ffmpeg_5, xorg, alsa-lib, libpulseaudio, libcanberra-gtk3, libglvnd, libnotify, opensc
  , gnome/*.gnome-shell*/
--, browserpass, gnome-browser-connector, uget-integrator, plasma5Packages, bukubrow, web-eid-app, pipewire
-+, browserpass
-+, gnome-browser-connector
-+, uget-integrator
-+, plasma5Packages
-+, bukubrow
-+, web-eid-app
-+, pipewire
-+, firefoxpwa
+-, browserpass, gnome-browser-connector, uget-integrator, plasma5Packages, bukubrow, pipewire
++, browserpass, gnome-browser-connector, uget-integrator, plasma5Packages, bukubrow, pipewire, firefoxpwa
  , tridactyl-native
- , fx_cast_bridge
+ , fx-cast-bridge
  , udev
-@@ -33,20 +55,20 @@ let
-     , nameSuffix ? ""
-     , icon ? applicationName
-     , wmClass ? applicationName
--    , extraNativeMessagingHosts ? []
--    , pkcs11Modules ? []
-+    , extraNativeMessagingHosts ? [ ]
-+    , pkcs11Modules ? [ ]
-     , useGlvnd ? true
--    , cfg ? config.${applicationName} or {}
-+    , cfg ? config.${applicationName} or { }
- 
--    ## Following options are needed for extra prefs & policies
--    # For more information about anti tracking (german website)
--    # visit https://wiki.kairaven.de/open/app/firefox
-+      ## Following options are needed for extra prefs & policies
-+      # For more information about anti tracking (german website)
-+      # visit https://wiki.kairaven.de/open/app/firefox
-     , extraPrefs ? ""
--    , extraPrefsFiles ? []
--    # For more information about policies visit
--    # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
--    , extraPolicies ? {}
--    , extraPoliciesFiles ? []
-+    , extraPrefsFiles ? [ ]
-+      # For more information about policies visit
-+      # https://github.com/mozilla/policy-templates#enterprisepoliciesenabled
-+    , extraPolicies ? { }
-+    , extraPoliciesFiles ? [ ]
-     , libName ? browser.libName or "firefox" # Important for tor package or the like
-     , nixExtensions ? null
-     }:
-@@ -63,30 +85,31 @@ let
- 
-       nativeMessagingHosts =
-         [ ]
--          ++ lib.optional (cfg.enableBrowserpass or false) (lib.getBin browserpass)
--          ++ lib.optional (cfg.enableBukubrow or false) bukubrow
--          ++ lib.optional (cfg.enableEUWebID or false) web-eid-app
--          ++ lib.optional (cfg.enableTridactylNative or false) tridactyl-native
--          ++ lib.optional (cfg.enableGnomeExtensions or false) gnome-browser-connector
--          ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
--          ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma5Packages.plasma-browser-integration
--          ++ lib.optional (cfg.enableFXCastBridge or false) fx_cast_bridge
--          ++ extraNativeMessagingHosts
--        ;
--      libs =   lib.optionals stdenv.isLinux [ udev libva mesa libnotify xorg.libXScrnSaver cups pciutils ]
--            ++ lib.optional pipewireSupport pipewire
--            ++ lib.optional ffmpegSupport ffmpeg_5
--            ++ lib.optional gssSupport libkrb5
--            ++ lib.optional useGlvnd libglvnd
--            ++ lib.optionals (cfg.enableQuakeLive or false)
--            (with xorg; [ stdenv.cc libX11 libXxf86dga libXxf86vm libXext libXt alsa-lib zlib ])
--            ++ lib.optional (config.pulseaudio or true) libpulseaudio
--            ++ lib.optional alsaSupport alsa-lib
--            ++ lib.optional sndioSupport sndio
--            ++ lib.optional jackSupport libjack2
--            ++ lib.optional smartcardSupport opensc
--            ++ lib.optional (cfg.speechSynthesisSupport or false) speechd
--            ++ pkcs11Modules;
-+        ++ lib.optional (cfg.enableBrowserpass or false) (lib.getBin browserpass)
-+        ++ lib.optional (cfg.enableBukubrow or false) bukubrow
-+        ++ lib.optional (cfg.enableEUWebID or false) web-eid-app
-+        ++ lib.optional (cfg.enableTridactylNative or false) tridactyl-native
-+        ++ lib.optional (cfg.enableGnomeExtensions or false) gnome-browser-connector
-+        ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
-+        ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma5Packages.plasma-browser-integration
-+        ++ lib.optional (cfg.enableFirefoxPwa or false) firefoxpwa
-+        ++ lib.optional (cfg.enableFXCastBridge or false) fx_cast_bridge
-+        ++ extraNativeMessagingHosts
-+      ;
-+      libs = lib.optionals stdenv.isLinux [ udev libva mesa libnotify xorg.libXScrnSaver cups pciutils ]
-+        ++ lib.optional pipewireSupport pipewire
-+        ++ lib.optional ffmpegSupport ffmpeg_5
-+        ++ lib.optional gssSupport libkrb5
-+        ++ lib.optional useGlvnd libglvnd
-+        ++ lib.optionals (cfg.enableQuakeLive or false)
-+        (with xorg; [ stdenv.cc libX11 libXxf86dga libXxf86vm libXext libXt alsa-lib zlib ])
-+        ++ lib.optional (config.pulseaudio or true) libpulseaudio
-+        ++ lib.optional alsaSupport alsa-lib
-+        ++ lib.optional sndioSupport sndio
-+        ++ lib.optional jackSupport libjack2
-+        ++ lib.optional smartcardSupport opensc
-+        ++ lib.optional (cfg.speechSynthesisSupport or false) speechd
-+        ++ pkcs11Modules;
-       gtk_modules = [ libcanberra-gtk3 ];
- 
-       launcherName = "${applicationName}${nameSuffix}";
-@@ -100,55 +123,64 @@ let
- 
-       usesNixExtensions = nixExtensions != null;
- 
--      nameArray = builtins.map(a: a.name) (lib.optionals usesNixExtensions nixExtensions);
-+      nameArray = builtins.map (a: a.name) (lib.optionals usesNixExtensions nixExtensions);
- 
-       requiresSigning = browser ? MOZ_REQUIRE_SIGNING
--                     -> toString browser.MOZ_REQUIRE_SIGNING != "";
-+        -> toString browser.MOZ_REQUIRE_SIGNING != "";
- 
-       # Check that every extension has a unqiue .name attribute
-       # and an extid attribute
--      extensions = if nameArray != (lib.unique nameArray) then
--        throw "Firefox addon name needs to be unique"
--      else if requiresSigning && !lib.hasSuffix "esr" browser.name then
--        throw "Nix addons are only supported without signature enforcement (eg. Firefox ESR)"
--      else builtins.map (a:
--        if ! (builtins.hasAttr "extid" a) then
--        throw "nixExtensions has an invalid entry. Missing extid attribute. Please use fetchfirefoxaddon"
-+      extensions =
-+        if nameArray != (lib.unique nameArray) then
-+          throw "Firefox addon name needs to be unique"
-+        else if requiresSigning && !lib.hasSuffix "esr" browser.name then
-+          throw "Nix addons are only supported without signature enforcement (eg. Firefox ESR)"
-         else
--        a
--      ) (lib.optionals usesNixExtensions nixExtensions);
-+          builtins.map
-+            (a:
-+              if ! (builtins.hasAttr "extid" a) then
-+                throw "nixExtensions has an invalid entry. Missing extid attribute. Please use fetchfirefoxaddon"
-+              else
-+                a
-+            )
-+            (lib.optionals usesNixExtensions nixExtensions);
- 
-       enterprisePolicies =
--      {
--        policies = {
--          DisableAppUpdate = true;
--        } //
--        lib.optionalAttrs usesNixExtensions {
--          ExtensionSettings = {
--            "*" = {
--              blocked_install_message = "You can't have manual extension mixed with nix extensions";
--              installation_mode = "blocked";
--            };
--          } // lib.foldr (e: ret:
--            ret // {
--              "${e.extid}" = {
--                installation_mode = "allowed";
-+        {
-+          policies = {
-+            DisableAppUpdate = true;
-+          } //
-+          lib.optionalAttrs usesNixExtensions {
-+            ExtensionSettings = {
-+              "*" = {
-+                blocked_install_message = "You can't have manual extension mixed with nix extensions";
-+                installation_mode = "blocked";
-               };
--            }
--          ) {} extensions;
--
--          Extensions = {
--            Install = lib.foldr (e: ret:
--              ret ++ [ "${e.outPath}/${e.extid}.xpi" ]
--            ) [] extensions;
--          };
--        } // lib.optionalAttrs smartcardSupport {
--          SecurityDevices = {
--            "OpenSC PKCS#11 Module" = "opensc-pkcs11.so";
--          };
--        }
--        // extraPolicies;
--      };
-+            } // lib.foldr
-+              (e: ret:
-+                ret // {
-+                  "${e.extid}" = {
-+                    installation_mode = "allowed";
-+                  };
-+                }
-+              )
-+              { }
-+              extensions;
-+
-+            Extensions = {
-+              Install = lib.foldr
-+                (e: ret:
-+                  ret ++ [ "${e.outPath}/${e.extid}.xpi" ]
-+                ) [ ]
-+                extensions;
-+            };
-+          } // lib.optionalAttrs smartcardSupport {
-+            SecurityDevices = {
-+              "OpenSC PKCS#11 Module" = "opensc-pkcs11.so";
-+            };
-+          }
-+          // extraPolicies;
-+        };
- 
-       mozillaCfg = ''
-         // First line must be a comment
-@@ -166,7 +198,8 @@ let
-       #                           #
-       #############################
- 
--    in stdenv.mkDerivation {
-+    in
-+    stdenv.mkDerivation {
-       inherit pname version;
- 
-       desktopItem = makeDesktopItem ({
-@@ -178,60 +211,71 @@ let
-         startupWMClass = wmClass;
-         terminal = false;
-       } // (if libName == "thunderbird"
--            then {
--              genericName = "Email Client";
--              comment = "Read and write e-mails or RSS feeds, or manage tasks on calendars.";
--              categories = [
--                "Network" "Chat" "Email" "Feed" "GTK" "News"
--              ];
--              keywords = [
--                "mail" "email" "e-mail" "messages" "rss" "calendar"
--                "address book" "addressbook" "chat"
--              ];
--              mimeTypes = [
--                "message/rfc822"
--                "x-scheme-handler/mailto"
--                "text/calendar"
--                "text/x-vcard"
--              ];
--              actions = {
--                profile-manager-window = {
--                  name = "Profile Manager";
--                  exec = "${launcherName} --ProfileManager";
--                };
--              };
--            }
--            else {
--              genericName = "Web Browser";
--              categories = [ "Network" "WebBrowser" ];
--              mimeTypes = [
--                "text/html"
--                "text/xml"
--                "application/xhtml+xml"
--                "application/vnd.mozilla.xul+xml"
--                "x-scheme-handler/http"
--                "x-scheme-handler/https"
--              ];
--              actions = {
--                new-window = {
--                  name = "New Window";
--                  exec = "${launcherName} --new-window %U";
--                };
--                new-private-window = {
--                  name = "New Private Window";
--                  exec = "${launcherName} --private-window %U";
--                };
--                profile-manager-window = {
--                  name = "Profile Manager";
--                  exec = "${launcherName} --ProfileManager";
--                };
--              };
--            }));
-+      then {
-+        genericName = "Email Client";
-+        comment = "Read and write e-mails or RSS feeds, or manage tasks on calendars.";
-+        categories = [
-+          "Network"
-+          "Chat"
-+          "Email"
-+          "Feed"
-+          "GTK"
-+          "News"
-+        ];
-+        keywords = [
-+          "mail"
-+          "email"
-+          "e-mail"
-+          "messages"
-+          "rss"
-+          "calendar"
-+          "address book"
-+          "addressbook"
-+          "chat"
-+        ];
-+        mimeTypes = [
-+          "message/rfc822"
-+          "x-scheme-handler/mailto"
-+          "text/calendar"
-+          "text/x-vcard"
-+        ];
-+        actions = {
-+          profile-manager-window = {
-+            name = "Profile Manager";
-+            exec = "${launcherName} --ProfileManager";
-+          };
-+        };
-+      }
-+      else {
-+        genericName = "Web Browser";
-+        categories = [ "Network" "WebBrowser" ];
-+        mimeTypes = [
-+          "text/html"
-+          "text/xml"
-+          "application/xhtml+xml"
-+          "application/vnd.mozilla.xul+xml"
-+          "x-scheme-handler/http"
-+          "x-scheme-handler/https"
-+        ];
-+        actions = {
-+          new-window = {
-+            name = "New Window";
-+            exec = "${launcherName} --new-window %U";
-+          };
-+          new-private-window = {
-+            name = "New Private Window";
-+            exec = "${launcherName} --private-window %U";
-+          };
-+          profile-manager-window = {
-+            name = "Profile Manager";
-+            exec = "${launcherName} --ProfileManager";
-+          };
-+        };
-+      }));
- 
+@@ -70,6 +70,7 @@ let
+           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
+           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma5Packages.plasma-browser-integration
+           ++ lib.optional (cfg.enableFXCastBridge or false) fx-cast-bridge
++          ++ lib.optional (cfg.enableFirefoxPwa or false) firefoxpwa.unwrapped
+           ++ extraNativeMessagingHosts
+         ;
+       libs =   lib.optionals stdenv.isLinux [ udev libva mesa libnotify xorg.libXScrnSaver cups pciutils ]
+@@ -230,7 +231,6 @@ let
        nativeBuildInputs = [ makeWrapper lndir jq ];
        buildInputs = [ browser.gtk3 ];
  
@@ -387,43 +47,31 @@ index 6b08a891ec69..1de35024c1aa 100644
        buildCommand = ''
          if [ ! -x "${browser}/bin/${applicationName}" ]
          then
-@@ -393,6 +437,12 @@ let
+@@ -392,6 +392,12 @@ let
          #   END EXTRA PREF CHANGES  #
          #                           #
          #############################
 +        ${lib.optionalString (cfg.enableFirefoxPwa or false) ''
 +          # firefoxpwa needs to be in PATH too to have the generated .desktop entries working
-+          makeWrapper ${firefoxpwa}/bin/firefoxpwa $out/bin/firefoxpwa \
++          makeWrapper ${firefoxpwa.fhs}/bin/firefoxpwa $out/bin/firefoxpwa \
 +          --prefix LD_LIBRARY_PATH ':' "$libs" \
 +          --suffix-each GTK_PATH ':' "$gtk_modules"
 +        ''}
        '';
  
        preferLocalBuild = true;
-@@ -406,8 +456,9 @@ let
- 
-       meta = browser.meta // {
-         inherit (browser.meta) description;
--        hydraPlatforms = [];
-+        hydraPlatforms = [ ];
-         priority = (browser.meta.priority or 0) - 1; # prefer wrapper over the package
-       };
-     };
--in lib.makeOverridable wrapper
-+in
-+lib.makeOverridable wrapper
 diff --git a/pkgs/tools/networking/firefoxpwa/default.nix b/pkgs/tools/networking/firefoxpwa/default.nix
 new file mode 100644
-index 000000000000..a7739a935155
+index 000000000000..92c36ecddb5f
 --- /dev/null
 +++ b/pkgs/tools/networking/firefoxpwa/default.nix
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,88 @@
 +{ stdenv
 +, rustPlatform
 +, fetchFromGitHub
 +, openssl
 +, symlinkJoin
-+, buildFHSEnv
++, buildFHSUserEnv
 +, pkg-config
 +, installShellFiles
 +, lib
@@ -464,7 +112,6 @@ index 000000000000..a7739a935155
 +
 +    postInstall = ''
 +      mv $out/bin/firefoxpwa $out/bin/.firefoxpwa-wrapped
-+      mv $out/bin/.firefoxpwa-wrapped $out/bin/firefoxpwa
 +
 +      # Manifest
 +      sed -i "s!/usr/libexec!$out/bin!" manifests/linux.json
@@ -482,7 +129,7 @@ index 000000000000..a7739a935155
 +  };
 +
 +  # firefoxpwa wants to run binaries downloaded into users' home dir
-+  fhs = buildFHSEnv {
++  fhs = buildFHSUserEnv {
 +    name = pname;
 +    runScript = "${unwrapped}/bin/.firefoxpwa-wrapped";
 +    targetPkgs = pkgs: with pkgs;[
@@ -494,13 +141,11 @@ index 000000000000..a7739a935155
 +    ];
 +  };
 +in
-+unwrapped
-+  #(symlinkJoin {
-+  #  name = "${pname}-${version}";
-+  #  paths = [ fhs unwrapped ];
-+  #}) // {
-+  // {
-+  inherit pname version;
++(symlinkJoin {
++  name = "${pname}-${version}";
++  paths = [ fhs unwrapped ];
++}) // {
++  inherit unwrapped fhs pname version;
 +  meta = with lib;{
 +    description = "Tool to install, manage and use Progressive Web Apps (PWAs) in Mozilla Firefox";
 +    homepage = "https://github.com/filips123/PWAsForFirefox";
@@ -510,10 +155,10 @@ index 000000000000..a7739a935155
 +  };
 +}
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 11ac31cc4850..55da51283e65 100644
+index c460de1f2d2c..27138ba82e3b 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -19067,6 +19067,8 @@ with pkgs;
+@@ -20042,6 +20042,8 @@ with pkgs;
  
    puppeteer-cli = callPackage ../tools/graphics/puppeteer-cli { };
  
