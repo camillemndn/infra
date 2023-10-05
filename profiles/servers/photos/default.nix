@@ -28,10 +28,18 @@ with lib;
       after = [ "multi-user.target" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig = {
-        Type = "simple";
+        Type = "oneshot";
         ExecStart = "/var/lib/photoprism/photoprism-manage index --cleanup";
         KillMode = "process";
-        Restart = "always";
+      };
+    };
+
+    systemd.timers."photoprism-index" = {
+      description = "Photoprism automatic indexer";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "hourly";
+        Persistent = true;
       };
     };
 
