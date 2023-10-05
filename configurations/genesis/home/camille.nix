@@ -12,6 +12,7 @@ with lib;
       (retroarch.override { cores = with libretro; [ dolphin citra ]; })
 
       # Social
+      mattermost-desktop
       signal-desktop
       zoom-us
 
