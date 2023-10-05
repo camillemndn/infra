@@ -4,14 +4,18 @@
   inputs = {
     # Nix packages and modules
 
-    nixpkgs.url = "github:camillemndn/nixpkgs/nixos-23.05";
-    pinned.url = "github:camillemndn/nixpkgs/85bcb95aa83be667e562e781e9d186c57a07d757";
+    nixpkgs.url = "nixpkgs/nixos-23.05";
+    pinned.url = "nixpkgs/85bcb95aa83be667e562e781e9d186c57a07d757";
     unstable.url = "nixpkgs/nixos-unstable";
     home-manager = { url = "home-manager/release-23.05"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     # Flake utils
 
-    colmena.url = "github:zhaofengli/colmena";
+    colmena = {
+      url = "github:zhaofengli/colmena";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.flake-utils.follows = "utils";
+    };
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -74,7 +78,21 @@
     lib.mergeDefaultSystems (system:
 
       let
-        pkgs = import nixpkgs {
+        nixpkgs-patched = (import nixpkgs {
+          inherit system;
+        }).applyPatches {
+          name = "nixpkgs-patched";
+          src = nixpkgs;
+          patches = [
+            (builtins.fetchurl {
+              url = "https://github.com/NixOS/nixpkgs/pull/227588.patch"; # Jitsi
+              sha256 = "0zh6hxb2m7wg45ji8k34g1pvg96235qmfnjkrya6scamjfi1j19l";
+            })
+            ./patches/firefoxpwa.patch # Firefox PWA
+          ];
+        };
+
+        pkgs = import nixpkgs-patched {
           inherit system;
           overlays = [ self.overlays.${system} ];
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
@@ -92,6 +110,8 @@
           ];
         };
 
+        baseModules = import (nixpkgs-patched + "/nixos/modules/module-list.nix");
+
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
           hyprland.homeManagerModules.default
           nix-index-database.hmModules.nix-index
@@ -100,7 +120,7 @@
 
         extraModules = lib.attrValues self.nixosModules ++ [
           home-manager.nixosModules.home-manager
-          hyprland.nixosModules.default
+          #hyprland.nixosModules.default
           lanzaboote.nixosModules.lanzaboote
           nix-index-database.nixosModules.nix-index
           nixos-wsl.nixosModules.wsl
@@ -118,14 +138,14 @@
 
         homeConfigurations = import ./configurations/home.nix {
           inherit lib pkgs extraHomeModules;
-          inherit (inputs) self home-manager nixpkgs;
+          inherit self home-manager nixpkgs;
         };
 
         homeManagerModules = import ./modules/home;
 
         nixosConfigurations = import ./configurations {
-          inherit lib pkgs extraModules extraHomeModules;
-          inherit (inputs) self nixpkgs mobile-nixos;
+          inherit lib pkgs baseModules extraModules extraHomeModules;
+          inherit self nixpkgs mobile-nixos;
         };
 
         nixosModules = import ./modules;

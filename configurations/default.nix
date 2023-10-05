@@ -1,4 +1,4 @@
-{ lib, pkgs, extraModules, extraHomeModules, self, nixpkgs, ... }:
+{ lib, pkgs, baseModules, extraModules, extraHomeModules, self, nixpkgs, ... }:
 
 let
   nixosSystem' =
@@ -7,9 +7,10 @@ let
     , users ? [ "camille" ]
     , system ? "x86_64-linux"
     , ...
-    }: lib.nixosSystem (lib.recursiveUpdate
+    }:
+    lib.nixosSystem (lib.recursiveUpdate
       {
-        inherit lib;
+        inherit lib baseModules;
         specialArgs = { inherit self nixpkgs; };
         modules = extraModules ++ [
           (import ./${configuration})

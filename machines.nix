@@ -28,7 +28,7 @@ let tld = "kms"; in {
     ipv6.public = "2603:c027:c002:702:a0c:c8e:cc5e:c723";
     deployment = {
       tags = [ "available" ];
-      targetHost = ipv6.public;
+      targetHost = ipv4.public;
       buildOnTarget = true;
     };
   };
@@ -73,7 +73,7 @@ let tld = "kms"; in {
     };
     deployment = {
       tags = [ "available" ];
-      targetHost = ipv6.public;
+      targetHost = ipv4.vpn;
       buildOnTarget = true;
     };
   };
