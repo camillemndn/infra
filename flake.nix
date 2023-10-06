@@ -2,28 +2,24 @@
   description = "A flake for my personal configurations";
 
   inputs = {
-    # Nix packages and modules
+    ### Nix packages and modules ###
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs-pinned.url = "nixpkgs/fdd898f8f79e8d2f99ed2ab6b3751811ef683242";
+    home-manager = { url = "home-manager"; inputs.nixpkgs.follows = "nixpkgs"; };
+    ################################
 
-    nixpkgs.url = "github:camillemndn/nixpkgs/nixos-23.05";
-    pinned.url = "github:camillemndn/nixpkgs/85bcb95aa83be667e562e781e9d186c57a07d757";
-    unstable.url = "nixpkgs/nixos-unstable";
-    home-manager = { url = "home-manager/release-23.05"; inputs.nixpkgs.follows = "nixpkgs"; };
-
-    # Flake utils
-
+    ### Flake utils ###
     colmena.url = "github:zhaofengli/colmena";
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
-    };
-
     utils = { url = "flake-utils"; inputs.systems.follows = "systems"; };
     systems = { url = "https://raw.githubusercontent.com/camillemndn/nixos-config/main/systems.nix"; flake = false; };
 
-    # Hardware dependencies
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ###################
 
+    ### Hardware dependencies ###
     lanzaboote.url = "github:nix-community/lanzaboote/45d04a45d3dfcdee5246f7c0dfed056313de2a61";
     mobile-nixos = { url = "github:camillemndn/mobile-nixos"; flake = false; };
 
@@ -32,18 +28,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
+    #############################
 
-    # Sofware dependencies 
-
+    ### Sofware dependencies ###
     attic = {
       url = "github:zhaofengli/attic";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-stable.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
 
-    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.28.0"; }; # inputs.nixpkgs.follows = "unstable"; };
-    hyprland-contrib = { url = "github:hyprwm/contrib"; }; # inputs.nixpkgs.follows = "unstable"; };
+    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.30.0"; inputs.nixpkgs.follows = "nixpkgs"; };
+    hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
 
@@ -54,9 +49,8 @@
     };
 
     simple-nixos-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.05";
-      inputs.nixpkgs.follows = "unstable";
-      inputs.nixpkgs-23_05.follows = "nixpkgs";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
 
@@ -65,6 +59,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
+    ############################
   };
 
   outputs = inputs: with inputs;
@@ -74,9 +69,16 @@
     lib.mergeDefaultSystems (system:
 
       let
+        nixpkgs = lib.patchNixpkgs system inputs.nixpkgs self.patches;
+
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ self.overlays.${system} ];
+          config.firefox = {
+            enableFirefoxPwa = true;
+            enableGnomeExtensions = true;
+            ffmpegSupport = true;
+          };
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "corefonts"
             "harmony-assistant"
@@ -106,39 +108,58 @@
           nixos-wsl.nixosModules.wsl
           simple-nixos-mailserver.nixosModule
           sops-nix.nixosModules.sops
+          {
+            imports = [
+              "${nixpkgs}/nixos/modules/services/web-apps/jitsi-meet.nix"
+              "${nixpkgs}/nixos/modules/programs/firefox.nix"
+            ];
+            disabledModules = [
+              "services/web-apps/jitsi-meet.nix"
+              "programs/firefox.nix"
+            ];
+          }
         ] ++ (import ./profiles);
       in
 
       {
-        packages.${system} = import ./pkgs/top-level { inherit pkgs; };
+        packages.${system} = (import ./pkgs/top-level { inherit pkgs; }) // {
+          nixosConfigurations = import ./configurations {
+            inherit lib pkgs nixpkgs extraModules extraHomeModules;
+            inherit (inputs) self;
+          };
+        } // {
+          homeConfigurations = import ./configurations/home.nix {
+            inherit lib pkgs nixpkgs system extraHomeModules;
+            inherit (inputs) self home-manager;
+          };
+        };
 
         overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };
 
-        machines = import ./machines.nix;
-
-        homeConfigurations = import ./configurations/home.nix {
-          inherit lib pkgs extraHomeModules;
-          inherit (inputs) self home-manager nixpkgs;
+        patches = {
+          firefoxpwa = ./overlays/firefoxpwa.patch;
+          jellyseerr = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/259076.patch";
+            sha256 = "1awbxzksh2p482fw5lq9lzn92s8n224is9krz8irqc1nbd5fm5jf";
+          };
+          jitsi-meet = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/227588.patch";
+            sha256 = "0zh6hxb2m7wg45ji8k34g1pvg96235qmfnjkrya6scamjfi1j19l";
+          };
+          mattermost-desktop = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/259351.patch";
+            sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
+          };
         };
+
+        machines = import ./machines.nix;
 
         homeManagerModules = import ./modules/home;
 
-        nixosConfigurations = import ./configurations {
-          inherit lib pkgs extraModules extraHomeModules;
-          inherit (inputs) self nixpkgs mobile-nixos;
-        };
-
         nixosModules = import ./modules;
 
-        colmena = import ./colmena.nix { inherit lib pkgs self; };
+        colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
 
-        devShell.${system} = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            age
-            sops
-            colmena
-            nixos-generators
-          ];
-        };
+        devShell.${system} = pkgs.mkShell { buildInputs = with pkgs; [ age colmena nixos-generators sops ]; };
       });
 }

@@ -57,10 +57,7 @@ with lib;
   };
 
   config = {
-    services.nginx = {
-      # Enable when some virtual hosts are declared
-      enable = filter (hasInfix ".") (attrNames cfg.virtualHosts) != [ ];
-
+    services.nginx = mkIf cfg.enable {
       recommendedOptimisation = mkDefault true;
       recommendedProxySettings = mkDefault true;
       recommendedGzipSettings = mkDefault true;

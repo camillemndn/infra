@@ -21,7 +21,7 @@ in
       "pipewire"
       "wheel"
     ];
-    passwordFile = lib.mkDefault "/run/secrets-for-users/camille";
+    hashedPasswordFile = lib.mkDefault "/run/secrets-for-users/camille";
     openssh.authorizedKeys.keys = sshPubKeys;
   };
 

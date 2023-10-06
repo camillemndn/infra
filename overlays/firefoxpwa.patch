@@ -1,0 +1,147 @@
+diff --git a/nixos/modules/programs/firefox.nix b/nixos/modules/programs/firefox.nix
+index 83a3edaf813e..8f97a307e314 100644
+--- a/nixos/modules/programs/firefox.nix
++++ b/nixos/modules/programs/firefox.nix
+@@ -215,6 +215,7 @@ in
+       passff = "PassFF support";
+       tridactyl = "Tridactyl support";
+       ugetIntegrator = "Uget Integrator support";
++      firefoxpwa = "Progressive Web App support";
+     };
+   };
+ 
+@@ -245,6 +246,7 @@ in
+             enableTridactylNative = nmh.tridactyl;
+             enableUgetIntegrator = nmh.ugetIntegrator;
+             enableFXCastBridge = nmh.fxCast;
++            enableFirefoxPwa = nmh.firefoxpwa;
+           };
+         in nixpkgsConfig // optionConfig // nmhConfig;
+       })
+diff --git a/pkgs/applications/networking/browsers/firefox/wrapper.nix b/pkgs/applications/networking/browsers/firefox/wrapper.nix
+index 12924180c25c..7ebb5cf6f0f4 100644
+--- a/pkgs/applications/networking/browsers/firefox/wrapper.nix
++++ b/pkgs/applications/networking/browsers/firefox/wrapper.nix
+@@ -5,7 +5,7 @@
+ ## various stuff that can be plugged in
+ , ffmpeg_5, xorg, alsa-lib, libpulseaudio, libcanberra-gtk3, libglvnd, libnotify, opensc
+ , gnome/*.gnome-shell*/
+-, browserpass, gnome-browser-connector, uget-integrator, plasma5Packages, bukubrow, pipewire
++, browserpass, gnome-browser-connector, uget-integrator, plasma5Packages, bukubrow, pipewire, firefoxpwa
+ , tridactyl-native
+ , fx-cast-bridge
+ , udev
+@@ -70,6 +70,7 @@ let
+           ++ lib.optional (cfg.enableUgetIntegrator or false) uget-integrator
+           ++ lib.optional (cfg.enablePlasmaBrowserIntegration or false) plasma5Packages.plasma-browser-integration
+           ++ lib.optional (cfg.enableFXCastBridge or false) fx-cast-bridge
++          ++ lib.optional (cfg.enableFirefoxPwa or false) firefoxpwa
+           ++ extraNativeMessagingHosts
+         ;
+       libs =   lib.optionals stdenv.isLinux [ udev libva mesa libnotify xorg.libXScrnSaver cups pciutils ]
+@@ -230,7 +231,6 @@ let
+       nativeBuildInputs = [ makeWrapper lndir jq ];
+       buildInputs = [ browser.gtk3 ];
+ 
+-
+       buildCommand = ''
+         if [ ! -x "${browser}/bin/${applicationName}" ]
+         then
+@@ -392,6 +392,12 @@ let
+         #   END EXTRA PREF CHANGES  #
+         #                           #
+         #############################
++        ${lib.optionalString (cfg.enableFirefoxPwa or false) ''
++          # firefoxpwa needs to be in PATH too to have the generated .desktop entries working
++          makeWrapper ${firefoxpwa}/bin/firefoxpwa $out/bin/firefoxpwa \
++          --prefix LD_LIBRARY_PATH ':' "$libs" \
++          --suffix-each GTK_PATH ':' "$gtk_modules"
++        ''}
+       '';
+ 
+       preferLocalBuild = true;
+diff --git a/pkgs/tools/networking/firefoxpwa/default.nix b/pkgs/tools/networking/firefoxpwa/default.nix
+new file mode 100644
+index 000000000000..6777487ad1d5
+--- /dev/null
++++ b/pkgs/tools/networking/firefoxpwa/default.nix
+@@ -0,0 +1,66 @@
++{ lib
++, rustPlatform
++, fetchFromGitHub
++, pkg-config
++, installShellFiles
++, openssl
++, stdenv
++}:
++
++rustPlatform.buildRustPackage rec {
++  pname = "firefoxpwa";
++  version = "2.8.0";
++
++  src = fetchFromGitHub {
++    owner = "filips123";
++    repo = "PWAsForFirefox";
++    rev = "v${version}";
++    hash = "sha256-Uhr848H+7a9Qy3XJPKi0mPOU2RZtJSjpCCPJtSJ+6Ys=";
++  };
++
++  sourceRoot = "${src.name}/native";
++
++  cargoLock = {
++    lockFile = "${src}/native/Cargo.lock";
++    outputHashes = {
++      "data-url-0.3.0" = "sha256-ZJBRkd4s47ywYnGbzxsQyr0JRgjAXZryVthszKJreTU=";
++      "web_app_manifest-0.0.0" = "sha256-G+kRN8AEmAY1TxykhLmgoX8TG8y2lrv7SCRJlNy0QzA=";
++      "mime-0.4.0-a.0" = "sha256-LjM7LH6rL3moCKxVsA+RUL9lfnvY31IrqHa9pDIAZNE=";
++    };
++  };
++
++  preConfigure = ''
++    sed -i 's;version = "0.0.0";version = "${version}";' Cargo.toml
++    sed -zi 's;name = "firefoxpwa"\nversion = "0.0.0";name = "firefoxpwa"\nversion = "${version}";' Cargo.lock
++    sed -i $'s;DISTRIBUTION_VERSION = \'0.0.0\';DISTRIBUTION_VERSION = \'${version}\';' userchrome/profile/chrome/pwa/chrome.jsm
++  '';
++
++  nativeBuildInputs = [ pkg-config installShellFiles ];
++  buildInputs = [ openssl ];
++
++  FFPWA_EXECUTABLES = ""; # .desktop entries generated without any store path references
++  FFPWA_SYSDATA = "${placeholder "out"}/share/firefoxpwa";
++  completions = "target/${stdenv.targetPlatform.config}/release/completions";
++
++  postInstall = ''
++    # Manifest
++    sed -i "s!/usr/libexec!$out/bin!" manifests/linux.json
++    install -Dm644 manifests/linux.json $out/lib/mozilla/native-messaging-hosts/firefoxpwa.json
++
++    installShellCompletion --cmd firefoxpwa \
++      --bash $completions/firefoxpwa.bash \
++      --fish $completions/firefoxpwa.fish \
++      --zsh $completions/_firefoxpwa
++
++    # UserChrome
++    mkdir -p $out/share/firefoxpwa/userchrome/
++    cp -r userchrome/* "$out/share/firefoxpwa/userchrome"
++  '';
++
++  meta = with lib; {
++    description = "A tool to install, manage and use Progressive Web Apps (PWAs) in Mozilla Firefox";
++    homepage = "https://github.com/filips123/PWAsForFirefox";
++    license = licenses.mpl20;
++    maintainers = with maintainers; [ camillemndn ];
++  };
++}
+diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
+index c460de1f2d2c..27138ba82e3b 100644
+--- a/pkgs/top-level/all-packages.nix
++++ b/pkgs/top-level/all-packages.nix
+@@ -20042,6 +20042,8 @@ with pkgs;
+ 
+   puppeteer-cli = callPackage ../tools/graphics/puppeteer-cli { };
+ 
++  firefoxpwa = callPackage ../tools/networking/firefoxpwa { };
++
+   pyrseas = callPackage ../development/tools/database/pyrseas { };
+ 
+   pycritty = with python3Packages; toPythonApplication pycritty;

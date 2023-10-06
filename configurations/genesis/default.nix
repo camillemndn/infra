@@ -13,12 +13,6 @@
     nix-software-center
   ];
 
-  nixpkgs.config.firefox = {
-    enableFirefoxPwa = true;
-    enableGnomeExtensions = true;
-    ffmpegSupport = true;
-  };
-
   profiles = {
     gdm = { enable = true; hidpi.enable = true; };
     gnome.enable = true;

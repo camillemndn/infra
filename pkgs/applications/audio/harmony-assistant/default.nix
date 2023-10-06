@@ -63,5 +63,5 @@ buildFHSEnv {
     ls -all $out/share
   '';
 
-  meta = harmony-assistant-unwrapped.meta;
+  inherit (harmony-assistant-unwrapped) meta;
 }

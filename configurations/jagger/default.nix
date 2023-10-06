@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   networking = {
@@ -12,12 +12,6 @@
     libimobiledevice
     nix-software-center
   ];
-
-  nixpkgs.config.firefox = {
-    #enableFirefoxPwa = true;
-    enableGnomeExtensions = true;
-    ffmpegSupport = true;
-  };
 
   profiles = {
     gdm.enable = true;
@@ -41,7 +35,9 @@
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
-users.mutableUsers = true;
-users.users.camille.passwordFile = null;
+
+  users.mutableUsers = true;
+  users.users.camille.hashedPasswordFile = null;
+
   system.stateVersion = "23.05";
 }

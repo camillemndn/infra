@@ -82,7 +82,7 @@ with lib;
 
     thunderbird = {
       enable = true;
-      package = pkgs.unstable.thunderbird;
+      package = pkgs.thunderbird;
       profiles."camille".isDefault = true;
     };
   };

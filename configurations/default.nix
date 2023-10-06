@@ -4,8 +4,7 @@ let
   nixosSystem' =
     args@{ configuration
     , hardware
-    , users ? [ "camille" ]
-    , system ? "x86_64-linux"
+    , users
     , ...
     }: lib.nixosSystem (lib.recursiveUpdate
       {
@@ -15,10 +14,7 @@ let
           (import ./${configuration})
           (import ../hardware/${hardware})
           {
-            nixpkgs = {
-              inherit (pkgs) config;
-              overlays = [ self.overlays.${system} ];
-            };
+            nixpkgs = { inherit pkgs; };
 
             home-manager = {
               useGlobalPkgs = true;
@@ -34,8 +30,7 @@ let
     inherit configuration;
     inherit (args) hardware;
     users = args.users or [ "camille" ];
-    system = args.system or "x86_64-linux";
   });
 
 in
-(mapSystemsFromMachines (lib.filterAttrs (configuration: _: builtins.pathExists ./${configuration}) self.machines))
+mapSystemsFromMachines (lib.filterAttrs (configuration: _: builtins.pathExists ./${configuration}) self.machines)

@@ -27,7 +27,7 @@ with lib;
     #};
 
     fonts = {
-      fonts = with pkgs; [
+      packages = with pkgs; [
         (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
       ];
       fontconfig.antialias = true;

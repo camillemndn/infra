@@ -10,6 +10,7 @@ _:
     hammond = { enable = true; hostName = "car.kms"; };
     mattermost = { enable = true; siteUrl = "https://projects.mondon.xyz"; listenAddress = "127.0.0.1:8065"; };
     nginx.virtualHosts."projects.mondon.xyz" = { port = 8065; websockets = true; };
+    nginx.enable = true;
     nginx.noDefault.enable = true;
     nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
