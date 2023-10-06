@@ -2,7 +2,7 @@
 
 {
   imports = [ ./clevis.nix ./luksroot.nix ];
-  disabledModules = [ "system/boot/luksroot.nix" ];
+  disabledModules = [ "system/boot/clevis.nix" "system/boot/luksroot.nix" ];
 
   boot = {
     loader = {
@@ -18,42 +18,50 @@
 
     initrd = {
       availableKernelModules = [ "e1000e" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-      kernelModules = [ ];
+      kernelModules = [ "e1000e" ];
 
       clevis.enable = true;
+      clevis.useTang = true;
       clevis.devices."luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b".secretFile = ./luks.jwe;
 
       luks.devices = {
         "luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b" = {
           device = "/dev/disk/by-uuid/90a7cca1-d6ee-48fb-b225-9519ad1e081b";
-          # fallbackToPassword = true;
+          fallbackToPassword = true;
+          #crypttabExtraOpts = [ "_netdev" ];
         };
         "luks-3e4229db-fbe0-47f4-8f7c-285e2c55c268" = {
           device = "/dev/disk/by-uuid/3e4229db-fbe0-47f4-8f7c-285e2c55c268";
           keyFile = "/crypto_keyfile.bin";
+          #crypttabExtraOpts = [ "_netdev" ];
         };
       };
 
+      network.enable = true;
       secrets."/crypto_keyfile.bin" = null;
       systemd = {
-        enable = true;
+        #enable = true;
         network = {
           enable = true;
           wait-online.enable = true;
 
-          networks."10-static" = {
-            matchConfig.Name = [ "en*" "eth*" ];
-            DHCP = "no";
-            address = [ "192.168.1.3/24" ];
-            linkConfig.RequiredForOnline = true;
-            networkConfig.IPv6PrivacyExtensions = "kernel";
-          };
+          #networks."10-static" = {
+          #  matchConfig.Name = [ "en*" "eth*" ];
+          #  DHCP = "no";
+          #  address = [ "192.168.1.4/24" ];
+          #  linkConfig.RequiredForOnline = true;
+          #  networkConfig.IPv6PrivacyExtensions = "kernel";
+          #};
         };
       };
     };
 
     kernelModules = [ ];
-    #kernelParams = [ "ip=192.168.1.3:::255.255.255.0::enp0s31f6:none" ];
+    kernelParams = [
+      #"ip=dhcp"
+      #"ip=enp0s31f6:dhcp"
+      "ip=192.168.1.3:::255.255.255.0::enp0s31f6:none"
+    ];
   };
 
   fileSystems = {
