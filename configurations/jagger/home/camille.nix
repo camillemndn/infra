@@ -38,6 +38,9 @@ with lib;
       musescore
       sonixd
       vlc
+      ardour
+      lmms
+      zrythm
 
       # Computer
       python3

@@ -34,7 +34,9 @@
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
+
   users.mutableUsers = true;
   users.users.camille.passwordFile = null;
+
   system.stateVersion = "23.05";
 }
