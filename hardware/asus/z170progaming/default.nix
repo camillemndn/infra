@@ -83,6 +83,7 @@
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
   };
 
+  musnix.enable = true;
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
@@ -90,6 +91,7 @@
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
+    jack.enable = true;
     pulse.enable = true;
   };
 
