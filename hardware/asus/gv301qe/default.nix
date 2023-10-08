@@ -80,6 +80,7 @@ with lib;
   };
 
   # Enable sound
+  musnix.enable = true;
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
@@ -88,6 +89,7 @@ with lib;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
   };
 
   services = {

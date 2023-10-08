@@ -40,6 +40,8 @@
     hyprland = { url = "github:hyprwm/Hyprland?ref=v0.30.0"; inputs.nixpkgs.follows = "nixpkgs"; };
     hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
 
+    musnix.url = "github:musnix/musnix";
+
     nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     nix-software-center = {
@@ -85,6 +87,7 @@
             "mac"
             "nvidia-settings"
             "nvidia-x11"
+            "reaper"
             "spotify"
             "steam"
             "steam-original"
@@ -104,6 +107,7 @@
           home-manager.nixosModules.home-manager
           hyprland.nixosModules.default
           lanzaboote.nixosModules.lanzaboote
+          musnix.nixosModules.musnix
           nix-index-database.nixosModules.nix-index
           nixos-wsl.nixosModules.wsl
           simple-nixos-mailserver.nixosModule
