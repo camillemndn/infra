@@ -95,6 +95,7 @@
             "unrar"
             "zoom"
           ];
+          config.warnUndeclaredOptions = true;
         };
 
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
@@ -161,6 +162,11 @@
         homeManagerModules = import ./modules/home;
 
         nixosModules = import ./modules;
+
+        nixosConfigurations = import ./configurations {
+          inherit lib pkgs nixpkgs extraModules extraHomeModules;
+          inherit (inputs) self;
+        };
 
         colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
 
