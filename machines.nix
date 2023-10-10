@@ -33,11 +33,11 @@ let tld = "kms"; in {
     };
   };
 
-  pinkfloyd = {
-    system = "aarch64-linux";
-    hardware = "pine64/pinephone";
-    deployment.targetHost = null;
-  };
+  #pinkfloyd = {
+  #  system = "aarch64-linux";
+  #  hardware = "pine64/pinephone";
+  #  deployment.targetHost = null;
+  #};
 
   radiogaga = rec {
     system = "aarch64-linux";

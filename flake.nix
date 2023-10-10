@@ -159,6 +159,6 @@
 
         # colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
 
-        devShell.${system} = pkgs.mkShell { buildInputs = with pkgs; [ age colmena nixos-generators sops ]; };
+        devShells.${system}.default = pkgs.mkShell { buildInputs = with pkgs; [ age colmena nixos-generators sops ]; };
       });
 }
