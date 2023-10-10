@@ -1,4 +1,4 @@
-{ lib, pkgs, extraModules, extraHomeModules, self, nixpkgs, ... }:
+{ lib, pkgs, extraModules, extraHomeModules, self, nixpkgs, system, ... }:
 
 let
   nixosSystem' =
@@ -33,4 +33,4 @@ let
   });
 
 in
-mapSystemsFromMachines (lib.filterAttrs (configuration: _: builtins.pathExists ./${configuration}) self.machines)
+mapSystemsFromMachines (lib.filterAttrs (configuration: args: builtins.pathExists ./${configuration} && system == args.system or "x86_64-linux") self.machines)

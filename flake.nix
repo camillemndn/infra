@@ -95,7 +95,6 @@
             "unrar"
             "zoom"
           ];
-          config.warnUndeclaredOptions = true;
         };
 
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
@@ -127,17 +126,7 @@
       in
 
       {
-        packages.${system} = (import ./pkgs/top-level { inherit pkgs; }) // {
-          nixosConfigurations = import ./configurations {
-            inherit lib pkgs nixpkgs extraModules extraHomeModules;
-            inherit (inputs) self;
-          };
-        } // {
-          homeConfigurations = import ./configurations/home.nix {
-            inherit lib pkgs nixpkgs system extraHomeModules;
-            inherit (inputs) self home-manager;
-          };
-        };
+        packages.${system} = (import ./pkgs/top-level { inherit pkgs; });
 
         overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };
 
@@ -164,11 +153,11 @@
         nixosModules = import ./modules;
 
         nixosConfigurations = import ./configurations {
-          inherit lib pkgs nixpkgs extraModules extraHomeModules;
+          inherit lib pkgs nixpkgs extraModules extraHomeModules system;
           inherit (inputs) self;
         };
 
-        colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
+        # colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
 
         devShell.${system} = pkgs.mkShell { buildInputs = with pkgs; [ age colmena nixos-generators sops ]; };
       });
