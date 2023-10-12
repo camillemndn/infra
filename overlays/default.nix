@@ -2,7 +2,7 @@
 
 with inputs;
 
-_final: _: lib.updateManyAttrs [
+_: _: lib.updateManyAttrs [
   # Adds all the packages from this flake
   self.packages.${system}
   {

@@ -76,11 +76,6 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = [ self.overlays.${system} ];
-          config.firefox = {
-            enableFirefoxPwa = true;
-            enableGnomeExtensions = true;
-            ffmpegSupport = true;
-          };
           config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
             "corefonts"
             "harmony-assistant"
@@ -126,7 +121,7 @@
       in
 
       {
-        packages.${system} = (import ./pkgs/top-level { inherit pkgs; });
+        packages.${system} = import ./pkgs/top-level { inherit pkgs; };
 
         overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };
 

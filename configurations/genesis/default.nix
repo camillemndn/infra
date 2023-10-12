@@ -22,7 +22,26 @@
 
   programs = {
     dconf.enable = true;
-    firefox.enable = true;
+
+    firefox = {
+      enable = true;
+      languagePacks = [ "fr" ];
+      nativeMessagingHosts.firefoxpwa = true;
+      preferences = {
+        "browser.fixup.domainsuffixwhitelist.kms" = true;
+        "browser.fixup.domainsuffixwhitelist.luj" = true;
+        "browser.fixup.domainsuffixwhitelist.saumon" = true;
+      };
+      preferencesStatus = "default";
+      wrapperConfig.firefox = {
+        enableGnomeExtensions = true;
+        alsaSupport = true;
+        ffmpegSupport = true;
+        jackSupport = true;
+        pipewireSupport = true;
+      };
+    };
+
     steam.enable = true;
   };
 
