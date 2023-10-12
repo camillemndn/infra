@@ -14,7 +14,7 @@ with lib;
     services.nextcloud = {
       enable = true;
       package = pkgs.nextcloud27;
-      hostName = "cloud.kms";
+      hostName = "cloud.mondon.xyz";
 
       autoUpdateApps.enable = true;
       caching.redis = true;
@@ -22,6 +22,7 @@ with lib;
       enableBrokenCiphersForSSE = false;
       https = true;
       maxUploadSize = "4G";
+      phpOptions."opcache.interned_strings_buffer" = "23";
 
       config = {
         adminuser = "Camille";
