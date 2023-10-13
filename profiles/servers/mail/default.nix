@@ -86,35 +86,52 @@ with lib;
       bantime = "-1";
     };
 
+    services.davmail = {
+      enable = true;
+      config = {
+        davmail = {
+          bindAddress = "127.0.0.1";
+          oauth = {
+            clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
+            redirectUri = "urn:ietf:wg:oauth:2.0:oob";
+            persistToken = true;
+            tokenFilePath = "/var/lib/davmail/token";
+          };
+          mode = "O365Manual";
+        };
+      };
+      url = "https://outlook.office365.com/EWS/Exchange.asmx";
+    };
+
     services.sogo = mkIf cfg.sogo.enable {
       enable = true;
       timezone = "Europe/Paris";
       language = "French";
       vhostName = sogoDomain;
       extraConfig = ''
-        SOGoMailDomain = "${mailDomain}";
-          SOGoIMAPServer = "imaps://mail.${mailDomain}:993";
-          SOGoMailingMechanism = "smtp";
-          SOGoSMTPServer = "smtps://mail.${mailDomain}:465";
-          SOGoUserSources = ({
-            canAuthenticate = YES;
-            displayName = "SOGo Users";
-            id = "users";
-            isAddressBook = YES;
-            type = sql;
-            userPasswordAlgorithm = md5;
-              viewURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_users";
-          });
-          SOGoProfileURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_user_profile";
-          OCSFolderInfoURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_folder_info";
-          OCSSessionsFolderURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_sessions_folder";
-          SOGoVacationEnabled = YES;
-          SOGoMailMessageCheck = "every_5_minutes";
-          SOGoFirstDayOfWeek = 1;
-          SOGoLoginModule = "Calendar";
-          SOGoSuperUsernames = ( "admin" );
-          SOGoMemcachedHost = 127.0.0.1;
-          NGImap4ConnectionStringSeparator = ".";
+          SOGoMailDomain = "${mailDomain}";
+        SOGoIMAPServer = "imaps://mail.${mailDomain}:993";
+        SOGoMailingMechanism = "smtp";
+        SOGoSMTPServer = "smtps://mail.${mailDomain}:465";
+        SOGoUserSources = ({
+          canAuthenticate = YES;
+          displayName = "SOGo Users";
+          id = "users";
+          isAddressBook = YES;
+          type = sql;
+          userPasswordAlgorithm = md5;
+          viewURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_users";
+        });
+        SOGoProfileURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_user_profile";
+        OCSFolderInfoURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_folder_info";
+        OCSSessionsFolderURL = "mysql://sogo:@%2Frun%2Fmysqld%2Fmysqld.sock/sogo/sogo_sessions_folder";
+        SOGoVacationEnabled = YES;
+        SOGoMailMessageCheck = "every_5_minutes";
+        SOGoFirstDayOfWeek = 1;
+        SOGoLoginModule = "Calendar";
+        SOGoSuperUsernames = ("admin");
+        SOGoMemcachedHost = 127.0 .0 .1;
+        NGImap4ConnectionStringSeparator = ".";
       '';
     };
 
@@ -180,3 +197,4 @@ with lib;
     networking.firewall.allowedTCPPorts = [ 443 ];
   };
 }
+
