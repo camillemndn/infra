@@ -90,7 +90,7 @@ with lib;
       enable = true;
       config = {
         davmail = {
-          bindAddress = "127.0.0.1";
+          allowRemote = true;
           oauth = {
             clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
             redirectUri = "urn:ietf:wg:oauth:2.0:oob";
@@ -98,9 +98,22 @@ with lib;
             tokenFilePath = "/var/lib/davmail/token";
           };
           mode = "O365Manual";
+          ssl = {
+            keystoreType = "PKCS12";
+            keystoreFile = "/var/lib/davmail/davmail.p12";
+            keystorePass = "password";
+            keyPass = "password";
+          };
         };
       };
       url = "https://outlook.office365.com/EWS/Exchange.asmx";
+    };
+
+    systemd.services.davmail.serviceConfig = {
+      ExecStartPre = let dir = config.security.acme.certs."mail.${mailDomain}".directory; in
+        "${pkgs.openssl}/bin/openssl pkcs12 -export -in ${dir}/cert.pem -inkey ${dir}/key.pem -certfile ${dir}/chain.pem -out /var/lib/davmail/davmail.p12 -passout pass:password";
+      StateDirectory = "davmail";
+      SupplementaryGroups = "nginx";
     };
 
     services.sogo = mkIf cfg.sogo.enable {
@@ -194,7 +207,7 @@ with lib;
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 443 ];
+    networking.firewall.allowedTCPPorts = [ 443 1143 1025 ];
   };
 }
 
