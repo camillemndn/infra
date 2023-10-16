@@ -38,7 +38,7 @@ with lib;
       lilypond-with-fonts
       musescore
       sonixd
-      vlc
+      clapper
       ardour
       lmms
       zrythm
