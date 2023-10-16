@@ -1,4 +1,4 @@
-{ lib, pkgs, extraModules, extraHomeModules, self, nixpkgs, system, ... }:
+{ lib, pkgs, self, extraModules, extraHomeModules, nixpkgs, system }:
 
 let
   nixosSystem' =

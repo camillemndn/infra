@@ -1,11 +1,11 @@
-{ lib, pkgs, extraHomeModules, self, home-manager, ... }:
+{ lib, pkgs, self, extraHomeModules }:
 
 let
   homeManagerConfiguration' =
     args@{ user
     , configuration
     , ...
-    }: home-manager.lib.homeManagerConfiguration (lib.recursiveUpdate
+    }: self.inputs.home-manager.lib.homeManagerConfiguration (lib.recursiveUpdate
       {
         inherit lib pkgs;
         extraSpecialArgs = { inherit self; };

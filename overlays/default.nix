@@ -1,6 +1,6 @@
-{ lib, pkgs, inputs, system, ... }:
+{ lib, pkgs, self, system }:
 
-with inputs;
+with self.inputs;
 
 _: _: lib.updateManyAttrs [
   # Adds all the packages from this flake

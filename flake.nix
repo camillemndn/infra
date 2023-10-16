@@ -123,7 +123,7 @@
       {
         packages.${system} = import ./pkgs/top-level { inherit pkgs; };
 
-        overlays.${system} = import ./overlays { inherit lib pkgs inputs system; };
+        overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
           firefoxpwa = ./overlays/firefoxpwa.patch;
@@ -147,13 +147,16 @@
 
         nixosModules = import ./modules;
 
-        nixosConfigurations = import ./configurations {
-          inherit lib pkgs nixpkgs extraModules extraHomeModules system;
-          inherit (inputs) self;
+        homeConfigurations = import ./configurations/home.nix {
+          inherit lib pkgs self extraHomeModules;
         };
 
-        # colmena = import ./colmena.nix { inherit lib pkgs self inputs nixpkgs; };
+        nixosConfigurations = import ./configurations {
+          inherit lib pkgs self nixpkgs extraModules extraHomeModules system;
+        };
 
-        devShells.${system}.default = pkgs.mkShell { buildInputs = with pkgs; [ age colmena nixos-generators sops ]; };
+        colmena = import ./colmena.nix { inherit lib pkgs self; };
+
+        devShells.${system}.default = pkgs.mkShell { buildInputs = with pkgs; [ home-manager age colmena nixos-generators sops ]; };
       });
 }
