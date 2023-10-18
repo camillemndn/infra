@@ -114,10 +114,11 @@ with lib;
           "XF86MonBrightnessUp" = "exec brightnessctl s '+1%'";
         };
         menu = "NIXOS_OZONE_WL=1 QT_QPA_PLATFORM='wayland;xcb' QT_QPA_PLATFORMTHEME=gnome _JAVA_OPTIONS=-Dsun.java2d.uiScale=3.0 fuzzel";
-        # menu = "rofi -modi drun -show";
         modifier = "Mod4";
-        output."HDMI-A-1".scale = "0.8";
-        output."HDMI-A-1".position = "-2400 0";
+        output."HDMI-A-1" = mkIf config.profiles.gtk-qt.hidpi.enable {
+          scale = "0.8";
+          position = "-2400 0";
+        };
         input."1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
           drag = "enable";
           drag_lock = "enable";
