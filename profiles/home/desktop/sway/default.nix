@@ -118,6 +118,11 @@ with lib;
         modifier = "Mod4";
         output."HDMI-A-1".scale = "0.8";
         output."HDMI-A-1".position = "-2400 0";
+        input."1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
+          drag = "enable";
+          drag_lock = "enable";
+          map_to_output = "eDP-1";
+        };
         startup = [
           { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
           { command = "swww init; swww img ~/Images/.cats.jpg"; always = true; }
