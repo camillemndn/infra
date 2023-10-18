@@ -42,7 +42,7 @@ in
   programs.git = {
     enable = true;
     config = {
-      user.name = config.networking.hostName;
+      user.name = "Camille M. (${config.networking.hostName})";
       user.email = "camillemondon@free.fr";
       pull.rebase = true;
       fetch.prune = true;
