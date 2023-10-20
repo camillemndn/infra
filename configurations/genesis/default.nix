@@ -47,6 +47,7 @@
 
   services = {
     logind.killUserProcesses = true;
+    openvpn.servers.work = { config = "config /etc/openvpn/work/openvpn_client.ovpn"; autoStart = false; };
     power-profiles-daemon.enable = false;
     printing = { enable = true; drivers = with pkgs; [ brlaser gutenprint ]; };
     tailscale.enable = true;
