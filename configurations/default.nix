@@ -1,12 +1,28 @@
 { lib, pkgs, self, extraModules, extraHomeModules, nixpkgs, system }:
 
 let
+  nixosSystem = args:
+    import "${nixpkgs}/nixos/lib/eval-config.nix" (
+      args // {
+        modules = args.modules ++ [{
+          system.nixos.versionSuffix =
+            ".${lib.substring 0 8 (self.lastModifiedDate or self.lastModified or "19700101")}.${self.shortRev or "dirty"}";
+          system.nixos.revision = lib.mkIf (self ? rev) self.rev;
+        }];
+      } // lib.optionalAttrs (! args?system) {
+        # Allow system to be set modularly in nixpkgs.system.
+        # We set it to null, to remove the "legacy" entrypoint's
+        # non-hermetic default.
+        system = null;
+      }
+    );
+
   nixosSystem' =
     args@{ configuration
     , hardware
     , users
     , ...
-    }: lib.nixosSystem (lib.recursiveUpdate
+    }: nixosSystem (lib.recursiveUpdate
       {
         inherit lib;
         specialArgs = { inherit self nixpkgs; };
