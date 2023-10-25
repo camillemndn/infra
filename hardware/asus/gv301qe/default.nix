@@ -21,14 +21,15 @@ with lib;
 
     initrd = {
       availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
+      clevis = { enable = true; devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe; };
       systemd.enable = true;
 
       secrets."/crypto_keyfile.bin" = null;
 
       luks.devices = {
-        "luks-d0de046c-c584-4761-a3cb-66fc7a1802b8".device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
+        luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
 
-        "luks-dd5289a3-7499-4efe-8354-2bf713b672df" = {
+        luks-dd5289a3-7499-4efe-8354-2bf713b672df = {
           device = "/dev/disk/by-uuid/dd5289a3-7499-4efe-8354-2bf713b672df";
           keyFile = "/crypto_keyfile.bin";
         };

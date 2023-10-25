@@ -116,6 +116,7 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
+          clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
             sha256 = "0b1z37fng3cf16c2fd6gb338bhprbp2ypb6bsqa0rgjcws5d88pr";
