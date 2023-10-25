@@ -107,16 +107,6 @@
           nixos-wsl.nixosModules.wsl
           simple-nixos-mailserver.nixosModule
           sops-nix.nixosModules.sops
-          {
-            imports = [
-              "${nixpkgs}/nixos/modules/services/web-apps/jitsi-meet.nix"
-              "${nixpkgs}/nixos/modules/programs/firefox.nix"
-            ];
-            disabledModules = [
-              "services/web-apps/jitsi-meet.nix"
-              "programs/firefox.nix"
-            ];
-          }
         ] ++ (import ./profiles);
       in
 
@@ -126,7 +116,10 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
-          firefoxpwa = ./overlays/firefoxpwa.patch;
+          firefoxpwa = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
+            sha256 = "0b1z37fng3cf16c2fd6gb338bhprbp2ypb6bsqa0rgjcws5d88pr";
+          };
           jellyseerr = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259076.patch";
             sha256 = "1awbxzksh2p482fw5lq9lzn92s8n224is9krz8irqc1nbd5fm5jf";

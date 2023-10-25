@@ -26,7 +26,7 @@
     firefox = {
       enable = true;
       languagePacks = [ "fr" ];
-      nativeMessagingHosts.firefoxpwa = true;
+      nativeMessagingHosts.packages = with pkgs; [ (firefoxpwa.override { extraLibs = [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; }) gnome-browser-connector ];
       preferences = {
         "browser.fixup.domainsuffixwhitelist.kms" = true;
         "browser.fixup.domainsuffixwhitelist.luj" = true;
@@ -34,7 +34,6 @@
       };
       preferencesStatus = "default";
       wrapperConfig.firefox = {
-        enableGnomeExtensions = true;
         alsaSupport = true;
         ffmpegSupport = true;
         jackSupport = true;
