@@ -64,8 +64,8 @@ let tld = "kms"; in {
   zeppelin = rec {
     hardware = "virtual/proxmox";
     inherit tld;
-    ipv4 = { local = "192.168.0.137"; public = "78.194.168.230"; vpn = "100.100.45.7"; };
-    ipv6 = { public = "2a01:e34:ec2a:8e60:c4f0:fbff:fe8c:d6da"; vpn = "fd7a:115c:a1e0::7"; };
+    ipv4 = { local = "192.168.0.137"; public = "82.67.34.230"; vpn = "100.100.45.7"; };
+    ipv6 = { public = "2a01:e0a:de4:a0e0:c4f0:fbff:fe8c:d6da"; vpn = "fd7a:115c:a1e0::7"; };
     mailServers = {
       "braithwaite.fr" = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC1s2oN616eFoc+SvHNSAAbImNdNRivTdjK5odLMsq6CIisUkCW1vGAB8XrfmqTCBQRStW+L5K/kgVGMIjBmkN0L7cJkfJUMYvgxWFCvWo2XEsPAh7LhbYuwpyhjVR7nZ/TU52YHz5ekWk8KBuaWCqdbNm0++DqpjfJKDLN7bbaBwIDAQAB";
       "mondon.me" = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJAjB8aUkCIYI541ZeR8uv/BCiy/0TSNqS3C9UXOOVPjTd56haSq+b5m3uto3LvNYXj/xQ33EXwqP+/PVKVDjy4llxdppjoI8qYSktQYbCPVAUfHbMvUlfxcWIVfb2SB2VeOYT1IZ9maZbroxhwzQp4YIGNfMMgMxxvu1y5lwb6wIDAQAB";
