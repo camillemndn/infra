@@ -8,6 +8,7 @@
 
   environment.systemPackages = with pkgs; [
     amdctl
+    firefoxpwa
     ifuse
     libimobiledevice
     nix-software-center
@@ -26,7 +27,7 @@
     firefox = {
       enable = true;
       languagePacks = [ "fr" ];
-      nativeMessagingHosts.packages = with pkgs; [ (firefoxpwa.override { extraLibs = [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; }) gnome-browser-connector ];
+      nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
       preferences = {
         "browser.fixup.domainsuffixwhitelist.kms" = true;
         "browser.fixup.domainsuffixwhitelist.luj" = true;
