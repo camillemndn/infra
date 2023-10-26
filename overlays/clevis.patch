@@ -1,3 +1,16 @@
+diff --git a/nixos/doc/manual/release-notes/rl-2311.section.md b/nixos/doc/manual/release-notes/rl-2311.section.md
+index c3cb495498df..0c711a05538f 100644
+--- a/nixos/doc/manual/release-notes/rl-2311.section.md
++++ b/nixos/doc/manual/release-notes/rl-2311.section.md
+@@ -82,6 +82,8 @@
+ 
+ - [Home Assistant Satellite], a streaming audio satellite for Home Assistant voice pipelines, where you can reuse existing mic/speaker hardware. Available as [services.homeassistant-satellite](#opt-services.homeassistant-satellite.enable).
+ 
++- [Clevis](https://github.com/latchset/clevis), a pluggable framework for automated decryption, used to unlock encrypted devices in initrd. Available as [boot.initrd.clevis.enable](#opt-boot.initrd.clevis.enable).
++
+ - [Apache Guacamole](https://guacamole.apache.org/), a cross-platform, clientless remote desktop gateway. Available as [services.guacamole-server](#opt-services.guacamole-server.enable) and [services.guacamole-client](#opt-services.guacamole-client.enable) services.
+ 
+ - [pgBouncer](https://www.pgbouncer.org), a PostgreSQL connection pooler. Available as [services.pgbouncer](#opt-services.pgbouncer.enable).
 diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
 index bf24ee7603fd..b0615fd620a5 100644
 --- a/nixos/modules/module-list.nix
@@ -180,7 +193,7 @@ index 000000000000..e742e4d413ef
 +  };
 +}
 diff --git a/nixos/modules/system/boot/luksroot.nix b/nixos/modules/system/boot/luksroot.nix
-index 06c329e006b8..fb7368e189f1 100644
+index 06c329e006b8..a1f57b8fef25 100644
 --- a/nixos/modules/system/boot/luksroot.nix
 +++ b/nixos/modules/system/boot/luksroot.nix
 @@ -1,9 +1,11 @@
@@ -252,7 +265,7 @@ index 06c329e006b8..fb7368e189f1 100644
 +            serviceConfig = {
 +              Type = "oneshot";
 +              RemainAfterExit = true;
-+              ExecStop = "${config.boot.initrd.systemd.package}/util-linux/bin/umount /clevis-${name}";
++              ExecStop = "${config.boot.initrd.systemd.package.util-linux}/bin/umount /clevis-${name}";
 +            };
 +          })
 +          devicesWithClevis)
