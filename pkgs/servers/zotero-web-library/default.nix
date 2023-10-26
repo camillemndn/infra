@@ -6,18 +6,18 @@
 
 buildNpmPackage rec {
   pname = "zotero-web-library";
-  version = "1.3.3";
+  version = "1.3.12";
 
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "web-library";
     rev = "v${version}";
-    hash = "sha256-VuzoKzHVMHYqYhRo7Wdss+137fQEplPz7dYBP/l5BUY=";
+    hash = "sha256-+9K1K7YcIzfCwY8Fdnh1UU1Hy1/76Iaglwnv6FcPNHw=";
   };
 
   patches = [ ./prepare.patch ./add-bin.patch ];
 
-  npmDepsHash = "sha256-y3iMObQ7UUuQfgmuQtpHfnW4/RzWRrEO3dPwbiYMYYs=";
+  npmDepsHash = "sha256-13vin1+gkkCUPbylWcBljQn4098GRH/V/vsV1AYduYg=";
 
   nativeBuildInputs = [ rsync ];
 
