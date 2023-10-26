@@ -20,10 +20,8 @@ with lib;
     };
 
     initrd = {
-      availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" ];
+      availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "tpm_crb" ];
       clevis = { enable = true; devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe; };
-      systemd.enable = true;
-
       secrets."/crypto_keyfile.bin" = null;
 
       luks.devices = {
