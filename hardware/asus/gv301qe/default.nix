@@ -23,6 +23,7 @@ with lib;
       availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "tpm_crb" ];
       clevis = { enable = true; devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe; };
       secrets."/crypto_keyfile.bin" = null;
+      systemd.enable = true;
 
       luks.devices = {
         luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
@@ -34,8 +35,8 @@ with lib;
       };
     };
 
-    kernelModules = [ "kvm-amd" ];
     blacklistedKernelModules = [ "nouveau" ];
+    kernelModules = [ "kvm-amd" ];
     kernelPackages = pkgs.pinned.linuxPackages;
     kernelParams = [ "supergfxd.mode=integrated" ];
 

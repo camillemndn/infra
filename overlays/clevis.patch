@@ -1,8 +1,8 @@
 diff --git a/nixos/modules/module-list.nix b/nixos/modules/module-list.nix
-index 47b262bf4d98..d3ca020ce40f 100644
+index bf24ee7603fd..b0615fd620a5 100644
 --- a/nixos/modules/module-list.nix
 +++ b/nixos/modules/module-list.nix
-@@ -1404,6 +1404,7 @@
+@@ -1408,6 +1408,7 @@
    ./system/activation/bootspec.nix
    ./system/activation/top-level.nix
    ./system/boot/binfmt.nix
@@ -67,16 +67,17 @@ index 000000000000..b5336238a979
 +Only `bcachefs`, `zfs` and `luks` encrypted devices are supported at this time.
 diff --git a/nixos/modules/system/boot/clevis.nix b/nixos/modules/system/boot/clevis.nix
 new file mode 100644
-index 000000000000..29c8dcbfd607
+index 000000000000..e742e4d413ef
 --- /dev/null
 +++ b/nixos/modules/system/boot/clevis.nix
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,108 @@
 +{ config, lib, pkgs, ... }:
 +
 +with lib;
 +
 +let
 +  cfg = config.boot.initrd.clevis;
++  systemd = config.boot.initrd.systemd;
 +  supportedFs = [ "zfs" "bcachefs" ];
 +in
 +{
@@ -134,7 +135,7 @@ index 000000000000..29c8dcbfd607
 +      else [ ];
 +
 +    boot.initrd = {
-+      extraUtilsCommands = ''
++      extraUtilsCommands = mkIf (!systemd.enable) ''
 +        copy_bin_and_libs ${pkgs.jose}/bin/jose
 +        copy_bin_and_libs ${pkgs.curl}/bin/curl
 +        copy_bin_and_libs ${pkgs.bash}/bin/bash
@@ -160,10 +161,12 @@ index 000000000000..29c8dcbfd607
 +      secrets = lib.mapAttrs' (name: value: nameValuePair "/etc/clevis/${name}.jwe" value.secretFile) cfg.devices;
 +
 +      systemd = {
-+        extraBin.clevis = "${cfg.package}/bin/clevis";
-+        extraBin.curl = "${pkgs.curl}/bin/curl";
++        extraBin = mkIf systemd.enable {
++          clevis = "${cfg.package}/bin/clevis";
++          curl = "${pkgs.curl}/bin/curl";
++        };
 +
-+        storePaths = [
++        storePaths = mkIf systemd.enable [
 +          cfg.package
 +          "${pkgs.jose}/bin/jose"
 +          "${pkgs.curl}/bin/curl"
@@ -177,10 +180,14 @@ index 000000000000..29c8dcbfd607
 +  };
 +}
 diff --git a/nixos/modules/system/boot/luksroot.nix b/nixos/modules/system/boot/luksroot.nix
-index 06c329e006b8..a2e669b1c1ea 100644
+index 06c329e006b8..fb7368e189f1 100644
 --- a/nixos/modules/system/boot/luksroot.nix
 +++ b/nixos/modules/system/boot/luksroot.nix
-@@ -4,6 +4,8 @@ with lib;
+@@ -1,9 +1,11 @@
+-{ config, options, lib, pkgs, ... }:
++{ config, options, lib, utils, pkgs, ... }:
+ 
+ with lib;
  
  let
    luks = config.boot.initrd.luks;
@@ -226,14 +233,14 @@ index 06c329e006b8..a2e669b1c1ea 100644
 +      mkIf (clevis.enable && systemd.enable) (
 +        (mapAttrs'
 +          (name: _: nameValuePair "cryptsetup-clevis-${name}" {
-+            wantedBy = [ "systemd-cryptsetup@${name}.service" ];
++            wantedBy = [ "systemd-cryptsetup@${utils.escapeSystemdPath name}.service" ];
 +            before = [
-+              "systemd-cryptsetup@${name}.service"
++              "systemd-cryptsetup@${utils.escapeSystemdPath name}.service"
 +              "initrd-switch-root.target"
 +              "shutdown.target"
 +            ];
-+            wants = optional clevis.useTang "network-online.target";
-+            after = [ "systemd-modules-load.service" ] ++ optional clevis.useTang "network-online.target";
++            wants = [ "systemd-udev-settle.service" ] ++ optional clevis.useTang "network-online.target";
++            after = [ "systemd-modules-load.service" "systemd-udev-settle.service" ] ++ optional clevis.useTang "network-online.target";
 +            script = ''
 +              mkdir -p /clevis-${name}
 +              mount -t ramfs none /clevis-${name}
@@ -245,7 +252,7 @@ index 06c329e006b8..a2e669b1c1ea 100644
 +            serviceConfig = {
 +              Type = "oneshot";
 +              RemainAfterExit = true;
-+              ExecStop = "umount /clevis-${name}";
++              ExecStop = "${config.boot.initrd.systemd.package}/util-linux/bin/umount /clevis-${name}";
 +            };
 +          })
 +          devicesWithClevis)
@@ -298,7 +305,7 @@ index 19ef188ce783..4e49d27aed5f 100644
        boot.initrd.availableKernelModules = [ "bcachefs" "sha256" "chacha20" "poly1305" ];
  
 diff --git a/nixos/modules/tasks/filesystems/zfs.nix b/nixos/modules/tasks/filesystems/zfs.nix
-index 082634ec9d01..b7e4f0ff7ee9 100644
+index 082634ec9d01..3a32194c25ba 100644
 --- a/nixos/modules/tasks/filesystems/zfs.nix
 +++ b/nixos/modules/tasks/filesystems/zfs.nix
 @@ -16,6 +16,9 @@ let
@@ -326,17 +333,18 @@ index 082634ec9d01..b7e4f0ff7ee9 100644
        requiredBy = getPoolMounts prefix pool ++ [ "zfs-import.target" ];
        before = getPoolMounts prefix pool ++ [ "zfs-import.target" ];
        unitConfig = {
-@@ -153,6 +156,9 @@ let
+@@ -153,6 +156,10 @@ let
            poolImported "${pool}" || poolImport "${pool}"  # Try one last time, e.g. to import a degraded pool.
          fi
          if poolImported "${pool}"; then
-+          ${optionalString (elem pool (map (e: elemAt (splitString "/" e) 0) clevisDatasets))
-+              (concatMapStringsSep "\n" (elem: "clevis decrypt < /etc/clevis/${elem}.jwe | zfs load-key ${elem}") (filter (p: (elemAt (splitString "/" p) 0) == pool) clevisDatasets)) + " || "}
++        ${let cmd = concatMapStringsSep "\n" (elem: "clevis decrypt < /etc/clevis/${elem}.jwe | zfs load-key ${elem}") (filter (p: (elemAt (splitString "/" p) 0) == pool) clevisDatasets); in
++            optionalString (elem pool (map (e: elemAt (splitString "/" e) 0) clevisDatasets)) (optionalString (cmd != "") (cmd + " || "))}
++
 +
            ${optionalString keyLocations.hasKeys ''
              ${keyLocations.command} | while IFS=$'\t' read ds kl ks; do
                {
-@@ -616,6 +622,10 @@ in
+@@ -616,6 +623,10 @@ in
                fi
                poolImported "${pool}" || poolImport "${pool}"  # Try one last time, e.g. to import a degraded pool.
              fi
@@ -348,7 +356,7 @@ index 082634ec9d01..b7e4f0ff7ee9 100644
                then optionalString cfgZfs.requestEncryptionCredentials ''
                  zfs load-key -a
 diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
-index 42d620b512c4..940d4bc8eeb5 100644
+index 3531930d863a..ee0c7bebddaf 100644
 --- a/nixos/tests/all-tests.nix
 +++ b/nixos/tests/all-tests.nix
 @@ -175,6 +175,7 @@ in {
