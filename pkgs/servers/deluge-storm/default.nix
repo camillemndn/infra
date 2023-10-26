@@ -6,13 +6,13 @@
 
 buildGoModule rec {
   pname = "deluge-storm";
-  version = "1.2.0";
+  version = "1.3.0";
 
   src = fetchFromGitHub {
     owner = "relvacode";
     repo = "storm";
     rev = "v${version}";
-    hash = "sha256-xvBEnJvjWL/COWF0j4ynwva5ilE2NbjzMKslV1wcsCc=";
+    hash = "sha256-7A8h3Qpqt4bVpSfafIpxG+CxodoT/F+VUGUdtyQt1m0=";
   };
 
   deluge-storm-frontend = buildNpmPackage {
@@ -27,7 +27,7 @@ buildGoModule rec {
     npmBuildScript = "build:prod";
   };
 
-  vendorHash = "sha256-YsqWC5W1X6QJR4YSynYmhuz+0bY63VyWLdZNxlpGs84=";
+  vendorHash = "sha256-byxH1o+0rOkaUeB/oL1p/ela8opDo4cmh1AYLJ6YorU=";
 
   preBuild = ''
     cp -r ${deluge-storm-frontend}/lib/node_modules/storm/dist frontend
