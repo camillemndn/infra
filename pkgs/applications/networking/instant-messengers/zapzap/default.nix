@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "zapzap";
-  version = "4.4.4";
+  version = "4.5.2";
   format = "setuptools";
 
   src = fetchFromGitHub {
     owner = "rafatosta";
     repo = "zapzap";
     rev = "v${version}";
-    hash = "sha256-ZbEEelBPjxQnA9igr97mTxh8DjTz9vNKvAtbdOTk7IY=";
+    hash = "sha256-D2R5F4PeKTpeSYyy56aTnh/9CJSP4qtmCpWyoBNqrk4=";
   };
 
   patches = [ ./remove_makedirs.patch ];
