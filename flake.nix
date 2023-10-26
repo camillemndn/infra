@@ -119,7 +119,7 @@
           clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
-            sha256 = "0b1z37fng3cf16c2fd6gb338bhprbp2ypb6bsqa0rgjcws5d88pr";
+            sha256 = "0p56nkdwddajk5ays2msny23aar3k5f4mnhq6wp5did2pq44ap35";
           };
           jellyseerr = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259076.patch";
@@ -151,6 +151,6 @@
 
         colmena = import ./colmena.nix { inherit lib pkgs self; };
 
-        devShells.${system}.default = pkgs.mkShell { buildInputs = with pkgs; [ home-manager age colmena nixos-generators sops ]; };
+        devShells.${system}.default = pkgs.mkShell { buildInputs = with pkgs; [ home-manager age colmena nixos-generators nix-update sops ]; };
       });
 }

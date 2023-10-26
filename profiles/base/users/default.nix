@@ -83,6 +83,7 @@ with lib;
     neofetch
     nix-init
     nix-tree
+    nix-update
     nixos-option
     nmap
     ntfs3g
