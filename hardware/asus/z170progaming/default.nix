@@ -18,7 +18,6 @@
       clevis = { enable = true; useTang = true; devices.luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b.secretFile = ./luks.jwe; };
       network.enable = true;
       secrets."/crypto_keyfile.bin" = null;
-      systemd = { enable = true; network = { enable = true; wait-online.enable = true; }; };
 
       luks.devices = {
         luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b = {
@@ -29,13 +28,20 @@
           keyFile = "/crypto_keyfile.bin";
         };
       };
-    };
 
-    kernelParams = [
-      #"ip=dhcp"
-      #"ip=enp0s31f6:dhcp"
-      "ip=192.168.1.3:::255.255.255.0::enp0s31f6:none"
-    ];
+      systemd = {
+        enable = true;
+
+        network = {
+          enable = true;
+          wait-online.enable = true;
+          networks."10-wan" = {
+            matchConfig.Type = "ether";
+            networkConfig.DHCP = "ipv4";
+          };
+        };
+      };
+    };
   };
 
   fileSystems = {
