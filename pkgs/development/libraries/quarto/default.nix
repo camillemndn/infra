@@ -15,10 +15,10 @@
 
 stdenv.mkDerivation rec {
   pname = "quarto";
-  version = "1.4.176";
+  version = "1.4.449";
   src = fetchurl {
     url = "https://github.com/quarto-dev/quarto-cli/releases/download/v${version}/quarto-${version}-linux-amd64.tar.gz";
-    sha256 = "sha256-wG7diTCQOhAYon659w+5A3soo82KfrYpnoE2h2tOEbM=";
+    sha256 = "sha256-7RoWAtQ4EcaSiXU0hOmu8MBZjYr52IW2yWXLmi6jLUM=";
   };
 
 
