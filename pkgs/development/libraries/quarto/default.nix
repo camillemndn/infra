@@ -1,6 +1,7 @@
 { stdenv
 , lib
 , pandoc
+, typst
 , esbuild
 , deno
 , fetchurl
@@ -21,32 +22,24 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-7RoWAtQ4EcaSiXU0hOmu8MBZjYr52IW2yWXLmi6jLUM=";
   };
 
-
   nativeBuildInputs = [ makeWrapper ];
-
   dontStrip = true;
+
+  installPhase = ''
+    mkdir -p $out/bin $out/share
+    mv bin/* $out/bin
+    mv share/* $out/share
+  '';
 
   preFixup = ''
     wrapProgram $out/bin/quarto \
       --prefix QUARTO_PANDOC : ${pandoc}/bin/pandoc \
+      --prefix QUARTO_TYPST : ${typst}/bin/typst \
       --prefix QUARTO_ESBUILD : ${esbuild}/bin/esbuild \
       --prefix QUARTO_DENO : ${deno}/bin/deno \
       --prefix QUARTO_DART_SASS : ${dart-sass}/bin/dart-sass \
       --prefix QUARTO_R : ${rWrapper.override { packages = [ rPackages.rmarkdown ] ++ extraRPackages; }}/bin/R \
       --prefix QUARTO_PYTHON : ${python3.withPackages (ps: with ps; [ jupyter ipython ] ++ (extraPythonPackages ps))}/bin/python3
-  '';
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin $out/share
-
-    rm -r bin/tools
-
-    mv bin/* $out/bin
-    mv share/* $out/share
-
-    runHook preInstall
   '';
 
   meta = with lib; {
