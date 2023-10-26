@@ -12,7 +12,7 @@ index 47b262bf4d98..d3ca020ce40f 100644
    ./system/boot/initrd-network.nix
 diff --git a/nixos/modules/system/boot/clevis.md b/nixos/modules/system/boot/clevis.md
 new file mode 100644
-index 000000000000..39505785b4f2
+index 000000000000..b5336238a979
 --- /dev/null
 +++ b/nixos/modules/system/boot/clevis.md
 @@ -0,0 +1,49 @@
@@ -61,7 +61,7 @@ index 000000000000..39505785b4f2
 +
 +Then, specify the device you want to decrypt using a given clevis secret. Clevis will automatically try to decrypt the device at boot and will fallback to interactive unlocking if the decryption policy is not respected.
 +```
-+boot.initrd.clevis.devices."/dev/nvme0n1p1" = ./nvme0n1p1.jwe;
++boot.initrd.clevis.devices."/dev/nvme0n1p1".secretFile = ./nvme0n1p1.jwe;
 +```
 +
 +Only `bcachefs`, `zfs` and `luks` encrypted devices are supported at this time.
@@ -177,7 +177,7 @@ index 000000000000..29c8dcbfd607
 +  };
 +}
 diff --git a/nixos/modules/system/boot/luksroot.nix b/nixos/modules/system/boot/luksroot.nix
-index 06c329e006b8..090e3c3ea8f0 100644
+index 06c329e006b8..a2e669b1c1ea 100644
 --- a/nixos/modules/system/boot/luksroot.nix
 +++ b/nixos/modules/system/boot/luksroot.nix
 @@ -4,6 +4,8 @@ with lib;
@@ -218,7 +218,7 @@ index 06c329e006b8..090e3c3ea8f0 100644
        }));
      };
  
-@@ -1081,6 +1096,38 @@ in
+@@ -1081,6 +1096,35 @@ in
      boot.initrd.preLVMCommands = mkIf (!config.boot.initrd.systemd.enable) (commonFunctions + preCommands + concatStrings (mapAttrsToList openCommand preLVM) + postCommands);
      boot.initrd.postDeviceCommands = mkIf (!config.boot.initrd.systemd.enable) (commonFunctions + preCommands + concatStrings (mapAttrsToList openCommand postLVM) + postCommands);
  
@@ -232,11 +232,8 @@ index 06c329e006b8..090e3c3ea8f0 100644
 +              "initrd-switch-root.target"
 +              "shutdown.target"
 +            ];
-+            wants = [ "network-online.target" ];
-+            after = [
-+              "systemd-modules-load.service"
-+              "network-online.target"
-+            ];
++            wants = optional clevis.useTang "network-online.target";
++            after = [ "systemd-modules-load.service" ] ++ optional clevis.useTang "network-online.target";
 +            script = ''
 +              mkdir -p /clevis-${name}
 +              mount -t ramfs none /clevis-${name}
