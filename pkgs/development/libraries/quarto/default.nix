@@ -11,7 +11,7 @@
 , extraRPackages ? [ ]
 , makeWrapper
 , python3
-, extraPythonPackages ? ps: with ps; [ ]
+, extraPythonPackages ? ps: [ ]
 }:
 
 stdenv.mkDerivation rec {
@@ -33,13 +33,14 @@ stdenv.mkDerivation rec {
 
   preFixup = ''
     wrapProgram $out/bin/quarto \
+      --prefix PATH : ${lib.makeBinPath [ deno ]} \
+      --prefix QUARTO_DART_SASS : ${dart-sass}/bin/dart-sass \
+      --prefix QUARTO_DENO : ${deno}/bin/deno \
+      --prefix QUARTO_ESBUILD : ${esbuild}/bin/esbuild \
       --prefix QUARTO_PANDOC : ${pandoc}/bin/pandoc \
       --prefix QUARTO_TYPST : ${typst}/bin/typst \
-      --prefix QUARTO_ESBUILD : ${esbuild}/bin/esbuild \
-      --prefix QUARTO_DENO : ${deno}/bin/deno \
-      --prefix QUARTO_DART_SASS : ${dart-sass}/bin/dart-sass \
-      --prefix QUARTO_R : ${rWrapper.override { packages = [ rPackages.rmarkdown ] ++ extraRPackages; }}/bin/R \
-      --prefix QUARTO_PYTHON : ${python3.withPackages (ps: with ps; [ jupyter ipython ] ++ (extraPythonPackages ps))}/bin/python3
+      ${lib.optionalString (rWrapper != null) "--prefix QUARTO_R : ${rWrapper.override { packages = [ rPackages.rmarkdown ] ++ extraRPackages; }}/bin/R"} \
+      ${lib.optionalString (python3 != null) "--prefix QUARTO_PYTHON : ${python3.withPackages (ps: with ps; [ jupyter ipython ] ++ (extraPythonPackages ps))}/bin/python3"}
   '';
 
   meta = with lib; {
