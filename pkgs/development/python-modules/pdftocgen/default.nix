@@ -23,6 +23,7 @@ python3.pkgs.buildPythonApplication rec {
     poetry-core
     pymupdf
     toml
+    chardet
   ];
 
   pythonImportsCheck = [ "pdftocgen" ];

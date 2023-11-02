@@ -133,6 +133,10 @@
             url = "https://github.com/NixOS/nixpkgs/pull/259351.patch";
             sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
           };
+          mupdf = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/261113.patch";
+            sha256 = "1qh60lzl1c5d4r7b2v7xdw0fan037mdxpfp0x4gzfkxrbhdhv73k";
+          };
         };
 
         machines = import ./machines.nix;

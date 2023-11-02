@@ -20,7 +20,7 @@ with lib;
       libreoffice-fresh
       zotero
       xournalpp
-      # pdftocgen
+      pdftocgen
 
       # Sync
       bitwarden
