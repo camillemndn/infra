@@ -13,7 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     programs.spicetify = {
       enable = true;
-      theme = pkgs.spicetify-nix.themes.catppuccin-mocha;
+      theme = pkgs.spicetify-nix.themes.catppuccin;
       colorScheme = "flamingo";
 
       enabledExtensions = with pkgs.spicetify-nix.extensions; [
