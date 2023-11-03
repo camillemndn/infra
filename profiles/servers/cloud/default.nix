@@ -19,7 +19,6 @@ with lib;
       autoUpdateApps.enable = true;
       caching.redis = true;
       database.createLocally = true;
-      enableBrokenCiphersForSSE = false;
       https = true;
       maxUploadSize = "4G";
       phpOptions."opcache.interned_strings_buffer" = "23";
