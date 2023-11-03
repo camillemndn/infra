@@ -11,6 +11,7 @@
     firefoxpwa
     ifuse
     libimobiledevice
+    libirecovery
     idevicerestore
     nix-software-center
   ];
