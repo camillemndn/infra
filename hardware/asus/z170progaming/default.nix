@@ -63,7 +63,7 @@
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
   };
 
-  musnix.enable = true;
+  # musnix.enable = true;
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
