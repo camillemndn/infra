@@ -119,7 +119,7 @@
           clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
-            sha256 = "1kxjpva878v6f6mns6l44fmp2ddgq1jrj4wh4kr010mlzzq9vk7c";
+            sha256 = "0p56nkdwddajk5ays2msny23aar3k5f4mnhq6wp5did2pq44ap35";
           };
           jellyseerr = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259076.patch";
