@@ -24,12 +24,12 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "zotero";
-    rev = "3454c321e77d79db3ea337d6d0241ba5703fce79";
-    hash = "sha256-ft26Oo7zbFOML/TsiRjZTsK5fO0DQqUFeYK9fGxT3pk=";
+    rev = "0cab24fb89b64a78dcd1d0fb2d77d032ad87f163";
+    hash = "sha256-WLWnZD/S2q5WUkZLQSX8EdWTeTbI9g71lpzUPdu+dCc=";
     fetchSubmodules = true;
   };
 
-  npmDepsHash = "sha256-P0C7BICZx2oGVH1OK4IobB4fxzGSBZoV/FDQBKiasDg=";
+  npmDepsHash = "sha256-rZU5fuKlLXx4fSMTlMJUtKRPO0Wd+KW6trOWnxEvFrc=";
   npmFlags = [ "--legacy-peer-deps" ];
   NODE_OPTIONS = "--openssl-legacy-provider";
 
@@ -37,18 +37,19 @@ buildNpmPackage rec {
 
   postPatch = ''
     # Replace Git submodules by their respective NPM packages
-    rm -rf resource/SingleFile chrome/content/zotero/xpcom/utilities pdf-reader pdf-worker translators note-editor
+    rm -rf resource/SingleFile chrome/content/zotero/xpcom/utilities reader pdf-worker translators note-editor
     cp -Lr ${callPackage ./single-file.nix {}}/lib/node_modules/single-file resource/SingleFile
     cp -Lr ${callPackage ./xpcom-utilities.nix {}}/lib/node_modules/@zotero/utilities chrome/content/zotero/xpcom/utilities
-    cp -r ${callPackage ./reader {}}/lib/node_modules/pdf-reader pdf-reader
+    cp -r ${callPackage ./reader {}}/lib/node_modules/pdf-reader reader
     cp -r ${callPackage ./pdf-worker {}}/lib/node_modules/pdf-worker pdf-worker
     cp -Lr ${callPackage ./translators.nix {}}/lib/node_modules/translators-check translators
     cp -Lr ${callPackage ./note-editor.nix {}}/lib/node_modules/zotero-note-editor note-editor
-    chmod +w pdf-{reader,worker} -R
+    chmod +w {reader,pdf-worker} -R
     (
-      cd pdf-reader
-      rm -rf pdf.js
-      cp -Lr ${callPackage ./reader/pdfjs.nix {}}/lib/node_modules/pdf.js pdf.js
+      cd reader
+      rm -rf epubjs/epub.js pdfjs/pdf.js
+      cp -Lr ${callPackage ./reader/epubjs.nix {}}/lib/node_modules/epubjs epubjs/epub.js 
+      cp -Lr ${callPackage ./reader/pdfjs.nix {}}/lib/node_modules/pdf.js pdfjs/pdf.js
     )
     (
       cd pdf-worker
@@ -69,16 +70,10 @@ buildNpmPackage rec {
     
     # Fix Firefox runtime fetching 
     sed -i app/scripts/fetch_xulrunner \
-      -e '/updateAuto/,+7d' \
-      -e 's/curl.*/:/' \
-      -e 's/firefox-x86_64/firefox/g' \
-      -e '/pushd firefox-i686/,+3d' \
-      -e '/linux32/d' \
-      -e '/rm -rf firefox/d' \
-      -e '/mv firefox/d' \
-      -e '/bz2/d' \
-      -e '/xulrunner_hash/d'
-    
+    -e '/updateAuto/,+7d' \
+    -e '/GECKO_VERSION_LINUX/,+30d' \
+    -e '/BUILD_LINUX == 1/a \  pushd firefox; modify_omni; popd'
+
     # Use the hash from this revision
     sed -i app/scripts/dir_build -Ee 's/(.*hash=).*/\1${src.rev}/'
 
@@ -126,7 +121,7 @@ buildNpmPackage rec {
     sed -i app/staging/Zotero_linux/zotero -e '/MOZ_LEGACY_PROFILES/a export MOZ_ENABLE_WAYLAND=1'
   '';
 
-  preInstall = ''
+  installPhase = ''
     mkdir -p $out/{bin,lib}
     cp -Lr app/staging/Zotero_linux $out/lib/zotero
     ln -s $out/lib/zotero/zotero $out/bin
@@ -135,6 +130,8 @@ buildNpmPackage rec {
       install -Dm444 app/staging/Zotero_linux/chrome/icons/default/default$size.png \
         $out/share/icons/hicolor/''${size}x''${size}/apps/zotero.png
     done
+    
+    runHook postInstall
   '';
 
   meta = with lib; {

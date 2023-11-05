@@ -9,11 +9,11 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "translators";
-    rev = "ab8a83ebba9a165ad44ace10b24c582c1bd52424";
-    hash = "sha256-dr2bhjcoahAZiR0TerC8KFgihTFXr4l0VILls4iSaFA=";
+    rev = "fd45efc081bf03bf33af726b46cd83a81770909a";
+    hash = "sha256-CYjgH5Nd7Ms3I2qEUPzDsH4NiCIe/AnNHQ0l9Zn09yc=";
   };
 
-  npmDepsHash = "sha256-pOAwpHbcCVUq7iTlahZEttbGdieSoTL28R6a6h4gjWg=";
+  npmDepsHash = "sha256-bQp1PjT9G5n7gw5o2ksZnFTMDqbjTpuKWPv7d+Gdkvw=";
   npmFlags = [ "--legacy-peer-deps" ];
   NODE_OPTIONS = "--openssl-legacy-provider";
 

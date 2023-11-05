@@ -9,11 +9,11 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "pdf.js";
-    rev = "3f71a8aed2b72207688cd0e2c010a6d37f446220";
-    hash = "sha256-n4Y0J7Xh6Wi2KIBnxYWPOaBqueyOTiA1ZW9sC2uollI=";
+    rev = "10691ef026c3a3e56ba5afb29ff9f89412bd0698";
+    hash = "sha256-1lgS0hoeJ27k7RnDUloCBY635IudF3VYvgc5i8y31yA=";
   };
 
-  npmDepsHash = "sha256-9e90iIKwWyBq68q/CKn+7laJwPFtJaZtblcWpIEDSXw=";
+  npmDepsHash = "sha256-+LTfiFIZoGO/6dY4COEcjAcNcRkwEy+TqwISlUIcwh8=";
   npmFlags = [ "--legacy-peer-deps" ];
   NODE_OPTIONS = "--openssl-legacy-provider";
   makeCacheWritable = true;
@@ -24,7 +24,7 @@ buildNpmPackage rec {
   '';
 
   buildPhase = ''
-    node_modules/.bin/gulp generic
+    node_modules/.bin/gulp generic-legacy
   '';
 
   postInstall = ''

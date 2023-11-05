@@ -10,24 +10,25 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "pdf-reader";
-    rev = "c963b7e3f9bb8aa4bfeb39dfc0fbce3a4a33985e";
-    hash = "sha256-qhsoS9rW01EWsoMo3HUyU5U+Mkui8eC+bWdsNcKjGV0=";
+    rev = "439aacd3fd0e1194cd46106f9fac606fe302702b";
+    hash = "sha256-LrQMpW9V8qg7dJQg+1RVkQq/NRfxaxIYr+MhmS+7OFg=";
   };
 
-  npmDepsHash = "sha256-tDr2WLnpltWPrlF21M8G/We4zzAXBp4px5xceOVLbhQ=";
+  npmDepsHash = "sha256-zzAVIJfSjV/ij0tOlKSWSbPkIQEPrCLwGHAW7/aUyXI=";
   npmFlags = [ "--legacy-peer-deps" ];
   NODE_OPTIONS = "--openssl-legacy-provider";
 
   postPatch = ''
+    cp ${./package-lock.patch} package-lock.json
     # Avoid npm install since it is handled by buildNpmPackage
-    sed -i scripts/build-pdfjs \
+    sed -i pdfjs/build \
       -e 's/npx gulp/#npx gulp/g' \
       -e 's/npm ci/#npm ci/g'
   '';
 
   buildPhase = ''
     rm -rf pdf.js
-    cp -Lr ${callPackage ./pdfjs.nix {}}/lib/node_modules/pdf.js pdf.js
+    cp -Lr ${callPackage ./pdfjs.nix {}}/lib/node_modules/pdf.js pdfjs
   '';
 
   preInstall = ''

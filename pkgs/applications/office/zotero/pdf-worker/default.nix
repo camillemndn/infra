@@ -10,11 +10,11 @@ buildNpmPackage rec {
   src = fetchFromGitHub {
     owner = "zotero";
     repo = "pdf-worker";
-    rev = "84e7814cf72f4234d2c0126aa0d7dbad712c196b";
-    hash = "sha256-xR0hOzQi76k6YSDd0Zq3BYZZ+InKNUw0t7pbtE6Rwe4=";
+    rev = "85d3c0ed13f128400e7e54243eacebf349b88fc5";
+    hash = "sha256-4Y99bmrHJOsyCDHAxC6ZUP6XfBQ76a1UAOvO4t/d0K8=";
   };
 
-  npmDepsHash = "sha256-rO/P7/22erxNeOpR8ph7taKyCeOEG9+U06oOfmPSa3w=";
+  npmDepsHash = "sha256-nqKXFcB1Y3+S+6IrxNIeKj/VH0V7myavQs+S25GT16w=";
   npmFlags = [ "--legacy-peer-deps" ];
   NODE_OPTIONS = "--openssl-legacy-provider";
 
