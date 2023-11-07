@@ -16,5 +16,6 @@ _: prev: lib.updateManyAttrs [
     inherit (nix-software-center.packages.${system}) nix-software-center;
     inherit (attic.packages.${system}) attic;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
+    tandoor-recipes = prev.tandoor-recipes.override { python3 = prev.python310; };
   }
 ]
