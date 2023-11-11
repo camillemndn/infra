@@ -135,7 +135,7 @@
           };
           mupdf = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/261113.patch";
-            sha256 = "1qh60lzl1c5d4r7b2v7xdw0fan037mdxpfp0x4gzfkxrbhdhv73k";
+            sha256 = "1lwd309lr2sa7mqln3c9f1fc9nndlny0hy4q2zqg40h9yxb8gy8v";
           };
         };
 
