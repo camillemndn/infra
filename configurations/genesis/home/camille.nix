@@ -39,9 +39,16 @@ with lib;
       musescore
       sonixd
       clapper
+
+      # Studio
       ardour
       lmms
       zrythm
+      lsp-plugins
+      zam-plugins
+      gxplugins-lv2
+      luppp
+      lenmus
 
       # Computer
       python3

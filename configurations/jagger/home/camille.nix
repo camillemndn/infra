@@ -12,6 +12,7 @@ with lib;
       (retroarch.override { cores = with libretro; [ dolphin citra ]; })
 
       # Social
+      mattermost-desktop
       signal-desktop
       zoom-us
 
@@ -37,10 +38,17 @@ with lib;
       lilypond-with-fonts
       musescore
       sonixd
-      vlc
+      clapper
+
+      # Studio
       ardour
       lmms
       zrythm
+      lsp-plugins
+      zam-plugins
+      gxplugins-lv2
+      luppp
+      lenmus
 
       # Computer
       python3
