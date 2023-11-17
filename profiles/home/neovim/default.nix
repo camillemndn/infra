@@ -97,17 +97,6 @@ with lib;
 
       plugins =
         let
-          catppuccin = pkgs.vimUtils.buildVimPlugin {
-            pname = "catppuccin";
-            version = "0.2.9";
-            src = pkgs.fetchFromGitHub {
-              owner = "catppuccin";
-              repo = "nvim";
-              rev = "e1fc2c3ade0d8872665d7570c493bbd5e11919c7";
-              sha256 = "sha256-s8nMeBtDnf/L7/rYwmf6UexykfADXJx0fZoDg8JacGs=";
-            };
-          };
-
           nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (ps: with ps; [
             tree-sitter-bash
             tree-sitter-css
@@ -125,24 +114,6 @@ with lib;
             tree-sitter-vimdoc
             tree-sitter-yaml
           ]);
-
-          otter-nvim = pkgs.vimUtils.buildVimPlugin {
-            name = "otter-nvim";
-            src = pkgs.fetchgit {
-              url = "https://github.com/jmbuhr/otter.nvim";
-              rev = "v0.16.1";
-              sha256 = "sha256-QY1RimrDzoY2xbKv/3m89IsEd0NUbJNlGIW4vxPnQZo=";
-            };
-          };
-
-          quarto-nvim = pkgs.vimUtils.buildVimPlugin {
-            name = "quarto-nvim";
-            src = pkgs.fetchgit {
-              url = "https://github.com/quarto-dev/quarto-nvim";
-              rev = "v0.13.1";
-              sha256 = "sha256-aEJyhd+bBXsvyDDQT2W/ZtpJB4W+aeUszp8h0fzQnBs=";
-            };
-          };
         in
         with pkgs.vimPlugins; mkIf cfg.full.enable [
           bufferline-nvim
@@ -156,6 +127,7 @@ with lib;
           nvim-cmp
           nvim-colorizer-lua
           nvim-lspconfig
+          Nvim-R
           nvim-treesitter
           nvim-tree-lua
           nvim-web-devicons

@@ -10,6 +10,7 @@ in
   catppuccin-folders = callPackage ../data/icons/catppuccin-folders { };
   catppuccin-gtk = callPackage ../data/themes/catppuccin-gtk { };
   deluge-storm = callPackage ../servers/deluge-storm { };
+  extraVimPlugins = callPackage ../applications/editors/vim/plugins { };
   hammond = callPackage ../servers/hammond { };
   harmony-assistant = callPackage ../applications/audio/harmony-assistant { };
   koel = callPackage ../servers/koel { };

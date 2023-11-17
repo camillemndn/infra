@@ -2,7 +2,7 @@
 
 with self.inputs;
 
-_: prev: lib.updateManyAttrs [
+final: prev: lib.updateManyAttrs [
   # Adds all the packages from this flake
   self.packages.${system}
   {
@@ -17,5 +17,6 @@ _: prev: lib.updateManyAttrs [
     inherit (attic.packages.${system}) attic;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     tandoor-recipes = prev.tandoor-recipes.override { python3 = prev.python310; };
+    vimPlugins = prev.vimPlugins // final.extraVimPlugins;
   }
 ]
