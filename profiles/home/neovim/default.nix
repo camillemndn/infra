@@ -155,6 +155,7 @@ with lib;
         rPackages.rmarkdown
         rPackages.languageserver
         rPackages.plotly
+        rPackages.quarto
         ccls
         fd
         lua.pkgs.lua-lsp

@@ -3,14 +3,14 @@
 }:
 
 {
-  catppuccin = vimUtils.buildVimPlugin {
+  catppuccin = vimUtils.buildVimPlugin rec {
     pname = "catppuccin";
     version = "1.5.0";
     src = fetchFromGitHub {
       owner = "catppuccin";
       repo = "nvim";
-      rev = "e1fc2c3ade0d8872665d7570c493bbd5e11919c7";
-      sha256 = "sha256-s8nMeBtDnf/L7/rYwmf6UexykfADXJx0fZoDg8JacGs=";
+      rev = "v${version}";
+      hash = "sha256-s8nMeBtDnf/L7/rYwmf6UexykfADXJx0fZoDg8JacGs=";
     };
   };
 
@@ -21,7 +21,7 @@
       owner = "jalvesaq";
       repo = "Nvim-R";
       rev = "v${version}";
-      sha256 = "sha256-s8nMeBtDnf/L7/rYwmf6UexykfADXJx0fZoDg8JacGs=";
+      hash = "sha256-doB/ddsyXmBt0fHnC4XwhCrP5Ks2UYGxaUzKQ7HMZqI=";
     };
   };
 
@@ -32,7 +32,7 @@
       owner = "jmbuhr";
       repo = "otter.nvim";
       rev = "v${version}";
-      sha256 = "sha256-N309UXla1sgnPcb+p3sdDhugw75gT5kcx5hkDSHmjG0=";
+      hash = "sha256-N309UXla1sgnPcb+p3sdDhugw75gT5kcx5hkDSHmjG0=";
     };
   };
 
@@ -43,7 +43,7 @@
       owner = "quarto-dev";
       repo = "quarto-nvim";
       rev = "v${version}";
-      sha256 = "sha256-8Z6n4ajfwQOn1X7E+I1s+fx+3Wgx9dPWUTb7e0HpAIc=";
+      hash = "sha256-8Z6n4ajfwQOn1X7E+I1s+fx+3Wgx9dPWUTb7e0HpAIc=";
     };
   };
 }
