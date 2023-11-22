@@ -82,6 +82,7 @@ with lib;
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
+  security.pam.loginLimits = [{ domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }];
   services.pipewire = {
     enable = true;
     alsa.enable = true;

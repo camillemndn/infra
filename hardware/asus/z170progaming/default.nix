@@ -63,10 +63,16 @@
     cpu.intel.updateMicrocode = config.hardware.enableRedistributableFirmware;
   };
 
-  # musnix.enable = true;
+  musnix.enable = true;
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
+  security.pam.loginLimits = lib.mkForce [
+    { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
+    { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
+    { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
+    { domain = "@audio"; item = "nofile"; type = "hard"; value = "524288"; }
+  ];
   services.pipewire = {
     enable = true;
     alsa.enable = true;
