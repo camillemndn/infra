@@ -37,7 +37,7 @@
       inputs.flake-utils.follows = "utils";
     };
 
-    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.30.0"; inputs.nixpkgs.follows = "nixpkgs"; };
+    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.32.3"; inputs.nixpkgs.follows = "nixpkgs"; };
     hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     musnix.url = "github:musnix/musnix";
@@ -116,26 +116,21 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
-          clevis = ./overlays/clevis.patch;
+          clevis = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/257525.patch";
+            sha256 = "0mss1kdkjr1v41yigl43k1k3y18k4m3dabq6dn4w84zf406avyh0";
+          };
           firefoxpwa = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
             sha256 = "1kxjpva878v6f6mns6l44fmp2ddgq1jrj4wh4kr010mlzzq9vk7c";
-          };
-          jellyseerr = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/259076.patch";
-            sha256 = "1awbxzksh2p482fw5lq9lzn92s8n224is9krz8irqc1nbd5fm5jf";
-          };
-          jitsi-meet = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/227588.patch";
-            sha256 = "0zh6hxb2m7wg45ji8k34g1pvg96235qmfnjkrya6scamjfi1j19l";
           };
           mattermost-desktop = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259351.patch";
             sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
           };
-          mupdf = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/261113.patch";
-            sha256 = "1lwd309lr2sa7mqln3c9f1fc9nndlny0hy4q2zqg40h9yxb8gy8v";
+          usbmuxd = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/268813.patch";
+            sha256 = "0ny3l0ydb19y9f9mvlhd1kyzzlrybvavh7z28av2lpjc1k9g1xib";
           };
         };
 
