@@ -11,15 +11,15 @@
 , extraRPackages ? [ ]
 , makeWrapper
 , python3
-, extraPythonPackages ? ps: [ ]
+, extraPythonPackages ? _: [ ]
 }:
 
 stdenv.mkDerivation rec {
   pname = "quarto";
-  version = "1.4.449";
+  version = "1.4.510";
   src = fetchurl {
     url = "https://github.com/quarto-dev/quarto-cli/releases/download/v${version}/quarto-${version}-linux-amd64.tar.gz";
-    sha256 = "sha256-7RoWAtQ4EcaSiXU0hOmu8MBZjYr52IW2yWXLmi6jLUM=";
+    sha256 = "sha256-FP+Ckqv6EryWJmdI3Gz/xpz/kqCwlU+eHqhvUZNC7MA=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
