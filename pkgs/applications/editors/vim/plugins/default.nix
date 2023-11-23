@@ -3,8 +3,8 @@
 }:
 
 {
-  catppuccin = vimUtils.buildVimPlugin rec {
-    pname = "catppuccin";
+  catppuccin-nvim = vimUtils.buildVimPlugin rec {
+    pname = "catppuccin-nvim";
     version = "1.5.0";
     src = fetchFromGitHub {
       owner = "catppuccin";
@@ -25,25 +25,14 @@
     };
   };
 
-  otter-nvim = vimUtils.buildVimPlugin rec {
-    name = "otter-nvim";
-    version = "1.4.1";
-    src = fetchFromGitHub {
-      owner = "jmbuhr";
-      repo = "otter.nvim";
-      rev = "v${version}";
-      hash = "sha256-N309UXla1sgnPcb+p3sdDhugw75gT5kcx5hkDSHmjG0=";
-    };
-  };
-
   quarto-nvim = vimUtils.buildVimPlugin rec {
     name = "quarto-nvim";
-    version = "0.17.0";
+    version = "0.13.2";
     src = fetchFromGitHub {
       owner = "quarto-dev";
       repo = "quarto-nvim";
       rev = "v${version}";
-      hash = "sha256-8Z6n4ajfwQOn1X7E+I1s+fx+3Wgx9dPWUTb7e0HpAIc=";
+      hash = "sha256-Y3gjJMHwfqu/FYS7PLi+4faybFaaG9fBnQWVYaNTuSM=";
     };
   };
 }

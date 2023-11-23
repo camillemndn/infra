@@ -117,18 +117,21 @@ with lib;
         in
         with pkgs.vimPlugins; mkIf cfg.full.enable [
           bufferline-nvim
-          catppuccin
+          catppuccin-nvim
           cmp-nvim-lsp
           coc-prettier
           coc-pyright
           coc-texlab
           lspkind-nvim
           luasnip
+          mason-nvim
+          mason-lspconfig-nvim
           nvim-cmp
           nvim-colorizer-lua
           nvim-lspconfig
           Nvim-R
           nvim-treesitter
+          nvim-treesitter-textobjects
           nvim-tree-lua
           nvim-web-devicons
           otter-nvim
@@ -160,6 +163,7 @@ with lib;
         fd
         lua.pkgs.lua-lsp
         lua.pkgs.luarocks-nix
+        lua-language-server
         marksman
         nil
         nixpkgs-fmt
