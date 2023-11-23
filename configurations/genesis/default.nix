@@ -19,7 +19,7 @@
   profiles = {
     gdm = { enable = true; hidpi.enable = true; };
     gnome.enable = true;
-    hyprland.enable = true;
+    # hyprland.enable = true;
     sway.enable = true;
   };
 
