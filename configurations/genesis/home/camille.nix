@@ -92,6 +92,18 @@ with lib;
       package = pkgs.ungoogled-chromium;
     };
 
+    emacs = {
+      enable = true;
+      package = pkgs.emacs29-nox;
+      extraPackages = e: with e;[
+        quarto-mode
+        catppuccin-theme
+      ];
+      extraConfig = ''
+        (load-theme 'catppuccin :no-confirm)
+      '';
+    };
+
     thunderbird = {
       enable = true;
       package = pkgs.thunderbird;
