@@ -17,5 +17,6 @@ final: prev: lib.updateManyAttrs [
     inherit (attic.packages.${system}) attic;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
+    tandoor-recipes = nixpkgs-old.legacyPackages.${system}.tandoor-recipes;
   }
 ]
