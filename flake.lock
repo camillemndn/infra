@@ -719,7 +719,8 @@
         "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "systems": "systems_3",
-        "utils": "utils"
+        "utils": "utils",
+        "zotero-nix": "zotero-nix"
       }
     },
     "rust-overlay": {
@@ -967,6 +968,26 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    },
+    "zotero-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1701082739,
+        "narHash": "sha256-ZjkeGqdlaacmwhXZe9WJhXvM+bU3s0p4+b8RrAmIqow=",
+        "owner": "camillemndn",
+        "repo": "zotero-nix",
+        "rev": "fe4da6ae22122acf8d04931c1f3075ce4b083539",
+        "type": "github"
+      },
+      "original": {
+        "owner": "camillemndn",
+        "repo": "zotero-nix",
         "type": "github"
       }
     }

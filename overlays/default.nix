@@ -15,6 +15,7 @@ final: prev: lib.updateManyAttrs [
     inherit (hyprland-contrib.packages.${system}) grimblast;
     inherit (nix-software-center.packages.${system}) nix-software-center;
     inherit (attic.packages.${system}) attic;
+    inherit (zotero-nix.packages.${system}) zotero;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
     tandoor-recipes = nixpkgs-old.legacyPackages.${system}.tandoor-recipes;

@@ -62,6 +62,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
+
+    zotero-nix = {
+      url = "github:camillemndn/zotero-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ############################
   };
 
