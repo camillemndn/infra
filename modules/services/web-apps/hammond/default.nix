@@ -11,7 +11,7 @@ with lib;
 
     hostName = mkOption {
       type = types.str;
-      description = lib.mdDoc "FQDN for the Hammond instance.";
+      description = "FQDN for the Hammond instance.";
     };
   };
 

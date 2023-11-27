@@ -12,7 +12,7 @@ with lib;
 
     hostName = mkOption {
       type = types.str;
-      description = lib.mdDoc "FQDN for the Webtrees instance.";
+      description = "FQDN for the Webtrees instance.";
     };
   };
 

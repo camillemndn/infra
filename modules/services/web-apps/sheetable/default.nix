@@ -8,7 +8,7 @@ with lib;
 {
   options = {
     services.sheetable = {
-      enable = mkEnableOption (mdDoc "SheetAble");
+      enable = mkEnableOption "SheetAble";
 
       user = mkOption {
         description = "The user under which SheetAble runs.";
@@ -34,7 +34,7 @@ with lib;
           DEV = "0"; # 0, 1 - if 1: activated dev mode for developing purposes
           CONFIG_PATH = "/var/lib/sheetable"; # Path where you want your data to be instead of in the root dir
         };
-        description = lib.mdDoc ''
+        description = ''
           Additional configuration for SheetAble, see
           <https://sheetable.net/docs/configuration>
           for supported values.

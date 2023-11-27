@@ -43,26 +43,26 @@ with lib;
 
     hostName = mkOption {
       type = types.str;
-      description = lib.mdDoc "FQDN for the Koel instance.";
+      description = "FQDN for the Koel instance.";
     };
 
     extraConfig = mkOption {
       type = types.attrsOf types.str;
-      description = lib.mdDoc ''
+      description = ''
         Environment variables for Laravel.
       '';
     };
 
     secretEnvFile = mkOption {
       type = types.str;
-      description = lib.mdDoc "API keys and whatnot";
+      description = "API keys and whatnot";
     };
 
     group = mkOption {
       type = types.str;
       default = "koel";
       example = "dialout";
-      description = lib.mdDoc ''
+      description = ''
         Default group that the "koel" user should be a part of.
       '';
     };

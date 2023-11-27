@@ -8,29 +8,29 @@ in
 {
   options = {
     services.yarr = {
-      enable = mkEnableOption (lib.mdDoc "yarr!");
+      enable = mkEnableOption "yarr!";
 
       dataDir = mkOption {
         type = types.str;
         default = "/var/lib/yarr";
-        description = lib.mdDoc "The directory where yarr stores its data files.";
+        description = "The directory where yarr stores its data files.";
       };
 
       authFile = mkOption {
         type = types.str;
-        description = lib.mdDoc "The directory where yarr stores its data files.";
+        description = "The directory where yarr stores its data files.";
       };
 
       user = mkOption {
         type = types.str;
         default = "yarr";
-        description = lib.mdDoc "User account under which yarr runs.";
+        description = "User account under which yarr runs.";
       };
 
       group = mkOption {
         type = types.str;
         default = "yarr";
-        description = lib.mdDoc "Group under which yarr runs.";
+        description = "Group under which yarr runs.";
       };
     };
   };

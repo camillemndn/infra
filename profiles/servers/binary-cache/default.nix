@@ -11,7 +11,7 @@ with lib;
     hostName = mkOption {
       type = types.str;
       example = "cache";
-      description = lib.mdDoc ''The hostname of the build machine.'';
+      description = ''The hostname of the build machine.'';
     };
   };
 

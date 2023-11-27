@@ -8,29 +8,29 @@ in
 {
   options = {
     services.radiogaga = {
-      enable = mkEnableOption (lib.mdDoc "radiogaga");
+      enable = mkEnableOption "radiogaga";
 
       dataDir = mkOption {
         type = types.str;
         default = "/var/lib/radiogaga";
-        description = lib.mdDoc "The directory where radiogaga stores its data files.";
+        description = "The directory where radiogaga stores its data files.";
       };
 
       authFile = mkOption {
         type = types.str;
-        description = lib.mdDoc "The directory where radiogaga stores its data files.";
+        description = "The directory where radiogaga stores its data files.";
       };
 
       user = mkOption {
         type = types.str;
         default = "radiogaga";
-        description = lib.mdDoc "User account under which radiogaga runs.";
+        description = "User account under which radiogaga runs.";
       };
 
       group = mkOption {
         type = types.str;
         default = "radiogaga";
-        description = lib.mdDoc "Group under which radiogaga runs.";
+        description = "Group under which radiogaga runs.";
       };
     };
   };

@@ -7,7 +7,7 @@ with lib;
 
 {
   options.services.nginx = {
-    noDefault.enable = mkEnableOption (mdDoc ''Don't fallback to default page'');
+    noDefault.enable = mkEnableOption ''Don't fallback to default page'';
 
     publicDomains = mkOption {
       default = [ "mondon.xyz" ];

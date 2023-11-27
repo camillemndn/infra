@@ -13,7 +13,7 @@ in
       [org/gnome/desktop/interface]
       cursor-size=40
     '';
-    description = lib.mdDoc ''
+    description = ''
       Set addition configuration for dconf.
     '';
   };

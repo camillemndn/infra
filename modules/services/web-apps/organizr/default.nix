@@ -11,7 +11,7 @@ with lib;
 
     hostName = mkOption {
       type = types.str;
-      description = lib.mdDoc "FQDN for the Organizr instance.";
+      description = "FQDN for the Organizr instance.";
     };
   };
 

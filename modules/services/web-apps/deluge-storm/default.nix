@@ -8,18 +8,18 @@ in
   meta.maintainers = [ maintainers.camillemndn ];
 
   options.services.deluge.storm = {
-    enable = mkEnableOption (mdDoc ''A Modern Deluge Interface'');
+    enable = mkEnableOption ''A Modern Deluge Interface'';
 
     openFirewall = mkOption {
       type = types.bool;
       default = false;
-      description = mdDoc ''Open port in the firewall for the Deluge Storm web interface.'';
+      description = ''Open port in the firewall for the Deluge Storm web interface.'';
     };
 
     port = mkOption {
       type = types.port;
       default = 8221;
-      description = mdDoc ''The port which the Deluge Storm web UI should listen to.'';
+      description = ''The port which the Deluge Storm web UI should listen to.'';
     };
   };
 
