@@ -122,21 +122,14 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
-          clevis = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/257525.patch";
-            sha256 = "0mss1kdkjr1v41yigl43k1k3y18k4m3dabq6dn4w84zf406avyh0";
-          };
+          clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/263404.patch";
+            url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/383b5333ae7f4fd1fa73505e5090a829a641b3da.patch";
             sha256 = "1kxjpva878v6f6mns6l44fmp2ddgq1jrj4wh4kr010mlzzq9vk7c";
           };
           mattermost-desktop = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/259351.patch";
+            url = "https://github.com/NixOS/nixpkgs/pull/259351/commits/e62dc9e309374cfbadd27bc736d391a606740df8.patch";
             sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
-          };
-          usbmuxd = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/268813.patch";
-            sha256 = "0ny3l0ydb19y9f9mvlhd1kyzzlrybvavh7z28av2lpjc1k9g1xib";
           };
         };
 
