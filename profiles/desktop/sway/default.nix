@@ -17,6 +17,7 @@ with lib;
       xkbVariant = "";
     };
 
+    programs.dconf.enable = true;
     programs.xwayland.enable = true;
     programs.sway = {
       enable = true;
