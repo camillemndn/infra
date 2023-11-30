@@ -1012,11 +1012,11 @@
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1701278753,
-        "narHash": "sha256-YS+nrA7iYTQAAcgnHl0hxDprXyTIAcyCDI4wZ6o14Pc=",
+        "lastModified": 1701344164,
+        "narHash": "sha256-5PLKGJaIKnsUX9jl/Xkgrwuiy0k0rIzpd9dM54nEVAc=",
         "owner": "camillemndn",
         "repo": "zotero-nix",
-        "rev": "6834aabec237b0a6614826367fd80b81d40b9947",
+        "rev": "057a141f85d9780b22f0f60f2f510ac74afd2420",
         "type": "github"
       },
       "original": {
