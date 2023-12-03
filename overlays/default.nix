@@ -18,6 +18,6 @@ final: prev: lib.updateManyAttrs [
     inherit (zotero-nix.packages.${system}) zotero;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
-    inherit (nixpkgs-old.legacyPackages.${system}) tandoor-recipes;
+    # inherit (nixpkgs-old.legacyPackages.${system}) tandoor-recipes;
   }
 ]
