@@ -22,7 +22,7 @@ let
     name = "hammond-backend-${version}";
     inherit src version meta;
     modRoot = "server";
-    vendorSha256 = "sha256-wb36Ppt8ZuH4srfpaCIfYLrk/VQK1esinM778FlfknM=";
+    vendorHash = "sha256-wb36Ppt8ZuH4srfpaCIfYLrk/VQK1esinM778FlfknM=";
 
     ldflags = [
       "-X main.version=${version}"
