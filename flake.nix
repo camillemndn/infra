@@ -124,8 +124,8 @@
         patches = {
           clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/383b5333ae7f4fd1fa73505e5090a829a641b3da.patch";
-            sha256 = "1kxjpva878v6f6mns6l44fmp2ddgq1jrj4wh4kr010mlzzq9vk7c";
+            url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/e4b9373540881b92c6d99efb7ee70ab56ccd0ad3.patch";
+            sha256 = "0j44v4dpriic956lkmjcx0z14dc72ilnp9xara1lw3m1aqmvv2nh";
           };
           mattermost-desktop = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259351/commits/e62dc9e309374cfbadd27bc736d391a606740df8.patch";
