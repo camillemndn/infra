@@ -3,10 +3,9 @@
 
   inputs = {
     ### Nix packages and modules ###
-    nixpkgs.url = "nixpkgs/nixos-23.11";
-    nixpkgs-old.url = "nixpkgs/nixos-23.05";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     nixpkgs-pinned.url = "nixpkgs/fdd898f8f79e8d2f99ed2ab6b3751811ef683242";
-    home-manager = { url = "home-manager/release-23.11"; inputs.nixpkgs.follows = "nixpkgs"; };
+    home-manager = { url = "home-manager/master"; inputs.nixpkgs.follows = "nixpkgs"; };
     ################################
 
     ### Flake utils ###
@@ -33,7 +32,7 @@
 
     ### Sofware dependencies ###
     attic = {
-      url = "github:zhaofengli/attic";
+      url = "github:zhaofengli/attic/main";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "utils";
     };
@@ -122,7 +121,6 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
-          clevis = ./overlays/clevis.patch;
           firefoxpwa = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/e4b9373540881b92c6d99efb7ee70ab56ccd0ad3.patch";
             sha256 = "0j44v4dpriic956lkmjcx0z14dc72ilnp9xara1lw3m1aqmvv2nh";

@@ -20,8 +20,6 @@ rec {
 
   mergeDefaultSystems = x: recursiveUpdateManyAttrs (map x utils.lib.defaultSystems);
 
-  platformMatches = x: sys: filterAttrs (_: pkg: elem sys pkg.meta.platforms) x;
-
   patchNixpkgs = system: nixpkgs: patches: (import nixpkgs { inherit system; }).applyPatches {
     name = "nixpkgs-patched";
     src = nixpkgs;
