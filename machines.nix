@@ -61,6 +61,11 @@ let tld = "kms"; in {
     };
   };
 
+  thelonious = {
+    hardware = "dell/precision3240";
+    deployment.allowLocalDeployment = true;
+  };
+
   zeppelin = rec {
     hardware = "virtual/proxmox";
     inherit tld;
