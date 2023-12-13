@@ -146,7 +146,7 @@ with lib;
         startup = [
           { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
           { command = "swww init; swww img ~/Images/.cats.jpg"; always = true; }
-          # { command = "waybar"; always = true; }
+          { command = "tailscale-systray"; }
           { command = "sworkstyle &> /tmp/sworkstyle.log"; always = true; }
         ];
         terminal = "kitty";

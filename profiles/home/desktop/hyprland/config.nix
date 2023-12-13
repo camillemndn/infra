@@ -1,3 +1,5 @@
+{ pkgs }:
+
 let launcher = "fuzzel"; in
 ''
   # Monitors
@@ -5,6 +7,7 @@ let launcher = "fuzzel"; in
 
   # Autostart programs
   exec-once = waybar
+  exec-once = tailscale-systray
   exec-once = xprop -root -f _XWAYLAND_GLOBAL_OUTPUT_SCALE 32c -set _XWAYLAND_GLOBAL_OUTPUT_SCALE 2
 
   # Input

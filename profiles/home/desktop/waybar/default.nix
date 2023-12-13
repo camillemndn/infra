@@ -167,8 +167,6 @@ with lib;
           "pulseaudio"
           "bluetooth"
           "network"
-          "custom/tailscale"
-          "custom/nextcloud"
           "tray"
           "custom/powermenu"
         ];
@@ -199,14 +197,6 @@ with lib;
         };
         "custom/cava-internal" = {
           "exec" = "sleep 1s && cava-internal";
-          "tooltip" = false;
-        };
-        "custom/tailscale" = {
-          "exec" = "${pkgs.tailscale-systray}/bin/tailscale-systray";
-          "tooltip" = false;
-        };
-        "custom/nextcloud" = {
-          "exec" = "${pkgs.nextcloud-client}/bin/nextcloud";
           "tooltip" = false;
         };
         "battery" = {

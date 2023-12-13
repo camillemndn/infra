@@ -29,7 +29,7 @@ with lib;
       systemPackages = with pkgs; [
         waybar
         hyprpaper
-      ];
+      ] ++ (optional config.services.tailscale.enable tailscale-systray);
     };
 
     programs.hyprland.enable = true;

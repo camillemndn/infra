@@ -40,7 +40,7 @@ with lib;
 
     wayland.windowManager.hyprland = {
       enable = true;
-      extraConfig = import ./config.nix;
+      extraConfig = import ./config.nix { inherit pkgs; };
     };
 
     services.gammastep = {

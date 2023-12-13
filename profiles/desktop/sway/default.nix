@@ -36,5 +36,7 @@ with lib;
       ];
       fontconfig.antialias = true;
     };
+
+    environment.systemPackages = optional config.services.tailscale.enable pkgs.tailscale-systray;
   };
 }
