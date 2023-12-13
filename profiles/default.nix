@@ -4,6 +4,7 @@
   ./base/users
   ./base/users/manu
   ./base/wifi
+  ./desktop/browser
   ./desktop/gdm
   ./desktop/gnome
   ./desktop/hyprland

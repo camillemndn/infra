@@ -17,33 +17,14 @@
   ];
 
   profiles = {
+    browser.enable = true;
     gdm = { enable = true; hidpi.enable = true; };
     gnome.enable = true;
-    # hyprland.enable = true;
+    hyprland.enable = true;
     sway.enable = true;
   };
 
-  programs = {
-    firefox = {
-      enable = true;
-      languagePacks = [ "fr" ];
-      nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
-      preferences = {
-        "browser.fixup.domainsuffixwhitelist.kms" = true;
-        "browser.fixup.domainsuffixwhitelist.luj" = true;
-        "browser.fixup.domainsuffixwhitelist.saumon" = true;
-      };
-      preferencesStatus = "default";
-      wrapperConfig.firefox = {
-        alsaSupport = true;
-        ffmpegSupport = true;
-        jackSupport = true;
-        pipewireSupport = true;
-      };
-    };
-
-    steam.enable = true;
-  };
+  programs.steam.enable = true;
 
   services = {
     logind.killUserProcesses = true;

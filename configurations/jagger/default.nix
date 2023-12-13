@@ -13,16 +13,14 @@
   ];
 
   profiles = {
+    browser.enable = true;
     gdm.enable = true;
     gnome.enable = true;
     hyprland.enable = true;
     sway.enable = true;
   };
 
-  programs = {
-    firefox.enable = true;
-    steam.enable = true;
-  };
+  programs.steam.enable = true;
 
   services = {
     logind.killUserProcesses = true;
