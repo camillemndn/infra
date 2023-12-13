@@ -37,11 +37,7 @@
       inputs.flake-utils.follows = "utils";
     };
 
-    hyprland = { url = "github:hyprwm/Hyprland?ref=v0.32.3"; inputs.nixpkgs.follows = "nixpkgs"; };
-    hyprland-contrib = { url = "github:hyprwm/contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
-
     musnix.url = "github:musnix/musnix";
-
     nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
 
     nix-software-center = {
@@ -98,14 +94,12 @@
         };
 
         extraHomeModules = lib.attrValues self.homeManagerModules ++ [
-          hyprland.homeManagerModules.default
           nix-index-database.hmModules.nix-index
           spicetify-nix.homeManagerModule
         ] ++ (import ./profiles/home);
 
         extraModules = lib.attrValues self.nixosModules ++ [
           home-manager.nixosModules.home-manager
-          hyprland.nixosModules.default
           lanzaboote.nixosModules.lanzaboote
           musnix.nixosModules.musnix
           nix-index-database.nixosModules.nix-index

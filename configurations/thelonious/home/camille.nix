@@ -79,6 +79,7 @@ with lib;
 
   profiles = {
     kitty.enable = true;
+    hyprland.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
     sway.enable = true;

@@ -48,7 +48,6 @@ let launcher = "fuzzel"; in
   decoration {
     # Rounded corners
     rounding = 8
-    multisample_edges = true
 
     # Opacity
     active_opacity = 1.0
