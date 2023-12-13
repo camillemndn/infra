@@ -40,16 +40,6 @@ with lib;
       sonixd
       clapper
 
-      # Studio
-      ardour
-      lmms
-      zrythm
-      lsp-plugins
-      zam-plugins
-      gxplugins-lv2
-      luppp
-      lenmus
-
       # Computer
       python3
     ];
@@ -116,6 +106,7 @@ with lib;
     gtk-qt.hidpi.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
+    studio.enable = true;
     sway.enable = true;
   };
 

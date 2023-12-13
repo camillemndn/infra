@@ -2,6 +2,25 @@
 
 let
   cfg = config.profiles.sway;
+  makePluginPath = format:
+    (lib.makeSearchPath format [
+      "$HOME/.nix-profile/lib"
+      "/run/current-system/sw/lib"
+      "/etc/profiles/per-user/$USER/lib"
+    ])
+    + ":$HOME/.${format}";
+  envVars = lib.replaceStrings [ "\n" ] [ " " ] (lib.toShellVars {
+    NIXOS_OZONE_WL = 1;
+    QT_QPA_PLATFORM = "wayland;xcb";
+    QT_QPA_PLATFORMTHEME = "gnome";
+    _JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
+    DSSI_PATH = makePluginPath "dssi";
+    LADSPA_PATH = makePluginPath "ladspa";
+    LV2_PATH = makePluginPath "lv2";
+    LXVST_PATH = makePluginPath "lxvst";
+    VST_PATH = makePluginPath "vst";
+    VST3_PATH = makePluginPath "vst3";
+  });
 in
 with lib;
 
@@ -113,7 +132,7 @@ with lib;
           "XF86MonBrightnessDown" = "exec brightnessctl s '1%-'";
           "XF86MonBrightnessUp" = "exec brightnessctl s '+1%'";
         };
-        menu = "NIXOS_OZONE_WL=1 QT_QPA_PLATFORM='wayland;xcb' QT_QPA_PLATFORMTHEME=gnome _JAVA_OPTIONS=-Dsun.java2d.uiScale=3.0 fuzzel";
+        menu = "${envVars} fuzzel";
         modifier = "Mod4";
         output."HDMI-A-1" = mkIf config.profiles.gtk-qt.hidpi.enable {
           scale = "0.8";

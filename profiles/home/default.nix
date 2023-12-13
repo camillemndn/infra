@@ -14,4 +14,5 @@
   ./desktop/waybar
   ./desktop/wlogout
   ./neovim
+  ./studio
 ]
