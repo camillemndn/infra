@@ -135,8 +135,7 @@ with lib;
         menu = "${envVars} fuzzel";
         modifier = "Mod4";
         output."HDMI-A-1" = mkIf config.profiles.gtk-qt.hidpi.enable {
-          scale = "0.8";
-          position = "-2400 0";
+          # position = "-2400 0";
         };
         input."1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
           drag = "enable";
