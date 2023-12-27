@@ -9,6 +9,7 @@ with lib;
       cemu
       lutris
       prismlauncher-qt5
+      wineWow64Packages.waylandFull
       (retroarch.override { cores = with libretro; [ dolphin citra ]; })
 
       # Social
