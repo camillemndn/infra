@@ -116,8 +116,8 @@
 
         patches = {
           firefoxpwa = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/e4b9373540881b92c6d99efb7ee70ab56ccd0ad3.patch";
-            sha256 = "0j44v4dpriic956lkmjcx0z14dc72ilnp9xara1lw3m1aqmvv2nh";
+            url = "https://github.com/NixOS/nixpkgs/pull/263404/commits/37baa251a1c5e17acce89fe4ef0e3448d4722f04.patch";
+            sha256 = "15r1p0mdgy7gcp64khch98bjscl78pc1k73kk2gpsvka02i07dw1";
           };
           mattermost-desktop = builtins.fetchurl {
             url = "https://github.com/NixOS/nixpkgs/pull/259351/commits/e62dc9e309374cfbadd27bc736d391a606740df8.patch";
