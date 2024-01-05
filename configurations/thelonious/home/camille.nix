@@ -25,9 +25,6 @@ with lib;
 
       # Music & Video
       clapper
-
-      # Computer
-      python3
     ];
   };
 

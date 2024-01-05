@@ -40,9 +40,6 @@ with lib;
       musescore
       sonixd
       clapper
-
-      # Computer
-      python3
     ];
   };
 

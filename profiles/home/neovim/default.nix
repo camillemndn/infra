@@ -12,14 +12,11 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      (quarto.override { rWrapper = null; python3 = null; })
-      rPackages.rmarkdown
-      rPackages.languageserver
-      rPackages.plotly
-      python3.pkgs.jupyter
-      python3.pkgs.ipython
-    ];
+    home.packages = with pkgs; if cfg.full.enable then [
+      (python3.withPackages (p: with p; [ jupyter ipython plotly autopep8 flake8 ]))
+      (quarto.override { extraRPackages = with rPackages; [ languageserver plotly ]; extraPythonPackages = p: with p; [ plotly ]; })
+      (rWrapper.override { packages = with rPackages; [ rmarkdown languageserver plotly ]; })
+    ] else [ python3 R ];
 
     programs.neovim = {
       enable = true;
@@ -154,11 +151,6 @@ with lib;
         ];
 
       extraPackages = with pkgs; mkIf cfg.full.enable [
-        R
-        rPackages.rmarkdown
-        rPackages.languageserver
-        rPackages.plotly
-        rPackages.quarto
         ccls
         fd
         lua.pkgs.lua-lsp
@@ -168,12 +160,6 @@ with lib;
         nil
         nixpkgs-fmt
         pyright
-        python3.pkgs.autopep8
-        python3.pkgs.flake8
-        python3.pkgs.jupyter
-        python3.pkgs.ipython
-        python3.pkgs.plotly
-        (quarto.override { rWrapper = null; python3 = null; })
         ripgrep
         texlab
         texlive.combined.scheme-full
