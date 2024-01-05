@@ -16,7 +16,6 @@ in
   koel = callPackage ../servers/koel { };
   lazylibrarian = callPackage ../servers/lazylibrarian { };
   organizr = callPackage ../servers/organizr { };
-  quarto = callPackage ../development/libraries/quarto { };
   radiogaga = callPackage ../servers/radiogaga { };
   sheetable = callPackage ../servers/sheetable { };
   webtrees = callPackage ../servers/webtrees { };
