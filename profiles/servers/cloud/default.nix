@@ -13,7 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     services.nextcloud = {
       enable = true;
-      package = pkgs.nextcloud27;
+      package = pkgs.nextcloud28;
       hostName = "cloud.mondon.xyz";
 
       autoUpdateApps.enable = true;
@@ -22,13 +22,14 @@ with lib;
       https = true;
       maxUploadSize = "4G";
       phpOptions."opcache.interned_strings_buffer" = "23";
-
       config = {
         adminuser = "Camille";
         adminpassFile = "/run/secrets/nextcloud";
         dbtype = "mysql";
-        defaultPhoneRegion = "FR";
-        overwriteProtocol = "https";
+      };
+      extraOptions = {
+        default_phone_region = "FR";
+        overwriteprotocol = "https";
       };
     };
 
