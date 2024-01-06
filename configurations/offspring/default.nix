@@ -12,7 +12,6 @@ _:
     openssh.enable = true;
     nginx.enable = true;
     nginx.noDefault.enable = true;
-    nginx.virtualHosts."pln.camille.mondon.xyz".root = "/srv/www/slides";
   };
 
   profiles = {

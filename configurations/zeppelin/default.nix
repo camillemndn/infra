@@ -15,7 +15,9 @@ _:
     nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
-    nginx.virtualHosts."camille.mondon.xyz" = { root = "/dev/null"; locations."/random-densities".root = "/srv/sites"; };
+    nginx.virtualHosts."camillemondon.com".root = "/srv/sites/camille-mondon";
+    nginx.virtualHosts."camillemondon.fr".locations."/".proxyPass = "https://camillemondon.com";
+    nginx.virtualHosts."camille.mondon.xyz".locations."/".proxyPass = "https://camillemondon.com";
     openssh.enable = true;
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
