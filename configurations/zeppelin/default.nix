@@ -16,8 +16,8 @@ _:
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     nginx.virtualHosts."camillemondon.com".root = "/srv/sites/camille-mondon";
-    nginx.virtualHosts."camillemondon.fr".locations."/".proxyPass = "https://camillemondon.com";
-    nginx.virtualHosts."camille.mondon.xyz".locations."/".proxyPass = "https://camillemondon.com";
+    nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com/$request_uri";
+    nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com/$request_uri";
     openssh.enable = true;
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
