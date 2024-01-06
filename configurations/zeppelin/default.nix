@@ -12,12 +12,12 @@ _:
     nginx.virtualHosts."projects.mondon.xyz" = { port = 8065; websockets = true; };
     nginx.enable = true;
     nginx.noDefault.enable = true;
-    nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" ];
+    nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" "camillemondon.com" "camillemondon.fr" ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     nginx.virtualHosts."camillemondon.com".root = "/srv/sites/camille-mondon";
-    nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com/$request_uri";
-    nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com/$request_uri";
+    nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
+    nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
     openssh.enable = true;
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
