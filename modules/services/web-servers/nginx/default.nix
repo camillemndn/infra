@@ -34,13 +34,15 @@ with lib;
         options.port = mkOption { type = types.port; default = 0; };
         options.websockets = mkOption { type = types.bool; default = false; };
 
-        config = {
-          forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
+        config = let normalDomain = hasInfix "." name && !hasSuffixIn cfg.localDomains name; in {
+          serverAliases = mkIf normalDomain [ "www.${name}" ];
+          forceSSL = mkDefault normalDomain;
           enableACME = mkDefault config.forceSSL;
           locations."/" = {
             proxyPass = let p = config.port; in mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
             proxyWebsockets = mkDefault config.websockets;
           };
+          locations.www.return = mkIf normalDomain "301 https://$server_name$request_uri";
           # Firewall VPN domains
           extraConfig =
             if (hasSuffixIn cfg.publicDomains name) then ''
