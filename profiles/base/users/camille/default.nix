@@ -2,11 +2,9 @@
 
 let
   sshPubKeys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKEWwoOi96UggNLakKekjf/FUL3F0CeG727OtvEpvOks camille@wutang"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICbr8wzBA6LS1dqTLHZSgpJN9NKZ/bv5ybxQSRePUtUs camille@rush"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBmuMNGkWQ7ozpC2UU0+jqMsRw1zVgT2Q9ORmLcTXpK2 camille@zeppelin"
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA+UXgmrVJa2+9nBFXRL1GEbJ940kpaydDQSpv7l46Ll camille@radiogaga"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINg9kUL5kFcPOWmGy/7kJZMlG2+Ls79XiWgvO8p+OQ3f camille@genesis"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWvUwCcmmjEFfE2cNE14w/ZPm9odzVUrKwTNAOR+UZR camille@thelonious"
   ];
 in
 
