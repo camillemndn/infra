@@ -19,6 +19,7 @@ _:
     nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
     openssh.enable = true;
+    onlyoffice = { enable = true; hostname = "office.kms"; port = 8001; };
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
   };
