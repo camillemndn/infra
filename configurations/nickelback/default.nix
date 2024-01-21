@@ -4,7 +4,6 @@ _:
   networking = {
     hostName = "nickelback";
     networkmanager.enable = true;
-    useDHCP = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
