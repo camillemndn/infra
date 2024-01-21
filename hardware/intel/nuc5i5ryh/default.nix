@@ -1,7 +1,5 @@
 { config, lib, ... }:
 
-with lib;
-
 {
   boot = {
     loader = {
@@ -13,40 +11,22 @@ with lib;
       efi.canTouchEfiVariables = true;
     };
 
-    initrd = {
-      availableKernelModules = [ "xhci_pci" "ehci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
-      zfs-ssh.enable = true;
-    };
-
+    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
     kernelModules = [ "kvm-intel" ];
   };
 
-  hardware = {
-    enableRedistributableFirmware = mkDefault true;
-    cpu.intel.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/dc9ab470-b542-43c3-bf54-a438d71b33a5";
+    fsType = "ext4";
   };
 
-  fileSystems."/" =
-    {
-      device = "rpool/root/nixos";
-      fsType = "zfs";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/9DEF-35FE";
+    fsType = "vfat";
+  };
 
-  fileSystems."/home" =
-    {
-      device = "rpool/home";
-      fsType = "zfs";
-    };
-
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-id/nvme-CT2000P2SSD8_2151E5F38722-part3";
-      fsType = "vfat";
-      options = [ "X-mount.mkdir" ];
-    };
-
-  swapDevices = [{
-    device = "/dev/disk/by-id/nvme-CT2000P2SSD8_2151E5F38722-part2";
-    randomEncryption = true;
-  }];
+  swapDevices = [{ device = "/dev/disk/by-uuid/fadaee1c-9820-4c06-a144-f3d293e0a4e3"; }];
 }
