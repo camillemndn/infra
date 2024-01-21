@@ -18,26 +18,20 @@ with lib;
     cpu.intel.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
   };
 
-  fileSystems."/" =
-    {
-      device = "rpool/root/nixos";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "rpool/root/nixos";
+    fsType = "zfs";
+  };
 
-  fileSystems."/home" =
-    {
-      device = "rpool/home";
-      fsType = "zfs";
-    };
+  fileSystems."/home" = {
+    device = "rpool/home";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/BF98-A5B4";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/BF98-A5B4";
+    fsType = "vfat";
+  };
 
-  swapDevices = [{
-    device = "/dev/sda3";
-    randomEncryption = true;
-  }];
+  swapDevices = [{ device = "/dev/sda3"; randomEncryption = true; }];
 }

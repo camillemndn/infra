@@ -26,24 +26,21 @@ with lib;
 
   powerManagement.cpuFreqGovernor = mkDefault "ondemand";
 
-  fileSystems."/" =
-    {
-      device = "zroot/root/nixos";
-      fsType = "zfs";
-    };
+  fileSystems."/" = {
+    device = "zroot/root/nixos";
+    fsType = "zfs";
+  };
 
-  fileSystems."/home" =
-    {
-      device = "zroot/home";
-      fsType = "zfs";
-    };
+  fileSystems."/home" = {
+    device = "zroot/home";
+    fsType = "zfs";
+  };
 
-  fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-id/mmc-SL32G_0x53df2d57-part3";
-      fsType = "vfat";
-      options = [ "X-mount.mkdir" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-id/mmc-SL32G_0x53df2d57-part3";
+    fsType = "vfat";
+    options = [ "X-mount.mkdir" ];
+  };
 
   swapDevices = [{
     device = "/dev/disk/by-id/mmc-SL32G_0x53df2d57-part2";
