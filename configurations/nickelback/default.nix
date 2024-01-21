@@ -21,6 +21,7 @@ _:
 
   users.mutableUsers = true;
   users.users.camille.passwordFile = null;
+  sops.secrets = { };
 
   system.stateVersion = "23.11";
 }

@@ -28,10 +28,12 @@ in
     openssh.authorizedKeys.keys = sshPubKeys;
   };
 
-  sops.secrets.camille = {
-    format = "binary";
-    sopsFile = ./password;
-    neededForUsers = true;
+  sops.secrets = lib.mkDefault {
+    camille = {
+      format = "binary";
+      sopsFile = ./password;
+      neededForUsers = true;
+    };
   };
 
   sops.age.keyFile = lib.mkIf (!config.services.openssh.enable && config.sops.secrets != { }) "/home/camille/.config/sops/age/keys.txt";
