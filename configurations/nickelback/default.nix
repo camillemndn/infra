@@ -7,7 +7,10 @@ _:
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
-  profiles.manu.enable = true;
+  profiles = {
+    cache-client.enable = false;
+    manu.enable = true;
+  };
 
   services = {
     nginx.enable = true;
