@@ -12,7 +12,7 @@ let tld = "kms"; in {
   nickelback = rec {
     hardware = "intel/nuc5i5ryh";
     users = [ "camille" "manu" ];
-    tld = "mondon.xyz";
+    inherit tld;
     ipv4 = { public = "82.64.106.43"; vpn = "100.100.45.27"; };
     ipv6 = { public = "2a01:e0a:b3b:c0f0:baae:edff:fe74:5a4d"; vpn = "fd7a:115c:a1e0::1b"; };
     deployment = {
