@@ -51,6 +51,8 @@ with lib;
     nix-index-database.comma.enable = true;
   };
 
+  profiles.cache-client.enable = lib.mkDefault true;
+
   services = {
     eternal-terminal.enable = true;
 
@@ -73,7 +75,6 @@ with lib;
   };
 
   environment.systemPackages = with pkgs; [
-    attic
     dig
     direnv
     du-dust

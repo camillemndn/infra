@@ -9,6 +9,7 @@
   ./desktop/gnome
   ./desktop/hyprland
   ./desktop/sway
+  ./networking/cache-client
   ./networking/sync
   ./networking/wireguard
   ./servers/auth
