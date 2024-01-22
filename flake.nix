@@ -4,7 +4,6 @@
   inputs = {
     ### Nix packages and modules ###
     nixpkgs.url = "nixpkgs/nixos-23.11";
-    nixpkgs-old.url = "nixpkgs/nixos-23.05";
     nixpkgs-pinned.url = "nixpkgs/fdd898f8f79e8d2f99ed2ab6b3751811ef683242";
     home-manager = { url = "home-manager/release-23.11"; inputs.nixpkgs.follows = "nixpkgs"; };
     ################################
