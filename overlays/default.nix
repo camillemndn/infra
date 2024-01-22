@@ -8,6 +8,7 @@ final: prev: lib.updateManyAttrs [
   {
     inherit lib;
     pinned = import nixpkgs-pinned { inherit system; inherit (pkgs) config; };
+    unstable = import nixpkgs-unstable { inherit system; inherit (pkgs) config; };
 
     # Adds some packages from other flakes
     spicetify-nix = spicetify-nix.packages.${system}.default;
@@ -16,5 +17,6 @@ final: prev: lib.updateManyAttrs [
     inherit (zotero-nix.packages.${system}) zotero;
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
+    jackett = final.unstable.jackett;
   }
 ]
