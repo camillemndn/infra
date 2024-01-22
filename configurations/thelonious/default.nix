@@ -31,7 +31,7 @@
   };
 
   users.mutableUsers = true;
-  users.users.camille.passwordFile = null;
+  users.users.camille.hashedPasswordFile = null;
 
   system.stateVersion = "23.11";
 }

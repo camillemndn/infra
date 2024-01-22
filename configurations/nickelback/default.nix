@@ -23,7 +23,7 @@ _:
   };
 
   users.mutableUsers = true;
-  users.users.camille.passwordFile = null;
+  users.users.camille.hashedPasswordFile = null;
   sops.secrets = { };
 
   system.stateVersion = "23.11";
