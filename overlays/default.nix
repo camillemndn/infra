@@ -18,5 +18,6 @@ final: prev: lib.updateManyAttrs [
     firefoxpwa = prev.firefoxpwa.override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
     inherit (final.unstable) typst jackett;
+    quarto = prev.quarto.override { pandoc = final.unstable.pandoc; };
   }
 ]
