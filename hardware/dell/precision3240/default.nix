@@ -2,10 +2,14 @@
 
 {
   boot = {
-    loader = {
-      systemd-boot.enable = lib.mkForce false;
-      efi.canTouchEfiVariables = true;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+      enrollKeys = true;
+      configurationLimit = 5;
     };
+
+    loader.efi.canTouchEfiVariables = true;
 
     initrd = {
       systemd.enable = true;
@@ -19,15 +23,6 @@
     kernelModules = [ "kvm-intel" ];
     extraModulePackages = [ ];
     kernelParams = [ "tpm_tis.interrupts=0" ];
-
-    lanzaboote = {
-      enable = true;
-      publicKeyFile = "/etc/secureboot/keys/db/db.pem"; # DB public key
-      privateKeyFile = "/etc/secureboot/keys/db/db.key"; # DB private key
-      pkiBundle = "/etc/secureboot/";
-      enrollKeys = true;
-      configurationLimit = 5;
-    };
   };
 
   fileSystems."/" = {

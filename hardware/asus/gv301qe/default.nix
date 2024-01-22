@@ -4,19 +4,16 @@ with lib;
 
 {
   boot = {
-    loader = {
-      systemd-boot.enable = mkForce false;
-      efi.canTouchEfiVariables = true;
-      efi.efiSysMountPoint = "/boot/efi";
-    };
-
     lanzaboote = {
       enable = true;
-      publicKeyFile = "/etc/secureboot/keys/db/db.pem"; # DB public key
-      privateKeyFile = "/etc/secureboot/keys/db/db.key"; # DB private key
-      pkiBundle = "/etc/secureboot/";
+      pkiBundle = "/etc/secureboot";
       enrollKeys = true;
       configurationLimit = 5;
+    };
+
+    loader = {
+      efi.canTouchEfiVariables = true;
+      efi.efiSysMountPoint = "/boot/efi";
     };
 
     initrd = {

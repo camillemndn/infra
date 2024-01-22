@@ -2,16 +2,13 @@
 
 {
   boot = {
-    loader = {
-      systemd-boot.enable = false;
-      efi.canTouchEfiVariables = true;
-    };
-
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
       configurationLimit = 15;
     };
+
+    loader.efi.canTouchEfiVariables = true;
 
     initrd = {
       availableKernelModules = [ "e1000e" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
