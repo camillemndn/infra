@@ -11,8 +11,6 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    users.mutableUsers = lib.mkForce false;
-
     users.users.manu = {
       isNormalUser = true;
       description = "Manu";
