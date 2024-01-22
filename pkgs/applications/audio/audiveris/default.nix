@@ -7,17 +7,16 @@
 
 let
   buildGradle = pkgs.callPackage ./gradle-env.nix { };
-  version = "5.3-alpha";
 in
 
-buildGradle {
+buildGradle rec {
   pname = "audiveris";
-  inherit version;
+  version = "5.3-alpha";
 
   src = fetchgit {
     url = "https://github.com/Audiveris/audiveris";
-    rev = "5.2.5";
-    hash = "sha256-cU6abSDPeQWlf71x5dQHVptm5M2Ipra8HOd7IDMM+Pw=";
+    rev = "5.3.1";
+    hash = "sha256-/g8eolzAnYaSqKGUa7I4Mad0BCu5SVU9YkX5UzygQuM=";
     leaveDotGit = true;
   };
 
