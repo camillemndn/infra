@@ -6,13 +6,13 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "pdf-tocgen";
-  version = "1.3.3";
+  version = "1.3.4";
   format = "pyproject";
 
   src = fetchPypi {
     pname = "pdf_tocgen";
     inherit version;
-    hash = "sha256-pIR4Ezz/cfAvgWYKMG0sQZ4o1qBahdjypBgFVnWn3Tc=";
+    hash = "sha256-CQdYgyYUcn6vH9C6AHXVoQ648mjR1TT6vXExFwqKx54=";
   };
 
   nativeBuildInputs = [
