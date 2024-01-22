@@ -12,11 +12,11 @@
 let
   harmony-assistant-unwrapped = stdenv.mkDerivation rec {
     pname = "harmony-assistant";
-    version = "9.9.6c";
+    version = "9.9.7e";
 
     src = fetchurl {
-      url = "https://www.myriad-online.com/linux/harmony-assistant-${version}.0.run";
-      sha256 = "sha256-2TYp/pkhvHdgDBii7ejSrxRqbzdahJtB1b21OoMpDD4=";
+      url = "https://myriad-online.com/linux/harmony-assistant-${version}.0.run";
+      sha256 = "sha256-aFhxz4ZeylrG5vvTYIgMM/gojKrPZaxLs/6dbbk/zQ8=";
     };
 
     unpackPhase = ''
