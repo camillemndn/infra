@@ -162,7 +162,7 @@ with lib;
         pyright
         ripgrep
         texlab
-        texlive.combined.scheme-full
+        texliveFull
         wl-clipboard
         wl-clipboard-x11
       ];
