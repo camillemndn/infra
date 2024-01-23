@@ -1,7 +1,7 @@
-From 0647083565a52044f4d39e36d8f1d10cffb3d239 Mon Sep 17 00:00:00 2001
+From 80b36aa37fdab16e152502177286b6af928a3f7d Mon Sep 17 00:00:00 2001
 From: paki23 <pk93@posteo.net>
 Date: Sun, 8 Jan 2023 01:08:00 +0100
-Subject: [PATCH] firefoxpwa: init at 2.10.0
+Subject: [PATCH] firefoxpwa: init at 2.10.1
 
 ---
  nixos/tests/all-tests.nix                    |    1 +
@@ -15,10 +15,10 @@ Subject: [PATCH] firefoxpwa: init at 2.10.0
  create mode 100644 pkgs/tools/networking/firefoxpwa/default.nix
 
 diff --git a/nixos/tests/all-tests.nix b/nixos/tests/all-tests.nix
-index 89e850d5737620..98e3780cf3f2cd 100644
+index 4b6696e4fdbf38..797fa092b45ead 100644
 --- a/nixos/tests/all-tests.nix
 +++ b/nixos/tests/all-tests.nix
-@@ -282,6 +282,7 @@ in {
+@@ -306,6 +306,7 @@ in {
    firefox-devedition = handleTest ./firefox.nix { firefoxPackage = pkgs.firefox-devedition; };
    firefox-esr    = handleTest ./firefox.nix { firefoxPackage = pkgs.firefox-esr; }; # used in `tested` job
    firefox-esr-115 = handleTest ./firefox.nix { firefoxPackage = pkgs.firefox-esr-115; };
@@ -2917,7 +2917,7 @@ index 00000000000000..9ba489a63fbdba
 +]
 diff --git a/pkgs/tools/networking/firefoxpwa/default.nix b/pkgs/tools/networking/firefoxpwa/default.nix
 new file mode 100644
-index 00000000000000..ddc493f8690e2e
+index 00000000000000..ad96e38151d9e4
 --- /dev/null
 +++ b/pkgs/tools/networking/firefoxpwa/default.nix
 @@ -0,0 +1,92 @@
@@ -2943,13 +2943,13 @@ index 00000000000000..ddc493f8690e2e
 +
 +rustPlatform.buildRustPackage rec {
 +  pname = "firefoxpwa";
-+  version = "2.10.0";
++  version = "2.10.1";
 +
 +  src = fetchFromGitHub {
 +    owner = "filips123";
 +    repo = "PWAsForFirefox";
 +    rev = "v${version}";
-+    hash = "sha256-3gLWaW43l8Ty/FIaUja+NZXd6Js0SZEGyGFZkAGnT6Y=";
++    hash = "sha256-ART/GrJTmGzyUlG9ohEEVNJeaWFrYnnGO9q0nf12hyc=";
 +  };
 +
 +  sourceRoot = "${src.name}/native";
@@ -3014,10 +3014,10 @@ index 00000000000000..ddc493f8690e2e
 +  };
 +}
 diff --git a/pkgs/top-level/all-packages.nix b/pkgs/top-level/all-packages.nix
-index 1d5029170dc921..15d271fe729313 100644
+index e481a780c3ce88..9a56d050f92e97 100644
 --- a/pkgs/top-level/all-packages.nix
 +++ b/pkgs/top-level/all-packages.nix
-@@ -19888,6 +19888,8 @@ with pkgs;
+@@ -19831,6 +19831,8 @@ with pkgs;
  
    puppeteer-cli = callPackage ../tools/graphics/puppeteer-cli { };
  
