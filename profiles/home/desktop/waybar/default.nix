@@ -9,6 +9,7 @@ with lib;
 {
   options.profiles.waybar = {
     enable = mkEnableOption "waybar";
+    bluetooth.enable = mkEnableOption "bluetooth";
   };
 
   config = mkIf cfg.enable {
@@ -165,7 +166,7 @@ with lib;
           "battery"
           "backlight"
           "pulseaudio"
-          "bluetooth"
+          (lib.optionalString cfg.bluetooth.enable "bluetooth")
           "network"
           "tray"
           "custom/powermenu"
