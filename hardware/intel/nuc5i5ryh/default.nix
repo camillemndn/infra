@@ -5,7 +5,6 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
-      enrollKeys = true;
       configurationLimit = 10;
     };
 
