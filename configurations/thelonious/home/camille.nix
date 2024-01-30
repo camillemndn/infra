@@ -40,13 +40,12 @@ with lib;
         (load-theme 'catppuccin :no-confirm)
       '';
     };
-
-    thunderbird = { enable = true; profiles."camille".isDefault = true; };
   };
 
   profiles = {
     kitty.enable = true;
     hyprland.enable = true;
+    mail.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
     sway.enable = true;

@@ -52,12 +52,12 @@ with lib;
 
   programs = {
     chromium = { enable = true; package = pkgs.ungoogled-chromium; };
-    thunderbird = { enable = true; profiles."camille".isDefault = true; };
   };
 
   profiles = {
     kitty.enable = true;
     hyprland.enable = true;
+    mail.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
     studio.enable = true;

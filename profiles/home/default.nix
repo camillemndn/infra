@@ -7,6 +7,7 @@
   ./desktop/hyprland
   ./desktop/kitty
   ./desktop/launcher
+  ./desktop/mail
   ./desktop/spotify
   ./desktop/sway
   ./desktop/swayidle

@@ -68,8 +68,6 @@ with lib;
         (load-theme 'catppuccin :no-confirm)
       '';
     };
-
-    thunderbird = { enable = true; profiles."camille".isDefault = true; };
   };
 
   profiles = {
@@ -77,6 +75,7 @@ with lib;
     gtk-qt.hidpi.enable = true;
     hyprland.enable = true;
     waybar.bluetooth.enable = true;
+    mail.enable = true;
     neovim.full.enable = true;
     spotify.enable = true;
     studio.enable = true;

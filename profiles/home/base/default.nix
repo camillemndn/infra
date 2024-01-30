@@ -2,7 +2,7 @@
 
 {
   home = {
-    language.base = "fr";
+    language.base = "fr_FR.UTF-8";
     keyboard.layout = "fr";
     stateVersion = lib.mkDefault "22.11";
   };
