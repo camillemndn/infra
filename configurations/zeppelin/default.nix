@@ -22,6 +22,7 @@ _:
     onlyoffice = { enable = true; hostname = "office.kms"; port = 8001; };
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
+    wordpress = { sites."wordpress.kms" = { }; webserver = "nginx"; };
   };
 
   profiles = {
