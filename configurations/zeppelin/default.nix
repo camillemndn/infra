@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   networking = {
@@ -22,7 +22,7 @@ _:
     onlyoffice = { enable = true; hostname = "office.kms"; port = 8001; };
     tailscale.enable = true;
     webtrees = { enable = true; hostName = "family.mondon.xyz"; };
-    wordpress = { sites."wordpress.kms" = { }; webserver = "nginx"; };
+    wordpress = { sites."wordpress.kms".package = pkgs.wordpress6_4; webserver = "nginx"; };
   };
 
   profiles = {
