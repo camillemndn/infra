@@ -5,7 +5,7 @@
     ### Nix packages and modules ###
     nixpkgs.url = "nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
-    nixpkgs-pinned.url = "nixpkgs/fdd898f8f79e8d2f99ed2ab6b3751811ef683242";
+    nixpkgs-pinned.url = "nixpkgs/1b64fc1287991a9cce717a01c1973ef86cb1af0b";
     home-manager = { url = "home-manager/release-23.11"; inputs.nixpkgs.follows = "nixpkgs"; };
     ################################
 
