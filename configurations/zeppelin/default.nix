@@ -15,7 +15,11 @@
     nginx.publicDomains = [ "mondon.xyz" "saumon.network" "yali.es" "ceciliaflamenca.com" "camillemondon.com" "camillemondon.fr" ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
-    nginx.virtualHosts."camillemondon.com" = { root = "/srv/sites/camille-mondon"; extraConfig = "error_page 404 /404.html;"; };
+    nginx.virtualHosts."camillemondon.com" = {
+      root = "/srv/sites/camille-mondon";
+      extraConfig = "error_page 404 /404.html;";
+      locations."~ solution\.html".basicAuthFile = "/srv/sites/camillemondon_auth";
+    };
     nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
     openssh.enable = true;
