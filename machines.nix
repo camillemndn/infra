@@ -4,10 +4,10 @@ let tld = "kms"; in {
     deployment.allowLocalDeployment = true;
   };
 
-  jagger = {
-    hardware = "asus/z170progaming";
-    deployment.allowLocalDeployment = true;
-  };
+  # jagger = {
+  #   hardware = "asus/z170progaming";
+  #   deployment.allowLocalDeployment = true;
+  # };
 
   nickelback = rec {
     hardware = "intel/nuc5i5ryh";
@@ -33,11 +33,11 @@ let tld = "kms"; in {
     };
   };
 
-  #pinkfloyd = {
-  #  system = "aarch64-linux";
-  #  hardware = "pine64/pinephone";
-  #  deployment.targetHost = null;
-  #};
+  # pinkfloyd = {
+  #   system = "aarch64-linux";
+  #   hardware = "pine64/pinephone";
+  #   deployment.targetHost = null;
+  # };
 
   radiogaga = rec {
     system = "aarch64-linux";
