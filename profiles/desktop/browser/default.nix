@@ -19,6 +19,12 @@ with lib;
         "browser.fixup.domainsuffixwhitelist.saumon" = true;
       };
       preferencesStatus = "default";
+      policies = {
+        ExtensionSettings."firefoxpwa@filips.si" = {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/pwas-for-firefox";
+        };
+      };
       wrapperConfig.firefox = {
         alsaSupport = true;
         ffmpegSupport = true;
