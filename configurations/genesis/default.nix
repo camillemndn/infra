@@ -33,6 +33,7 @@
     printing = { enable = true; drivers = with pkgs; [ brlaser gutenprint ]; };
     tailscale.enable = true;
     tlp.enable = true;
+    tzupdate.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
