@@ -122,6 +122,7 @@
             sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
           };
           quarto = ./overlays/quarto.patch;
+          tzupdate = ./overlays/tzupdate.patch;
         };
 
         machines = import ./machines.nix;
