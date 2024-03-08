@@ -134,8 +134,8 @@ with lib;
         };
         menu = "${envVars} fuzzel";
         modifier = "Mod4";
-        output."HDMI-A-1" = mkIf config.profiles.gtk-qt.hidpi.enable {
-          # position = "-2400 0";
+        output."Hewlett Packard HP V194 3CQ9432LGC" = mkIf config.profiles.gtk-qt.hidpi.enable {
+          scale = "0.75";
         };
         input."1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
           drag = "enable";
