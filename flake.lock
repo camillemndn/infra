@@ -841,11 +841,11 @@
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1710166880,
-        "narHash": "sha256-H2AurbrYrLmf99ZB6oATNWA1Jk+976UJzf/PYO8U41g=",
+        "lastModified": 1711939156,
+        "narHash": "sha256-s4uvpRVLRJ0/XfdKGLAjojqTt2fcjK4cIXV9Mb2PHXA=",
         "owner": "camillemndn",
         "repo": "zotero-nix",
-        "rev": "7386229e4cfc39efc9b943e3421b78e37560d038",
+        "rev": "fc8074c53e6d7c355234d1a46dedc612bfc3a94b",
         "type": "github"
       },
       "original": {
