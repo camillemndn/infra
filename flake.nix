@@ -90,6 +90,7 @@
             "steam-run"
             "unrar"
             "zoom"
+            "corefonts"
           ];
         };
 
