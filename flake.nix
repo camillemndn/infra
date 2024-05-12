@@ -48,7 +48,7 @@
     };
 
     simple-nixos-mailserver = {
-      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver/nixos-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "utils";
     };
@@ -117,10 +117,6 @@
         patches = {
           clevis = ./overlays/clevis.patch;
           firefoxpwa = ./overlays/firefoxpwa.patch;
-          mattermost-desktop = builtins.fetchurl {
-            url = "https://github.com/NixOS/nixpkgs/pull/259351/commits/e62dc9e309374cfbadd27bc736d391a606740df8.patch";
-            sha256 = "0ikgpbs7zmcm7rg2d62wx24d0byr6vpvv11xxpxpkl5js2309cay";
-          };
           quarto = ./overlays/quarto.patch;
           tzupdate = ./overlays/tzupdate.patch;
         };
