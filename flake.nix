@@ -117,8 +117,6 @@
 
         patches = {
           clevis = ./overlays/clevis.patch;
-          firefoxpwa = ./overlays/firefoxpwa.patch;
-          quarto = ./overlays/quarto.patch;
           tzupdate = ./overlays/tzupdate.patch;
         };
 

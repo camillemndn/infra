@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, nixpkgs, ... }:
+{ config, lib, self, nixpkgs, ... }:
 
 {
   nix = {
