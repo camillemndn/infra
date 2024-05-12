@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.profiles.photos;
@@ -13,10 +13,18 @@ with lib;
   config = mkIf cfg.enable {
     services.photoprism = {
       enable = true;
+      package = pkgs.unstable.photoprism;
       originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
-      importPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
+      importPath = "";
       passwordFile = "/run/secrets/photos";
-      settings.PHOTOPRISM_ADMIN_USER = "camille";
+      settings = {
+        PHOTOPRISM_ADMIN_USER = "camille";
+        PHOTOPRISM_READONLY = "true";
+        PHOTOPRISM_DISABLE_SETTINGS = "true";
+        PHOTOPRISM_DISABLE_WEBDAV = "true";
+        PHOTOPRISM_DETECT_NSFW = "true";
+        PHOTOPRISM_WORKERS = "12";
+      };
     };
 
     services.nginx.virtualHosts."photos.kms" = { port = 2342; websockets = true; };
