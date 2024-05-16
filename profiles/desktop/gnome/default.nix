@@ -18,6 +18,8 @@ with lib;
       xkbVariant = "";
     };
 
+    hardware.pulseaudio.enable = false;
+
     programs.xwayland.enable = true;
 
     #qt = {

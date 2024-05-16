@@ -44,6 +44,20 @@ with lib;
     }];
   };
 
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
+      fsType = "ext4";
+    };
+
+    "/boot/efi" = {
+      device = "/dev/disk/by-uuid/A48C-7D48";
+      fsType = "vfat";
+    };
+  };
+
+  swapDevices = [{ device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; }];
+
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
@@ -74,9 +88,6 @@ with lib;
     };
   };
 
-  # Enable sound
-  hardware.pulseaudio.enable = false;
-  sound.enable = true;
   security.rtkit.enable = true;
   security.pam.loginLimits = [{ domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }];
   services.pipewire = {
@@ -112,18 +123,4 @@ with lib;
   };
 
   systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
-      fsType = "ext4";
-    };
-
-    "/boot/efi" = {
-      device = "/dev/disk/by-uuid/A48C-7D48";
-      fsType = "vfat";
-    };
-  };
-
-  swapDevices = [{ device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; }];
 }

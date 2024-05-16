@@ -61,8 +61,6 @@
   };
 
   musnix.enable = true;
-  hardware.pulseaudio.enable = false;
-  sound.enable = true;
   security.rtkit.enable = true;
   security.pam.loginLimits = lib.mkForce [
     { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
