@@ -34,18 +34,20 @@ with lib;
 
     systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
 
-    systemd.services."photoprism-index" = {
+    systemd.services.photoprism-index = {
       description = "Photoprism automatic indexer";
       after = [ "multi-user.target" ];
       wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
+      serviceConfig = config.systemd.services.photoprism.serviceConfig // {
         Type = "oneshot";
-        ExecStart = "/var/lib/photoprism/photoprism-manage index --cleanup";
+        ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
+        ExecStartPre = null;
         KillMode = "process";
       };
+      inherit (config.systemd.services.photoprism) environment;
     };
 
-    systemd.timers."photoprism-index" = {
+    systemd.timers.photoprism-index = {
       description = "Photoprism automatic indexer";
       wantedBy = [ "timers.target" ];
       timerConfig = {
