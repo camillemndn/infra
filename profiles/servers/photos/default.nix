@@ -20,7 +20,6 @@ with lib;
       settings = {
         PHOTOPRISM_ADMIN_USER = "camille";
         PHOTOPRISM_READONLY = "true";
-        PHOTOPRISM_DISABLE_SETTINGS = "true";
         PHOTOPRISM_DISABLE_WEBDAV = "true";
         PHOTOPRISM_DETECT_NSFW = "true";
         PHOTOPRISM_WORKERS = "12";
