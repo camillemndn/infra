@@ -19,13 +19,14 @@ with lib;
       passwordFile = "/run/secrets/photos";
       settings = {
         PHOTOPRISM_ADMIN_USER = "camille";
-        PHOTOPRISM_READONLY = "true";
-        PHOTOPRISM_DISABLE_WEBDAV = "true";
-        PHOTOPRISM_DETECT_NSFW = "true";
-        PHOTOPRISM_WORKERS = "12";
         PHOTOPRISM_DATABASE_DRIVER = "mysql";
-        PHOTOPRISM_DATABASE_SERVER = "localhost:3306";
         PHOTOPRISM_DATABASE_PASSWORD = "insecure";
+        PHOTOPRISM_DATABASE_SERVER = "localhost:3306";
+        PHOTOPRISM_DETECT_NSFW = "true";
+        PHOTOPRISM_DISABLE_WEBDAV = "true";
+        PHOTOPRISM_READONLY = "true";
+        PHOTOPRISM_THUMB_UNCACHED = "true";
+        PHOTOPRISM_WORKERS = "12";
       };
     };
 
@@ -39,8 +40,9 @@ with lib;
       wantedBy = [ "multi-user.target" ];
       serviceConfig = config.systemd.services.photoprism.serviceConfig // {
         Type = "oneshot";
-        ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
         ExecStartPre = null;
+        ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
+        ExecStartPost = "${pkgs.photoprism}/bin/photoprism thumbs";
         KillMode = "process";
       };
       inherit (config.systemd.services.photoprism) environment;
