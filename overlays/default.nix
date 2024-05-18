@@ -15,7 +15,7 @@ final: prev: lib.updateManyAttrs [
     inherit (nix-software-center.packages.${system}) nix-software-center;
     inherit (attic.packages.${system}) attic;
     inherit (zotero-nix.packages.${system}) zotero;
-    firefoxpwa = final.unstable.firefoxpwa.override { inherit (prev) firefox-unwrapped; extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
+    firefoxpwa = (final.unstable.callPackage ./firefoxpwa.nix { }).override { extraLibs = with prev; [ alsa-lib ffmpeg_5 libjack2 pipewire libpulseaudio ]; };
     vimPlugins = prev.vimPlugins // final.extraVimPlugins;
     inherit (final.unstable) quarto typst jackett tandoor-recipes;
   }
