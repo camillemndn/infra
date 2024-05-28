@@ -86,7 +86,7 @@ with lib;
                 padding-right: 6px;
                 color: #7ebae4;
               }
-        #mode, #clock, #memory, #disk, #workspaces, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #pulseaudio, #network, #bluetooth, #battery, #custom-powermenu, #custom-cava-internal {
+        #mode, #clock, #memory, #disk, #workspaces, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #wireplumber, #network, #bluetooth, #battery, #custom-powermenu, #custom-cava-internal {
                 padding-left: 10px;
                 padding-right: 10px;
               }
@@ -217,22 +217,11 @@ with lib;
           "interval" = 180;
           "format" = "󰨣 {percentage_used}%";
         };
-        "pulseaudio" = {
-          "scroll-step" = 1;
+        "wireplumber" = {
           "format" = "{icon} {volume}%";
-          "format-muted" = "󰖁 Muted";
-          "format-icons" = {
-            "default" = [ "" "" "" ];
-            "alsa_output.pci-0000_00_1f.3.analog-stereo" = "";
-            "headphones" = "";
-            "handsfree" = "";
-            "headset" = "";
-            "phone" = "";
-            "portable" = "";
-            "car" = "";
-          };
-          "on-click" = "amixer set Master toggle";
-          "tooltip" = false;
+          "format-muted" = "";
+          "on-click" = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          "format-icons" = [ "" "" "" ];
         };
         "clock" = {
           "format" = " {:%H:%M}";

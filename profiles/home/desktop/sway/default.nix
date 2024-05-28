@@ -124,9 +124,9 @@ with lib;
           "${cfg.config.modifier}+Shift+s" = "exec slurp | grim -g - \"$(xdg-user-dir PICTURES)/Captures d’écran/$(date +%Y%m%d_%H%M%S.png)\"";
           "${cfg.config.modifier}+Escape" = "exec swaylock";
 
-          "XF86AudioMute" = "exec amixer set Master toggle";
-          "XF86AudioLowerVolume" = "exec amixer set Master 1%-";
-          "XF86AudioRaiseVolume" = "exec amixer set Master 1%+";
+          "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+          "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-";
+          "XF86AudioRaiseVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%+";
           "XF86KbdBrightnessDown" = "exec asusctl -p";
           "XF86KbdBrightnessUp" = "exec asusctl -n";
           "XF86MonBrightnessDown" = "exec brightnessctl s '1%-'";
