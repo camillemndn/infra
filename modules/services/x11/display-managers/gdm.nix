@@ -42,13 +42,11 @@ in
     mkForce (pkgs.stdenv.mkDerivation {
       name = "dconf-gdm-profile";
       buildCommand = ''
-        # Check that the GDM profile starts with what we expect.
-        if [ $(head -n 1 ${pkgs.gnome.gdm}/share/dconf/profile/gdm) != "user-db:user" ]; then
-          echo "GDM dconf profile changed, please update gdm.nix"
-          exit 1
-        fi
-        # Insert our custom DB behind it.
-        sed '2ifile-db:${customDconfDb}' ${pkgs.gnome.gdm}/share/dconf/profile/gdm > $out
+        cat <<EOL > $out
+        user-db:user
+        system-db:gdm
+        file-db:${customDconfDb}
+        EOL
       '';
     });
 }
