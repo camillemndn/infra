@@ -8,7 +8,7 @@ with lib;
       # Games
       cemu
       lutris
-      prismlauncher-qt5
+      prismlauncher
       (retroarch.override { cores = with libretro; [ dolphin citra ]; })
 
       # Social

@@ -3,10 +3,10 @@
 
   inputs = {
     ### Nix packages and modules ###
-    nixpkgs.url = "nixpkgs/nixos-23.11";
+    nixpkgs.url = "nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
     nixpkgs-pinned.url = "nixpkgs/1b64fc1287991a9cce717a01c1973ef86cb1af0b";
-    home-manager = { url = "home-manager/release-23.11"; inputs.nixpkgs.follows = "nixpkgs"; };
+    home-manager = { url = "home-manager/release-24.05"; inputs.nixpkgs.follows = "nixpkgs"; };
     ################################
 
     ### Flake utils ###
@@ -116,8 +116,10 @@
         overlays.${system} = import ./overlays { inherit lib pkgs self system; };
 
         patches = {
-          clevis = ./overlays/clevis.patch;
-          tzupdate = ./overlays/tzupdate.patch;
+          tzupdate = builtins.fetchurl {
+            url = "https://github.com/NixOS/nixpkgs/pull/316133/commits/3199ba030e1071470a7651a780041b0169e9d0b9.patch";
+            sha256 = "0qqa8da0miba4v0i8ag4021n77dcw1hspc4wm6ic9a6bwvzvdmr4";
+          };
         };
 
         machines = import ./machines.nix;

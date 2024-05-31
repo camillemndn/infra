@@ -13,8 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      layout = "fr";
-      xkbVariant = "";
+      xkb = { layout = "fr"; variant = ""; };
     };
 
     programs.dconf.enable = true;

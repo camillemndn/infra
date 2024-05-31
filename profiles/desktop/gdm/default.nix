@@ -34,8 +34,7 @@ with lib;
         '';
       };
 
-      layout = "fr";
-      xkbVariant = "";
+      xkb = { layout = "fr"; variant = ""; };
     };
 
     environment.systemPackages = [ pkgs.libheif pkgs.libheif.out ];

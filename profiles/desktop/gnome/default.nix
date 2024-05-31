@@ -14,19 +14,12 @@ with lib;
     services.xserver = {
       enable = true;
       desktopManager.gnome.enable = true;
-      layout = "fr";
-      xkbVariant = "";
+      xkb = { layout = "fr"; variant = ""; };
     };
 
     hardware.pulseaudio.enable = false;
 
     programs.xwayland.enable = true;
-
-    #qt = {
-    #  enable = true;
-    #  style = "adwaita-dark";
-    #  platformTheme = "gnome";
-    #};
 
     fonts = {
       packages = with pkgs; [
@@ -48,7 +41,7 @@ with lib;
         supergfxctl-gex
         wireless-hid
         vitals
-        no-activities-button
+        hide-activities-button
         custom-hot-corners-extended
         hide-universal-access
         arrange-windows
