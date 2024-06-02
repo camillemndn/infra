@@ -86,7 +86,7 @@ with lib;
                 padding-right: 6px;
                 color: #7ebae4;
               }
-        #mode, #clock, #memory, #disk, #workspaces, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #wireplumber, #network, #bluetooth, #battery, #custom-powermenu, #custom-cava-internal {
+        #mode, #clock, #memory, #disk, #workspaces, #temperature,#cpu,#mpd, #custom-wall, #temperature, #backlight, #pulseaudio, #network, #bluetooth, #battery, #custom-powermenu, #custom-cava-internal {
                 padding-left: 10px;
                 padding-right: 10px;
               }
@@ -217,11 +217,20 @@ with lib;
           "interval" = 180;
           "format" = "󰨣 {percentage_used}%";
         };
-        "wireplumber" = {
+        "pulseaudio" = {
           "format" = "{icon} {volume}%";
-          "format-muted" = "";
+          "format-bluetooth" = "{icon} {volume}%";
+          "format-muted" = "󰝟";
+          "format-icons" = {
+            "headphone" = "";
+            "phone" = "";
+            "portable" = "";
+            "car" = "";
+            "default" = [ "" "" "" ];
+          };
+          "scroll-step" = 1;
           "on-click" = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-          "format-icons" = [ "" "" "" ];
+          "ignored-sinks" = [ "Easy Effects Sink" ];
         };
         "clock" = {
           "format" = " {:%H:%M}";
