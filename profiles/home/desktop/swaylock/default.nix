@@ -55,7 +55,6 @@ with lib;
         #disable-caps-lock-text = true;
         #text-caps-lock-color = "009ddc";
 
-        #image = "~/Images/.cats.jpg";
         color = "282a36";
         inside-color = "1F202A";
         line-color = "1F202A";
