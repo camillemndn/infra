@@ -27,7 +27,7 @@ with lib;
         adminpassFile = "/run/secrets/nextcloud";
         dbtype = "mysql";
       };
-      extraOptions = {
+      settings = {
         default_phone_region = "FR";
         overwriteprotocol = "https";
         enabledPreviewProviders = [
