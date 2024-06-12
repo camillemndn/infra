@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "webtrees";
-  version = "2.1.18";
+  version = "2.1.20";
 
   src = fetchzip {
     url = "https://github.com/fisharebest/webtrees/releases/download/${version}/webtrees-${version}.zip";
-    sha256 = "sha256-m+jo8ejQKeLQSmcbzlMdu/AZTptUdhvAo67b1vaa+LU=";
+    sha256 = "sha256-vG9fr+lPHEoG6tU55h4xBuU+oyiBH1oiTjOxCivXcj4=";
   };
 
   installPhase = ''
