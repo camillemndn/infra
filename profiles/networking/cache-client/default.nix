@@ -11,13 +11,13 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.attic ];
+    environment.systemPackages = [ pkgs.attic-client ];
 
     systemd.services.attic-watch-store = {
       wantedBy = [ "multi-user.target" ];
       wants = [ "network-online.target" ];
       serviceConfig = {
-        ExecStart = "${pkgs.attic}/bin/attic watch-store camille";
+        ExecStart = "${pkgs.attic-client}/bin/attic watch-store camille";
         Restart = "on-failure";
         ProtectKernelLogs = true;
         ProtectKernelModules = true;

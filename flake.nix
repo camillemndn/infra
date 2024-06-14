@@ -32,12 +32,6 @@
     #############################
 
     ### Sofware dependencies ###
-    attic = {
-      url = "github:zhaofengli/attic";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "utils";
-    };
-
     musnix.url = "github:musnix/musnix";
     nix-index-database = { url = "github:Mic92/nix-index-database"; inputs.nixpkgs.follows = "nixpkgs"; };
 
