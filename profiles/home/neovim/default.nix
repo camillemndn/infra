@@ -71,7 +71,7 @@ with lib;
               rootPatterns = [ "flake.nix" ];
               settings = {
                 nil = {
-                  formatting = { command = [ "nixpkgs-fmt" ]; };
+                  formatting = { command = [ "nixfmt" ]; };
                 };
               };
             };
@@ -158,7 +158,7 @@ with lib;
         lua-language-server
         marksman
         nil
-        nixpkgs-fmt
+        nixfmt-rfc-style
         pyright
         ripgrep
         texlab
