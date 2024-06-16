@@ -103,6 +103,7 @@ with lib;
     unzip
     wget
     zip
+    nix-output-monitor
   ];
 
   security.pki.certificateFiles = [ ./saumonnet.crt ];
