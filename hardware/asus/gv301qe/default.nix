@@ -59,6 +59,8 @@ with lib;
         };
       }
     ];
+
+    tmp.cleanOnBoot = true;
   };
 
   fileSystems = {
