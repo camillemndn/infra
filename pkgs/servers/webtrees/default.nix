@@ -1,4 +1,9 @@
-{ stdenv, lib, fetchzip, ... }:
+{
+  stdenv,
+  lib,
+  fetchzip,
+  ...
+}:
 
 stdenv.mkDerivation rec {
   pname = "webtrees";

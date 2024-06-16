@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.code-server;
@@ -16,9 +21,17 @@ with lib;
       connectionTokenFile = "/run/secrets/code";
     };
 
-    services.nginx.virtualHosts."code.kms" = { port = 4444; websockets = true; };
+    services.nginx.virtualHosts."code.kms" = {
+      port = 4444;
+      websockets = true;
+    };
 
-    environment.systemPackages = with pkgs; [ nixpkgs-fmt python310 rWrapper rPackages.languageserver ];
+    environment.systemPackages = with pkgs; [
+      nixpkgs-fmt
+      python310
+      rWrapper
+      rPackages.languageserver
+    ];
 
     sops.secrets.code = {
       format = "binary";

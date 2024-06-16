@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -16,8 +21,18 @@ with lib;
     };
 
     initrd = {
-      availableKernelModules = [ "nvme" "xhci_pci" "usb_storage" "usbhid" "sd_mod" "tpm_crb" ];
-      clevis = { enable = true; devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe; };
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "usb_storage"
+        "usbhid"
+        "sd_mod"
+        "tpm_crb"
+      ];
+      clevis = {
+        enable = true;
+        devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe;
+      };
       secrets."/crypto_keyfile.bin" = null;
 
       luks.devices = {
@@ -35,13 +50,15 @@ with lib;
     kernelPackages = pkgs.pinned.linuxPackages;
     kernelParams = [ "supergfxd.mode=integrated" ];
 
-    kernelPatches = [{
-      name = "asus-rog-flow-x13-tablet-mode";
-      patch = builtins.fetchurl {
-        url = "https://gitlab.com/asus-linux/fedora-kernel/-/raw/rog-6.8/amd-tablet-sfh.patch";
-        sha256 = "011b4q0v8mkfrv96d4bvg8fd5dg6y5q38w20qmf196hsx35r13sh";
-      };
-    }];
+    kernelPatches = [
+      {
+        name = "asus-rog-flow-x13-tablet-mode";
+        patch = builtins.fetchurl {
+          url = "https://gitlab.com/asus-linux/fedora-kernel/-/raw/rog-6.8/amd-tablet-sfh.patch";
+          sha256 = "011b4q0v8mkfrv96d4bvg8fd5dg6y5q38w20qmf196hsx35r13sh";
+        };
+      }
+    ];
   };
 
   fileSystems = {
@@ -56,7 +73,7 @@ with lib;
     };
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
 
   console = {
     earlySetup = true;
@@ -64,7 +81,10 @@ with lib;
     packages = with pkgs; [ terminus_font ];
   };
 
-  environment.systemPackages = with pkgs; [ sbctl bluetuith ];
+  environment.systemPackages = with pkgs; [
+    sbctl
+    bluetuith
+  ];
 
   hardware = {
     enableRedistributableFirmware = true;
@@ -89,7 +109,14 @@ with lib;
   };
 
   security.rtkit.enable = true;
-  security.pam.loginLimits = [{ domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }];
+  security.pam.loginLimits = [
+    {
+      domain = "@audio";
+      item = "memlock";
+      type = "-";
+      value = "unlimited";
+    }
+  ];
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -122,5 +149,8 @@ with lib;
     xserver.videoDrivers = [ "nvidia" ];
   };
 
-  systemd.services.supergfxd.path = [ pkgs.kmod pkgs.pciutils ];
+  systemd.services.supergfxd.path = [
+    pkgs.kmod
+    pkgs.pciutils
+  ];
 }

@@ -1,4 +1,9 @@
-{ config, lib, modulesPath, ... }:
+{
+  config,
+  lib,
+  modulesPath,
+  ...
+}:
 
 with lib;
 
@@ -12,7 +17,14 @@ with lib;
       useOSProber = true;
     };
 
-    initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "sd_mod" "sr_mod" ];
+    initrd.availableKernelModules = [
+      "ata_piix"
+      "uhci_hcd"
+      "virtio_pci"
+      "virtio_scsi"
+      "sd_mod"
+      "sr_mod"
+    ];
   };
 
   hardware.cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;

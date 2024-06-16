@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.hyprland;
@@ -6,7 +11,13 @@ let
   # use OCR and copy to clipboard
   ocrScript =
     let
-      inherit (pkgs) grim libnotify slurp tesseract5 wl-clipboard;
+      inherit (pkgs)
+        grim
+        libnotify
+        slurp
+        tesseract5
+        wl-clipboard
+        ;
       _ = lib.getExe;
     in
     pkgs.writeShellScriptBin "wl-ocr" ''
@@ -23,19 +34,22 @@ with lib;
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        clipman
-        grim
-        ocrScript
-        pngquant
-        python39Packages.requests
-        slurp
-        swayidle
-        tesseract5
-        wf-recorder
-        wl-clipboard
-        xorg.xprop
-      ] ++ lib.optional (pkgs.system == "x86_64-linux") grimblast;
+      packages =
+        with pkgs;
+        [
+          clipman
+          grim
+          ocrScript
+          pngquant
+          python39Packages.requests
+          slurp
+          swayidle
+          tesseract5
+          wf-recorder
+          wl-clipboard
+          xorg.xprop
+        ]
+        ++ lib.optional (pkgs.system == "x86_64-linux") grimblast;
     };
 
     wayland.windowManager.hyprland = {

@@ -1,6 +1,4 @@
-{ vimUtils
-, fetchFromGitHub
-}:
+{ vimUtils, fetchFromGitHub }:
 
 {
   catppuccin-nvim = vimUtils.buildVimPlugin rec {

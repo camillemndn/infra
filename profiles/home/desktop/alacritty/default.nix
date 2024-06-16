@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.alacritty;
@@ -18,7 +23,9 @@ with lib;
         window = {
           title = "Terminal";
 
-          padding = { y = 5; };
+          padding = {
+            y = 5;
+          };
           dimensions = {
             lines = 75;
             columns = 100;
@@ -32,7 +39,9 @@ with lib;
 
         window.opacity = 0.8;
 
-        shell = { program = "${pkgs.fish}/bin/fish"; };
+        shell = {
+          program = "${pkgs.fish}/bin/fish";
+        };
 
         colors = {
           primary = {

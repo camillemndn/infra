@@ -9,7 +9,13 @@ with lib;
       efi.canTouchEfiVariables = true;
     };
 
-    initrd.availableKernelModules = [ "ehci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "ehci_pci"
+      "ahci"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+    ];
     kernelModules = [ "kvm-intel" ];
   };
 
@@ -33,5 +39,10 @@ with lib;
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/sda3"; randomEncryption = true; }];
+  swapDevices = [
+    {
+      device = "/dev/sda3";
+      randomEncryption = true;
+    }
+  ];
 }

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -23,13 +28,15 @@ in
       customDconf = pkgs.writeTextFile {
         name = "gdm-dconf";
         destination = "/dconf/gdm-custom";
-        text = optionalString (!cfg.gdm.autoSuspend) ''
-          [org/gnome/settings-daemon/plugins/power]
-          sleep-inactive-ac-type='nothing'
-          sleep-inactive-battery-type='nothing'
-          sleep-inactive-ac-timeout=0
-          sleep-inactive-battery-timeout=0
-        '' + cfg.gdm.extraConfig;
+        text =
+          optionalString (!cfg.gdm.autoSuspend) ''
+            [org/gnome/settings-daemon/plugins/power]
+            sleep-inactive-ac-type='nothing'
+            sleep-inactive-battery-type='nothing'
+            sleep-inactive-ac-timeout=0
+            sleep-inactive-battery-timeout=0
+          ''
+          + cfg.gdm.extraConfig;
       };
 
       customDconfDb = pkgs.stdenv.mkDerivation {
@@ -39,14 +46,16 @@ in
         '';
       };
     in
-    mkForce (pkgs.stdenv.mkDerivation {
-      name = "dconf-gdm-profile";
-      buildCommand = ''
-        cat <<EOL > $out
-        user-db:user
-        system-db:gdm
-        file-db:${customDconfDb}
-        EOL
-      '';
-    });
+    mkForce (
+      pkgs.stdenv.mkDerivation {
+        name = "dconf-gdm-profile";
+        buildCommand = ''
+          cat <<EOL > $out
+          user-db:user
+          system-db:gdm
+          file-db:${customDconfDb}
+          EOL
+        '';
+      }
+    );
 }

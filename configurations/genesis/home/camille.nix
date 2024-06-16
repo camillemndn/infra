@@ -10,7 +10,12 @@ with lib;
       lutris
       prismlauncher
       wineWow64Packages.waylandFull
-      (retroarch.override { cores = with libretro; [ dolphin citra ]; })
+      (retroarch.override {
+        cores = with libretro; [
+          dolphin
+          citra
+        ];
+      })
 
       # Social
       mattermost-desktop
@@ -44,7 +49,10 @@ with lib;
   };
 
   services = {
-    nextcloud-client = { enable = true; startInBackground = true; };
+    nextcloud-client = {
+      enable = true;
+      startInBackground = true;
+    };
   };
 
   systemd.user.services.nextcloud-client.Service = {
@@ -54,15 +62,19 @@ with lib;
   };
 
   programs = {
-    chromium = { enable = true; package = pkgs.ungoogled-chromium; };
+    chromium = {
+      enable = true;
+      package = pkgs.ungoogled-chromium;
+    };
 
     emacs = {
       enable = true;
       package = pkgs.emacs29-nox;
-      extraPackages = e: with e;[
-        quarto-mode
-        catppuccin-theme
-      ];
+      extraPackages =
+        e: with e; [
+          quarto-mode
+          catppuccin-theme
+        ];
       extraConfig = ''
         (load-theme 'catppuccin :no-confirm)
       '';

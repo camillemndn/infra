@@ -18,7 +18,10 @@
 
   profiles = {
     browser.enable = true;
-    gdm = { enable = true; hidpi.enable = true; };
+    gdm = {
+      enable = true;
+      hidpi.enable = true;
+    };
     gnome.enable = true;
     hyprland.enable = true;
     sway.enable = true;
@@ -28,9 +31,18 @@
 
   services = {
     logind.killUserProcesses = true;
-    openvpn.servers.work = { config = "config /etc/openvpn/work/openvpn_client.ovpn"; autoStart = false; };
+    openvpn.servers.work = {
+      config = "config /etc/openvpn/work/openvpn_client.ovpn";
+      autoStart = false;
+    };
     power-profiles-daemon.enable = false;
-    printing = { enable = true; drivers = with pkgs; [ brlaser gutenprint ]; };
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        brlaser
+        gutenprint
+      ];
+    };
     tailscale.enable = true;
     tlp.enable = true;
     tzupdate.enable = true;

@@ -1,7 +1,8 @@
-{ lib
-, python3
-, fetchPypi
-, alsa-lib
+{
+  lib,
+  python3,
+  fetchPypi,
+  alsa-lib,
 }:
 
 python3.pkgs.buildPythonPackage rec {

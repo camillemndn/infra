@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.hyprland;
@@ -13,21 +18,33 @@ with lib;
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      xkb = { layout = "fr"; variant = ""; };
+      xkb = {
+        layout = "fr";
+        variant = "";
+      };
     };
 
     fonts = {
       packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
+        (nerdfonts.override {
+          fonts = [
+            "FiraCode"
+            "JetBrainsMono"
+            "Ubuntu"
+          ];
+        })
       ];
       fontconfig.antialias = true;
     };
 
     environment = {
-      systemPackages = with pkgs; [
-        waybar
-        hyprpaper
-      ] ++ (optional config.services.tailscale.enable tailscale-systray);
+      systemPackages =
+        with pkgs;
+        [
+          waybar
+          hyprpaper
+        ]
+        ++ (optional config.services.tailscale.enable tailscale-systray);
     };
 
     programs.hyprland.enable = true;

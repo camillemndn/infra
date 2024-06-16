@@ -36,7 +36,11 @@
   environment.systemPackages = with pkgs; [ vlc ];
 
   # User configuration
-  users.users."camille".extraGroups = [ "dialout" "feedbackd" "video" ];
+  users.users."camille".extraGroups = [
+    "dialout"
+    "feedbackd"
+    "video"
+  ];
 
   system.stateVersion = "23.05";
 }

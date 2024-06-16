@@ -1,8 +1,14 @@
-{ lib, stdenv, python3, makeWrapper, fetchFromGitLab }:
+{
+  lib,
+  stdenv,
+  python3,
+  makeWrapper,
+  fetchFromGitLab,
+}:
 
 let
-  python_env = python3.withPackages
-    (p: with p; [
+  python_env = python3.withPackages (
+    p: with p; [
       apprise
       beautifulsoup4
       cherrypy
@@ -21,7 +27,8 @@ let
       urllib3
       webencodings
       magic
-    ]);
+    ]
+  );
 in
 
 stdenv.mkDerivation rec {

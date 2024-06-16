@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.wlogout;
@@ -41,23 +46,23 @@ with lib;
         #lock:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/lock.svg"));
         }
-        
+
         #logout:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/logout.svg"));
         }
-        
+
         #suspend:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/suspend.svg"));
         }
-        
+
         #hibernate:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/hibernate.svg"));
         }
-        
+
         #shutdown:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/shutdown.svg"));
         }
-        
+
         #reboot:focus {
             background-image: image(url("${pkgs.wlogout}/share/wlogout/assets/reboot.svg"));
         }

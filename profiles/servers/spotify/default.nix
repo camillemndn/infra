@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 let
@@ -45,7 +50,10 @@ in
     # Patch
     systemd.services."spotifyd".serviceConfig = {
       DynamicUser = mkForce false;
-      SupplementaryGroups = mkForce [ "audio" "pipewire" ];
+      SupplementaryGroups = mkForce [
+        "audio"
+        "pipewire"
+      ];
     };
 
     environment.systemPackages = [ pkgs.spotify-tui ];

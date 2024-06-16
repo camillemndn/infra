@@ -25,13 +25,11 @@ with lib;
       };
       devices = {
         LAZULI = {
-          addresses = [
-          ];
+          addresses = [ ];
           id = "TUSYARL-UJQQLPL-CNZ4UTZ-ZX3LLEY-Z2TYQ2Z-CRIJJJH-2SN7V37-RNNQ5QF";
         };
         kobo = {
-          addresses = [
-          ];
+          addresses = [ ];
           id = "MXMJF63-FPGQCLG-AAMU3VP-ASQ4NNA-HT7QT52-X2OAQUQ-YCFOJPJ-IRW54Q7";
         };
       };
@@ -53,7 +51,10 @@ with lib;
         };
         "/srv/media/Bibliotheque" = {
           id = "spwtv-fzfgq";
-          devices = [ "LAZULI" "kobo" ];
+          devices = [
+            "LAZULI"
+            "kobo"
+          ];
           label = "Calibre - Bibliothèque";
           type = "sendreceive";
           versioning = {
@@ -66,7 +67,10 @@ with lib;
         };
         "/srv/media/Bibliotheque-universitaire" = {
           id = "9zwlw-ofgpj";
-          devices = [ "LAZULI" "kobo" ];
+          devices = [
+            "LAZULI"
+            "kobo"
+          ];
           label = "Calibre - Bibliothèque universitaire";
           type = "sendreceive";
           versioning = {

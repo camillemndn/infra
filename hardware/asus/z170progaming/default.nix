@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot = {
@@ -11,8 +16,19 @@
     loader.efi.canTouchEfiVariables = true;
 
     initrd = {
-      availableKernelModules = [ "e1000e" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
-      clevis = { enable = true; useTang = true; devices.luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b.secretFile = ./luks.jwe; };
+      availableKernelModules = [
+        "e1000e"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      clevis = {
+        enable = true;
+        useTang = true;
+        devices.luks-90a7cca1-d6ee-48fb-b225-9519ad1e081b.secretFile = ./luks.jwe;
+      };
       network.enable = true;
       secrets."/crypto_keyfile.bin" = null;
 
@@ -53,7 +69,7 @@
     };
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/862328f8-8e9d-4c2e-ae74-b5dc73f940a1"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/862328f8-8e9d-4c2e-ae74-b5dc73f940a1"; } ];
 
   hardware = {
     enableRedistributableFirmware = true;
@@ -63,10 +79,30 @@
   musnix.enable = true;
   security.rtkit.enable = true;
   security.pam.loginLimits = lib.mkForce [
-    { domain = "@audio"; item = "memlock"; type = "-"; value = "unlimited"; }
-    { domain = "@audio"; item = "rtprio"; type = "-"; value = "99"; }
-    { domain = "@audio"; item = "nofile"; type = "soft"; value = "99999"; }
-    { domain = "@audio"; item = "nofile"; type = "hard"; value = "524288"; }
+    {
+      domain = "@audio";
+      item = "memlock";
+      type = "-";
+      value = "unlimited";
+    }
+    {
+      domain = "@audio";
+      item = "rtprio";
+      type = "-";
+      value = "99";
+    }
+    {
+      domain = "@audio";
+      item = "nofile";
+      type = "soft";
+      value = "99999";
+    }
+    {
+      domain = "@audio";
+      item = "nofile";
+      type = "hard";
+      value = "524288";
+    }
   ];
   services.pipewire = {
     enable = true;

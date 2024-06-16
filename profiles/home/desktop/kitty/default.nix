@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.kitty;
@@ -29,4 +34,3 @@ with lib;
     };
   };
 }
-

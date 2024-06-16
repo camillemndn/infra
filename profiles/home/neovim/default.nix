@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.neovim;
@@ -12,11 +17,39 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; if cfg.full.enable then [
-      (python3.withPackages (p: with p; [ jupyter ipython plotly autopep8 flake8 ]))
-      (quarto.override { extraRPackages = with rPackages; [ languageserver plotly ]; extraPythonPackages = p: with p; [ plotly ]; })
-      (rWrapper.override { packages = with rPackages; [ rmarkdown languageserver plotly ]; })
-    ] else [ python3 R ];
+    home.packages =
+      with pkgs;
+      if cfg.full.enable then
+        [
+          (python3.withPackages (
+            p: with p; [
+              jupyter
+              ipython
+              plotly
+              autopep8
+              flake8
+            ]
+          ))
+          (quarto.override {
+            extraRPackages = with rPackages; [
+              languageserver
+              plotly
+            ];
+            extraPythonPackages = p: with p; [ plotly ];
+          })
+          (rWrapper.override {
+            packages = with rPackages; [
+              rmarkdown
+              languageserver
+              plotly
+            ];
+          })
+        ]
+      else
+        [
+          python3
+          R
+        ];
 
     programs.neovim = {
       enable = true;
@@ -43,8 +76,17 @@ with lib;
           languageserver = {
             ccls = {
               command = "ccls";
-              filetypes = [ "c" "cpp" "cuda" "objc" "objcpp" ];
-              rootPatterns = [ ".ccls-root" "compile_commands.json" ];
+              filetypes = [
+                "c"
+                "cpp"
+                "cuda"
+                "objc"
+                "objcpp"
+              ];
+              rootPatterns = [
+                ".ccls-root"
+                "compile_commands.json"
+              ];
               initializationOptions = {
                 cache = {
                   directory = ".ccls-cache";
@@ -57,7 +99,12 @@ with lib;
 
             latex = {
               command = "texlab";
-              filetypes = [ "tex" "bib" "plaintex" "context" ];
+              filetypes = [
+                "tex"
+                "bib"
+                "plaintex"
+                "context"
+              ];
             };
 
             lua = {
@@ -71,7 +118,9 @@ with lib;
               rootPatterns = [ "flake.nix" ];
               settings = {
                 nil = {
-                  formatting = { command = [ "nixfmt" ]; };
+                  formatting = {
+                    command = [ "nixfmt" ];
+                  };
                 };
               };
             };
@@ -81,11 +130,22 @@ with lib;
               filetypes = [ "py" ];
             };
 
-            r = let r-lsp = pkgs.rWrapper.override { packages = with pkgs.rPackages; [ languageserver ]; }; in {
-              command = "${r-lsp}/bin/R";
-              args = [ "-s" "-e" "languageserver::run()" ];
-              filetypes = [ "r" "rmd" ];
-            };
+            r =
+              let
+                r-lsp = pkgs.rWrapper.override { packages = with pkgs.rPackages; [ languageserver ]; };
+              in
+              {
+                command = "${r-lsp}/bin/R";
+                args = [
+                  "-s"
+                  "-e"
+                  "languageserver::run()"
+                ];
+                filetypes = [
+                  "r"
+                  "rmd"
+                ];
+              };
           };
 
           python.linting.flake8Enabled = true;
@@ -94,25 +154,28 @@ with lib;
 
       plugins =
         let
-          nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (ps: with ps; [
-            tree-sitter-bash
-            tree-sitter-css
-            tree-sitter-html
-            tree-sitter-julia
-            tree-sitter-latex
-            tree-sitter-lua
-            tree-sitter-markdown
-            tree-sitter-markdown-inline
-            tree-sitter-nix
-            tree-sitter-python
-            tree-sitter-query
-            tree-sitter-r
-            tree-sitter-vim
-            tree-sitter-vimdoc
-            tree-sitter-yaml
-          ]);
+          nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withPlugins (
+            ps: with ps; [
+              tree-sitter-bash
+              tree-sitter-css
+              tree-sitter-html
+              tree-sitter-julia
+              tree-sitter-latex
+              tree-sitter-lua
+              tree-sitter-markdown
+              tree-sitter-markdown-inline
+              tree-sitter-nix
+              tree-sitter-python
+              tree-sitter-query
+              tree-sitter-r
+              tree-sitter-vim
+              tree-sitter-vimdoc
+              tree-sitter-yaml
+            ]
+          );
         in
-        with pkgs.vimPlugins; mkIf cfg.full.enable [
+        with pkgs.vimPlugins;
+        mkIf cfg.full.enable [
           bufferline-nvim
           catppuccin-nvim
           cmp-nvim-lsp
@@ -150,22 +213,24 @@ with lib;
           zig-vim
         ];
 
-      extraPackages = with pkgs; mkIf cfg.full.enable [
-        ccls
-        fd
-        lua.pkgs.lua-lsp
-        lua.pkgs.luarocks-nix
-        lua-language-server
-        marksman
-        nil
-        nixfmt-rfc-style
-        pyright
-        ripgrep
-        texlab
-        texliveFull
-        wl-clipboard
-        wl-clipboard-x11
-      ];
+      extraPackages =
+        with pkgs;
+        mkIf cfg.full.enable [
+          ccls
+          fd
+          lua.pkgs.lua-lsp
+          lua.pkgs.luarocks-nix
+          lua-language-server
+          marksman
+          nil
+          nixfmt-rfc-style
+          pyright
+          ripgrep
+          texlab
+          texliveFull
+          wl-clipboard
+          wl-clipboard-x11
+        ];
 
       extraConfig = ''
         luafile ${./settings.lua}

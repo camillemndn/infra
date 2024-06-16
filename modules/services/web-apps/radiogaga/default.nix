@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 
@@ -36,9 +41,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.tmpfiles.rules = [
-      "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -"
-    ];
+    systemd.tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
 
     systemd.services.radiogaga = {
       description = "radiogaga";
@@ -52,7 +55,10 @@ in
         ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
         CacheDirectory = "radiogaga";
         StateDirectory = "radiogaga";
-        SupplementaryGroups = [ "audio" "pipewire" ];
+        SupplementaryGroups = [
+          "audio"
+          "pipewire"
+        ];
         WorkingDirectory = "${pkgs.radiogaga}/share/radiogaga";
         Restart = "on-failure";
       };

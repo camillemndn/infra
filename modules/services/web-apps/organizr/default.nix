@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.organizr;
@@ -44,7 +49,9 @@ with lib;
       locations."/api/v2".tryFiles = "$uri /api/v2/index.php$is_args$args";
     };
 
-    systemd.services."phpfpm-organizr".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
+    systemd.services."phpfpm-organizr".serviceConfig.BindPaths = [
+      "/var/lib/organizr/:${pkgs.organizr}/data/"
+    ];
     systemd.services."nginx".serviceConfig.BindPaths = [ "/var/lib/organizr/:${pkgs.organizr}/data/" ];
 
     users.users.organizr = {

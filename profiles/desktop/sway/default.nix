@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.sway;
@@ -13,7 +18,10 @@ with lib;
   config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
-      xkb = { layout = "fr"; variant = ""; };
+      xkb = {
+        layout = "fr";
+        variant = "";
+      };
     };
 
     programs.dconf.enable = true;
@@ -26,12 +34,20 @@ with lib;
 
     xdg.portal = {
       enable = true;
-      extraPortals = lib.mkForce [ pkgs.xdg-desktop-portal-wlr pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = lib.mkForce [
+        pkgs.xdg-desktop-portal-wlr
+        pkgs.xdg-desktop-portal-gtk
+      ];
     };
 
     fonts = {
       packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" ]; })
+        (nerdfonts.override {
+          fonts = [
+            "FiraCode"
+            "JetBrainsMono"
+          ];
+        })
       ];
       fontconfig.antialias = true;
     };

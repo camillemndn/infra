@@ -1,7 +1,8 @@
-{ lib
-, buildNpmPackage
-, fetchFromGitHub
-, rsync
+{
+  lib,
+  buildNpmPackage,
+  fetchFromGitHub,
+  rsync,
 }:
 
 buildNpmPackage rec {
@@ -15,7 +16,10 @@ buildNpmPackage rec {
     hash = "sha256-4hnxI67Ich/FV1vNf1kqO/zYHLV/bG7LvEe2XbQIQCU=";
   };
 
-  patches = [ ./prepare.patch ./add-bin.patch ];
+  patches = [
+    ./prepare.patch
+    ./add-bin.patch
+  ];
 
   npmDepsHash = "sha256-vO0VLIZPjEo6cyOQ+CnDGns8Ej6v2W3y2TIzeB0B8P4=";
 

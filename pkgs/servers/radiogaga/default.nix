@@ -1,21 +1,22 @@
-{ lib
-, stdenv
-, buildNpmPackage
-, fetchFromGitHub
-, python3
-, makeWrapper
-, sqlite
-, callPackage
-, mpv
-, killall
-, spotify-tui
-, curl
+{
+  lib,
+  stdenv,
+  buildNpmPackage,
+  fetchFromGitHub,
+  python3,
+  makeWrapper,
+  sqlite,
+  callPackage,
+  mpv,
+  killall,
+  spotify-tui,
+  curl,
 }:
 
 let
   customPackages = callPackage ../../top-level/python-packages.nix { };
-  python_env = python3.withPackages
-    (p: with p; [
+  python_env = python3.withPackages (
+    p: with p; [
       django
       django-filter
       djangorestframework
@@ -29,7 +30,8 @@ let
       pyyaml
       packaging
       customPackages.pyalsaaudio
-    ]);
+    ]
+  );
 in
 
 stdenv.mkDerivation rec {
@@ -79,10 +81,27 @@ stdenv.mkDerivation rec {
 
   postFixup = ''
     makeWrapper $out/share/${pname}/entrypoint.sh $out/bin/${pname}-init \
-      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpv python_env ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          curl
+          sqlite
+          killall
+          mpv
+          python_env
+        ]
+      } \
       --chdir $out/share/${pname}
     makeWrapper ${python_env}/bin/gunicorn $out/bin/${pname} \
-      --prefix PATH : ${lib.makeBinPath [ curl sqlite killall mpv spotify-tui python_env ]} \
+      --prefix PATH : ${
+        lib.makeBinPath [
+          curl
+          sqlite
+          killall
+          mpv
+          spotify-tui
+          python_env
+        ]
+      } \
       --add-flags "--bind 0.0.0.0:8000 radiogaga.wsgi:application" \
       --chdir $out/share/${pname}
   '';
@@ -95,4 +114,3 @@ stdenv.mkDerivation rec {
     platforms = platforms.linux;
   };
 }
-

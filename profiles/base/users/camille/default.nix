@@ -24,7 +24,10 @@ in
   };
 
   users.users.root = {
-    extraGroups = [ "audio" "pulse-access" ];
+    extraGroups = [
+      "audio"
+      "pulse-access"
+    ];
     openssh.authorizedKeys.keys = sshPubKeys;
   };
 
@@ -36,8 +39,9 @@ in
     };
   };
 
-  sops.age.keyFile = lib.mkIf (!config.services.openssh.enable && config.sops.secrets != { }) "/home/camille/.config/sops/age/keys.txt";
-
+  sops.age.keyFile = lib.mkIf (
+    !config.services.openssh.enable && config.sops.secrets != { }
+  ) "/home/camille/.config/sops/age/keys.txt";
 
   programs.git = {
     enable = true;

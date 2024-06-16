@@ -11,7 +11,11 @@ with lib;
     };
 
     initrd = {
-      availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "usbhid"
+        "usb_storage"
+      ];
       kernelModules = [ ];
 
       zfs-ssh = {
@@ -42,8 +46,10 @@ with lib;
     options = [ "X-mount.mkdir" ];
   };
 
-  swapDevices = [{
-    device = "/dev/disk/by-id/mmc-SL32G_0x53df2d57-part2";
-    randomEncryption = true;
-  }];
+  swapDevices = [
+    {
+      device = "/dev/disk/by-id/mmc-SL32G_0x53df2d57-part2";
+      randomEncryption = true;
+    }
+  ];
 }

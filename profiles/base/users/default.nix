@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 
@@ -66,7 +71,11 @@ with lib;
       };
     };
 
-    resolved = { enable = true; dnssec = "allow-downgrade"; dnsovertls = "opportunistic"; };
+    resolved = {
+      enable = true;
+      dnssec = "allow-downgrade";
+      dnsovertls = "opportunistic";
+    };
   };
 
   networking = {

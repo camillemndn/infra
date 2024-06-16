@@ -1,4 +1,9 @@
-{ stdenv, lib, fetchzip, ... }:
+{
+  stdenv,
+  lib,
+  fetchzip,
+  ...
+}:
 
 let
   commit = "fa58690db99f6b19174278085b369b926ada42be";
@@ -13,9 +18,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-KvLFZZeBMGhDgp8s+bemsgIovTLF3JmG/IJzPbRL5uI=";
   };
 
-  patches = [
-    ./remove_write_check.diff
-  ];
+  patches = [ ./remove_write_check.diff ];
 
   installPhase = ''
     mkdir -p $out/data

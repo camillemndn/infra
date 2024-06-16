@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.webtrees;
@@ -75,7 +80,9 @@ with lib;
       ensureDatabases = [ "webtrees" ];
     };
 
-    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [ "/var/lib/webtrees/:${pkgs.webtrees}/data/" ];
+    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [
+      "/var/lib/webtrees/:${pkgs.webtrees}/data/"
+    ];
 
     systemd.services.webtrees-config = {
       wantedBy = [ "multi-user.target" ];

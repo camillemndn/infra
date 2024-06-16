@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.gnome;
@@ -14,7 +19,10 @@ with lib;
     services.xserver = {
       enable = true;
       desktopManager.gnome.enable = true;
-      xkb = { layout = "fr"; variant = ""; };
+      xkb = {
+        layout = "fr";
+        variant = "";
+      };
     };
 
     hardware.pulseaudio.enable = false;
@@ -23,39 +31,57 @@ with lib;
 
     fonts = {
       packages = with pkgs; [
-        (nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Ubuntu" ]; })
+        (nerdfonts.override {
+          fonts = [
+            "FiraCode"
+            "JetBrainsMono"
+            "Ubuntu"
+          ];
+        })
       ];
       fontconfig.antialias = true;
     };
 
     environment = {
-      gnome.excludePackages = with pkgs; with gnome; [ geary epiphany gnome-calendar gnome-console ];
+      gnome.excludePackages =
+        with pkgs;
+        with gnome;
+        [
+          geary
+          epiphany
+          gnome-calendar
+          gnome-console
+        ];
 
-      systemPackages = with pkgs; with gnome; with gnomeExtensions; [
-        dconf-editor
-        tailscale-status
-        screen-rotate
-        nextcloud-folder
-        blur-my-shell
-        recent-items
-        supergfxctl-gex
-        wireless-hid
-        vitals
-        hide-activities-button
-        custom-hot-corners-extended
-        hide-universal-access
-        arrange-windows
-        window-state-manager
-        appindicator
-        miniview
-        alphabetical-app-grid
-        color-picker
+      systemPackages =
+        with pkgs;
+        with gnome;
+        with gnomeExtensions;
+        [
+          dconf-editor
+          tailscale-status
+          screen-rotate
+          nextcloud-folder
+          blur-my-shell
+          recent-items
+          supergfxctl-gex
+          wireless-hid
+          vitals
+          hide-activities-button
+          custom-hot-corners-extended
+          hide-universal-access
+          arrange-windows
+          window-state-manager
+          appindicator
+          miniview
+          alphabetical-app-grid
+          color-picker
 
-        (writeShellScriptBin "gnome-terminal" ''
-          #!/bin/bash
-          kitty $@
-        '')
-      ];
+          (writeShellScriptBin "gnome-terminal" ''
+            #!/bin/bash
+            kitty $@
+          '')
+        ];
     };
   };
 }

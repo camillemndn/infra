@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 
 let
   cfg = config.services.sheetable;
@@ -23,8 +28,7 @@ with lib;
       };
 
       settings = lib.mkOption {
-        type =
-          lib.types.submodule { freeformType = with lib.types; attrsOf str; };
+        type = lib.types.submodule { freeformType = with lib.types; attrsOf str; };
         default = {
           API_SECRET = ""; # This can be any string you want with which your jwt key is going to be encrypted
           DB_DRIVER = "sqlite"; # mysql, postgres, sqlite

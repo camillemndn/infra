@@ -1,6 +1,8 @@
 { pkgs }:
 
-let launcher = "fuzzel"; in
+let
+  launcher = "fuzzel";
+in
 ''
   # Monitors
   monitor = eDP-1, preferred, auto, auto

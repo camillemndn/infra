@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   mailDomain = "saumon.network";
@@ -18,7 +23,11 @@ with lib;
       enable = true;
       enableManageSieve = true;
       fqdn = "mail.${mailDomain}";
-      domains = [ "${mailDomain}" "mondon.me" "braithwaite.fr" ];
+      domains = [
+        "${mailDomain}"
+        "mondon.me"
+        "braithwaite.fr"
+      ];
       loginAccounts = {
         # Use ```nix run nixpkgs.apacheHttpd -c htpasswd -nbB "" "super secret password" | cut -d: -f2 > /hashed/password/file/location ```
         # to create the hashed password
@@ -43,7 +52,10 @@ with lib;
       # This is the url of the vhost, not necessarily the same as the fqdn of
       # the mailserver
       hostName = "webmail.${mailDomain}";
-      plugins = [ "archive" "managesieve" ];
+      plugins = [
+        "archive"
+        "managesieve"
+      ];
       extraConfig = ''
         # starttls needed for authentication, so the fqdn required to match
         # the certificate
@@ -56,14 +68,18 @@ with lib;
     services.fail2ban = {
       enable = true;
 
-      package = pkgs.fail2ban.overrideAttrs (_final: prev: {
-        preConfigure = prev.preConfigure + ''
-          for i in config/action.d/nftable*.conf; do
-            substituteInPlace $i \
-              --replace "type <addr_type>\;" "type <addr_type>\; flags interval\;"
-          done
-        '';
-      });
+      package = pkgs.fail2ban.overrideAttrs (
+        _final: prev: {
+          preConfigure =
+            prev.preConfigure
+            + ''
+              for i in config/action.d/nftable*.conf; do
+                substituteInPlace $i \
+                  --replace "type <addr_type>\;" "type <addr_type>\; flags interval\;"
+              done
+            '';
+        }
+      );
 
       ignoreIP = [
         "192.168.0.0/16"
@@ -110,7 +126,10 @@ with lib;
     };
 
     systemd.services.davmail.serviceConfig = {
-      ExecStartPre = let dir = config.security.acme.certs."mail.${mailDomain}".directory; in
+      ExecStartPre =
+        let
+          dir = config.security.acme.certs."mail.${mailDomain}".directory;
+        in
         "${pkgs.openssl}/bin/openssl pkcs12 -export -in ${dir}/cert.pem -inkey ${dir}/key.pem -certfile ${dir}/chain.pem -out /var/lib/davmail/davmail.p12 -passout pass:password";
       StateDirectory = "davmail";
       SupplementaryGroups = "nginx";
@@ -180,12 +199,14 @@ with lib;
     services.mysql = mkIf cfg.sogo.enable {
       enable = true;
       package = mkDefault pkgs.mariadb;
-      ensureUsers = [{
-        name = "sogo";
-        ensurePermissions = {
-          "sogo.*" = "ALL PRIVILEGES";
-        };
-      }];
+      ensureUsers = [
+        {
+          name = "sogo";
+          ensurePermissions = {
+            "sogo.*" = "ALL PRIVILEGES";
+          };
+        }
+      ];
       ensureDatabases = [ "sogo" ];
     };
 
@@ -207,7 +228,10 @@ with lib;
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 443 1143 1025 ];
+    networking.firewall.allowedTCPPorts = [
+      443
+      1143
+      1025
+    ];
   };
 }
-

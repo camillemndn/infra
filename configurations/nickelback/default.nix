@@ -15,7 +15,10 @@ _:
   services = {
     nginx.enable = true;
     nginx.noDefault.enable = true;
-    nginx.publicDomains = [ "yali.es" "ceciliaflamenca.com" ];
+    nginx.publicDomains = [
+      "yali.es"
+      "ceciliaflamenca.com"
+    ];
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     openssh.enable = true;
@@ -28,4 +31,3 @@ _:
 
   system.stateVersion = "23.11";
 }
-

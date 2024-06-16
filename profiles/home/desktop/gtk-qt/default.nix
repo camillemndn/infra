@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.gtk-qt;
@@ -97,7 +102,10 @@ with lib;
       #  MOZ_ENABLE_WAYLAND = "1";
     };
 
-    xdg.desktopEntries.xterm = { name = ""; exec = ""; noDisplay = true; };
+    xdg.desktopEntries.xterm = {
+      name = "";
+      exec = "";
+      noDisplay = true;
+    };
   };
 }
-

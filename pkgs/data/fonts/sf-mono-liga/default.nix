@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, src
-, version
-, ...
+{
+  lib,
+  stdenv,
+  src,
+  version,
+  ...
 }:
 stdenv.mkDerivation {
   name = "SFMono-Nerd-Font-Ligaturized";

@@ -1,4 +1,10 @@
-{ config, lib, self, nixpkgs, ... }:
+{
+  config,
+  lib,
+  self,
+  nixpkgs,
+  ...
+}:
 
 {
   nix = {
@@ -11,7 +17,10 @@
     };
 
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       trusted-users = [ "camille" ];
 
       auto-optimise-store = true;
@@ -21,7 +30,10 @@
 
       extra-trusted-public-keys = [ "camille:r1ElbcicaLHPlvECyy3wS+CUj4KWHaCEV2Kt1LEaYI0=" ];
 
-      nix-path = [ "nixpkgs=${nixpkgs}" "nixos=${nixpkgs}" ];
+      nix-path = [
+        "nixpkgs=${nixpkgs}"
+        "nixos=${nixpkgs}"
+      ];
     };
 
     extraOptions = ''

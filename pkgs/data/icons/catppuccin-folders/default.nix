@@ -1,8 +1,8 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, papirus-icon-theme
-,
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  papirus-icon-theme,
 }:
 stdenv.mkDerivation rec {
   pname = "catppuccin-folders";

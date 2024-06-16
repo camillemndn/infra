@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, fetchzip
-, pkgs
-, ...
+{
+  lib,
+  stdenv,
+  fetchzip,
+  pkgs,
+  ...
 }:
 stdenv.mkDerivation rec {
   pname = "cattpuccin-gtk";

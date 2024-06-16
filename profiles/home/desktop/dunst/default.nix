@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.dunst;
@@ -147,7 +152,9 @@ with lib;
             mouse_right_click = "close_current";
           };
 
-          fullscreen_delay_everything = { fullscreen = "delay"; };
+          fullscreen_delay_everything = {
+            fullscreen = "delay";
+          };
 
           urgency_low = {
             timeout = 3;

@@ -1,7 +1,8 @@
-{ lib
-, python3
-, fetchPypi
-, poetry
+{
+  lib,
+  python3,
+  fetchPypi,
+  poetry,
 }:
 
 python3.pkgs.buildPythonApplication rec {
@@ -15,9 +16,7 @@ python3.pkgs.buildPythonApplication rec {
     hash = "sha256-CQdYgyYUcn6vH9C6AHXVoQ648mjR1TT6vXExFwqKx54=";
   };
 
-  nativeBuildInputs = [
-    poetry
-  ];
+  nativeBuildInputs = [ poetry ];
 
   propagatedBuildInputs = with python3.pkgs; [
     poetry-core
@@ -31,7 +30,10 @@ python3.pkgs.buildPythonApplication rec {
   meta = with lib; {
     description = "Automatically generate table of contents for pdf files";
     homepage = "https://pypi.org/project/pdf.tocgen/";
-    license = with licenses; [ agpl3Only gpl3Only ];
+    license = with licenses; [
+      agpl3Only
+      gpl3Only
+    ];
     maintainers = with maintainers; [ camillemndn ];
   };
 }

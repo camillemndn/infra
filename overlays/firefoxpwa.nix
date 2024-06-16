@@ -1,23 +1,23 @@
-{ extraLibs ? [ ]
-, lib
-, fetchFromGitHub
-, installShellFiles
-, makeWrapper
-, rustPlatform
-, cups
-, firefox-unwrapped
-, libcanberra-gtk3
-, libnotify
-, libva
-, mesa
-, nixosTests
-, openssl
-, pciutils
-, pkg-config
-, stdenv
-, udev
-, xorg
-,
+{
+  extraLibs ? [ ],
+  lib,
+  fetchFromGitHub,
+  installShellFiles,
+  makeWrapper,
+  rustPlatform,
+  cups,
+  firefox-unwrapped,
+  libcanberra-gtk3,
+  libnotify,
+  libva,
+  mesa,
+  nixosTests,
+  openssl,
+  pciutils,
+  pkg-config,
+  stdenv,
+  udev,
+  xorg,
 }:
 
 rustPlatform.buildRustPackage rec {

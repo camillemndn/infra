@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.photos;
@@ -30,7 +35,10 @@ with lib;
       };
     };
 
-    services.nginx.virtualHosts."photos.kms" = { port = 2342; websockets = true; };
+    services.nginx.virtualHosts."photos.kms" = {
+      port = 2342;
+      websockets = true;
+    };
 
     systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
 

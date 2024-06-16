@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot = {
@@ -9,7 +14,14 @@
     };
 
     loader.efi.canTouchEfiVariables = true;
-    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ehci_pci"
+      "nvme"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
+    ];
     kernelModules = [ "kvm-intel" ];
   };
 
@@ -27,5 +39,5 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/fadaee1c-9820-4c06-a144-f3d293e0a4e3"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/fadaee1c-9820-4c06-a144-f3d293e0a4e3"; } ];
 }

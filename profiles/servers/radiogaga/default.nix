@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.radiogaga;
@@ -12,7 +17,12 @@ with lib;
     services = {
       radiogaga.enable = true;
       nginx.virtualHosts.radiogaga = {
-        listen = [{ addr = "127.0.0.1"; port = 4200; }];
+        listen = [
+          {
+            addr = "127.0.0.1";
+            port = 4200;
+          }
+        ];
         root = "${pkgs.radiogaga}/share/radiogaga-front";
         locations."/".tryFiles = "$uri $uri/ /index.html =404";
         locations."/api".proxyPass = "http://127.0.0.1:8000";

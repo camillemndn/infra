@@ -1,8 +1,9 @@
-{ lib
-, fetchgit
-, pkgs
-, jre
-, runtimeShell
+{
+  lib,
+  fetchgit,
+  pkgs,
+  jre,
+  runtimeShell,
 }:
 
 let
@@ -32,7 +33,7 @@ buildGradle rec {
     cp -r $TMP/Audiveris-${version}/* $out
     ls -all $out/bin
     cd $out/bin
-    
+
     cat > "$out/bin/audiveris" << EOF
     #!${runtimeShell}
 
@@ -43,7 +44,12 @@ buildGradle rec {
     chmod a+x "$out/bin/audiveris"
   '';
 
-  propagatedBuildInputs = with pkgs; [ tesseract freetype git jre ];
+  propagatedBuildInputs = with pkgs; [
+    tesseract
+    freetype
+    git
+    jre
+  ];
 
   meta = with lib; {
     description = "Latest generation of Audiveris OMR engine";

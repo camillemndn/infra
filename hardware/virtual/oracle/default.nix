@@ -12,7 +12,11 @@
       efi.canTouchEfiVariables = true;
     };
 
-    initrd.availableKernelModules = [ "xhci_pci" "virtio_pci" "usbhid" ];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "virtio_pci"
+      "usbhid"
+    ];
   };
 
   fileSystems."/" = {
@@ -25,5 +29,5 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/0f02375d-b47b-45c7-a0d3-391c39cb2570"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/0f02375d-b47b-45c7-a0d3-391c39cb2570"; } ];
 }

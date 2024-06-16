@@ -1,12 +1,13 @@
-{ stdenv
-, lib
-, fetchurl
-, alsa-lib
-, freetype
-, fontconfig
-, libX11
-, expat
-, buildFHSEnv
+{
+  stdenv,
+  lib,
+  fetchurl,
+  alsa-lib,
+  freetype,
+  fontconfig,
+  libX11,
+  expat,
+  buildFHSEnv,
 }:
 
 let
@@ -54,7 +55,13 @@ buildFHSEnv {
 
   targetPkgs = _: [ harmony-assistant-unwrapped ];
 
-  multiPkgs = _: [ alsa-lib freetype fontconfig libX11 expat ];
+  multiPkgs = _: [
+    alsa-lib
+    freetype
+    fontconfig
+    libX11
+    expat
+  ];
 
   extraInstallCommands = ''
     mkdir -p $out/share

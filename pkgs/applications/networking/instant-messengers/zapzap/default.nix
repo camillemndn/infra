@@ -1,7 +1,8 @@
-{ lib
-, python3
-, fetchFromGitHub
-, qt6
+{
+  lib,
+  python3,
+  fetchFromGitHub,
+  qt6,
 }:
 
 python3.pkgs.buildPythonApplication rec {
@@ -22,7 +23,11 @@ python3.pkgs.buildPythonApplication rec {
 
   buildInputs = [ qt6.qtwayland ];
 
-  propagatedBuildInputs = with python3.pkgs; [ pyqt6 pyqt6-webengine pydbus ];
+  propagatedBuildInputs = with python3.pkgs; [
+    pyqt6
+    pyqt6-webengine
+    pydbus
+  ];
 
   postInstall = ''
     cp -r share $out

@@ -12,10 +12,21 @@
 
     initrd = {
       systemd.enable = true;
-      clevis = { enable = true; devices.luks-0a53c761-f5d4-4015-9d68-349251b71c85.secretFile = ./luks.jwe; };
+      clevis = {
+        enable = true;
+        devices.luks-0a53c761-f5d4-4015-9d68-349251b71c85.secretFile = ./luks.jwe;
+      };
       luks.devices."luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device = "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
       luks.devices."luks-0a53c761-f5d4-4015-9d68-349251b71c85".device = "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
-      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "tpm_tis" ];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "nvme"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+        "tpm_tis"
+      ];
       kernelModules = [ ];
     };
 
@@ -34,7 +45,7 @@
     fsType = "vfat";
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; }];
+  swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
 
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

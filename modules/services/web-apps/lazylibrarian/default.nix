@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -58,9 +63,7 @@ in
       };
     };
 
-    networking.firewall = mkIf cfg.openFirewall {
-      allowedTCPPorts = [ 5299 ];
-    };
+    networking.firewall = mkIf cfg.openFirewall { allowedTCPPorts = [ 5299 ]; };
 
     users.users = mkIf (cfg.user == "lazylibrarian") {
       lazylibrarian = {

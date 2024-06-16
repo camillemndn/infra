@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.koel;
@@ -86,7 +91,12 @@ with lib;
       };
 
       phpEnv = {
-        PATH = with pkgs; makeBinPath [ php ffmpeg ];
+        PATH =
+          with pkgs;
+          makeBinPath [
+            php
+            ffmpeg
+          ];
         FFMPEG_PATH = "${pkgs.ffmpeg}/bin/ffmpeg";
       } // envParams;
 
@@ -124,15 +134,16 @@ with lib;
     services.mysql = {
       enable = true;
       package = mkDefault pkgs.mariadb;
-      ensureUsers = [{
-        name = "koel";
-        ensurePermissions = {
-          "koel.*" = "ALL PRIVILEGES";
-        };
-      }];
+      ensureUsers = [
+        {
+          name = "koel";
+          ensurePermissions = {
+            "koel.*" = "ALL PRIVILEGES";
+          };
+        }
+      ];
       ensureDatabases = [ "koel" ];
     };
-
 
     systemd.services."phpfpm-koel".serviceConfig = {
       EnvironmentFile = cfg.secretEnvFile;
@@ -222,8 +233,3 @@ with lib;
     };
   };
 }
-
-
-
-
-

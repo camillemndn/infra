@@ -9,7 +9,12 @@ with lib;
       cemu
       lutris
       prismlauncher
-      (retroarch.override { cores = with libretro; [ dolphin citra ]; })
+      (retroarch.override {
+        cores = with libretro; [
+          dolphin
+          citra
+        ];
+      })
 
       # Social
       mattermost-desktop
@@ -42,7 +47,10 @@ with lib;
     ];
   };
 
-  services.nextcloud-client = { enable = true; startInBackground = true; };
+  services.nextcloud-client = {
+    enable = true;
+    startInBackground = true;
+  };
 
   systemd.user.services.nextcloud-client.Service = {
     ExecStartPre = "${pkgs.coreutils}/bin/rm -rf %h/.local/share/Nextcloud";
@@ -51,7 +59,10 @@ with lib;
   };
 
   programs = {
-    chromium = { enable = true; package = pkgs.ungoogled-chromium; };
+    chromium = {
+      enable = true;
+      package = pkgs.ungoogled-chromium;
+    };
   };
 
   profiles = {

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.profiles.gdm;
@@ -34,10 +39,16 @@ with lib;
         '';
       };
 
-      xkb = { layout = "fr"; variant = ""; };
+      xkb = {
+        layout = "fr";
+        variant = "";
+      };
     };
 
-    environment.systemPackages = [ pkgs.libheif pkgs.libheif.out ];
+    environment.systemPackages = [
+      pkgs.libheif
+      pkgs.libheif.out
+    ];
     environment.pathsToLink = [ "share/thumbnailers" ];
   };
 }

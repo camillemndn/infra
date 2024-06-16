@@ -16,7 +16,10 @@ with lib;
 
   hardware = {
     enableRedistributableFirmware = mkDefault true;
-    firmware = with pkgs; [ raspberrypiWirelessFirmware wireless-regdb ];
+    firmware = with pkgs; [
+      raspberrypiWirelessFirmware
+      wireless-regdb
+    ];
   };
 
   environment.systemPackages = [ pkgs.libraspberrypi ];
