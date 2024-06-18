@@ -26,7 +26,7 @@ lib.updateManyAttrs [
     spicetify-nix = spicetify-nix.packages.${system}.default;
     inherit (nix-software-center.packages.${system}) nix-software-center;
     inherit (zotero-nix.packages.${system}) zotero;
-    firefoxpwa = (final.unstable.callPackage ./firefoxpwa.nix { }).override {
+    firefoxpwa = prev.firefoxpwa.override {
       extraLibs = with prev; [
         alsa-lib
         ffmpeg_5
