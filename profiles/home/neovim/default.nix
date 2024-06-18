@@ -64,6 +64,7 @@ with lib;
         enable = true;
         settings = {
           coc.preferences.formatOnSaveFiletypes = [
+            "bash"
             "ccls"
             "nix"
             "python"
@@ -74,6 +75,12 @@ with lib;
           ];
 
           languageserver = {
+            bash = {
+              command = "bash-language-server";
+              args = [ "start" ];
+              filetypes = [ "sh" ];
+            };
+
             ccls = {
               command = "ccls";
               filetypes = [
@@ -218,14 +225,16 @@ with lib;
         mkIf cfg.full.enable [
           ccls
           fd
+          lua-language-server
           lua.pkgs.lua-lsp
           lua.pkgs.luarocks-nix
-          lua-language-server
           marksman
           nil
           nixfmt-rfc-style
+          unstable.bash-language-server
           pyright
           ripgrep
+          shfmt
           texlab
           texliveFull
           wl-clipboard
