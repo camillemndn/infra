@@ -34,6 +34,7 @@
     };
     tailscale.enable = true;
     usbmuxd.enable = true;
+    openssh.enable = true;
   };
 
   users.mutableUsers = true;
