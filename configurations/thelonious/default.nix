@@ -4,6 +4,7 @@
   networking = {
     hostName = "thelonious";
     networkmanager.enable = true;
+    firewall.allowedTCPPorts = [ 2022 ];
   };
 
   environment.systemPackages = with pkgs; [
