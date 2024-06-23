@@ -50,8 +50,4 @@ with lib;
     interface = "ens18";
     address = self.machines.zeppelin.ipv4.local;
   };
-  networking.defaultGateway6 = {
-    interface = "ens18";
-    address = self.machines.zeppelin.ipv4.local;
-  };
 }
