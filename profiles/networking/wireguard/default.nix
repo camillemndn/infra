@@ -11,30 +11,22 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    networking.wg-quick.interfaces = {
-      wg1 = {
-        privateKeyFile = "/srv/keys/wireguard";
-        address = [ "192.168.27.65/32" ];
-        mtu = 1420;
+    networking.wireguard.interfaces.wg0 = {
+      ips = [ "10.100.45.3/24" ];
+      privateKeyFile = "/etc/wireguard/privatekey";
+      listenPort = 51820;
 
-        postUp = ''
-          ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
-        '';
-
-        # This undoes the above command
-        postDown = ''
-          ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 192.168.27.64/27 -o enp0s25 -j MASQUERADE
-        '';
-
-        peers = [
-          {
-            publicKey = "U7k8anMKzmiO98Yzsrc6f9uJBUqJRkM0JzjuPDdKsAo=";
-            allowedIPs = [ "192.168.27.64/27" ];
-            endpoint = "82.66.152.179:51705";
-            persistentKeepalive = 25;
-          }
-        ];
-      };
+      peers = [
+        {
+          # lisa
+          publicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
+          allowedIPs = [ "0.0.0.0/0" ];
+          endpoint = "[2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb]:51821";
+          persistentKeepalive = 25;
+        }
+      ];
     };
+
+    networking.firewall.allowedUDPPorts = [ 51820 ];
   };
 }

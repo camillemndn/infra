@@ -69,6 +69,7 @@
     };
     passwords.enable = true;
     photos.enable = true;
+    wireguard.enable = true;
   };
 
   system.stateVersion = "21.11";

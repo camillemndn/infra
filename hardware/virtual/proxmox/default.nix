@@ -2,6 +2,7 @@
   config,
   lib,
   modulesPath,
+  self,
   ...
 }:
 
@@ -45,4 +46,12 @@ with lib;
 
   networking.useDHCP = mkDefault false;
   networking.interfaces.ens18.useDHCP = mkDefault true;
+  networking.defaultGateway = {
+    interface = "ens18";
+    address = self.machines.zeppelin.ipv4.local;
+  };
+  networking.defaultGateway6 = {
+    interface = "ens18";
+    address = self.machines.zeppelin.ipv4.local;
+  };
 }
