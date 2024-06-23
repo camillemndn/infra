@@ -18,7 +18,7 @@ with lib;
   config = mkIf cfg.enable {
     services.photoprism = {
       enable = true;
-      package = pkgs.unstable.photoprism;
+      package = pkgs.photoprism;
       originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
       importPath = "";
       passwordFile = "/run/secrets/photos";
