@@ -1,36 +1,47 @@
-{ lib, utils, ... }:
+inputs: lib: _:
 
-with lib;
+with builtins;
 
-rec {
-  # Strings
+{
+  importConfig =
+    path:
+    (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (
+      lib.filterAttrs (_: v: v == "directory") (readDir path)
+    ));
 
-  hasSuffixIn = l: x: elem true (map (s: hasSuffix s x) l);
-
-  # Attribute sets
-  recursiveUpdateManyAttrs = foldl recursiveUpdate { };
-
-  updateManyAttrs = foldl (x: y: x // y) { };
-
-  genAttrs' = names: f: listToAttrs (map f names);
-
-  flattenAttrs = f: concatMapAttrs (n: v: mapAttrs' (v: val: nameValuePair (f n v) val) v);
-
-  # Flake utils
-
-  mergeDefaultSystems = x: recursiveUpdateManyAttrs (map x utils.lib.defaultSystems);
-
-  platformMatches = x: sys: filterAttrs (_: pkg: elem sys pkg.meta.platforms) x;
-
-  patchNixpkgs =
-    system: nixpkgs: patches:
-    (import nixpkgs { inherit system; }).applyPatches {
-      name = "nixpkgs-patched";
-      src = nixpkgs;
-      patches = attrValues patches;
+  mkSubdomain = name: port: {
+    luj.nginx.enable = true;
+    services.nginx.virtualHosts."${name}.julienmalka.me" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+      };
     };
+  };
 
-  # Paths
+  mkVPNSubdomain = name: port: {
+    luj.nginx.enable = true;
+    security.acme.certs."${name}.luj".server = "https://ca.luj/acme/acme/directory";
+    services.nginx.virtualHosts."${name}.luj" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://localhost:${toString port}";
+        extraConfig = ''
+          allow 100.100.45.0/24;
+          allow fd7a:115c:a1e0::/48;
+          deny all;
+        '';
+      };
+    };
+  };
+
+  luj = import ./luj.nix inputs lib;
+
+  hasSuffixIn = l: x: elem true (map (s: lib.hasSuffix s x) l);
+
+  updateManyAttrs = lib.foldl (x: y: x // y) { };
 
   importIfExists = p: if (builtins.pathExists p) then import p else _: { };
 }
