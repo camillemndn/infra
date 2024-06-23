@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   self,
   nixpkgs,
   ...
@@ -8,6 +9,7 @@
 
 {
   nix = {
+    package = pkgs.lix;
     gc.automatic = lib.mkIf config.services.openssh.enable true;
     optimise.automatic = true;
 
