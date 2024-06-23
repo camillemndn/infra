@@ -13,6 +13,7 @@ with lib;
   config = mkIf cfg.enable {
     networking.wireguard.interfaces.wg0 = {
       ips = [ "10.100.45.3/24" ];
+      allowedIPsAsRoutes = false;
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
 
