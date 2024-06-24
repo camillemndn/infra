@@ -27,12 +27,14 @@ let
 in
 rec {
 
-  nixosModules = builtins.listToAttrs (
-    map (x: {
-      name = x;
-      value = import (./modules + "/${x}");
-    }) (builtins.attrNames (builtins.readDir ./modules))
-  );
+  nixosModules =
+    import ./modules
+    // (builtins.listToAttrs (
+      map (x: {
+        name = x;
+        value = import (./profiles + "/${x}");
+      }) (builtins.attrNames (builtins.readDir ./profiles))
+    ));
 
   nixosConfigurations = builtins.mapAttrs (
     name: value:

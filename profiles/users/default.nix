@@ -8,8 +8,6 @@
 with lib;
 
 {
-  imports = [ ./camille ];
-
   console.keyMap = "fr";
 
   time.timeZone = mkDefault "Europe/Paris";

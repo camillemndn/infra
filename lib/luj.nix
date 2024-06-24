@@ -25,6 +25,12 @@ let
                     default = inputs.nixpkgs;
                     readOnly = true;
                   };
+                  hm_version = mkOption {
+                    description = "Nixpkgs version to use";
+                    type = path;
+                    default = inputs.home-manager;
+                    readOnly = true;
+                  };
                   system = mkOption {
                     description = "Architecture of the system";
                     type = str;
