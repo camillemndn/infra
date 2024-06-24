@@ -1,6 +1,8 @@
 _:
 
 {
+  imports = [ ./hardware-configuration.nix ];
+
   networking = {
     hostName = "offspring";
     firewall.allowedTCPPorts = [ 2022 ];

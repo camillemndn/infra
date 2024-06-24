@@ -1,6 +1,8 @@
 _:
 
 {
+  imports = [ ./hardware-configuration.nix ];
+
   networking = {
     hostName = "radiogaga";
     wireless.enable = true;

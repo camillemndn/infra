@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  imports = [ ./hardware-configuration.nix ];
+
   networking = {
     hostName = "zeppelin";
     firewall.allowedTCPPorts = [ 2022 ];

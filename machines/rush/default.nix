@@ -1,6 +1,8 @@
 _:
 
 {
+  imports = [ ./hardware-configuration.nix ];
+
   networking = {
     hostName = "rush";
     hostId = "b8ed114c";

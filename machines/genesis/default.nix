@@ -1,6 +1,8 @@
 { pkgs, ... }:
 
 {
+  imports = [ ./hardware-configuration.nix ];
+
   networking = {
     hostName = "genesis";
     networkmanager.enable = true;
