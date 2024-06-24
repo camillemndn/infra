@@ -1,6 +1,6 @@
 let
   inputs = import ./deps;
-  pkgs = import inputs.unstable { };
+  pkgs = import inputs.nixpkgs-unstable { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
   bootstrap = import scripts/bootstrap-machine.nix;

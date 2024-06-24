@@ -40,4 +40,6 @@ with builtins;
   luj = import ./luj.nix inputs lib;
 
   hasSuffixIn = l: x: elem true (map (s: lib.hasSuffix s x) l);
+
+  updateManyAttrs = lib.foldl (x: y: x // y) { };
 }

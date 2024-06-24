@@ -36,13 +36,22 @@ rec {
       }) (builtins.attrNames (builtins.readDir ./profiles))
     ));
 
+  homeManagerModules = builtins.listToAttrs (
+    map (x: {
+      name = "profile-${x}";
+      value = import (./profiles + "/${x}");
+    }) (builtins.attrNames (builtins.readDir ./hm-profiles))
+  );
+
   nixosConfigurations = builtins.mapAttrs (
     name: value:
     (mkMachine {
       inherit name;
       host-config = value;
       modules = nixosModules;
+      hmModules = homeManagerModules;
       nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
+      extraPackages = packages;
       system = lib.luj.machines.${name}.system;
       home-manager = lib.luj.machines.${name}.hm_version;
     })

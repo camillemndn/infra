@@ -147,17 +147,6 @@
       "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
       "hash": "08zwv0b7x0yvbcwkr39pmhlyfr86y6ijsm71az8xx323zp4c5r8q"
     },
-    "lix": {
-      "type": "Git",
-      "repository": {
-        "type": "Git",
-        "url": "https://git.lix.systems/lix-project/lix.git"
-      },
-      "branch": "main",
-      "revision": "ce2b48aa41ed8e6f3eed60a20e3e2afb244457b6",
-      "url": null,
-      "hash": "1cy16y5h9dk602qi16i4h6i0vdw8v8jb6p740y7hyy4d8d1kh9ka"
-    },
     "lix-module": {
       "type": "Git",
       "repository": {
@@ -255,6 +244,30 @@
       "url": "https://github.com/nixos/nixpkgs/archive/752c634c09ceb50c45e751f8791cb45cb3d46c9e.tar.gz",
       "hash": "1rjxb0zjz0rk2dhqcw7rn5246mf0vrcl18v1ai3ql8rqb1rwwgk5"
     },
+    "nixpkgs-pinned": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nixos",
+        "repo": "nixpkgs"
+      },
+      "branch": "nixos-unstable",
+      "revision": "d24e7fdcfaecdca496ddd426cae98c9e2d12dfe8",
+      "url": "https://github.com/nixos/nixpkgs/archive/d24e7fdcfaecdca496ddd426cae98c9e2d12dfe8.tar.gz",
+      "hash": "1p443kjl13yiaifrhhv1lpk24m64bkv8bzarr525aqixssz6v7jj"
+    },
+    "nixpkgs-unstable": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nixos",
+        "repo": "nixpkgs"
+      },
+      "branch": "nixos-unstable",
+      "revision": "b60ebf54c15553b393d144357375ea956f89e9a9",
+      "url": "https://github.com/nixos/nixpkgs/archive/b60ebf54c15553b393d144357375ea956f89e9a9.tar.gz",
+      "hash": "0rcshmy2lnw9i8y9jdp4dk1j6iacfmc0hlpslv1zr0idiiqpmsm6"
+    },
     "sops-nix": {
       "type": "Git",
       "repository": {
@@ -278,18 +291,6 @@
       "revision": "1325416f951d6a82cfddb1289864ad782e2b87c4",
       "url": "https://github.com/the-argus/spicetify-nix/archive/1325416f951d6a82cfddb1289864ad782e2b87c4.tar.gz",
       "hash": "0yvkw9i3xk0qn1j01b4mnj912p55zi1v3fdsy77jy3pz8zxfll4h"
-    },
-    "unstable": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "nixos",
-        "repo": "nixpkgs"
-      },
-      "branch": "nixos-unstable",
-      "revision": "b60ebf54c15553b393d144357375ea956f89e9a9",
-      "url": "https://github.com/nixos/nixpkgs/archive/b60ebf54c15553b393d144357375ea956f89e9a9.tar.gz",
-      "hash": "0rcshmy2lnw9i8y9jdp4dk1j6iacfmc0hlpslv1zr0idiiqpmsm6"
     },
     "zotero-nix": {
       "type": "Git",

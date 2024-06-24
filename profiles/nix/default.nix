@@ -2,8 +2,7 @@
   config,
   lib,
   pkgs,
-  self,
-  nixpkgs,
+  inputs,
   ...
 }:
 
@@ -13,10 +12,7 @@
     gc.automatic = lib.mkIf config.services.openssh.enable true;
     optimise.automatic = true;
 
-    registry = {
-      nixpkgs.flake = nixpkgs;
-      camille.flake = self;
-    };
+    registry.nixpkgs.flake = inputs.nixpkgs;
 
     settings = {
       experimental-features = [
@@ -33,8 +29,8 @@
       extra-trusted-public-keys = [ "camille:r1ElbcicaLHPlvECyy3wS+CUj4KWHaCEV2Kt1LEaYI0=" ];
 
       nix-path = [
-        "nixpkgs=${nixpkgs}"
-        "nixos=${nixpkgs}"
+        "nixpkgs=${inputs.nixpkgs}"
+        "nixos=${inputs.nixpkgs}"
       ];
     };
 
