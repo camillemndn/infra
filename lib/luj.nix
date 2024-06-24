@@ -23,19 +23,16 @@ let
                     description = "Nixpkgs version to use";
                     type = path;
                     default = inputs.nixpkgs;
-                    readOnly = true;
                   };
                   hm_version = mkOption {
                     description = "Nixpkgs version to use";
                     type = path;
                     default = inputs.home-manager;
-                    readOnly = true;
                   };
                   system = mkOption {
                     description = "Architecture of the system";
                     type = str;
                     default = "x86_64-linux";
-                    readOnly = true;
                   };
                   sshPort = mkOption {
                     description = "The port for the ssh server of the machine";

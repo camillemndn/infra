@@ -50,8 +50,10 @@ with lib;
     };
 
     command-not-found.enable = false;
-    nix-index.enable = true;
-    nix-index-database.comma.enable = true;
+    nix-index = {
+      enable = lib.mkDefault true;
+      package = lib.mkDefault self.packages.${pkgs.stdenv.system}.nix-index-with-db;
+    };
   };
 
   profiles.cache-client.enable = lib.mkDefault true;
@@ -102,6 +104,7 @@ with lib;
     wget
     zip
     nix-output-monitor
+    comma-with-db
   ];
 
   security.pki.certificateFiles = [ ./saumonnet.crt ];

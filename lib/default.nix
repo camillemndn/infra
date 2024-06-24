@@ -1,4 +1,4 @@
-inputs: final: _prev:
+inputs: lib: _:
 
 with builtins;
 
@@ -6,7 +6,7 @@ with builtins;
   importConfig =
     path:
     (mapAttrs (name: _value: import (path + "/${name}/default.nix")) (
-      final.filterAttrs (_: v: v == "directory") (readDir path)
+      lib.filterAttrs (_: v: v == "directory") (readDir path)
     ));
 
   mkSubdomain = name: port: {
@@ -37,6 +37,7 @@ with builtins;
     };
   };
 
-  luj = import ./luj.nix inputs final;
+  luj = import ./luj.nix inputs lib;
 
+  hasSuffixIn = l: x: elem true (map (s: lib.hasSuffix s x) l);
 }

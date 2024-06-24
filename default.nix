@@ -31,7 +31,7 @@ rec {
     import ./modules
     // (builtins.listToAttrs (
       map (x: {
-        name = x;
+        name = "profile-${x}";
         value = import (./profiles + "/${x}");
       }) (builtins.attrNames (builtins.readDir ./profiles))
     ));
