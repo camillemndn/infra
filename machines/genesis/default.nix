@@ -15,7 +15,6 @@
     libimobiledevice
     libirecovery
     idevicerestore
-    nix-software-center
   ];
 
   profiles = {
