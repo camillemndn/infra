@@ -39,7 +39,7 @@ rec {
   homeManagerModules = builtins.listToAttrs (
     map (x: {
       name = "profile-${x}";
-      value = import (./profiles + "/${x}");
+      value = import (./hm-profiles + "/${x}");
     }) (builtins.attrNames (builtins.readDir ./hm-profiles))
   );
 

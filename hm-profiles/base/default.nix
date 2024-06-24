@@ -4,6 +4,7 @@
   home = {
     language.base = "fr_FR.UTF-8";
     keyboard.layout = "fr";
+    stateVersion = lib.mkDefault "22.11";
     packages = [ pkgs.comma-with-db ];
   };
 

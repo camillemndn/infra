@@ -42,4 +42,6 @@ with builtins;
   hasSuffixIn = l: x: elem true (map (s: lib.hasSuffix s x) l);
 
   updateManyAttrs = lib.foldl (x: y: x // y) { };
+
+  importIfExists = p: if (builtins.pathExists p) then import p else _: { };
 }

@@ -12,6 +12,7 @@ inputs: lib:
 }:
 let
   pkgs = import nixpkgs { inherit system; };
+  listUsers = config: builtins.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
@@ -40,33 +41,14 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         home-manager = {
           useGlobalPkgs = true;
           sharedModules = builtins.attrValues hmModules ++ [
-            inputs.nix-index-database.hmModules.nix-index
-            inputs.spicetify-nix.homeManagerModule
+            (import "${inputs.spicetify-nix}/module.nix" { isNixOSModule = false; })
           ];
-          users = lib.genAttrs (builtins.attrNames config.users.users) (
-            user: lib.importIfExists ./${name}/home/${user}.nix
-          );
+          users = lib.genAttrs (listUsers config) (user: lib.importIfExists ./${name}/home/${user}.nix);
         };
         nixpkgs.system = system;
         networking.hostName = name;
 
-        nixpkgs.config.allowUnfreePredicate =
-          pkg:
-          builtins.elem (lib.getName pkg) [
-            "harmony-assistant"
-            "mac"
-            "nvidia-settings"
-            "nvidia-x11"
-            "reaper"
-            "spotify"
-            "steam"
-            "steam-original"
-            "steam-run"
-            "unrar"
-            "zoom"
-            "corefonts"
-          ];
-
+        nixpkgs.config.allowUnfree = true;
         nixpkgs.overlays = lib.mkAfter [
           (
             let
@@ -117,7 +99,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     libpulseaudio
                   ];
                 };
-                vimPlugins = prev.vimPlugins // final.extraVimPlugins;
+                vimPlugins = prev.vimPlugins // final.vim-plugins;
                 inherit (final.unstable)
                   quarto
                   typst
