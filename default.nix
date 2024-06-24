@@ -78,8 +78,8 @@ rec {
             builtins.listToAttrs (
               builtins.map (e: {
                 name = e;
-                value = nixpkgs_plats.${plat}.callPackage (./packages + "/${e}") { };
-              }) (builtins.attrNames (builtins.readDir ./packages))
+                value = nixpkgs_plats.${plat}.callPackage (./pkgs + "/${e}") { };
+              }) (builtins.attrNames (builtins.readDir ./pkgs))
             )
           );
     }) machines_plats
