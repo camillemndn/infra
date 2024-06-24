@@ -47,7 +47,7 @@
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
-        hostName = self.machines.offspring.ipv4.public;
+        hostName = lib.luj.machines.offspring.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
         maxJobs = 8;
