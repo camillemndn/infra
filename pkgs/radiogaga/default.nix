@@ -14,7 +14,6 @@
 }:
 
 let
-  customPackages = callPackage ../../top-level/python-packages.nix { };
   python_env = python3.withPackages (
     p: with p; [
       django
@@ -29,7 +28,7 @@ let
       gunicorn
       pyyaml
       packaging
-      customPackages.pyalsaaudio
+      (p.callPackage ../pyalsaaudio { })
     ]
   );
 in
