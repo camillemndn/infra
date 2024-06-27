@@ -13,6 +13,12 @@ inputs: lib:
 let
   pkgs = import nixpkgs { inherit system; };
   listUsers = config: builtins.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
+  nixpkgsTree = builtins.fetchTree {
+    type = "github";
+    owner = "NixOS";
+    repo = "nixpkgs";
+    rev = inputs.nixpkgs.revision;
+  };
 in
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
@@ -48,6 +54,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           );
         };
         networking.hostName = name;
+        system.nixos.version = "${config.system.nixos.release}.${
+          builtins.substring 0 8 nixpkgsTree.lastModifiedDate
+        }.${nixpkgsTree.shortRev}";
 
         nixpkgs = {
           inherit system;
