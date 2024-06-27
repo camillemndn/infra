@@ -6,11 +6,11 @@
   python3,
   makeWrapper,
   sqlite,
-  callPackage,
   mpv,
   killall,
-  spotify-tui,
+  spotify-player,
   curl,
+  nix-update-script,
 }:
 
 let
@@ -35,7 +35,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "radiogaga";
-  version = "unstable-2023-06-12";
+  version = "0.1.0";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
@@ -60,8 +60,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
-    rev = "c39adb3c2ca14e322663061400227351e3840d94";
-    hash = "sha256-KMZAL+qPxij4s7iR5+ZKlw3xyG7FaOOKcY9nR5WO+eA=";
+    rev = "v${version}";
+    hash = "sha256-Oa4GgKGuathZtiXc8POQAHHnb2eg/vvjrA+9UWqU7O0=";
   };
 
   postPatch = ''
@@ -97,13 +97,15 @@ stdenv.mkDerivation rec {
           sqlite
           killall
           mpv
-          spotify-tui
+          spotify-player
           python_env
         ]
       } \
       --add-flags "--bind 0.0.0.0:8000 radiogaga.wsgi:application" \
       --chdir $out/share/${pname}
   '';
+
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Raspberry Pi Clock Radio";
