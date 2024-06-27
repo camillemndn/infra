@@ -26,7 +26,6 @@ let
   );
 in
 rec {
-
   nixosModules =
     import ./modules
     // (builtins.listToAttrs (
