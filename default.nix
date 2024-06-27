@@ -51,7 +51,7 @@ rec {
       hmModules = homeManagerModules;
       nixpkgs = lib.infra.machines.${name}.nixpkgs_version;
       extraPackages = packages;
-      system = lib.infra.machines.${name}.system;
+      inherit (lib.infra.machines.${name}) system;
       home-manager = lib.infra.machines.${name}.hm_version;
     })
   ) (lib.importConfig ./machines);

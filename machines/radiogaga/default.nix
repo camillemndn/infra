@@ -9,12 +9,16 @@ _:
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
-  profiles.radiogaga.enable = true;
-  profiles.spotify.enable = true;
+  profiles = {
+    radiogaga.enable = true;
+    spotify.enable = true;
+  };
 
-  services.nginx.enable = true;
-  services.openssh.enable = true;
-  services.tailscale.enable = true;
+  services = {
+    nginx.enable = true;
+    openssh.enable = true;
+    tailscale.enable = true;
+  };
 
   system.stateVersion = "22.11";
 }

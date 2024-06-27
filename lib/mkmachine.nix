@@ -47,71 +47,74 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             user: lib.importIfExists ../machines/${name}/home/${user}.nix
           );
         };
-        nixpkgs.system = system;
         networking.hostName = name;
 
-        nixpkgs.config.allowUnfree = true;
-        nixpkgs.overlays = lib.mkAfter [
-          (
-            let
-              generated = import "${inputs.nix-index-database}/generated.nix";
+        nixpkgs = {
+          inherit system;
+          config.allowUnfree = true;
 
-              nix-index-database =
-                (pkgs.fetchurl {
-                  url = generated.url + pkgs.stdenv.system;
-                  hash = generated.hashes.${pkgs.stdenv.system};
-                }).overrideAttrs
-                  {
-                    __structuredAttrs = true;
-                    unsafeDiscardReferences.out = true;
+          overlays = lib.mkAfter [
+            (
+              let
+                generated = import "${inputs.nix-index-database}/generated.nix";
+
+                nix-index-database =
+                  (pkgs.fetchurl {
+                    url = generated.url + pkgs.stdenv.system;
+                    hash = generated.hashes.${pkgs.stdenv.system};
+                  }).overrideAttrs
+                    {
+                      __structuredAttrs = true;
+                      unsafeDiscardReferences.out = true;
+                    };
+              in
+              final: prev:
+              lib.updateManyAttrs [
+                # Adds all the packages from this flake
+                extraPackages.${system}
+
+                {
+                  inherit lib;
+                  pinned = import inputs.nixpkgs-pinned {
+                    inherit system;
+                    inherit (pkgs) config;
                   };
-            in
-            final: prev:
-            lib.updateManyAttrs [
-              # Adds all the packages from this flake
-              extraPackages.${system}
+                  unstable = import inputs.nixpkgs-unstable {
+                    inherit system;
+                    inherit (pkgs) config;
+                  };
 
-              {
-                inherit lib;
-                pinned = import inputs.nixpkgs-pinned {
-                  inherit system;
-                  inherit (pkgs) config;
-                };
-                unstable = import inputs.nixpkgs-unstable {
-                  inherit system;
-                  inherit (pkgs) config;
-                };
-
-                # Adds some packages from other flakes
-                spicetify-nix = pkgs.callPackage "${inputs.spicetify-nix}/pkgs" { };
-                inherit nix-index-database;
-                nix-index-with-db = pkgs.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
+                  # Adds some packages from other flakes
+                  spicetify-nix = pkgs.callPackage "${inputs.spicetify-nix}/pkgs" { };
                   inherit nix-index-database;
-                };
-                comma-with-db = pkgs.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
-                  inherit nix-index-database;
-                };
-                zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
-                firefoxpwa = prev.firefoxpwa.override {
-                  extraLibs = with prev; [
-                    alsa-lib
-                    ffmpeg_5
-                    libjack2
-                    pipewire
-                    libpulseaudio
-                  ];
-                };
-                vimPlugins = prev.vimPlugins // final.vim-plugins;
-                inherit (final.unstable)
-                  quarto
-                  typst
-                  jackett
-                  tandoor-recipes
-                  ;
-              }
-            ]
-          )
-        ];
+                  nix-index-with-db = pkgs.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
+                    inherit nix-index-database;
+                  };
+                  comma-with-db = pkgs.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
+                    inherit nix-index-database;
+                  };
+                  zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
+                  firefoxpwa = prev.firefoxpwa.override {
+                    extraLibs = with prev; [
+                      alsa-lib
+                      ffmpeg_5
+                      libjack2
+                      pipewire
+                      libpulseaudio
+                    ];
+                  };
+                  vimPlugins = prev.vimPlugins // final.vim-plugins;
+                  inherit (final.unstable)
+                    quarto
+                    typst
+                    jackett
+                    tandoor-recipes
+                    ;
+                }
+              ]
+            )
+          ];
+        };
       }
     )
   ];

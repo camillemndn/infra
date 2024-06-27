@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -9,7 +9,10 @@
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
-  deployment.allowLocalDeployment = true;
+  deployment = {
+    allowLocalDeployment = true;
+    targetHost = lib.infra.machines.thelonious.ipv4.vpn;
+  };
 
   environment.systemPackages = with pkgs; [
     firefoxpwa
