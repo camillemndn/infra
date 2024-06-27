@@ -34,7 +34,7 @@ with lib;
 
     services.jitsi-videobridge = {
       openFirewall = true;
-      nat = with lib.luj.machines.zeppelin.ipv4; {
+      nat = with lib.infra.machines.zeppelin.ipv4; {
         publicAddress = public;
         localAddress = local;
       };

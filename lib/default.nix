@@ -9,7 +9,7 @@ with builtins;
       lib.filterAttrs (_: v: v == "directory") (readDir path)
     ));
 
-  luj = import ./luj.nix inputs lib;
+  infra = import ./infra.nix inputs lib;
 
   hasSuffixIn = l: x: elem true (map (s: lib.hasSuffix s x) l);
 

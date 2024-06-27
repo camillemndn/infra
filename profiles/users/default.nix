@@ -8,6 +8,8 @@
 with lib;
 
 {
+  deployment.buildOnTarget = true;
+
   console.keyMap = "fr";
 
   time.timeZone = mkDefault "Europe/Paris";
