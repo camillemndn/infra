@@ -8,7 +8,7 @@ let
     src = ./.;
 
     hooks = {
-      statix.enable = true;
+      statix.enable = false;
       deadnix.enable = true;
       rfc101 = {
         enable = true;
@@ -29,7 +29,7 @@ pkgs.mkShell {
     bootstrap
     statix
   ];
-  # shellHook = ''
-  #   ${pre-commit-hook.shellHook}
-  # '';
+  shellHook = ''
+    ${pre-commit-hook.shellHook}
+  '';
 }

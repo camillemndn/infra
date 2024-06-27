@@ -45,24 +45,26 @@ with lib;
 
     services.nginx.virtualHosts.${cfg.hostName} = {
       root = "${pkgs.webtrees}";
-      locations."/public/".extraConfig = ''
-        expires 365d;
-        access_log off;
-      '';
-      locations."/".extraConfig = ''
-        rewrite ^ /index.php last;
-      '';
-      locations."~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
-        deny all;
-      '';
-      locations."/index.php" = {
-        fastcgiParams = {
-          HTTP_PROXY = "";
-          SCRIPT_FILENAME = "$request_filename";
-        };
-        extraConfig = ''
-          fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
+      locations = {
+        "/public/".extraConfig = ''
+          expires 365d;
+          access_log off;
         '';
+        "/".extraConfig = ''
+          rewrite ^ /index.php last;
+        '';
+        "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
+          deny all;
+        '';
+        "/index.php" = {
+          fastcgiParams = {
+            HTTP_PROXY = "";
+            SCRIPT_FILENAME = "$request_filename";
+          };
+          extraConfig = ''
+            fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
+          '';
+        };
       };
     };
 

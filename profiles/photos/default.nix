@@ -16,52 +16,58 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.photoprism = {
-      enable = true;
-      package = pkgs.photoprism;
-      originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
-      importPath = "";
-      passwordFile = "/run/secrets/photos";
-      settings = {
-        PHOTOPRISM_ADMIN_USER = "camille";
-        PHOTOPRISM_DATABASE_DRIVER = "mysql";
-        PHOTOPRISM_DATABASE_PASSWORD = "insecure";
-        PHOTOPRISM_DATABASE_SERVER = "localhost:3306";
-        PHOTOPRISM_DETECT_NSFW = "true";
-        PHOTOPRISM_DISABLE_WEBDAV = "true";
-        PHOTOPRISM_READONLY = "true";
-        PHOTOPRISM_THUMB_UNCACHED = "true";
-        PHOTOPRISM_WORKERS = "12";
+    services = {
+      photoprism = {
+        enable = true;
+        package = pkgs.photoprism;
+        originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
+        importPath = "";
+        passwordFile = "/run/secrets/photos";
+        settings = {
+          PHOTOPRISM_ADMIN_USER = "camille";
+          PHOTOPRISM_DATABASE_DRIVER = "mysql";
+          PHOTOPRISM_DATABASE_PASSWORD = "insecure";
+          PHOTOPRISM_DATABASE_SERVER = "localhost:3306";
+          PHOTOPRISM_DETECT_NSFW = "true";
+          PHOTOPRISM_DISABLE_WEBDAV = "true";
+          PHOTOPRISM_READONLY = "true";
+          PHOTOPRISM_THUMB_UNCACHED = "true";
+          PHOTOPRISM_WORKERS = "12";
+        };
+      };
+
+      nginx.virtualHosts."photos.kms" = {
+        port = 2342;
+        websockets = true;
       };
     };
 
-    services.nginx.virtualHosts."photos.kms" = {
-      port = 2342;
-      websockets = true;
-    };
+    systemd = {
+      services = {
+        photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
 
-    systemd.services.photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
-
-    systemd.services.photoprism-index = {
-      description = "Photoprism automatic indexer";
-      after = [ "multi-user.target" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = config.systemd.services.photoprism.serviceConfig // {
-        Type = "oneshot";
-        ExecStartPre = null;
-        ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
-        ExecStartPost = "${pkgs.photoprism}/bin/photoprism thumbs";
-        KillMode = "process";
+        photoprism-index = {
+          description = "Photoprism automatic indexer";
+          after = [ "multi-user.target" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = config.systemd.services.photoprism.serviceConfig // {
+            Type = "oneshot";
+            ExecStartPre = null;
+            ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
+            ExecStartPost = "${pkgs.photoprism}/bin/photoprism thumbs";
+            KillMode = "process";
+          };
+          inherit (config.systemd.services.photoprism) environment;
+        };
       };
-      inherit (config.systemd.services.photoprism) environment;
-    };
 
-    systemd.timers.photoprism-index = {
-      description = "Photoprism automatic indexer";
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "hourly";
-        Persistent = true;
+      timers.photoprism-index = {
+        description = "Photoprism automatic indexer";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "hourly";
+          Persistent = true;
+        };
       };
     };
 

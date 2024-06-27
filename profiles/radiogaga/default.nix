@@ -24,12 +24,16 @@ with lib;
           }
         ];
         root = "${pkgs.radiogaga}/share/radiogaga-front";
-        locations."/".tryFiles = "$uri $uri/ /index.html =404";
-        locations."/api".proxyPass = "http://127.0.0.1:8000";
+        locations = {
+          "/".tryFiles = "$uri $uri/ /index.html =404";
+          "/api".proxyPass = "http://127.0.0.1:8000";
+        };
       };
 
-      nginx.virtualHosts."radiogaga.lan".port = 4200;
-      nginx.virtualHosts."radiogaga.kms".port = 4200;
+      nginx.virtualHosts = {
+        "radiogaga.lan".port = 4200;
+        "radiogaga.kms".port = 4200;
+      };
     };
   };
 }

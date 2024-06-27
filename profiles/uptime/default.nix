@@ -14,15 +14,6 @@ with lib;
     services = {
       uptime-kuma.enable = true;
 
-      nginx.virtualHosts."uptime.mondon.xyz" = {
-        port = 3001;
-        websockets = true;
-      };
-      nginx.virtualHosts."status.mondon.xyz" = {
-        port = 3001;
-        websockets = true;
-      };
-
       ntfy-sh = {
         enable = true;
         settings = {
@@ -34,7 +25,17 @@ with lib;
         };
       };
 
-      nginx.virtualHosts."ntfy.mondon.xyz".port = 3002;
+      nginx.virtualHosts = {
+        "uptime.mondon.xyz" = {
+          port = 3001;
+          websockets = true;
+        };
+        "status.mondon.xyz" = {
+          port = 3001;
+          websockets = true;
+        };
+        "ntfy.mondon.xyz".port = 3002;
+      };
     };
 
     systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
