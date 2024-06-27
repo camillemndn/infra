@@ -56,7 +56,7 @@ in
       ];
     };
 
-    environment.systemPackages = [ pkgs.spotify-tui ];
+    environment.systemPackages = [ pkgs.spotify-player ];
 
     networking.firewall.allowedTCPPorts = [ 44677 ];
   };

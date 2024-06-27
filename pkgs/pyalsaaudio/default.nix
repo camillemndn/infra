@@ -7,12 +7,12 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "pyalsaaudio";
-  version = "0.10.0";
+  version = "0.11.0";
   format = "setuptools";
 
   src = fetchPypi {
     inherit pname version;
-    hash = "sha256-4hF1UAor0xCuOGfnmRY53vweKlySzxufcIMpazRnOKs=";
+    hash = "sha256-p4qdyjNSSyyQZLNOIfWrh0JyMTzzJKmndZLzlqXg/dw=";
   };
 
   buildInputs = [ alsa-lib ];
