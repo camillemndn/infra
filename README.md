@@ -6,7 +6,7 @@ This repository contains the configurations of my machines using NixOS and `npin
 
 ## ❄ About [NixOS](https://nixos.org)
 
-NixOS is a Linux distribution based on the Nix package manager. It allows fully reproducible builds and a declarative configuration style, using a functional langage called Nix.
+NixOS is a Linux distribution based on the Nix/[Lix](https://lix.systems/) package manager. It allows fully reproducible builds and a declarative configuration style, using a functional langage called Nix.
 
 ## 📌 About [`npins`](https://github.com/andir/npins)
 
