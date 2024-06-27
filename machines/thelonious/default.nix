@@ -9,6 +9,8 @@
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
+  deployment.allowLocalDeployment = true;
+
   environment.systemPackages = with pkgs; [
     firefoxpwa
     ifuse

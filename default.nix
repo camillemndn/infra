@@ -10,10 +10,10 @@ let
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final);
   mkLibForMachine =
     machine:
-    (import "${lib.luj.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
+    (import "${lib.infra.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.system) (
-      lib.filterAttrs (_n: v: builtins.hasAttr "system" v) lib.luj.machines
+      lib.filterAttrs (_n: v: builtins.hasAttr "system" v) lib.infra.machines
     )
   );
   mkMachine = import ./lib/mkmachine.nix inputs_final lib;
@@ -49,17 +49,17 @@ rec {
       host-config = value;
       modules = nixosModules;
       hmModules = homeManagerModules;
-      nixpkgs = lib.luj.machines.${name}.nixpkgs_version;
+      nixpkgs = lib.infra.machines.${name}.nixpkgs_version;
       extraPackages = packages;
-      system = lib.luj.machines.${name}.system;
-      home-manager = lib.luj.machines.${name}.hm_version;
+      system = lib.infra.machines.${name}.system;
+      home-manager = lib.infra.machines.${name}.hm_version;
     })
   ) (lib.importConfig ./machines);
 
   colmena = {
     meta = {
       nodeNixpkgs = builtins.mapAttrs (
-        n: _: import lib.luj.machines.${n}.nixpkgs_version
+        n: _: import lib.infra.machines.${n}.nixpkgs_version
       ) nixosConfigurations;
       nodeSpecialArgs = builtins.mapAttrs (
         n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
@@ -93,7 +93,7 @@ rec {
     }) machines_plats
   );
 
-  inherit (lib.luj) machines;
+  inherit (lib.infra) machines;
 
   checks = {
     inherit packages;

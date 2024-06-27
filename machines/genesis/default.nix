@@ -7,6 +7,7 @@
     hostName = "genesis";
     networkmanager.enable = true;
   };
+
   deployment.allowLocalDeployment = true;
 
   environment.systemPackages = with pkgs; [

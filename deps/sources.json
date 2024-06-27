@@ -87,30 +87,6 @@
       "url": "https://github.com/nix-community/home-manager/archive/a1fddf0967c33754271761d91a3d921772b30d0e.tar.gz",
       "hash": "1vvrrk14vrhb6drj3fy8snly0sf24x3402ykb9q5j1gy99vvqqq6"
     },
-    "home-manager-unstable": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "nix-community",
-        "repo": "home-manager"
-      },
-      "branch": "master",
-      "revision": "0a7ffb28e5df5844d0e8039c9833d7075cdee792",
-      "url": "https://github.com/nix-community/home-manager/archive/0a7ffb28e5df5844d0e8039c9833d7075cdee792.tar.gz",
-      "hash": "1qd5sdpgpadd0972gmngjl0gf96h4cz0xvmv0186pgj6xgzc7amh"
-    },
-    "homepage": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "JulienMalka",
-        "repo": "homepage"
-      },
-      "branch": "main",
-      "revision": "29e779d8600b1c1e6235570a3614a54f8ec8126e",
-      "url": "https://github.com/JulienMalka/homepage/archive/29e779d8600b1c1e6235570a3614a54f8ec8126e.tar.gz",
-      "hash": "0prma1rg6glf3xy1dkd6gbzb26z1sxkgzd8wr623pbqvf44hgv32"
-    },
     "impermanence": {
       "type": "Git",
       "repository": {
@@ -146,29 +122,6 @@
       "revision": "9c52498d310c8ecca8de63e50658bd5089617e3a",
       "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
       "hash": "08zwv0b7x0yvbcwkr39pmhlyfr86y6ijsm71az8xx323zp4c5r8q"
-    },
-    "lix-module": {
-      "type": "Git",
-      "repository": {
-        "type": "Git",
-        "url": "https://git.lix.systems/lix-project/nixos-module.git"
-      },
-      "branch": "main",
-      "revision": "4e25f1ab68f2270f9cff59216056c21073db0164",
-      "url": null,
-      "hash": "0bi6qc6mvbp73hnkxrw02hg9fl9czfqrz7j8pqh3xnalqfvxiicv"
-    },
-    "mobile-nixos": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "camillemndn",
-        "repo": "mobile-nixos"
-      },
-      "branch": "master",
-      "revision": "d9999f3fde3e0eb294f86b1540f70f86f11b8d55",
-      "url": "https://github.com/camillemndn/mobile-nixos/archive/d9999f3fde3e0eb294f86b1540f70f86f11b8d55.tar.gz",
-      "hash": "127hwdhgmywwshchbgl67jbbqpmx9dsihb7fg035xn15ha5v7mv9"
     },
     "musnix": {
       "type": "Git",
