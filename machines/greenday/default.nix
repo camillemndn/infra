@@ -7,6 +7,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   deployment.buildOnTarget = false;
+  deployment.targetPort = 60;
   deployment.targetHost = lib.infra.machines.greenday.ipv4.public;
 
   networking.hostName = "greenday";
@@ -37,10 +38,11 @@
   };
 
   services.xserver.enable = true;
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "georgette";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "georgette";
 
   services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.autoLogin.relogin = true;
   services.desktopManager.plasma6.enable = true;
 
   services.openssh.enable = true;
