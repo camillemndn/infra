@@ -8,7 +8,7 @@
 with lib;
 
 {
-  deployment.buildOnTarget = true;
+  deployment.buildOnTarget = mkDefault true;
 
   console.keyMap = "fr";
 

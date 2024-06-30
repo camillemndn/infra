@@ -52,6 +52,12 @@ let
         machines = {
           genesis = { };
 
+          greenday = {
+            ipv4 = {
+              public = "82.66.152.179";
+            };
+          };
+
           nickelback = {
             ipv4 = {
               public = "82.64.106.43";
