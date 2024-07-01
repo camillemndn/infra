@@ -28,13 +28,13 @@
       "type": "Git",
       "repository": {
         "type": "GitHub",
-        "owner": "JulienMalka",
+        "owner": "camillemndn",
         "repo": "buildbot-nix"
       },
       "branch": "main",
-      "revision": "1a978e8c4abde49dfb4e81be1f2d6e561089bb0e",
-      "url": "https://github.com/JulienMalka/buildbot-nix/archive/1a978e8c4abde49dfb4e81be1f2d6e561089bb0e.tar.gz",
-      "hash": "10yr5yx1y9wh9x1asj29142w787fsvc9q6arf0znvs4gb89dl8l9"
+      "revision": "0c93491166bfe2c6d39827eae377f0a15972abbb",
+      "url": "https://github.com/camillemndn/buildbot-nix/archive/0c93491166bfe2c6d39827eae377f0a15972abbb.tar.gz",
+      "hash": "0vc4kkykghy92qxd1ynlqwmgsv5fz71k7jmsk8zn5xxy6mxhvxr7"
     },
     "colmena": {
       "type": "Git",

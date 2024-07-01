@@ -59,6 +59,7 @@
   };
 
   profiles = {
+    ci.enable = true;
     cloud.enable = true;
     feeds.enable = true;
     graphs.enable = true;
