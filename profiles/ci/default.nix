@@ -33,7 +33,12 @@ in
         webhookSecretFile = config.age.secrets.github-webhook-secret.path;
         topic = "nix-ci";
       };
-      evalWorkerCount = 10; # limit number of concurrent evaluations
+      evalWorkerCount = 10;
+    };
+
+    services.buildbot-nix.worker = {
+      enable = true;
+      workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
     };
 
     systemd.services.buildbot-worker.path = lib.mkForce [
@@ -62,10 +67,6 @@ in
       github-webhook-secret.file = ./github-webhook-secret.age;
     };
 
-    services.buildbot-nix.worker = {
-      enable = true;
-      workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
-    };
     services.buildbot-master = {
       pythonPackages = _: [
         pkgs.buildbot-plugins.badges
