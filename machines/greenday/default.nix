@@ -3,24 +3,14 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  deployment.buildOnTarget = false;
-  deployment.targetPort = 60;
-  deployment.targetHost = lib.infra.machines.greenday.ipv4.public;
+  deployment = {
+    buildOnTarget = false;
+    targetPort = 60;
+    targetHost = lib.infra.machines.greenday.ipv4.public;
+  };
 
   networking.hostName = "greenday";
   networking.networkmanager.enable = true;
-
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   users.users.georgette = {
     isNormalUser = true;
@@ -34,22 +24,30 @@
       thunderbird
       inkscape
       gimp
+      libreoffice-qt6-fresh
     ];
   };
 
-  services.xserver.enable = true;
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "georgette";
+  services = {
+    xserver.enable = true;
+    desktopManager.plasma6.enable = true;
 
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.autoLogin.relogin = true;
-  services.desktopManager.plasma6.enable = true;
+    displayManager = {
+      sddm = {
+        enable = true;
+        autoLogin.relogin = true;
+      };
+      autoLogin = {
+        enable = true;
+        user = "georgette";
+      };
+    };
 
-  services.openssh.enable = true;
-  services.openssh.settings.PermitRootLogin = "yes";
-  services.tailscale.enable = true;
-  services.x2goserver.enable = true;
-  services.printing.enable = true;
+    openssh.enable = true;
+    tailscale.enable = true;
+    x2goserver.enable = true;
+    printing.enable = true;
+  };
 
   programs.firefox.enable = true;
 

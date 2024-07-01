@@ -11,32 +11,46 @@
 {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [
-    "ehci_pci"
-    "ahci"
-    "usb_storage"
-    "usbhid"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/dca35e5c-eeb7-4b97-89aa-8a35538aa443";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/D876-A829";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
+    initrd.availableKernelModules = [
+      "ehci_pci"
+      "ahci"
+      "usb_storage"
+      "usbhid"
+      "sd_mod"
     ];
+    kernelModules = [ "kvm-intel" ];
   };
 
-  swapDevices = [ ];
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/dca35e5c-eeb7-4b97-89aa-8a35538aa443";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-uuid/D876-A829";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
+  };
+
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
