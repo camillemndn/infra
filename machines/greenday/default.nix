@@ -12,6 +12,7 @@
   networking.hostName = "greenday";
   networking.networkmanager.enable = true;
 
+  users.mutableUsers = true;
   users.users.georgette = {
     isNormalUser = true;
     description = "Georgette";
