@@ -58,12 +58,12 @@ with lib;
     };
   };
 
-  profiles.cache-client.enable = lib.mkDefault true;
+  profiles.cache-client.enable = mkDefault true;
 
   services = {
     eternal-terminal.enable = true;
 
-    openssh.settings.PasswordAuthentication = false;
+    openssh.settings.PasswordAuthentication = mkDefault false;
 
     mysql = {
       package = mkForce pkgs.mariadb;

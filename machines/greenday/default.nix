@@ -22,6 +22,7 @@
     ];
     packages = with pkgs; [
       kdePackages.kate
+      kdePackages.krfb
       thunderbird
       inkscape
       gimp
@@ -37,6 +38,7 @@
       sddm = {
         enable = true;
         autoLogin.relogin = true;
+        wayland.enable = true;
       };
       autoLogin = {
         enable = true;
@@ -44,15 +46,20 @@
       };
     };
 
+    xrdp = {
+      enable = true;
+      defaultWindowManager = "startplasma-wayland";
+      openFirewall = true;
+    };
+
     openssh.enable = true;
-    tailscale.enable = true;
-    x2goserver.enable = true;
+    openssh.settings.PasswordAuthentication = true;
     printing.enable = true;
   };
 
   programs.firefox.enable = true;
 
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [ waypipe ];
 
   system.stateVersion = "24.05";
 }
