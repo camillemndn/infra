@@ -52,11 +52,7 @@ let
         machines = {
           genesis = { };
 
-          greenday = {
-            ipv4 = {
-              public = "82.66.152.179";
-            };
-          };
+          greenday.ipv4.public = "82.66.152.179";
 
           nickelback = {
             ipv4 = {
@@ -78,22 +74,11 @@ let
 
           radiogaga = {
             system = "aarch64-linux";
-            ipv4 = {
-              vpn = "100.100.45.31";
-              local = "192.168.1.215";
-            };
+            ipv4.vpn = "100.100.45.31";
             ipv6.vpn = "fd7a:115c:a1e0::1f";
           };
 
-          rush = {
-            system = "aarch64-linux";
-            ipv4 = {
-              public = "82.66.152.179";
-            };
-            ipv6 = {
-              public = "2a01:e0a:215:d1f0::1";
-            };
-          };
+          rush.system = "aarch64-linux";
 
           thelonious = {
             ipv4.vpn = "100.100.45.25";
