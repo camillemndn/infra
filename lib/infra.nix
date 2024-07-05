@@ -79,23 +79,19 @@ let
           radiogaga = {
             system = "aarch64-linux";
             ipv4 = {
-              public = "129.199.158.3";
-              vpn = "100.100.45.19";
+              vpn = "100.100.45.31";
+              local = "192.168.1.215";
             };
-            ipv6 = {
-              vpn = "fd7a:115c:a1e0::13";
-            };
+            ipv6.vpn = "fd7a:115c:a1e0::1f";
           };
 
           rush = {
             system = "aarch64-linux";
             ipv4 = {
               public = "82.66.152.179";
-              vpn = "";
             };
             ipv6 = {
               public = "2a01:e0a:215:d1f0::1";
-              vpn = "";
             };
           };
 
