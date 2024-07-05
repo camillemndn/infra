@@ -35,7 +35,7 @@ in
 
 stdenv.mkDerivation rec {
   pname = "radiogaga";
-  version = "0.1.0";
+  version = "1.0.0";
 
   front = buildNpmPackage {
     pname = "${pname}-front";
@@ -61,7 +61,7 @@ stdenv.mkDerivation rec {
     owner = "camillemndn";
     repo = "radiogaga";
     rev = "v${version}";
-    hash = "sha256-Oa4GgKGuathZtiXc8POQAHHnb2eg/vvjrA+9UWqU7O0=";
+    hash = "sha256-0Q4aFcJR8w25Ah5TRCekXYbWBIoaVXNKQFYSzYVqzJI=";
   };
 
   postPatch = ''
