@@ -12,17 +12,11 @@ with lib;
     extraModprobeConfig = ''
       options cfg80211 ieee80211_regdom="FR"
     '';
+
+    kernelPackages = pkgs.unstable.linuxPackages_rpi3;
   };
 
-  hardware = {
-    enableRedistributableFirmware = mkDefault true;
-    firmware = with pkgs; [
-      raspberrypiWirelessFirmware
-      wireless-regdb
-    ];
-  };
-
-  environment.systemPackages = [ pkgs.libraspberrypi ];
+  hardware.enableRedistributableFirmware = mkDefault true;
 
   powerManagement.cpuFreqGovernor = mkDefault "ondemand";
 
@@ -31,7 +25,12 @@ with lib;
     fsType = "ext4";
   };
 
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 1024;
+    }
+  ];
 
   networking.useDHCP = mkDefault false;
   networking.interfaces.eth0.useDHCP = mkDefault true;

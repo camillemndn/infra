@@ -46,10 +46,7 @@ with lib;
           })
         ]
       else
-        [
-          python3
-          R
-        ];
+        [ ];
 
     programs.neovim = {
       enable = true;
