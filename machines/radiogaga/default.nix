@@ -9,6 +9,8 @@ _:
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
+  deployment.buildOnTarget = false;
+
   profiles = {
     radiogaga.enable = true;
     spotify.enable = true;

@@ -9,12 +9,18 @@ with lib;
       generic-extlinux-compatible.enable = true;
     };
 
-    extraModprobeConfig = ''
-      options cfg80211 ieee80211_regdom="FR"
-    '';
+    # extraModprobeConfig = ''
+    #   options cfg80211 ieee80211_regdom="FR"
+    # '';
 
     kernelPackages = pkgs.unstable.linuxPackages_rpi3;
   };
+
+  nixpkgs.overlays = [
+    (_final: super: {
+      makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
 
   hardware.enableRedistributableFirmware = mkDefault true;
 
