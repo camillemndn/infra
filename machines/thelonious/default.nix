@@ -15,17 +15,14 @@
   };
 
   environment.systemPackages = with pkgs; [
-    firefoxpwa
+    idevicerestore
     ifuse
     libimobiledevice
     libirecovery
-    idevicerestore
   ];
 
-  profiles = {
-    browser.enable = true;
-    gdm.enable = true;
-    gnome.enable = true;
+  programs = {
+    firefox.enable = true;
     hyprland.enable = true;
     sway.enable = true;
   };
@@ -33,6 +30,7 @@
   services = {
     logind.killUserProcesses = true;
     power-profiles-daemon.enable = false;
+
     printing = {
       enable = true;
       drivers = with pkgs; [
@@ -40,9 +38,12 @@
         gutenprint
       ];
     };
+
     tailscale.enable = true;
     usbmuxd.enable = true;
     openssh.enable = true;
+    xserver.desktopManager.gnome.enable = true;
+    xserver.displayManager.gdm.enable = true;
   };
 
   users.mutableUsers = true;

@@ -84,8 +84,9 @@ with lib;
   };
 
   environment.systemPackages = with pkgs; [
-    sbctl
+    amdctl
     bluetuith
+    sbctl
   ];
 
   hardware = {

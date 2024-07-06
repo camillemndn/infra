@@ -5,48 +5,35 @@
   ...
 }:
 
-let
-  cfg = config.profiles.hyprland;
-in
-with lib;
-
-{
-  options.profiles.hyprland = {
-    enable = mkEnableOption "Hyprland";
+lib.mkIf config.programs.hyprland.enable {
+  services.xserver = {
+    enable = true;
+    xkb = {
+      layout = "fr";
+      variant = "";
+    };
   };
 
-  config = mkIf cfg.enable {
-    services.xserver = {
-      enable = true;
-      xkb = {
-        layout = "fr";
-        variant = "";
-      };
-    };
+  fonts = {
+    packages = with pkgs; [
+      (nerdfonts.override {
+        fonts = [
+          "FiraCode"
+          "JetBrainsMono"
+          "Ubuntu"
+        ];
+      })
+    ];
+    fontconfig.antialias = true;
+  };
 
-    fonts = {
-      packages = with pkgs; [
-        (nerdfonts.override {
-          fonts = [
-            "FiraCode"
-            "JetBrainsMono"
-            "Ubuntu"
-          ];
-        })
-      ];
-      fontconfig.antialias = true;
-    };
-
-    environment = {
-      systemPackages =
-        with pkgs;
-        [
-          waybar
-          hyprpaper
-        ]
-        ++ (optional config.services.tailscale.enable tailscale-systray);
-    };
-
-    programs.hyprland.enable = true;
+  environment = {
+    systemPackages =
+      with pkgs;
+      [
+        waybar
+        hyprpaper
+      ]
+      ++ (lib.optional config.services.tailscale.enable tailscale-systray);
   };
 }

@@ -6,24 +6,21 @@
 }:
 
 let
-  cfg = config.profiles.gdm;
+  cfg = config.services.xserver.displayManager.gdm;
 in
-with lib;
 
 {
-  options.profiles.gdm = {
-    enable = mkEnableOption "GDM";
-    hidpi.enable = mkEnableOption "High DPI";
+  options.services.xserver.displayManager.gdm = {
+    hidpi.enable = lib.mkEnableOption "High DPI";
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     services.xserver = {
       enable = true;
 
       displayManager = {
         gdm = {
           wayland = true;
-          enable = true;
 
           extraConfig = ''
             [org/gnome/desktop/interface]

@@ -11,47 +11,20 @@
   deployment.allowLocalDeployment = true;
 
   environment.systemPackages = with pkgs; [
-    amdctl
-    firefoxpwa
+    idevicerestore
     ifuse
     libimobiledevice
     libirecovery
-    idevicerestore
   ];
 
-  profiles = {
-    browser.enable = true;
-    gdm = {
-      enable = true;
-      hidpi.enable = true;
-    };
-    gnome.enable = true;
+  programs = {
+    firefox.enable = true;
     hyprland.enable = true;
+    steam.enable = true;
     sway.enable = true;
   };
 
-  programs.steam.enable = true;
-
   services = {
-    logind.killUserProcesses = true;
-    openvpn.servers.work = {
-      config = "config /etc/openvpn/work/openvpn_client.ovpn";
-      autoStart = false;
-    };
-    power-profiles-daemon.enable = false;
-    printing = {
-      enable = true;
-      drivers = with pkgs; [
-        brlaser
-        gutenprint
-      ];
-    };
-    tailscale.enable = true;
-    tlp.enable = true;
-    tzupdate.enable = true;
-    udev.packages = [ pkgs.android-udev-rules ];
-    usbmuxd.enable = true;
-
     dnscrypt-proxy2 = {
       enable = true;
       settings = {
@@ -63,6 +36,29 @@
           minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
         };
       };
+    };
+
+    logind.killUserProcesses = true;
+    power-profiles-daemon.enable = false;
+
+    printing = {
+      enable = true;
+      drivers = with pkgs; [
+        brlaser
+        gutenprint
+      ];
+    };
+
+    tailscale.enable = true;
+    tlp.enable = true;
+    tzupdate.enable = true;
+    udev.packages = [ pkgs.android-udev-rules ];
+    usbmuxd.enable = true;
+
+    xserver.desktopManager.gnome.enable = true;
+    xserver.displayManager.gdm = {
+      enable = true;
+      hidpi.enable = true;
     };
   };
 
