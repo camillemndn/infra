@@ -13,11 +13,11 @@
 let
   harmony-assistant-unwrapped = stdenv.mkDerivation rec {
     pname = "harmony-assistant";
-    version = "9.9.7e";
+    version = "9.9.8d";
 
     src = fetchurl {
       url = "https://myriad-online.com/linux/harmony-assistant-${version}.0.run";
-      sha256 = "sha256-aFhxz4ZeylrG5vvTYIgMM/gojKrPZaxLs/6dbbk/zQ8=";
+      hash = "sha256-kjSqEwOovRgIT52nyYn63vGDhxdqxYNFKhw9kxvKEbU=";
     };
 
     unpackPhase = ''
@@ -31,9 +31,10 @@ let
       cp -r usr/share/* $out/share
       cp $out/share/{pixmaps/harmony-assistant.png,icons/hicolor/256x256/apps/}
       mv $out/share/{"Harmony Assistant",harmony-assistant}
+      ln -s $out/share/harmony-assistant/Wacam/* $out/bin
 
       substituteInPlace "$out/share/applications/harmony-assistant.desktop" \
-        --replace "/usr/bin/Harmony Assistant" "harmony-assistant"
+        --replace-fail "/usr/bin/Harmony Assistant" "harmony-assistant"
     '';
 
     dontFixup = true;
@@ -64,10 +65,7 @@ buildFHSEnv {
   ];
 
   extraInstallCommands = ''
-    mkdir -p $out/share
-    cp -Lr ${harmony-assistant-unwrapped}/share/* $out/share
-    chmod -R +w $out/share
-    ls -all $out/share
+    cp -Lr ${harmony-assistant-unwrapped}/share $out
   '';
 
   inherit (harmony-assistant-unwrapped) meta;
