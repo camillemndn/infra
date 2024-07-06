@@ -84,6 +84,7 @@ with lib;
   };
 
   environment.systemPackages = with pkgs; [
+    attic-client
     dig
     direnv
     du-dust
