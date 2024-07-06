@@ -1,4 +1,4 @@
-{ pkgs }:
+_:
 
 let
   launcher = "fuzzel";

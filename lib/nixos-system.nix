@@ -49,7 +49,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             (import "${inputs.spicetify-nix}/module.nix" { isNixOSModule = false; })
           ];
           users = lib.genAttrs (listUsers config) (
-            user: lib.importIfExists ../machines/${name}/home/${user}.nix
+            user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
           );
         };
         networking.hostName = name;

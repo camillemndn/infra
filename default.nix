@@ -16,7 +16,8 @@ let
       lib.filterAttrs (_n: v: builtins.hasAttr "system" v) lib.infra.machines
     )
   );
-  mkMachine = import ./lib/mkmachine.nix inputs_final lib;
+
+  nixosSystem = import ./lib/nixos-system.nix inputs_final lib;
 
   nixpkgs_plats = builtins.listToAttrs (
     builtins.map (plat: {
@@ -41,13 +42,13 @@ rec {
   homeManagerModules = builtins.listToAttrs (
     map (x: {
       name = "profile-${x}";
-      value = import (./hm-profiles + "/${x}");
-    }) (builtins.attrNames (builtins.readDir ./hm-profiles))
+      value = import (./profiles/home-manager + "/${x}");
+    }) (builtins.attrNames (builtins.readDir ./profiles/home-manager))
   );
 
   nixosConfigurations = builtins.mapAttrs (
     name: value:
-    (mkMachine {
+    (nixosSystem {
       inherit name;
       host-config = value;
       modules = nixosModules;
