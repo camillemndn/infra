@@ -38,7 +38,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.musnix)
-    (import "${inputs.sops-nix}/modules/sops")
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
     (

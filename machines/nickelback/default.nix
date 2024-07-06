@@ -30,16 +30,10 @@ _:
     tailscale.enable = true;
   };
 
-  users = {
-    mutableUsers = true;
-    users.camille.hashedPasswordFile = null;
-    users.manu = {
-      isNormalUser = true;
-      description = "Manu";
-    };
+  users.users.manu = {
+    isNormalUser = true;
+    description = "Manu";
   };
-
-  sops.secrets = { };
 
   system.stateVersion = "23.11";
 }

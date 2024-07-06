@@ -46,9 +46,5 @@
     xserver.displayManager.gdm.enable = true;
   };
 
-  users.mutableUsers = true;
-  users.users.camille.hashedPasswordFile = null;
-  sops.secrets = { };
-
   system.stateVersion = "23.11";
 }

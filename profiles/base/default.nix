@@ -7,13 +7,46 @@
 
 with lib;
 
+let
+  sshPubKeys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBmuMNGkWQ7ozpC2UU0+jqMsRw1zVgT2Q9ORmLcTXpK2 camille@zeppelin"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINg9kUL5kFcPOWmGy/7kJZMlG2+Ls79XiWgvO8p+OQ3f camille@genesis"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPWvUwCcmmjEFfE2cNE14w/ZPm9odzVUrKwTNAOR+UZR camille@thelonious"
+  ];
+in
+
 {
+  users = {
+    defaultUserShell = pkgs.fish;
+
+    users = {
+      camille = {
+        isNormalUser = true;
+        description = "Camille";
+        extraGroups = [
+          "audio"
+          "media"
+          "networkmanager"
+          "pipewire"
+          "wheel"
+        ];
+        openssh.authorizedKeys.keys = sshPubKeys;
+      };
+
+      root = {
+        extraGroups = [
+          "audio"
+          "pulse-access"
+        ];
+        openssh.authorizedKeys.keys = sshPubKeys;
+      };
+    };
+  };
+
   deployment.buildOnTarget = mkDefault true;
 
   console.keyMap = "fr";
-
   time.timeZone = mkDefault "Europe/Paris";
-
   i18n.defaultLocale = "fr_FR.UTF-8";
   i18n.extraLocaleSettings = {
     LANG = "fr_FR.UTF-8";
@@ -31,18 +64,25 @@ with lib;
     LC_TIME = "fr_FR.UTF-8";
   };
 
-  users = {
-    mutableUsers = mkDefault false;
-    defaultUserShell = pkgs.fish;
-  };
-
   programs = {
+    git = {
+      enable = true;
+      config = {
+        user.name = "Camille M. (${config.networking.hostName})";
+        user.email = "camillemondon@free.fr";
+        pull.rebase = true;
+        fetch.prune = true;
+        diff.colorMoved = true;
+      };
+    };
+
     fish = {
       enable = true;
       promptInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       '';
     };
+
     neovim = {
       enable = true;
       defaultEditor = true;
@@ -52,6 +92,7 @@ with lib;
     };
 
     command-not-found.enable = false;
+
     nix-index = {
       enable = lib.mkDefault true;
       package = lib.mkDefault pkgs.nix-index-with-db;
@@ -60,7 +101,6 @@ with lib;
 
   services = {
     eternal-terminal.enable = true;
-
     openssh.settings.PasswordAuthentication = mkDefault false;
 
     mysql = {
@@ -85,6 +125,7 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     attic-client
+    comma-with-db
     dig
     direnv
     du-dust
@@ -93,6 +134,7 @@ with lib;
     lsof
     neofetch
     nix-init
+    nix-output-monitor
     nix-tree
     nix-update
     nixos-option
@@ -104,9 +146,13 @@ with lib;
     unzip
     wget
     zip
-    nix-output-monitor
-    comma-with-db
   ];
 
-  security.pki.certificateFiles = [ ./saumonnet.crt ];
+  security = {
+    acme = {
+      defaults.email = "camillemondon@free.fr";
+      acceptTerms = true;
+    };
+    pki.certificateFiles = [ ./saumonnet.crt ];
+  };
 }
