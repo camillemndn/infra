@@ -4,9 +4,9 @@
   imports = [ ./hardware-configuration.nix ];
 
   deployment = {
-    buildOnTarget = false;
-    targetPort = 60;
     targetHost = lib.infra.machines.greenday.ipv4.public;
+    targetPort = 60;
+    buildOnTarget = false;
   };
 
   networking.hostName = "greenday";

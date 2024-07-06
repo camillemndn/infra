@@ -9,7 +9,10 @@ _:
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
-  deployment.buildOnTarget = false;
+  deployment = {
+    targetHost = "radiogaga.local";
+    buildOnTarget = false;
+  };
 
   services = {
     nginx.enable = true;
