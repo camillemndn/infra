@@ -5,7 +5,7 @@ _:
 
   networking = {
     hostName = "radiogaga";
-    wireless.enable = true;
+    networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
 

@@ -9,10 +9,6 @@ with lib;
       generic-extlinux-compatible.enable = true;
     };
 
-    # extraModprobeConfig = ''
-    #   options cfg80211 ieee80211_regdom="FR"
-    # '';
-
     kernelPackages = pkgs.unstable.linuxPackages_rpi3;
   };
 
