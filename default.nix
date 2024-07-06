@@ -21,7 +21,10 @@ let
   nixpkgs_plats = builtins.listToAttrs (
     builtins.map (plat: {
       name = plat;
-      value = import inputs.nixpkgs { system = plat; };
+      value = import inputs.nixpkgs {
+        system = plat;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "harmony-assistant" ];
+      };
     }) machines_plats
   );
 in

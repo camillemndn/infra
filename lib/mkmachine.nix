@@ -60,24 +60,38 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
         nixpkgs = {
           inherit system;
-          config.allowUnfree = true;
+          config.allowUnfreePredicate =
+            pkg:
+            builtins.elem (lib.getName pkg) [
+              "mac"
+              "nvidia-settings"
+              "nvidia-x11"
+              "reaper"
+              "spotify"
+              "steam"
+              "steam-original"
+              "steam-run"
+              "unrar"
+              "zoom"
+              "corefonts"
+            ];
 
           overlays = lib.mkAfter [
             (
+              final: prev:
               let
                 generated = import "${inputs.nix-index-database}/generated.nix";
 
                 nix-index-database =
-                  (pkgs.fetchurl {
-                    url = generated.url + pkgs.stdenv.system;
-                    hash = generated.hashes.${pkgs.stdenv.system};
+                  (prev.fetchurl {
+                    url = generated.url + prev.stdenv.system;
+                    hash = generated.hashes.${prev.stdenv.system};
                   }).overrideAttrs
                     {
                       __structuredAttrs = true;
                       unsafeDiscardReferences.out = true;
                     };
               in
-              final: prev:
               lib.updateManyAttrs [
                 # Adds all the packages from this flake
                 extraPackages.${system}
@@ -86,23 +100,23 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit lib;
                   pinned = import inputs.nixpkgs-pinned {
                     inherit system;
-                    inherit (pkgs) config;
+                    inherit (prev) config;
                   };
                   unstable = import inputs.nixpkgs-unstable {
                     inherit system;
-                    inherit (pkgs) config;
+                    inherit (prev) config;
                   };
 
                   # Adds some packages from other flakes
-                  spicetify-nix = pkgs.callPackage "${inputs.spicetify-nix}/pkgs" { };
+                  spicetify-nix = prev.callPackage "${inputs.spicetify-nix}/pkgs" { };
                   inherit nix-index-database;
-                  nix-index-with-db = pkgs.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
+                  nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
                     inherit nix-index-database;
                   };
-                  comma-with-db = pkgs.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
+                  comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
                     inherit nix-index-database;
                   };
-                  zotero = pkgs.wrapFirefox (pkgs.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
+                  zotero = prev.wrapFirefox (prev.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
                   firefoxpwa = prev.firefoxpwa.override {
                     extraLibs = with prev; [
                       alsa-lib
