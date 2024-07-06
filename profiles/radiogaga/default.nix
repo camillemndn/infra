@@ -30,10 +30,7 @@ with lib;
         };
       };
 
-      nginx.virtualHosts = {
-        "radiogaga.lan".port = 4200;
-        "radiogaga.kms".port = 4200;
-      };
+      nginx.virtualHosts."radiogaga.local".port = 4200;
     };
   };
 }

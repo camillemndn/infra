@@ -19,7 +19,6 @@ _:
   services = {
     nginx.enable = true;
     openssh.enable = true;
-    tailscale.enable = true;
   };
 
   system.stateVersion = "22.11";
