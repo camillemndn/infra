@@ -11,14 +11,13 @@ _:
 
   deployment.buildOnTarget = false;
 
-  profiles = {
-    radiogaga.enable = true;
-    spotify.enable = true;
-  };
-
   services = {
     nginx.enable = true;
+    nginx.virtualHosts."radiogaga.local".port = 4200;
     openssh.enable = true;
+    radiogaga.enable = true;
+    spotifyd.enable = true;
+    spotifyd.settings.global.device_name = "radiogaga";
   };
 
   system.stateVersion = "22.11";

@@ -41,6 +41,20 @@ in
   };
 
   config = mkIf cfg.enable {
+    services.nginx.virtualHosts.radiogaga = {
+      listen = [
+        {
+          addr = "127.0.0.1";
+          port = 4200;
+        }
+      ];
+      root = "${pkgs.radiogaga}/share/radiogaga-front";
+      locations = {
+        "/".tryFiles = "$uri $uri/ /index.html =404";
+        "/api".proxyPass = "http://127.0.0.1:8000";
+      };
+    };
+
     systemd.tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
 
     systemd.services.radiogaga = {
