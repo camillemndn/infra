@@ -3,29 +3,17 @@
 with lib;
 
 {
-  wayland.windowManager.hyprland.enable = true;
-
-  profiles = {
-    kitty.enable = true;
-    mail.enable = true;
-    neovim.full.enable = true;
-    spotify.enable = true;
+  wayland.windowManager = {
+    hyprland.enable = true;
     sway.enable = true;
   };
 
   programs = {
-    emacs = {
-      enable = true;
-      package = pkgs.emacs29-nox;
-      extraPackages =
-        e: with e; [
-          quarto-mode
-          catppuccin-theme
-        ];
-      extraConfig = ''
-        (load-theme 'catppuccin :no-confirm)
-      '';
-    };
+    emacs.enable = true;
+    kitty.enable = true;
+    neovim.full.enable = true;
+    spicetify.enable = true;
+    thunderbird.enable = true;
   };
 
   home.packages = with pkgs; [

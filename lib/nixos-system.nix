@@ -27,7 +27,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     inherit inputs;
   };
   modules = builtins.attrValues modules ++ [
-    ../machines/base.nix
     host-config
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")

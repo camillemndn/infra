@@ -26,6 +26,13 @@ in
 lib.mkIf config.wayland.windowManager.hyprland.enable {
   wayland.windowManager.hyprland.extraConfig = import ./config.nix { inherit pkgs; };
 
+  programs = {
+    fuzzel.enable = true;
+    kitty.enable = true;
+    waybar.enable = true;
+    wlogout.enable = true;
+  };
+
   services.gammastep = {
     enable = true;
     provider = "geoclue2";

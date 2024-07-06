@@ -5,32 +5,19 @@
   ...
 }:
 
-let
-  cfg = config.profiles.kitty;
-in
-with lib;
+lib.mkIf config.programs.kitty.enable {
+  programs.kitty = {
+    font = {
+      name = "FiraCode Nerd Font Mono Reg";
+      package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
+      size = lib.mkIf config.gtk.hidpi.enable 15;
+    };
 
-{
-  options.profiles.kitty = {
-    enable = mkEnableOption "Kitty terminal";
-  };
+    theme = "Catppuccin-Mocha";
 
-  config = mkIf cfg.enable {
-    programs.kitty = {
-      enable = true;
-
-      font = {
-        name = "FiraCode Nerd Font Mono Reg";
-        package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
-        size = mkIf config.profiles.gtk-qt.hidpi.enable 15;
-      };
-
-      theme = "Catppuccin-Mocha";
-
-      settings = {
-        wayland_titlebar_color = "background";
-        background_opacity = "0.8";
-      };
+    settings = {
+      wayland_titlebar_color = "background";
+      background_opacity = "0.8";
     };
   };
 }

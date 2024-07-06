@@ -1,20 +1,15 @@
 { config, lib, ... }:
 
 let
-  cfg = config.profiles.waybar;
+  cfg = config.programs.waybar;
   launcher = "fuzzel";
 in
-with lib;
 
 {
-  options.profiles.waybar = {
-    enable = mkEnableOption "waybar";
-    bluetooth.enable = mkEnableOption "bluetooth";
-  };
+  options.programs.waybar.bluetooth.enable = lib.mkEnableOption "bluetooth";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     programs.waybar = {
-      enable = true;
       systemd = {
         enable = false;
         target = "graphical-session.target";

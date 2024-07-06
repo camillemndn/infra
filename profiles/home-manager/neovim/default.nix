@@ -6,15 +6,12 @@
 }:
 
 let
-  cfg = config.profiles.neovim;
+  cfg = config.programs.neovim;
 in
 with lib;
 
 {
-  options.profiles.neovim = {
-    enable = mkEnableOption "Activate neovim program";
-    full.enable = mkEnableOption "Activate neovim program as IDE";
-  };
+  options.programs.neovim.full.enable = mkEnableOption "Activate neovim program as IDE";
 
   config = mkIf cfg.enable {
     home.packages =
@@ -49,8 +46,6 @@ with lib;
         [ ];
 
     programs.neovim = {
-      enable = true;
-
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;

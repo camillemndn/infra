@@ -3,31 +3,12 @@
 with lib;
 
 {
-  profiles = {
-    kitty.enable = true;
-    gtk-qt.hidpi.enable = true;
-    waybar.bluetooth.enable = true;
-    mail.enable = true;
-    neovim.full.enable = true;
-    spotify.enable = true;
-    studio.enable = true;
+  wayland.windowManager = {
+    hyprland.enable = true;
     sway.enable = true;
   };
 
-  wayland.windowManager.hyprland.enable = true;
-
-  services = {
-    nextcloud-client = {
-      enable = true;
-      startInBackground = true;
-    };
-  };
-
-  systemd.user.services.nextcloud-client.Service = {
-    ExecStartPre = "${pkgs.coreutils}/bin/rm -rf %h/.local/share/Nextcloud";
-    Restart = "on-failure";
-    RestartSec = "5s";
-  };
+  gtk.hidpi.enable = true;
 
   programs = {
     chromium = {
@@ -35,19 +16,15 @@ with lib;
       package = pkgs.ungoogled-chromium;
     };
 
-    emacs = {
-      enable = true;
-      package = pkgs.emacs29-nox;
-      extraPackages =
-        e: with e; [
-          quarto-mode
-          catppuccin-theme
-        ];
-      extraConfig = ''
-        (load-theme 'catppuccin :no-confirm)
-      '';
-    };
+    emacs.enable = true;
+    kitty.enable = true;
+    neovim.full.enable = true;
+    spicetify.enable = true;
+    thunderbird.enable = true;
+    waybar.bluetooth.enable = true;
   };
+
+  services.nextcloud-client.enable = true;
 
   home.packages = with pkgs; [
     # Games
@@ -90,6 +67,17 @@ with lib;
     lilypond-with-fonts
     musescore
     sonixd
+
+    # Studio
+    ardour
+    lmms
+    zrythm
+    lsp-plugins
+    zam-plugins
+    gxplugins-lv2
+    luppp
+    lenmus
+    drumgizmo
   ];
 
   home.stateVersion = "23.05";
