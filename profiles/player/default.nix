@@ -1,32 +1,13 @@
 { config, lib, ... }:
 
-with lib;
-let
-  cfg = config.profiles.player;
-in
+lib.mkIf config.services.koel.enable {
+  services.koel = {
+    hostName = "player.kms";
+    group = "mediasrv";
 
-{
-  options.profiles.player = {
-    enable = mkEnableOption "Activate my Koel player";
+    extraConfig.MEDIA_PATH = "/srv/media/Musique";
+    secretEnvFile = "/etc/koel/secret-env";
   };
 
-  config = mkIf cfg.enable {
-    services.koel = {
-      enable = true;
-      hostName = "player.kms";
-      group = "mediasrv";
-
-      extraConfig = {
-        MEDIA_PATH = "/srv/media/Musique";
-      };
-      secretEnvFile = "/run/secrets/player";
-    };
-
-    sops.secrets.player = {
-      format = "binary";
-      sopsFile = ./secret-env;
-      owner = "koel";
-      group = "mediasrv";
-    };
-  };
+  users.groups.mediasrv = { };
 }
