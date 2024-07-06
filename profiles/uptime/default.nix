@@ -1,19 +1,8 @@
 { config, lib, ... }:
 
-let
-  cfg = config.profiles.uptime;
-in
-with lib;
-
 {
-  options.profiles.uptime = {
-    enable = mkEnableOption "Uptime";
-  };
-
-  config = mkIf cfg.enable {
+  config = lib.mkIf config.services.uptime-kuma.enable {
     services = {
-      uptime-kuma.enable = true;
-
       ntfy-sh = {
         enable = true;
         settings = {

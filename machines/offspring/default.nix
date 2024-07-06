@@ -18,14 +18,7 @@ _:
     openssh.enable = true;
     nginx.enable = true;
     nginx.noDefault.enable = true;
-  };
-
-  profiles = {
-    binary-cache = {
-      enable = false;
-      hostName = "cache2.mondon.xyz";
-    };
-    uptime.enable = true;
+    uptime-kuma.enable = true;
   };
 
   system.stateVersion = "23.05";
