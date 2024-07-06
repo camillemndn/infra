@@ -10,6 +10,12 @@ in
   "profiles/ci/github-app-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/ci/github-oauth-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/ci/github-webhook-secret.age".publicKeys = admins ++ [ zeppelin ];
-  "profiles/spotify/spotify-username.age".publicKeys = admins ++ [ radiogaga ];
+  "profiles/cloud/adminpass.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/feeds/auth.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/mail/braithwaite.fr-emma.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/mail/mondon.me-camille.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/mail/saumon.network-verso.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/photos/password.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/spotify/spotify-password.age".publicKeys = admins ++ [ radiogaga ];
+  "profiles/spotify/spotify-username.age".publicKeys = admins ++ [ radiogaga ];
 }

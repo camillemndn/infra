@@ -58,8 +58,6 @@ with lib;
     };
   };
 
-  profiles.cache-client.enable = mkDefault true;
-
   services = {
     eternal-terminal.enable = true;
 

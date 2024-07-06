@@ -1,27 +1,12 @@
 { config, lib, ... }:
 
-let
-  cfg = config.profiles.feeds;
-in
-with lib;
+lib.mkIf config.services.yarr.enable {
+  services.nginx.virtualHosts."feeds.kms".port = 7070;
 
-{
-  options.profiles.feeds = {
-    enable = mkEnableOption "Feeds";
-  };
+  services.yarr.authFile = config.age.secrets.yarr-auth.path;
 
-  config = mkIf cfg.enable {
-    services.yarr = {
-      enable = true;
-      authFile = "/run/secrets/feeds";
-    };
-
-    services.nginx.virtualHosts."feeds.kms".port = 7070;
-
-    sops.secrets.feeds = {
-      format = "binary";
-      owner = "yarr";
-      sopsFile = ./auth;
-    };
+  age.secrets.yarr-auth = {
+    owner = "yarr";
+    file = ./auth.age;
   };
 }
