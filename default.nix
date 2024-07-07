@@ -87,12 +87,18 @@ rec {
             || builtins.elem plat value.meta.platforms
           )
           (
-            builtins.listToAttrs (
-              builtins.map (e: {
-                name = e;
-                value = nixpkgs_plats.${plat}.callPackage (./pkgs + "/${e}") { };
-              }) (builtins.attrNames (builtins.readDir ./pkgs))
-            )
+            let
+              callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
+                nixpkgs_plats.${plat} // ours
+              );
+              ours = builtins.listToAttrs (
+                builtins.map (e: {
+                  name = e;
+                  value = callPackage (./pkgs + "/${e}") { };
+                }) (builtins.attrNames (builtins.readDir ./pkgs))
+              );
+            in
+            ours
           );
     }) machines_plats
   );
