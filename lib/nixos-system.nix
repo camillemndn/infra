@@ -130,6 +130,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     typst
                     jackett
                     tandoor-recipes
+                    jellyseerr
                     ;
                 }
               ]
