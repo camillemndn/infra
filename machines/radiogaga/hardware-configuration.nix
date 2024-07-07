@@ -2,6 +2,38 @@
 
 with lib;
 
+let
+  configTxt = pkgs.writeText "config.txt" ''
+    [pi3]
+    kernel=u-boot-rpi3.bin
+
+    [all]
+    # Boot in 64-bit mode.
+    arm_64bit=1
+
+    # U-Boot needs this to work, regardless of whether UART is actually used or not.
+    # Look in arch/arm/mach-bcm283x/Kconfig in the U-Boot tree to see if this is still
+    # a requirement in the future.
+    enable_uart=1
+
+    # Prevent the firmware from smashing the framebuffer setup done by the mainline kernel
+    # when attempting to show low-voltage or overtemperature warnings.
+    avoid_warnings=1
+  '';
+
+  raspberrypi-update-3b = pkgs.writeShellScriptBin "rpi-update-3b" ''
+    mount /dev/disk/by-label/FIRMWARE /mnt
+    (cd ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot && cp bootcode.bin fixup*.dat start*.elf /mnt)
+
+    # Add the config
+    cp ${configTxt} /mnt/config.txt
+
+    # Add pi3 specific files
+    cp ${pkgs.unstable.ubootRaspberryPi3_64bit}/u-boot.bin /mnt/u-boot-rpi3.bin
+    umount /dev/disk/by-label/FIRMWARE
+  '';
+in
+
 {
   boot = {
     loader = {
@@ -17,6 +49,14 @@ with lib;
       makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
     })
   ];
+
+  environment.systemPackages = [
+    pkgs.raspberrypi-update
+    pkgs.raspberrypi-utils
+    raspberrypi-update-3b
+  ];
+
+  system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
 
   hardware.enableRedistributableFirmware = mkDefault true;
 
