@@ -3,8 +3,14 @@
   stdenv,
   fetchFromGitHub,
   makeWrapper,
+  binutils,
+  coreutils,
   curl,
   gawk,
+  gnugrep,
+  gnutar,
+  gzip,
+  libuuid,
   raspberrypi-eeprom,
   raspberrypi-utils,
 }:
@@ -20,16 +26,27 @@ stdenv.mkDerivation {
     hash = "sha256-l0KobTkLCKB/VfPW4kVDc2VSTcO96cXDERri77cJ9eM=";
   };
 
+  postPatch = ''
+    sed -i rpi-update -e "/ldconfig -r/d"
+  '';
+
   nativeBuildInputs = [ makeWrapper ];
 
   installPhase = ''
     mkdir -p $out/bin
     install rpi-update $out/bin
     wrapProgram $out/bin/rpi-update \
-      --prefix PATH : ${
+      --set UPDATE_SELF 0 \
+      --set PATH ${
         lib.makeBinPath [
+          binutils
+          coreutils
           curl
           gawk
+          gnugrep
+          gnutar
+          gzip
+          libuuid
           raspberrypi-eeprom
           raspberrypi-utils
         ]
