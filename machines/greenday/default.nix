@@ -22,6 +22,7 @@
     packages = with pkgs; [
       kdePackages.kate
       kdePackages.krfb
+      kdePackages.skanlite
       thunderbird
       inkscape
       gimp
