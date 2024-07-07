@@ -19,6 +19,7 @@ _:
     nginx.virtualHosts."radiogaga.local".port = 4200;
     openssh.enable = true;
     radiogaga.enable = true;
+    snapserver.enable = true;
     spotifyd.enable = true;
     spotifyd.settings.global.device_name = "radiogaga";
   };

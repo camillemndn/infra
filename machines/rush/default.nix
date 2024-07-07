@@ -12,6 +12,12 @@ _:
 
   services = {
     openssh.enable = true;
+
+    snapclient = {
+      enable = true;
+      serverHost = "radiogaga.local";
+    };
+
     tailscale.enable = true;
   };
 
