@@ -22,7 +22,7 @@ let
   '';
 
   raspberrypi-update-3b = pkgs.writeShellScriptBin "rpi-update-3b" ''
-    mount /dev/disk/by-label/FIRMWARE /mnt
+    mount /dev/disk/by-label/FIRMWARE
     (cd ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot && cp bootcode.bin fixup*.dat start*.elf /mnt)
 
     # Add the config
@@ -41,7 +41,12 @@ in
       generic-extlinux-compatible.enable = true;
     };
 
+    kernelModules = [ "snd-aloop" ];
     kernelPackages = pkgs.unstable.linuxPackages_rpi3;
+    kernelParams = [
+      "console=ttyS0,115200n8"
+      "console=tty0"
+    ];
   };
 
   nixpkgs.overlays = [
@@ -76,6 +81,11 @@ in
   fileSystems."/" = {
     device = "/dev/disk/by-label/NIXOS_SD";
     fsType = "ext4";
+  };
+
+  fileSystems."/boot/firmware" = {
+    device = "/dev/disk/by-label/FIRMWARE";
+    fsType = "vfat";
   };
 
   swapDevices = [

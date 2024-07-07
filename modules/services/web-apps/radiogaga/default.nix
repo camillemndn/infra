@@ -59,7 +59,11 @@ in
 
     systemd.services.radiogaga = {
       description = "radiogaga";
-      after = [ "network.target" ];
+      after = [
+        "network.target"
+        "pipewire.service"
+        "snapserver.service"
+      ];
       wantedBy = [ "multi-user.target" ];
       environment.BASE_DIR = "${cfg.dataDir}";
       serviceConfig = {

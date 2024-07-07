@@ -33,7 +33,7 @@ in
     };
 
     # Patch
-    systemd.services."spotifyd".serviceConfig = {
+    systemd.services.spotifyd.serviceConfig = {
       DynamicUser = mkForce false;
       SupplementaryGroups = mkForce [
         "audio"

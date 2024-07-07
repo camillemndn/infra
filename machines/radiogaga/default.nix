@@ -16,12 +16,23 @@ _:
 
   services = {
     nginx.enable = true;
-    nginx.virtualHosts."radiogaga.local".port = 4200;
+
     openssh.enable = true;
+
     radiogaga.enable = true;
+    nginx.virtualHosts."radiogaga.local".port = 4200;
+
     snapserver.enable = true;
-    spotifyd.enable = true;
-    spotifyd.settings.global.device_name = "radiogaga";
+    snapclient = {
+      enable = true;
+      serverHost = "radiogaga.local";
+      soundcard = "sysdefault:CARD=Headphones";
+    };
+
+    spotifyd = {
+      enable = true;
+      settings.global.device_name = "radiogaga";
+    };
   };
 
   system.stateVersion = "22.11";

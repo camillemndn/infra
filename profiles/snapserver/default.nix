@@ -1,30 +1,24 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 lib.mkIf config.services.snapserver.enable {
   services.snapserver = {
+    openFirewall = true;
     codec = "flac";
+    # sampleFormat = "44100:16:2";
     streams = {
-      pipewire = {
-        type = "pipe";
-        location = "/run/snapserver/pipewire";
+      alsa = {
+        type = "alsa";
+        location = "";
+        query = {
+          device = "hw:0,1";
+        };
       };
     };
   };
-  systemd.user.services.snapcast-sink = {
-    wantedBy = [ "pipewire.service" ];
+
+  systemd.services.snapserver = {
     after = [ "pipewire.service" ];
-    bindsTo = [ "pipewire.service" ];
-    path = with pkgs; [
-      gawk
-      pulseaudio
-    ];
-    script = ''
-      pactl load-module module-pipe-sink file=/run/snapserver/pipewire sink_name=Snapcast format=s16le rate=48000
-    '';
+    requires = [ "pipewire.service" ];
+    serviceConfig.SupplementaryGroups = lib.mkForce [ "audio" ];
   };
 }
