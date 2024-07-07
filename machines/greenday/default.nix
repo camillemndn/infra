@@ -53,7 +53,10 @@
 
     openssh.enable = true;
     openssh.settings.PasswordAuthentication = true;
-    printing.enable = true;
+    printing = {
+      enable = true;
+      drivers = with pkgs; [ gutenprint ];
+    };
   };
 
   programs.firefox.enable = true;
