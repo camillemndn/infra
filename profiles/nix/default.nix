@@ -9,8 +9,15 @@
 {
   nix = {
     package = pkgs.lix;
-    gc.automatic = lib.mkIf config.services.openssh.enable true;
-    optimise.automatic = true;
+
+    gc = {
+      automatic = lib.mkIf config.services.openssh.enable true;
+      dates = "weekly";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
+    };
 
     registry.nixpkgs.flake = inputs.nixpkgs;
 
