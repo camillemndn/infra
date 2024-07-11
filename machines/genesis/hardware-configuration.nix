@@ -85,6 +85,7 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     amdctl
+    asusctl
     bluetuith
     sbctl
   ];

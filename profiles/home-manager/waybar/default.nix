@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.programs.waybar;
@@ -9,6 +14,8 @@ in
   options.programs.waybar.bluetooth.enable = lib.mkEnableOption "bluetooth";
 
   config = lib.mkIf cfg.enable {
+    home.packages = with pkgs; [ pavucontrol ];
+
     programs.waybar = {
       systemd = {
         enable = false;
@@ -237,6 +244,7 @@ in
             };
             "scroll-step" = 1;
             "on-click" = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+            "on-click-right" = "pavucontrol";
             "ignored-sinks" = [ "Easy Effects Sink" ];
           };
           "clock" = {

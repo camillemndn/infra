@@ -42,7 +42,6 @@ lib.mkIf config.wayland.windowManager.sway.enable {
   };
 
   home.packages = with pkgs; [
-    asusctl
     brightnessctl
     grim
     slurp
