@@ -49,19 +49,16 @@
       "hash": "0n1j499702iclz4hdb4ywvmn8rl4d1mbdf43dwm7lvpjq5pjjqc1"
     },
     "disko": {
-      "type": "GitRelease",
+      "type": "Git",
       "repository": {
         "type": "GitHub",
         "owner": "nix-community",
         "repo": "disko"
       },
-      "pre_releases": false,
-      "version_upper_bound": null,
-      "release_prefix": null,
-      "version": "v1.6.1",
-      "revision": "4677f6c53482a8b01ee93957e3bdd569d51261d6",
-      "url": "https://api.github.com/repos/nix-community/disko/tarball/v1.6.1",
-      "hash": "1p9vsml07bm3riw703dv83ihlmgyc11qv882qa6bqzqdgn86y8z4"
+      "branch": "master",
+      "revision": "f1a00e7f55dc266ef286cc6fc8458fa2b5ca2414",
+      "url": "https://github.com/nix-community/disko/archive/f1a00e7f55dc266ef286cc6fc8458fa2b5ca2414.tar.gz",
+      "hash": "0sn6bd7nyfa2p168pway1a7yzq6bvagpww8q3j69bb6fw1xgm6yc"
     },
     "git-hooks": {
       "type": "Git",
