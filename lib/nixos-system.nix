@@ -109,7 +109,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     jackett
                     jellyseerr
                     quarto
-                    tandoor-recipes
                     typst
                     ;
 
