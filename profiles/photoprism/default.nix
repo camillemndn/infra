@@ -43,7 +43,6 @@ lib.mkIf config.services.photoprism.enable {
           Type = "oneshot";
           ExecStartPre = null;
           ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
-          ExecStartPost = "${pkgs.photoprism}/bin/photoprism thumbs";
           KillMode = "process";
         };
         inherit (config.systemd.services.photoprism) environment;
