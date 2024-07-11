@@ -79,7 +79,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
               final: prev:
               let
                 generated = import "${inputs.nix-index-database}/generated.nix";
-
                 nix-index-database =
                   (prev.fetchurl {
                     url = generated.url + prev.stdenv.system;
@@ -96,17 +95,27 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
                 {
                   inherit lib;
+
                   pinned = import inputs.nixpkgs-pinned {
                     inherit system;
                     inherit (prev) config;
                   };
+
                   unstable = import inputs.nixpkgs-unstable {
                     inherit system;
                     inherit (prev) config;
                   };
+                  inherit (final.unstable)
+                    jackett
+                    jellyseerr
+                    quarto
+                    tandoor-recipes
+                    typst
+                    ;
 
                   # Adds some packages from other flakes
                   spicetify-nix = prev.callPackage "${inputs.spicetify-nix}/pkgs" { };
+
                   inherit nix-index-database;
                   nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
                     inherit nix-index-database;
@@ -114,7 +123,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
                     inherit nix-index-database;
                   };
-                  zotero = prev.wrapFirefox (prev.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
+
                   firefoxpwa = prev.firefoxpwa.override {
                     extraLibs = with prev; [
                       alsa-lib
@@ -124,14 +133,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                       libpulseaudio
                     ];
                   };
+
                   vimPlugins = prev.vimPlugins // final.vim-plugins;
-                  inherit (final.unstable)
-                    quarto
-                    typst
-                    jackett
-                    tandoor-recipes
-                    jellyseerr
-                    ;
+                  zotero = prev.wrapFirefox (prev.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
                 }
               ]
             )

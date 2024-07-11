@@ -1,9 +1,8 @@
 let
   inputs = import ./deps;
   pkgs = import inputs.nixpkgs-unstable { };
-  nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
-  bootstrap = import scripts/bootstrap-machine.nix;
+  nixos-anywhere = import scripts/nixos-anywhere.nix;
   pre-commit-hook = (import inputs.git-hooks).run {
     src = ./.;
 
@@ -22,11 +21,10 @@ let
 in
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
-    colmena
-    npins
-    nixos-anywhere
     agenix
-    bootstrap
+    colmena
+    nixos-anywhere
+    npins
     statix
   ];
   shellHook = ''
