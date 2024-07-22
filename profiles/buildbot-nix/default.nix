@@ -11,7 +11,10 @@ lib.mkIf config.services.buildbot-nix.master.enable {
     domain = "ci.mondon.xyz";
     workersFile = config.age.secrets.buildbot-nix-workers.path;
     admins = [ "camillemndn" ];
-    buildSystems = [ "x86_64-linux" ];
+    buildSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+    ];
     github = {
       authType.app = {
         id = 934127;
