@@ -19,10 +19,7 @@ lib.mkIf config.services.webhook.enable {
 
           cd "$1"
           ${pkgs.git}/bin/git pull
-          ${pkgs.nix}/bin/nix-build -A packages.x86_64-linux.website
-
-          rm -rf www
-          cp -r result www
+          ${pkgs.nix}/bin/nix-build -A packages.x86_64-linux.website -o www
         ''}";
         pass-arguments-to-command = [
           {
