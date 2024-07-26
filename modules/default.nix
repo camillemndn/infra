@@ -7,7 +7,6 @@
   logiops = import ./services/misc/logiops;
   nginx = import ./services/web-servers/nginx;
   organizr = import ./services/web-apps/organizr;
-  sheetable = import ./services/web-apps/sheetable;
   radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;
   yarr = import ./services/networking/yarr;
