@@ -88,6 +88,8 @@
 
     openssh.enable = true;
 
+    plausible.enable = true;
+
     photoprism.enable = true;
 
     tailscale.enable = true;
