@@ -13,13 +13,22 @@ lib.mkIf config.services.webhook.enable {
       redeploy-website = {
         command-working-directory = "/srv/sites";
         execute-command = "${pkgs.writeShellScript "redeploy-website" ''
+          export PATH=${
+            with pkgs;
+            lib.makeBinPath [
+              git
+              openssh
+              nix
+            ]
+          }
+
           if [ ! -d "$1" ]; then
-            ${pkgs.git}/bin/git clone "git@github.com:camillemndn/$1.git"
+            git clone git@github.com:camillemndn/"$1".git
           fi
 
           cd "$1"
-          ${pkgs.git}/bin/git pull
-          ${pkgs.nix}/bin/nix-build -A packages.x86_64-linux.website -o www
+          git pull
+          nix-build -A packages.x86_64-linux.website -o www
         ''}";
         pass-arguments-to-command = [
           {
