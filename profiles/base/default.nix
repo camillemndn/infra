@@ -46,7 +46,7 @@ in
   deployment.buildOnTarget = mkDefault true;
 
   console.keyMap = "fr";
-  time.timeZone = "Europe/Paris";
+  time.timeZone = mkOverride 500 "Europe/Paris";
   i18n.defaultLocale = "fr_FR.UTF-8";
   i18n.extraLocaleSettings = {
     LANG = "fr_FR.UTF-8";
