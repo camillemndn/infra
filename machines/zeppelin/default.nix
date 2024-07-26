@@ -73,9 +73,9 @@
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     nginx.virtualHosts."camillemondon.com" = {
-      root = "/srv/sites/camille-mondon";
+      root = "/srv/sites/camillemondon.com/www";
       extraConfig = "error_page 404 /404.html;";
-      locations."~ solution\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon_auth";
+      locations."~ solution\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
     };
     nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
