@@ -113,6 +113,8 @@
     };
 
     yarr.enable = true;
+
+    webhook.enable = true;
   };
 
   system.stateVersion = "21.11";
