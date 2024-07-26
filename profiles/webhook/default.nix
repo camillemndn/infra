@@ -23,10 +23,10 @@ lib.mkIf config.services.webhook.enable {
             }
 
             if [ ! -d "$1" ]; then
-              git clone git@github.com:camillemndn/"$1".git
+              git clone git@github.com:"$1".git
             fi
 
-            cd "$1"
+            cd "$2"
             git pull
             nix-build -A packages.x86_64-linux.website -o www
           '';
@@ -37,6 +37,10 @@ lib.mkIf config.services.webhook.enable {
             "command-working-directory": "/srv/sites",
             "execute-command": "${redeploy-script}",
             "pass-arguments-to-command": [
+              {
+                "source": "payload",
+                "name": "repository.full_name"
+              },
               {
                 "source": "payload",
                 "name": "repository.name"
