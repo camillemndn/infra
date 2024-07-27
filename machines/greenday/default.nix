@@ -46,6 +46,8 @@
       };
     };
 
+    ipp-usb.enable = true;
+
     xrdp = {
       enable = true;
       defaultWindowManager = "startplasma-wayland";
