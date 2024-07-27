@@ -5,21 +5,30 @@ _:
 
   networking = {
     hostName = "rush";
-    hostId = "b8ed114c";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
 
   services = {
+    nginx.enable = true;
+
     openssh.enable = true;
 
+    radiogaga.enable = true;
+    nginx.virtualHosts."rush.local".port = 4200;
+
+    snapserver.enable = true;
     snapclient = {
       enable = true;
-      serverHost = "radiogaga.local";
+      serverHost = "127.0.0.1";
+      soundcard = "sysdefault:CARD=Headphones";
     };
 
-    tailscale.enable = true;
+    spotifyd = {
+      enable = true;
+      settings.global.device_name = "rush";
+    };
   };
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "24.05";
 }

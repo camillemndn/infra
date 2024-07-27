@@ -74,7 +74,10 @@
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
     nginx.virtualHosts."camillemondon.com" = {
       root = "/srv/sites/camillemondon.com/www";
-      extraConfig = "error_page 404 /404.html;";
+      extraConfig = ''
+        rewrite ^([^.]*[^/])$ $1/ permanent;
+        error_page 404 /404.html;
+      '';
       locations = {
         "/dda/".alias = "/srv/sites/dda/www/";
         "/projects/ot/".alias = "/srv/sites/optimal-transport/www/";
