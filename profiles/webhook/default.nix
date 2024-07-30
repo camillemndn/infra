@@ -23,11 +23,11 @@ lib.mkIf config.services.webhook.enable {
             }
 
             if [ ! -d "$1" ]; then
-              git clone git@github.com:"$1".git
+              git clone git@github.com:"$1".git --recurse-submodules
             fi
 
             cd "$2"
-            git pull
+            git pull --recurse-submodules
             nix-build -A packages.x86_64-linux.website -o www
           '';
         in
