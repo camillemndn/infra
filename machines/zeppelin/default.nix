@@ -87,7 +87,7 @@
         "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
         "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
         "/talks/jds2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
-        "/teaching/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
+        "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
         "/teaching/hidimdaml/".alias = "/srv/sites/hidimdaml/www/";
         "/teaching/ics/".alias = "/srv/sites/thesis/www/materials/ics/";
         "~ solution\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
