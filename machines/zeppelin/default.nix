@@ -84,7 +84,7 @@
         "/projects/plnar/".alias = "/srv/sites/PLN/www/";
         "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
         "/random-densities/".return = "301 https://camillemondon.com/projects$request_uri";
-        "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
+        "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/codawork2024/";
         "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
         "/talks/jds2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
         "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
