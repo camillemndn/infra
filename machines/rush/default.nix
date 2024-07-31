@@ -5,6 +5,7 @@ _:
 
   networking = {
     hostName = "rush";
+    hostId = "b8ed114c";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
