@@ -81,17 +81,25 @@
       locations = {
         "/dda/".alias = "/srv/sites/dda/www/";
         "/projects/ot/".alias = "/srv/sites/optimal-transport/www/";
-        "/projects/plnar/".alias = "/srv/sites/PLN/www/";
+        "/projects/plnar/".alias = "/srv/sites/plnar/www/";
         "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
-        "/random-densities/".return = "301 https://camillemondon.com/projects$request_uri";
+        "/random-densities/".return = "301 https://$server_name/projects$request_uri";
         "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/codawork2024/";
         "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
         "/talks/jds2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
         "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
-        "/teaching/hidimdaml/".alias = "/srv/sites/hidimdaml/www/";
+        "/teaching/hidimdaml".extraConfig = ''
+          rewrite ^/teaching/hidimdaml/(.*)$ https://hidimdaml.camillemondon.com/$1 permanent;
+        '';
         "/teaching/ics/".alias = "/srv/sites/thesis/www/materials/ics/";
-        "~ solution\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
       };
+    };
+    nginx.virtualHosts."hidimdaml.camillemondon.com" = {
+      extraConfig = ''
+        error_page 404 https://camillemondon.com/404.html;
+      '';
+      root = "/srv/sites/hidimdaml/www";
+      locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
     };
     nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
