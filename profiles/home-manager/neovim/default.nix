@@ -58,12 +58,17 @@ with lib;
           coc.preferences.formatOnSaveFiletypes = [
             "bash"
             "ccls"
+            "css"
+            "haskell"
+            "html"
+            "javascript"
+            "latex"
+            "lua"
+            "markdown"
             "nix"
             "python"
             "r"
             "rmd"
-            "latex"
-            "lua"
           ];
 
           languageserver = {
@@ -96,6 +101,33 @@ with lib;
               };
             };
 
+            haskell = {
+              command = "haskell-language-server-wrapper";
+              args = [ "--lsp" ];
+              rootPatterns = [
+                "*.cabal"
+                "stack.yaml"
+                "cabal.project"
+                "package.yaml"
+                "hie.yaml"
+              ];
+              filetypes = [
+                "haskell"
+                "lhaskell"
+              ];
+              settings.haskell = {
+                checkParents = "CheckOnSave";
+                checkProject = true;
+                maxCompletions = 40;
+                formattingProvider = "ormolu";
+                plugin = {
+                  stan = {
+                    globalOn = true;
+                  };
+                };
+              };
+            };
+
             latex = {
               command = "texlab";
               filetypes = [
@@ -115,11 +147,9 @@ with lib;
               command = "nil";
               filetypes = [ "nix" ];
               rootPatterns = [ "flake.nix" ];
-              settings = {
-                nil = {
-                  formatting = {
-                    command = [ "nixfmt" ];
-                  };
+              settings.nil = {
+                formatting = {
+                  command = [ "nixfmt" ];
                 };
               };
             };
@@ -217,18 +247,20 @@ with lib;
         mkIf cfg.full.enable [
           ccls
           fd
+          haskell-language-server
           lua-language-server
           lua.pkgs.lua-lsp
           lua.pkgs.luarocks-nix
           marksman
           nil
           nixfmt-rfc-style
-          unstable.bash-language-server
+          ormolu
           pyright
           ripgrep
           shfmt
           texlab
           texliveFull
+          unstable.bash-language-server
           wl-clipboard
           wl-clipboard-x11
         ];
