@@ -66,16 +66,14 @@ with lib;
               extraConfig =
                 if (hasSuffixIn cfg.publicDomains name) then
                   ''
-                    
-                                  allow all; 
+                    allow all;
                   ''
                 else
                   ''
-                    
-                                 if ($bad_ip) {
-                                   return 444;
-                                 }
-                                 ssl_stapling off;
+                    if ($bad_ip) {
+                      return 444;
+                    }
+                    ssl_stapling off;
                   '';
             };
           }
@@ -93,19 +91,18 @@ with lib;
 
       # VPN IPs
       appendHttpConfig = ''
-        
-                geo $bad_ip {
-                default 1;
-                127.0.0.1/32 0;
-                ::1/128 0;
-                192.168.0.0/16 0;
-                fc00::/7 0;
-                100.100.45.0/24 0;
-                fd7a:115c:a1e0::/48 0;
-                }
-                
-                proxy_headers_hash_max_size 512;
-                proxy_headers_hash_bucket_size 128; 
+        geo $bad_ip {
+          default 1;
+          127.0.0.1/32 0;
+          ::1/128 0;
+          192.168.0.0/16 0;
+          fc00::/7 0;
+          100.100.45.0/24 0;
+          fd7a:115c:a1e0::/48 0;
+        }
+
+        proxy_headers_hash_max_size 512;
+        proxy_headers_hash_bucket_size 128;
       '';
 
       clientMaxBodySize = "20m";
@@ -118,8 +115,7 @@ with lib;
         sslCertificate = "/var/lib/acme/default/cert.pem";
         sslCertificateKey = "/var/lib/acme/default/key.pem";
         extraConfig = ''
-          
-                    return 444;
+          return 444;
         '';
       };
     };
