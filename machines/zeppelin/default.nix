@@ -70,8 +70,8 @@
       ];
     };
 
-    nginx.virtualHosts."yali.es".root = "/srv/sites/yali";
-    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/cecilia-flamenca";
+    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
+    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
     nginx.virtualHosts."camillemondon.com" = {
       root = "/srv/sites/camillemondon.com/www";
       extraConfig = ''
