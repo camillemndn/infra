@@ -111,6 +111,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit (final.unstable)
                     jackett
                     jellyseerr
+                    lubelogger
                     quarto
                     typst
                     ;

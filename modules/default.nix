@@ -5,6 +5,7 @@
   koel = import ./services/audio/koel;
   lazylibrarian = import ./services/web-apps/lazylibrarian;
   logiops = import ./services/misc/logiops;
+  lubelogger = import ./services/web-apps/lubelogger;
   nginx = import ./services/web-servers/nginx;
   organizr = import ./services/web-apps/organizr;
   radiogaga = import ./services/web-apps/radiogaga;

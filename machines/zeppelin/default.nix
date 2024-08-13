@@ -45,6 +45,8 @@
       hostName = "meet.mondon.xyz";
     };
 
+    lubelogger.enable = true;
+
     mattermost = {
       enable = true;
       siteUrl = "https://projects.mondon.xyz";
