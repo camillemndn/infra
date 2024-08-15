@@ -72,6 +72,8 @@ in
         user.email = "camillemondon@free.fr";
         pull.rebase = true;
         fetch.prune = true;
+        rebase.autoStash = true;
+        push.autoSetupRemote = true;
         diff.colorMoved = true;
       };
     };
