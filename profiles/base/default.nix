@@ -25,9 +25,11 @@ in
         description = "Camille";
         extraGroups = [
           "audio"
+          "lp"
           "media"
           "networkmanager"
           "pipewire"
+          "scanner"
           "wheel"
         ];
         openssh.authorizedKeys.keys = sshPubKeys;

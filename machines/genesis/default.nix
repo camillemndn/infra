@@ -17,6 +17,8 @@
     libirecovery
   ];
 
+  hardware.sane.enable = true;
+
   programs = {
     firefox.enable = true;
     hyprland.enable = true;

@@ -45,6 +45,7 @@ with lib;
     zoom-us
 
     # Desk
+    gscan2pdf
     libreoffice-fresh
     pdftocgen
     xournalpp
