@@ -111,7 +111,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit (final.unstable)
                     jackett
                     jellyseerr
-                    lubelogger
                     quarto
                     typst
                     ;
@@ -136,6 +135,12 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                       libpulseaudio
                     ];
                   };
+
+                  lubelogger = final.unstable.lubelogger.overrideAttrs (
+                    _: _: {
+                      makeWrapperArgs = [ "--set-default DOTNET_CONTENTROOT ${placeholder "out"}/lib/lubelogger" ];
+                    }
+                  );
 
                   vimPlugins = prev.vimPlugins // final.vim-plugins;
                   zotero = prev.wrapFirefox (prev.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
