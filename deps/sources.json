@@ -226,9 +226,9 @@
         "repo": "zotero-nix"
       },
       "branch": "main",
-      "revision": "cad5db470ba96428c49b0dda5461735c1e5bd02e",
-      "url": "https://github.com/camillemndn/zotero-nix/archive/cad5db470ba96428c49b0dda5461735c1e5bd02e.tar.gz",
-      "hash": "193dw8vnppscykbbia8nzvj2w6wafxxc6b4p0wyv42pr3rp35cig"
+      "revision": "1e12d1d89a4ee00a48bd4a3e3f9de8e39cee1729",
+      "url": "https://github.com/camillemndn/zotero-nix/archive/1e12d1d89a4ee00a48bd4a3e3f9de8e39cee1729.tar.gz",
+      "hash": "1l8dkkbxa5z1kn2pvqw6rjzid67w2xwpnjyjid0n9xhbr3g1i3wy"
     }
   },
   "version": 3
