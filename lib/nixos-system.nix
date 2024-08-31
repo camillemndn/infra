@@ -98,7 +98,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
                   pinned =
                     import
-                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/a1cc729dcbc31d9b0d11d86dc7436163548a9665.tar.gz")
+                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/ae2fc9e0e42caaf3f068c1bfdc11c71734125e06.tar.gz")
                       {
                         inherit system;
                         inherit (prev) config;
