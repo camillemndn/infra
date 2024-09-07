@@ -210,13 +210,13 @@
       "type": "Git",
       "repository": {
         "type": "GitHub",
-        "owner": "Gerg-L",
+        "owner": "the-argus",
         "repo": "spicetify-nix"
       },
       "branch": "master",
-      "revision": "305b6034ad329268eb33c079e2d33740ccf329ea",
-      "url": "https://github.com/Gerg-L/spicetify-nix/archive/305b6034ad329268eb33c079e2d33740ccf329ea.tar.gz",
-      "hash": "1qz5h5av8vf1ra1yq5j8mj8778d6bl4nyib3nk70bxgwxv2hab71"
+      "revision": "1325416f951d6a82cfddb1289864ad782e2b87c4",
+      "url": "https://github.com/the-argus/spicetify-nix/archive/1325416f951d6a82cfddb1289864ad782e2b87c4.tar.gz",
+      "hash": "0yvkw9i3xk0qn1j01b4mnj912p55zi1v3fdsy77jy3pz8zxfll4h"
     },
     "zotero-nix": {
       "type": "Git",
