@@ -45,7 +45,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         home-manager = {
           useGlobalPkgs = true;
           sharedModules = builtins.attrValues hmModules ++ [
-            (import "${inputs.spicetify-nix}/module.nix" { isNixOSModule = false; })
+            (import inputs.spicetify-nix).homeManagerModules.spicetify
           ];
           users = lib.genAttrs (listUsers config) (
             user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
@@ -116,7 +116,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     ;
 
                   # Adds some packages from other flakes
-                  spicetify-nix = prev.callPackage "${inputs.spicetify-nix}/pkgs" { };
+                  spicetify-nix = (import inputs.spicetify-nix).legacyPackages.${system};
 
                   inherit nix-index-database;
                   nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
