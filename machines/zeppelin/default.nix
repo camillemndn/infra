@@ -19,7 +19,7 @@
           # lisa
           publicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
           allowedIPs = [ "0.0.0.0/0" ];
-          endpoint = "[2a01:e0a:5f9:9681:5880:c9ff:fe9f:3dfb]:51821";
+          endpoint = "[2001:0bc8:3d24::45]:51821";
           persistentKeepalive = 25;
         }
       ];
