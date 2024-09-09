@@ -55,6 +55,7 @@ with lib;
     bitwarden
     bitwarden-cli
     joplin-desktop
+    localsend
     nextcloud-client
 
     # Graphics

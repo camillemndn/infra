@@ -6,6 +6,11 @@
   networking = {
     hostName = "genesis";
     networkmanager.enable = true;
+
+    firewall = {
+      allowedTCPPorts = [ 53317 ];
+      allowedUDPPorts = [ 53317 ];
+    };
   };
 
   deployment.allowLocalDeployment = true;

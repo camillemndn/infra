@@ -6,7 +6,14 @@
   networking = {
     hostName = "thelonious";
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 2022 ];
+
+    firewall = {
+      allowedTCPPorts = [
+        2022
+        53317
+      ];
+      allowedUDPPorts = [ 53317 ];
+    };
   };
 
   deployment = {

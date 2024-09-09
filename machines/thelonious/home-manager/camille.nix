@@ -31,6 +31,7 @@ with lib;
     # Sync
     bitwarden
     bitwarden-cli
+    localsend
 
     # Graphics
     inkscape-with-extensions
