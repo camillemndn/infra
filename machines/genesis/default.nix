@@ -16,10 +16,13 @@
   deployment.allowLocalDeployment = true;
 
   environment.systemPackages = with pkgs; [
+    android-tools
+    dump-iphone-backup
     idevicerestore
     ifuse
     libimobiledevice
     libirecovery
+    unstable.signalbackup-tools
   ];
 
   hardware.sane.enable = true;
