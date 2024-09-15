@@ -59,6 +59,7 @@ with lib;
     nextcloud-client
 
     # Graphics
+    gimp-with-plugins
     inkscape-with-extensions
 
     # Music & Video
