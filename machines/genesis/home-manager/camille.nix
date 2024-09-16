@@ -14,6 +14,7 @@ with lib;
     chromium = {
       enable = true;
       package = pkgs.ungoogled-chromium;
+      commandLineArgs = [ "--force-device-scale-factor=1.5" ];
     };
 
     emacs.enable = true;
