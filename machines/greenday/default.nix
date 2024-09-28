@@ -22,6 +22,7 @@
     packages = with pkgs; [
       kdePackages.kate
       kdePackages.krfb
+      kdePackages.partitionmanager
       kdePackages.skanlite
       thunderbird
       inkscape
