@@ -126,10 +126,10 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit nix-index-database;
                   };
 
-                  firefoxpwa = prev.firefoxpwa.override {
-                    extraLibs = with prev; [
+                  firefoxpwa = final.unstable.firefoxpwa.override {
+                    extraLibs = with final.unstable; [
                       alsa-lib
-                      ffmpeg_5
+                      ffmpeg_7
                       libjack2
                       pipewire
                       libpulseaudio
