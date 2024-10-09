@@ -113,6 +113,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     jellyseerr
                     quarto
                     typst
+                    zotero
                     ;
 
                   # Adds some packages from other flakes
@@ -143,7 +144,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   );
 
                   vimPlugins = prev.vimPlugins // final.vim-plugins;
-                  zotero = prev.wrapFirefox (prev.callPackage "${inputs.zotero-nix}/pkgs" { }) { };
                 }
               ]
             )
