@@ -12,6 +12,7 @@
   deployment = {
     allowLocalDeployment = true;
     targetHost = lib.infra.machines.maneskin.ipv4.local;
+    buildOnTarget = false;
   };
 
   services = {

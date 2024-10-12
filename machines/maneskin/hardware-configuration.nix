@@ -7,7 +7,14 @@
       generic-extlinux-compatible.enable = true;
     };
 
-    initrd.availableKernelModules = [ "xhci_pci" ];
+    initrd.availableKernelModules = [
+      "pcie_brcmstb"
+      "reset-raspberrypi"
+      "usbhid"
+      "usb_storage"
+      "vc4"
+    ];
+
     kernelPackages = pkgs.unstable.linuxPackages_rpi4;
   };
 
