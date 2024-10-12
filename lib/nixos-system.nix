@@ -113,7 +113,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit (final.unstable)
                     jackett
                     jellyseerr
-                    jitsi-meet
                     quarto
                     typst
                     zotero
