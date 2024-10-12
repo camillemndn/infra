@@ -15,6 +15,12 @@ _:
   };
 
   services = {
+    home-assistant = {
+      enable = true;
+      openFirewall = true;
+      config.homeassistant.name = "Cama";
+    };
+
     nginx.enable = true;
 
     openssh.enable = true;
