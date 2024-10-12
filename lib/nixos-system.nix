@@ -58,22 +58,24 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
         nixpkgs = {
           inherit system;
-          config.allowUnfreePredicate =
-            pkg:
-            builtins.elem (lib.getName pkg) [
-              "mac"
-              "nvidia-settings"
-              "nvidia-x11"
-              "reaper"
-              "spotify"
-              "steam"
-              "steam-original"
-              "steam-run"
-              "unrar"
-              "zoom"
-              "corefonts"
-            ];
-
+          config = {
+            allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [ "jitsi-meet" ];
+            allowUnfreePredicate =
+              pkg:
+              builtins.elem (lib.getName pkg) [
+                "mac"
+                "nvidia-settings"
+                "nvidia-x11"
+                "reaper"
+                "spotify"
+                "steam"
+                "steam-original"
+                "steam-run"
+                "unrar"
+                "zoom"
+                "corefonts"
+              ];
+          };
           overlays = lib.mkAfter [
             (
               final: prev:
