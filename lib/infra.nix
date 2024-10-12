@@ -78,11 +78,6 @@ let
             ipv6.vpn = "fd7a:115c:a1e0::1f";
           };
 
-          maneskin = {
-            system = "aarch64-linux";
-            ipv4.local = "192.168.1.125";
-          };
-
           thelonious = {
             ipv4.vpn = "100.100.45.25";
             ipv6.vpn = "fd7a:115c:a1e0::19";
