@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -62,10 +62,13 @@ _:
     };
 
     wyoming = {
-      faster-whisper.servers.ha = {
-        enable = true;
-        uri = "tcp://0.0.0.0:10300";
-        language = "fr";
+      faster-whisper = {
+        package = pkgs.unstable.wyoming-faster-whisper;
+        servers.ha = {
+          enable = true;
+          uri = "tcp://0.0.0.0:10300";
+          language = "fr";
+        };
       };
 
       piper.servers.ha = {
