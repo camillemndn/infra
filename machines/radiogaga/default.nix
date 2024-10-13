@@ -23,6 +23,7 @@ _:
         "meteo_france"
         "mobile_app"
         "picotts"
+        "piper"
         "radio_browser"
         "snapcast"
         "spotify"
@@ -30,6 +31,9 @@ _:
         "tradfri"
         "tts"
         "zeroconf"
+        "wake_word"
+        "whisper"
+        "wyoming"
       ];
       openFirewall = true;
       config = {
@@ -55,6 +59,20 @@ _:
     spotifyd = {
       enable = true;
       settings.global.device_name = "radiogaga";
+    };
+
+    wyoming = {
+      faster-whisper.servers.ha = {
+        enable = true;
+        uri = "tcp://0.0.0.0:10300";
+        language = "fr";
+      };
+
+      piper.servers.ha = {
+        enable = true;
+        uri = "tcp://0.0.0.0:10200";
+        voice = "fr_FR-upmc-medium";
+      };
     };
   };
 
