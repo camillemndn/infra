@@ -17,8 +17,25 @@ _:
   services = {
     home-assistant = {
       enable = true;
+      extraComponents = [
+        "ecovacs"
+        "jellyfin"
+        "meteo_france"
+        "mobile_app"
+        "picotts"
+        "radio_browser"
+        "snapcast"
+        "spotify"
+        "stt"
+        "tradfri"
+        "tts"
+        "zeroconf"
+      ];
       openFirewall = true;
-      config.homeassistant.name = "Cama";
+      config = {
+        default_config = { };
+        homeassistant.name = "Cama";
+      };
     };
 
     nginx.enable = true;
