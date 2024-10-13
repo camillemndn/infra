@@ -114,6 +114,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     jackett
                     jellyseerr
                     quarto
+                    spotifyd
                     typst
                     zotero
                     ;
