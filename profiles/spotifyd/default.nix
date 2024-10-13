@@ -14,8 +14,6 @@ in
   config = mkIf cfg.enable {
     services.spotifyd.settings.global = {
       backend = "alsa";
-      username_cmd = "cat ${config.age.secrets.spotify-username.path}";
-      password_cmd = "cat ${config.age.secrets.spotify-password.path}";
       bitrate = 320;
       volume-normalisation = true;
       normalisation-pregain = -10;
@@ -26,11 +24,6 @@ in
     };
 
     services.avahi.enable = true;
-
-    age.secrets = {
-      spotify-username.file = ./spotify-username.age;
-      spotify-password.file = ./spotify-password.age;
-    };
 
     # Patch
     systemd.services.spotifyd.serviceConfig = {
