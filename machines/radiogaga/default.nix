@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+_:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -15,32 +15,7 @@
   };
 
   services = {
-    home-assistant = {
-      enable = true;
-      extraComponents = [
-        "ecovacs"
-        "jellyfin"
-        "meteo_france"
-        "mobile_app"
-        "picotts"
-        "piper"
-        "radio_browser"
-        "snapcast"
-        "spotify"
-        "stt"
-        "tradfri"
-        "tts"
-        "zeroconf"
-        "wake_word"
-        "whisper"
-        "wyoming"
-      ];
-      openFirewall = true;
-      config = {
-        default_config = { };
-        homeassistant.name = "Cama";
-      };
-    };
+    home-assistant.enable = true;
 
     nginx.enable = true;
 
@@ -59,23 +34,6 @@
     spotifyd = {
       enable = true;
       settings.global.device_name = "radiogaga";
-    };
-
-    wyoming = {
-      faster-whisper = {
-        package = pkgs.unstable.wyoming-faster-whisper;
-        servers.ha = {
-          enable = true;
-          uri = "tcp://0.0.0.0:10300";
-          language = "en";
-        };
-      };
-
-      piper.servers.ha = {
-        enable = true;
-        uri = "tcp://0.0.0.0:10200";
-        voice = "en-us-ryan-medium";
-      };
     };
   };
 
