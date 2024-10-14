@@ -31,11 +31,14 @@ lib.mkIf config.services.home-assistant.enable {
         p: with p; [
           aiohomekit
           py-sucks
+          python-otbr-api
         ];
       openFirewall = true;
       config = {
         default_config = { };
         homeassistant.name = "Cama";
+        scene = "!include scenes.yaml";
+        automation = "!include automations.yaml";
       };
     };
 
