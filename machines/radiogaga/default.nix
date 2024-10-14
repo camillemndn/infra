@@ -67,14 +67,14 @@
         servers.ha = {
           enable = true;
           uri = "tcp://0.0.0.0:10300";
-          language = "fr";
+          language = "en";
         };
       };
 
       piper.servers.ha = {
         enable = true;
         uri = "tcp://0.0.0.0:10200";
-        voice = "fr_FR-upmc-medium";
+        voice = "en-us-ryan-medium";
       };
     };
   };
