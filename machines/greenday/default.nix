@@ -7,6 +7,7 @@
     targetHost = lib.infra.machines.greenday.ipv4.public;
     targetPort = 60;
     buildOnTarget = false;
+    allowLocalDeployment = true;
   };
 
   networking.hostName = "greenday";
@@ -59,7 +60,10 @@
     openssh.settings.PasswordAuthentication = true;
     printing = {
       enable = true;
-      drivers = with pkgs; [ gutenprint ];
+      drivers = with pkgs; [
+        gutenprint
+        samsung-unified-linux-driver
+      ];
     };
   };
 
