@@ -63,6 +63,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
+                "libsane-dsseries"
                 "mac"
                 "nvidia-settings"
                 "nvidia-x11"

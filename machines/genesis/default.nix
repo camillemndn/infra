@@ -25,7 +25,10 @@
     unstable.signalbackup-tools
   ];
 
-  hardware.sane.enable = true;
+  hardware.sane = {
+    enable = true;
+    dsseries.enable = true;
+  };
 
   programs = {
     firefox.enable = true;
