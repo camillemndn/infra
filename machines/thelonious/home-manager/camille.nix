@@ -12,7 +12,6 @@ with lib;
     emacs.enable = true;
     kitty.enable = true;
     neovim.full.enable = true;
-    spicetify.enable = true;
     thunderbird.enable = true;
   };
 
@@ -38,6 +37,7 @@ with lib;
 
     # Music & Video
     clapper
+    spotify
   ];
 
   home.stateVersion = "23.11";

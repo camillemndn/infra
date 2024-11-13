@@ -206,18 +206,6 @@
       "url": "https://github.com/nixos/nixpkgs/archive/76612b17c0ce71689921ca12d9ffdc9c23ce40b2.tar.gz",
       "hash": "03pmy2dv212mmxgcvwxinf3xy6m6zzr8ri71pda1lqggmll2na12"
     },
-    "spicetify-nix": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "Gerg-L",
-        "repo": "spicetify-nix"
-      },
-      "branch": "master",
-      "revision": "c80ea8541d55731f143828a574e00d50553e9c7c",
-      "url": "https://github.com/Gerg-L/spicetify-nix/archive/c80ea8541d55731f143828a574e00d50553e9c7c.tar.gz",
-      "hash": "0rqirnabwqn20jbgz3dmmpdi9lr06b4fd3a8yyk9l8yfwlnrkfn6"
-    },
     "zotero-nix": {
       "type": "Git",
       "repository": {

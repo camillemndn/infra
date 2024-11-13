@@ -20,7 +20,6 @@ with lib;
     emacs.enable = true;
     kitty.enable = true;
     neovim.full.enable = true;
-    spicetify.enable = true;
     thunderbird.enable = true;
     waybar.bluetooth.enable = true;
   };
@@ -72,6 +71,7 @@ with lib;
     musescore
     rockbox-utility
     sonixd
+    spotify
 
     # Studio
     ardour
