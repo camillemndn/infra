@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonApplication rec {
   pname = "whatsapp-chat-exporter";
-  version = "0.10.0";
+  version = "0.10.5";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "KnugiHK";
     repo = "Whatsapp-Chat-Exporter";
     rev = version;
-    hash = "sha256-W66qEQa7jlgd8v6dsIVAz6gmWsYr3SMqyhF2KIwC6hI=";
+    hash = "sha256-TPXQaWnUy+blTS+Tz84K6cxJu4+dLbT2Dl9SKqlhDHY=";
   };
 
   nativeBuildInputs = [
@@ -26,8 +26,6 @@ python3.pkgs.buildPythonApplication rec {
     python3.pkgs.bleach
     (python3.pkgs.callPackage ../iphone-backup-decrypt { })
   ];
-
-  # pythonImportsCheck = [ "whatsapp_chat_exporter" ];
 
   meta = with lib; {
     description = "A customizable Android and iOS/iPadOS WhatsApp database parser that will give you the history of your WhatsApp conversations in HTML and JSON. Android Backup Crypt12, Crypt14, Crypt15, and new schema supported";
