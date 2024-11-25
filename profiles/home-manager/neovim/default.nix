@@ -217,6 +217,7 @@ with lib;
           mason-lspconfig-nvim
           nvim-cmp
           nvim-colorizer-lua
+          nvim-lilypond-suite
           nvim-lspconfig
           Nvim-R
           nvim-treesitter
