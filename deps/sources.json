@@ -12,18 +12,6 @@
       "url": "https://github.com/ryantm/agenix/archive/f6291c5935fdc4e0bef208cfc0dcab7e3f7a1c41.tar.gz",
       "hash": "1x8nd8hvsq6mvzig122vprwigsr3z2skanig65haqswn7z7amsvg"
     },
-    "attic": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "zhaofengli",
-        "repo": "attic"
-      },
-      "branch": "main",
-      "revision": "47752427561f1c34debb16728a210d378f0ece36",
-      "url": "https://github.com/zhaofengli/attic/archive/47752427561f1c34debb16728a210d378f0ece36.tar.gz",
-      "hash": "0jafban5z3sxf0xacgz3bmxanjygl6g078dz27wn6mgzs7y058z8"
-    },
     "buildbot-nix": {
       "type": "Git",
       "repository": {

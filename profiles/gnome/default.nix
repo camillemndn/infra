@@ -32,27 +32,23 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
   };
 
   environment = {
-    gnome.excludePackages =
-      with pkgs;
-      with gnome;
-      [
-        geary
-        epiphany
-        gnome-calendar
-        gnome-console
-      ];
+    gnome.excludePackages = with pkgs; [
+      geary
+      epiphany
+      gnome-calendar
+      gnome-console
+    ];
 
     systemPackages =
       with pkgs;
       with gnome;
       with gnomeExtensions;
       [
-        dconf-editor
+        pkgs.dconf-editor
         tailscale-status
         screen-rotate
         nextcloud-folder
         blur-my-shell
-        recent-items
         supergfxctl-gex
         wireless-hid
         vitals

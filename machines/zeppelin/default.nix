@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -139,7 +139,7 @@
     };
 
     wordpress = {
-      sites."wordpress.kms".package = pkgs.wordpress6_5;
+      sites."wordpress.kms" = { };
       webserver = "nginx";
     };
 

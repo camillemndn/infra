@@ -60,7 +60,7 @@ lib.mkIf config.wayland.windowManager.hyprland.enable {
       grim
       ocrScript
       pngquant
-      python39Packages.requests
+      python3.pkgs.requests
       slurp
       swayidle
       tesseract5

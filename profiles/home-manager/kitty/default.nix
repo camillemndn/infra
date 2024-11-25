@@ -13,7 +13,7 @@ lib.mkIf config.programs.kitty.enable {
       size = lib.mkIf config.gtk.hidpi.enable 15;
     };
 
-    theme = "Catppuccin-Mocha";
+    themeFile = "Catppuccin-Mocha";
 
     settings = {
       wayland_titlebar_color = "background";

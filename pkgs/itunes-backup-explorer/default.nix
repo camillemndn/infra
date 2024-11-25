@@ -1,7 +1,7 @@
 {
   lib,
   maven,
-  jdk,
+  jdk23,
   fetchFromGitHub,
   makeWrapper,
   wrapGAppsHook3,
@@ -10,7 +10,7 @@
 }:
 
 let
-  jdk' = jdk.override { enableJavaFX = true; };
+  jdk' = jdk23.override { enableJavaFX = true; };
 in
 
 maven.buildMavenPackage rec {
@@ -25,7 +25,7 @@ maven.buildMavenPackage rec {
   };
 
   mvnJdk = jdk';
-  mvnHash = "sha256-DRXJI7HcoTH7mhiHQ4ni9sHVustMYpbgygiXUBWGn38=";
+  mvnHash = "sha256-zrdm4f73xF2od3JBFs4VOg0bg5mfpccIzrF7GEzB1LA=";
 
   nativeBuildInputs = [
     makeWrapper

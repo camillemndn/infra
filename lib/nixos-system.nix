@@ -30,7 +30,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     host-config
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
-    (import "${inputs.attic}/nixos/atticd.nix")
     (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
@@ -71,6 +70,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "steam"
                 "steam-original"
                 "steam-run"
+                "steam-unwrapped"
                 "unrar"
                 "zoom"
                 "corefonts"
@@ -100,7 +100,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
                   pinned =
                     import
-                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/f3111f62a23451114433888902a55cf0692b408d.tar.gz")
+                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/0c582677378f2d9ffcb01490af2f2c678dcb29d3.tar.gz")
                       {
                         inherit system;
                         inherit (prev) config;
