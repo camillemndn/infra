@@ -53,8 +53,8 @@ maven.buildMavenPackage rec {
     description = "A graphical tool that can extract and replace files from encrypted and non-encrypted iOS backups";
     homepage = "https://github.com/MaxiHuHe04/iTunes-Backup-Explorer";
     license = licenses.mit;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ camillemndn ];
     mainProgram = "itunes-backup-explorer";
-    platforms = platforms.all;
+    platforms = [ "x86_64-linux" ];
   };
 }
