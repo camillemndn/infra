@@ -30,7 +30,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     host-config
     (import "${home-manager}/nixos")
     (import "${inputs.nixos-mailserver}")
-    (import "${inputs.attic}/nixos/atticd.nix")
     (import "${inputs.disko}/module.nix")
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
@@ -57,7 +56,13 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         nixpkgs = {
           inherit system;
           config = {
-            allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [ "jitsi-meet" ];
+            permittedInsecurePackages = [
+              "aspnetcore-runtime-6.0.36"
+              "aspnetcore-runtime-wrapped-6.0.36"
+              "dotnet-sdk-6.0.428"
+              "dotnet-sdk-wrapped-6.0.428"
+              "jitsi-meet-1.0.8043"
+            ];
             allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
@@ -71,6 +76,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "steam"
                 "steam-original"
                 "steam-run"
+                "steam-unwrapped"
                 "unrar"
                 "zoom"
                 "corefonts"
@@ -100,7 +106,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
                   pinned =
                     import
-                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/ae2fc9e0e42caaf3f068c1bfdc11c71734125e06.tar.gz")
+                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/0c582677378f2d9ffcb01490af2f2c678dcb29d3.tar.gz")
                       {
                         inherit system;
                         inherit (prev) config;

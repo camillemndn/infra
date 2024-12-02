@@ -95,14 +95,15 @@ with lib;
     cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
     sensor.iio.enable = true;
 
-    opengl = {
+    graphics = {
       enable = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [ vaapiVdpau ];
     };
 
     nvidia = {
       modesetting.enable = true;
+      open = true;
       prime = {
         offload.enable = true;
         offload.enableOffloadCmd = true;

@@ -43,7 +43,6 @@
 
   hardware = {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    pulseaudio.enable = false;
     sane.enable = true;
   };
 

@@ -7,7 +7,7 @@
 
 lib.mkIf config.services.nextcloud.enable {
   services.nextcloud = {
-    package = pkgs.nextcloud29;
+    package = pkgs.nextcloud30;
     hostName = "cloud.mondon.xyz";
 
     autoUpdateApps.enable = true;
