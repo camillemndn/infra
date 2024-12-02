@@ -56,7 +56,13 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         nixpkgs = {
           inherit system;
           config = {
-            allowInsecurePredicate = pkg: builtins.elem (lib.getName pkg) [ "jitsi-meet" ];
+            permittedInsecurePackages = [
+              "aspnetcore-runtime-6.0.36"
+              "aspnetcore-runtime-wrapped-6.0.36"
+              "dotnet-sdk-6.0.428"
+              "dotnet-sdk-wrapped-6.0.428"
+              "jitsi-meet-1.0.8043"
+            ];
             allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
