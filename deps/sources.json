@@ -48,6 +48,21 @@
       "url": "https://github.com/nix-community/disko/archive/a08bfe06b39e94eec98dd089a2c1b18af01fef19.tar.gz",
       "hash": "0m9w7yld1sagyv6rn880qqggy1zm891yh2c50lsksdklbahbrcbg"
     },
+    "dns": {
+      "type": "GitRelease",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "dns.nix"
+      },
+      "pre_releases": false,
+      "version_upper_bound": null,
+      "release_prefix": null,
+      "version": "v1.2.0",
+      "revision": "a3196708a56dee76186a9415c187473b94e6cbae",
+      "url": "https://api.github.com/repos/nix-community/dns.nix/tarball/v1.2.0",
+      "hash": "011b6ahj4qcf7jw009qgbf6k5dvjmgls88khwzgjr9kxlgbypb90"
+    },
     "git-hooks": {
       "type": "Git",
       "repository": {
