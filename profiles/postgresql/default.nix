@@ -7,11 +7,11 @@
 
 {
   config = lib.mkIf config.services.postgresql.enable {
-    services.postgresql.package = pkgs.postgresql_13;
+    services.postgresql.package = pkgs.postgresql_17;
 
     environment.systemPackages =
       let
-        newPostgres = pkgs.postgresql_13.withPackages (_pp: [ ]);
+        newPostgres = pkgs.postgresql_17.withPackages (_pp: [ ]);
 
         upgrade-pg-cluster = pkgs.writeScriptBin "upgrade-pg-cluster" ''
           set -eux
