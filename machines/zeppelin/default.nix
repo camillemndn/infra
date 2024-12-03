@@ -112,7 +112,6 @@
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
 
     collabora-online.enable = true;
-    nginx.virtualHosts."office.kms".port = 9980;
 
     openssh.enable = true;
 
@@ -125,6 +124,7 @@
     tandoor-recipes = {
       enable = true;
       port = 8180;
+      extraConfig.GUNICORN_MEDIA = "1";
     };
     nginx.virtualHosts."meals.mondon.xyz".port = 8180;
 
