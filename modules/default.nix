@@ -3,7 +3,6 @@
   gdm = import ./services/x11/display-managers/gdm.nix;
   hammond = import ./services/web-apps/hammond;
   koel = import ./services/audio/koel;
-  lazylibrarian = import ./services/web-apps/lazylibrarian;
   logiops = import ./services/misc/logiops;
   lubelogger = import ./services/web-apps/lubelogger;
   nginx = import ./services/web-servers/nginx;

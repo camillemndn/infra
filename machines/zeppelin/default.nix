@@ -111,11 +111,8 @@
     nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
 
-    onlyoffice = {
-      enable = true;
-      hostname = "office.kms";
-      port = 8001;
-    };
+    collabora-online.enable = true;
+    nginx.virtualHosts."office.kms".port = 9980;
 
     openssh.enable = true;
 

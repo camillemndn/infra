@@ -85,12 +85,6 @@ lib.mkIf config.services.jellyfin.enable {
     nginx.virtualHosts."requests.kms".port = 5055;
     nginx.virtualHosts."requests.mondon.xyz".port = 5055;
 
-    lazylibrarian = {
-      enable = true;
-      inherit group;
-    };
-    nginx.virtualHosts."books.kms".port = 5299;
-
     lidarr = {
       enable = true;
       inherit group;
@@ -127,6 +121,4 @@ lib.mkIf config.services.jellyfin.enable {
   ];
 
   systemd.services.calibre-server.serviceConfig.ExecStart = lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
-
-  systemd.services.lazylibrarian.serviceConfig.TimeoutStopSec = 5;
 }
