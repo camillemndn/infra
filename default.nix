@@ -7,7 +7,8 @@ let
       version = "nixos-unstable";
     };
   };
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final);
+  dnsLib = (import inputs.dns).lib;
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final dnsLib);
   mkLibForMachine =
     machine:
     (import "${lib.infra.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
