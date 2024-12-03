@@ -1,6 +1,6 @@
 # 🚠 My infra
 
-[![Build status](https://ci.mondon.xyz/badges/camillemndn_infra_nix-eval.svg)](https://ci.mondon.xyz/#/builders/4) [![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
+[![Build status](https://ci.mondon.xyz/plugins/badges/camillemndn_infra_nix-eval.svg)](https://ci.mondon.xyz/#/builders/4) [![built with nix](https://img.shields.io/static/v1?logo=nixos&logoColor=white&label=&message=Built%20with%20Nix&color=41439a)](https://builtwithnix.org)
 
 This repository contains the configurations of my machines using NixOS and `npins`.
 
