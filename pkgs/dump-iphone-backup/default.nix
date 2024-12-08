@@ -4,10 +4,11 @@
   fetchFromGitHub,
   python3,
   makeWrapper,
+  iphone-backup-decrypt,
 }:
 
 let
-  python_env = python3.withPackages (p: [ (p.callPackage ../iphone-backup-decrypt { }) ]);
+  python_env = python3.withPackages (_: [ iphone-backup-decrypt ]);
 in
 
 stdenv.mkDerivation {

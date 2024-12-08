@@ -2,6 +2,7 @@
   lib,
   python3,
   fetchFromGitHub,
+  iphone-backup-decrypt,
 }:
 
 python3.pkgs.buildPythonApplication rec {
@@ -24,7 +25,7 @@ python3.pkgs.buildPythonApplication rec {
   propagatedBuildInputs = [
     python3.pkgs.jinja2
     python3.pkgs.bleach
-    (python3.pkgs.callPackage ../iphone-backup-decrypt { })
+    iphone-backup-decrypt
   ];
 
   meta = with lib; {

@@ -11,6 +11,7 @@
   spotify-player,
   curl,
   nix-update-script,
+  pyalsaaudio,
 }:
 
 let
@@ -28,7 +29,7 @@ let
       gunicorn
       pyyaml
       packaging
-      (p.callPackage ../pyalsaaudio { })
+      pyalsaaudio
     ]
   );
 in
