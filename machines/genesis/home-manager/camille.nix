@@ -29,7 +29,7 @@ with lib;
   home.packages = with pkgs; [
     # Games
     cemu
-    lutris
+    unstable.lutris
     prismlauncher
     wineWow64Packages.waylandFull
     (retroarch.override {
