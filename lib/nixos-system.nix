@@ -100,14 +100,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 {
                   inherit lib;
 
-                  pinned =
-                    import
-                      (fetchTarball "https://github.com/NixOS/nixpkgs/archive/0c582677378f2d9ffcb01490af2f2c678dcb29d3.tar.gz")
-                      {
-                        inherit system;
-                        inherit (prev) config;
-                      };
-
                   unstable = import inputs.nixpkgs-unstable {
                     inherit system;
                     inherit (prev) config;

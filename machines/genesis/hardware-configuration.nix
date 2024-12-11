@@ -47,15 +47,8 @@ with lib;
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-    kernelPackages = pkgs.pinned.linuxPackages;
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "supergfxd.mode=integrated" ];
-
-    kernelPatches = [
-      {
-        name = "asus-rog-flow-x13-tablet-mode";
-        patch = ./amd-tablet-sfh.patch;
-      }
-    ];
 
     tmp.cleanOnBoot = true;
   };
