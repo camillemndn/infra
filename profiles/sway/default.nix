@@ -21,14 +21,6 @@ lib.mkIf config.programs.sway.enable {
     extraPackages = [ ];
   };
 
-  xdg.portal = {
-    enable = true;
-    extraPortals = lib.mkForce [
-      pkgs.xdg-desktop-portal-wlr
-      pkgs.xdg-desktop-portal-gtk
-    ];
-  };
-
   fonts = {
     packages = with pkgs; [
       (nerdfonts.override {
