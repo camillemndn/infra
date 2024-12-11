@@ -60,6 +60,18 @@
       "url": "https://github.com/cachix/git-hooks.nix/archive/d8c02f0ffef0ef39f6063731fc539d8c71eb463a.tar.gz",
       "hash": "0q47lpgh25hg9ircfdvisx8f2jblb0x2q1hkhrl1q925i5fwax7r"
     },
+    "gradle2nix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "milahu",
+        "repo": "gradle2nix"
+      },
+      "branch": "pull69-patch1",
+      "revision": "8f203488797538001216d35eb5b315aa2b49fa14",
+      "url": "https://github.com/milahu/gradle2nix/archive/8f203488797538001216d35eb5b315aa2b49fa14.tar.gz",
+      "hash": "1bj0wjspg1my4gk8j41dimvikvrql15s3qf2hm0srr8cpignzx2h"
+    },
     "home-manager": {
       "type": "Git",
       "repository": {

@@ -89,7 +89,11 @@ rec {
           (
             let
               callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
-                nixpkgs_plats.${plat} // ours
+                nixpkgs_plats.${plat}
+                // ours
+                // {
+                  gradle2nix = callPackage inputs.gradle2nix { };
+                }
               );
               ours = builtins.listToAttrs (
                 builtins.map (e: {

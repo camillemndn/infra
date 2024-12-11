@@ -1,5 +1,6 @@
 {
   lib,
+  gradle2nix,
   fetchFromGitHub,
   git,
   makeWrapper,
@@ -14,10 +15,6 @@
 }:
 
 let
-  gradle2nix =
-    import (fetchTarball "https://github.com/milahu/gradle2nix/archive/pull69-patch1.tar.gz")
-      { };
-
   fixVersion = str: builtins.head (builtins.match "([^-]*-?[^-]*).*" str);
 in
 

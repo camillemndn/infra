@@ -10,9 +10,12 @@ inputs: lib:
   system ? "x86_64-linux",
   home-manager ? inputs.home-manager,
 }:
+
 let
   pkgs = import nixpkgs { inherit system; };
+
   listUsers = config: builtins.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
+
   nixpkgsTree = builtins.fetchTree {
     type = "github";
     owner = "NixOS";
@@ -20,12 +23,15 @@ let
     rev = inputs.nixpkgs.revision;
   };
 in
+
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
   lib = pkgs.lib.extend (import ./default.nix inputs);
+
   specialArgs = {
     inherit inputs;
   };
+
   modules = builtins.attrValues modules ++ [
     host-config
     (import "${home-manager}/nixos")
@@ -38,9 +44,16 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.musnix)
     (import inputs.lanzaboote).nixosModules.lanzaboote
     (import inputs.lila).nixosModules.hash-collection
+
     (
       { config, ... }:
       {
+        networking.hostName = name;
+
+        system.nixos.version = "${config.system.nixos.release}.${
+          builtins.substring 0 8 nixpkgsTree.lastModifiedDate
+        }.${nixpkgsTree.shortRev}";
+
         home-manager = {
           useGlobalPkgs = true;
           sharedModules = builtins.attrValues hmModules;
@@ -48,10 +61,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
           );
         };
-        networking.hostName = name;
-        system.nixos.version = "${config.system.nixos.release}.${
-          builtins.substring 0 8 nixpkgsTree.lastModifiedDate
-        }.${nixpkgsTree.shortRev}";
 
         nixpkgs = {
           inherit system;
@@ -147,6 +156,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       }
     )
   ];
+
   extraModules =
     let
       colmenaModules = import "${inputs.colmena}/src/nix/hive/options.nix";
