@@ -53,10 +53,7 @@ with lib;
     kernelPatches = [
       {
         name = "asus-rog-flow-x13-tablet-mode";
-        patch = builtins.fetchurl {
-          url = "https://gitlab.com/asus-linux/fedora-kernel/-/raw/rog-6.8/amd-tablet-sfh.patch";
-          sha256 = "011b4q0v8mkfrv96d4bvg8fd5dg6y5q38w20qmf196hsx35r13sh";
-        };
+        patch = ./amd-tablet-sfh.patch;
       }
     ];
 
