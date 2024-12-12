@@ -38,6 +38,8 @@ with lib;
         citra
       ];
     })
+    ryujinx
+    lime3ds
 
     # Social
     mattermost-desktop
@@ -57,6 +59,7 @@ with lib;
     joplin-desktop
     localsend
     nextcloud-client
+    qbittorrent
 
     # Graphics
     gimp-with-plugins
