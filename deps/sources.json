@@ -108,18 +108,6 @@
       "url": "https://github.com/nix-community/lanzaboote/archive/2f48272f34174fd2a5ab3df4d8a46919247be879.tar.gz",
       "hash": "0cd5hl0bxia5bddy8n78pqkr85j76268ic0ln1nagw6apg7816ff"
     },
-    "lila": {
-      "type": "Git",
-      "repository": {
-        "type": "GitHub",
-        "owner": "JulienMalka",
-        "repo": "lila"
-      },
-      "branch": "main",
-      "revision": "9c52498d310c8ecca8de63e50658bd5089617e3a",
-      "url": "https://github.com/JulienMalka/lila/archive/9c52498d310c8ecca8de63e50658bd5089617e3a.tar.gz",
-      "hash": "08zwv0b7x0yvbcwkr39pmhlyfr86y6ijsm71az8xx323zp4c5r8q"
-    },
     "musnix": {
       "type": "Git",
       "repository": {

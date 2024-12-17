@@ -43,7 +43,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.musnix)
     (import inputs.lanzaboote).nixosModules.lanzaboote
-    (import inputs.lila).nixosModules.hash-collection
 
     (
       { config, ... }:
