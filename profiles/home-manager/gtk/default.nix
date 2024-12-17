@@ -26,8 +26,8 @@ with lib;
 
     gtk = {
       theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome-themes-extra;
+        name = "Yaru-dark";
+        package = pkgs.yaru-theme;
       };
 
       iconTheme = {
