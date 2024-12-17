@@ -108,8 +108,10 @@
       root = "/srv/sites/hidimdaml/www";
       locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
     };
-    nginx.virtualHosts."camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
-    nginx.virtualHosts."camille.mondon.xyz".locations."/".return = "301 https://camillemondon.com$request_uri";
+    nginx.virtualHosts."camillemondon.fr".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
+    nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
 
     collabora-online.enable = true;
 

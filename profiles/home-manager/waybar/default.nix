@@ -187,11 +187,14 @@ in
             "format" = " {status}";
             "format-connected" = " {device_alias}";
             "format-connected-battery" = " {device_alias} {device_battery_percentage}%";
-            "on-click" = "STATE=`bluetoothctl show | grep Powered | awk '{print $2}'`; if [[ $STATE == 'yes' ]]; then bluetoothctl power off; else bluetoothctl power on; fi";
+            "on-click" =
+              "STATE=`bluetoothctl show | grep Powered | awk '{print $2}'`; if [[ $STATE == 'yes' ]]; then bluetoothctl power off; else bluetoothctl power on; fi";
             "tooltip-format" = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-            "tooltip-format-connected" = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+            "tooltip-format-connected" =
+              "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
             "tooltip-format-enumerate-connected" = "{device_alias}\t{device_address}";
-            "tooltip-format-enumerate-connected-battery" = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+            "tooltip-format-enumerate-connected-battery" =
+              "{device_alias}\t{device_address}\t{device_battery_percentage}%";
           };
           "custom/launcher" = {
             "format" = " ";
@@ -304,8 +307,10 @@ in
             "format-linked" = "󰖪 {essid} (No IP)";
             "format-wifi" = "󰖩 {essid}";
             "interval" = 1;
-            "tooltip-format-wifi" = " {essid} ({signalStrength}%)\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}\rSignal: {signaldBm} dBm\rFrequency: {frequency} GHz";
-            "tooltip-format-ethernet" = " {ifname}\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}";
+            "tooltip-format-wifi" =
+              " {essid} ({signalStrength}%)\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}\rSignal: {signaldBm} dBm\rFrequency: {frequency} GHz";
+            "tooltip-format-ethernet" =
+              " {ifname}\rIP: {ipaddr}\rUp: {bandwidthUpBits}\rDown: {bandwidthDownBits}";
             "tooltip-format-disconnected" = "Disconnected";
           };
           "custom/powermenu" = {

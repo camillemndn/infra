@@ -120,5 +120,6 @@ lib.mkIf config.services.jellyfin.enable {
     flac
   ];
 
-  systemd.services.calibre-server.serviceConfig.ExecStart = lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
+  systemd.services.calibre-server.serviceConfig.ExecStart =
+    lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
 }

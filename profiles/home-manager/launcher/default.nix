@@ -12,7 +12,7 @@ lib.mkIf config.programs.fuzzel.enable {
         # output=<not set>
         font = "FiraCode Nerd Font Mono:size=10:style=Bold";
         dpi-aware = "yes";
-        # prompt=> 
+        # prompt=>
         icon-theme = "Yaru";
         # icons-enabled=yes
         # fields=filename,name,generic
