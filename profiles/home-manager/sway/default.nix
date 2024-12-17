@@ -14,6 +14,7 @@ let
       "/etc/profiles/per-user/$USER/lib"
     ])
     + ":$HOME/.${format}";
+
   envVars = lib.replaceStrings [ "\n" ] [ " " ] (
     lib.toShellVars {
       NIXOS_OZONE_WL = 1;
@@ -26,6 +27,7 @@ let
       LXVST_PATH = makePluginPath "lxvst";
       VST_PATH = makePluginPath "vst";
       VST3_PATH = makePluginPath "vst3";
+      GSK_RENDERER = "ngl";
     }
   );
 in
@@ -112,7 +114,8 @@ lib.mkIf config.wayland.windowManager.sway.enable {
           "${cfg.modifier}+t" = "scratchpad show";
 
           "${cfg.modifier}+Shift+c" = "reload";
-          "${cfg.modifier}+Shift+e" = "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+          "${cfg.modifier}+Shift+e" =
+            "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
 
           "${cfg.modifier}+r" = "mode resize";
 
@@ -136,7 +139,8 @@ lib.mkIf config.wayland.windowManager.sway.enable {
           "${cfg.modifier}+8" = "move container to workspace number 8";
           "${cfg.modifier}+9" = "move container to workspace number 9";
 
-          "${cfg.modifier}+Shift+s" = "exec slurp | grim -g - \"$(xdg-user-dir PICTURES)/Captures d’écran/$(date +%Y%m%d_%H%M%S.png)\"";
+          "${cfg.modifier}+Shift+s" =
+            "exec slurp | grim -g - \"$(xdg-user-dir PICTURES)/Captures d’écran/$(date +%Y%m%d_%H%M%S.png)\"";
           "${cfg.modifier}+Escape" = "exec swaylock";
 
           "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
