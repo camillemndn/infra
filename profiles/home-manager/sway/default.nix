@@ -14,7 +14,6 @@ let
       "/etc/profiles/per-user/$USER/lib"
     ])
     + ":$HOME/.${format}";
-
   envVars = lib.replaceStrings [ "\n" ] [ " " ] (
     lib.toShellVars {
       NIXOS_OZONE_WL = 1;
@@ -27,7 +26,6 @@ let
       LXVST_PATH = makePluginPath "lxvst";
       VST_PATH = makePluginPath "vst";
       VST3_PATH = makePluginPath "vst3";
-      GSK_RENDERER = "ngl";
     }
   );
 in
