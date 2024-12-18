@@ -18,11 +18,26 @@ let
       commitizen.enable = true;
     };
   };
+
+  nix-update-all = pkgs.callPackage (
+    {
+      lib,
+      writeShellScriptBin,
+      nix-update,
+    }:
+    writeShellScriptBin "nix-update-all" (
+      lib.concatMapStringsSep "\n" (pkg: "${nix-update}/bin/nix-update -f release.nix ${pkg}") (
+        lib.attrNames (import ./.).packages.x86_64-linux
+      )
+    )
+  ) { };
+
 in
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     agenix
     colmena
+    nix-update-all
     nixos-anywhere
     npins
     statix
