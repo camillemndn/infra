@@ -8,7 +8,6 @@ let
 
     hooks = {
       statix.enable = true;
-      deadnix.enable = true;
       rfc101 = {
         enable = true;
         name = "RFC-101 formatting";
