@@ -17,10 +17,10 @@ stdenv.mkDerivation rec {
   };
 
   installPhase = ''
-    mkdir $out
+    mkdir -p $out/share
     shopt -s dotglob
-    mv * $out
-    touch $out/.env
+    mv * $out/share
+    touch $out/share/.env
   '';
 
   passthru.updateScript = nix-update-script { };
@@ -30,7 +30,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/koel/koel";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ camillemndn ];
-    mainProgram = "koel";
     platforms = lib.platforms.all;
   };
 }

@@ -106,7 +106,7 @@ with lib;
     };
 
     services.nginx.virtualHosts.${cfg.hostName} = {
-      root = "${pkgs.koel}/public";
+      root = "${pkgs.koel}/share/public";
       locations."~ (/|\.php)" = {
         tryFiles = "$uri $uri/ /index.php?$args";
         fastcgiParams = {
@@ -148,14 +148,14 @@ with lib;
     systemd.services."phpfpm-koel".serviceConfig = {
       EnvironmentFile = cfg.secretEnvFile;
       BindPaths = [
-        "${dataDir}/storage:${pkgs.koel}/storage"
-        "${dataDir}/database:${pkgs.koel}/database"
-        "${dataDir}/public/img:${pkgs.koel}/public/img"
+        "${dataDir}/storage:${pkgs.koel}/share/storage"
+        "${dataDir}/database:${pkgs.koel}/share/database"
+        "${dataDir}/public/img:${pkgs.koel}/share/public/img"
       ];
     };
 
     systemd.services.nginx.serviceConfig.BindPaths = [
-      "${dataDir}/public/img:${pkgs.koel}/public/img"
+      "${dataDir}/public/img:${pkgs.koel}/share/public/img"
     ];
 
     systemd.services."koel-config" = {
@@ -175,10 +175,10 @@ with lib;
 
         cp -r ${builtins.toFile "env-koel" envFile} .env
         echo "APP_KEY=base64:$(${pkgs.openssl}/bin/openssl rand -base64 32)" >> .env
-        cp -r ${pkgs.koel}/storage .
-        cp -r ${pkgs.koel}/database .
+        cp -r ${pkgs.koel}/share/storage .
+        cp -r ${pkgs.koel}/share/database .
         mkdir -p public
-        cp -r ${pkgs.koel}/public/img public
+        cp -r ${pkgs.koel}/share/public/img public
 
         chown -R koel:mediasrv .
         chmod -R ugo = rX.chmod - R ug + w.fi
@@ -193,10 +193,10 @@ with lib;
         User = "koel";
         Group = cfg.group;
         BindPaths = [
-          "${dataDir}/storage:${pkgs.koel}/storage"
-          "${dataDir}/database:${pkgs.koel}/database"
-          "${dataDir}/public/img:${pkgs.koel}/public/img"
-          "${dataDir}/.env:${pkgs.koel}/.env"
+          "${dataDir}/storage:${pkgs.koel}/share/storage"
+          "${dataDir}/database:${pkgs.koel}/share/database"
+          "${dataDir}/public/img:${pkgs.koel}/share/public/img"
+          "${dataDir}/.env:${pkgs.koel}/share/.env"
         ];
         Type = "oneshot";
         ProtectHome = true;
@@ -221,7 +221,7 @@ with lib;
         cd ${dataDir}
         if [ ! -f storage/logs/laravel.log ];
         then
-          ${pkgs.php}/bin/php ${pkgs.koel}/artisan koel:init --no-interaction --no-assets
+          ${pkgs.php}/bin/php ${pkgs.koel}/share/artisan koel:init --no-interaction --no-assets
         fi
       '';
     };
