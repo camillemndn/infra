@@ -1,17 +1,19 @@
 {
-  stdenv,
   lib,
-  fetchurl,
-  ...
+  stdenv,
+  fetchFromGitHub,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation rec {
   pname = "koel";
-  version = "6.11.2";
+  version = "7.2.0";
 
-  src = fetchurl {
-    url = "https://github.com/koel/koel/releases/download/v${version}/koel-v${version}.tar.gz";
-    sha256 = "sha256-2zRLknvnpANxLD9BmCiMAXkt0dxUr5t2tOoW1uYuXcc=";
+  src = fetchFromGitHub {
+    owner = "koel";
+    repo = "koel";
+    rev = "v${version}";
+    hash = "sha256-XnDbHI2eJk8gJWLN6GE+ApSILEMFSUkGElEjmPNpYlQ=";
   };
 
   installPhase = ''
@@ -21,11 +23,14 @@ stdenv.mkDerivation rec {
     touch $out/.env
   '';
 
-  meta = with lib; {
-    description = "A simple web-based personal audio streaming service written in Vue and Laravel.";
-    homepage = "https://koel.dev/";
-    license = licenses.mit;
-    maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.linux;
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
+    description = "A personal music streaming server that works";
+    homepage = "https://github.com/koel/koel";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
+    mainProgram = "koel";
+    platforms = lib.platforms.all;
   };
 }
