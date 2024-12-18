@@ -25,6 +25,22 @@ let
       value = import inputs.nixpkgs {
         system = plat;
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "harmony-assistant" ];
+        overlays = [
+          (_: prev: {
+            gradle2nix = prev.callPackage inputs.gradle2nix { };
+            nix-update-script =
+              args:
+              prev.nix-update-script (
+                {
+                  extraArgs = [
+                    "-f"
+                    "release.nix"
+                  ];
+                }
+                // args
+              );
+          })
+        ];
       };
     }) machines_plats
   );
@@ -89,11 +105,7 @@ rec {
           (
             let
               callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
-                nixpkgs_plats.${plat}
-                // ours
-                // {
-                  gradle2nix = callPackage inputs.gradle2nix { };
-                }
+                nixpkgs_plats.${plat} // ours
               );
               ours = builtins.listToAttrs (
                 builtins.map (e: {
