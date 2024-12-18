@@ -106,7 +106,7 @@ stdenv.mkDerivation rec {
       --chdir $out/share/${pname}
   '';
 
-  passthru.updateScript = nix-update-script { extraArgs = [ "--flake" ]; };
+  passthru.updateScript = nix-update-script { };
 
   meta = with lib; {
     description = "Raspberry Pi Clock Radio";
