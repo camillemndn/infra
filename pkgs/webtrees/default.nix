@@ -1,29 +1,33 @@
 {
-  stdenv,
   lib,
-  fetchzip,
-  ...
+  stdenv,
+  fetchFromGitHub,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation rec {
   pname = "webtrees";
-  version = "2.1.20";
+  version = "2.2.1";
 
-  src = fetchzip {
-    url = "https://github.com/fisharebest/webtrees/releases/download/${version}/webtrees-${version}.zip";
-    sha256 = "sha256-vG9fr+lPHEoG6tU55h4xBuU+oyiBH1oiTjOxCivXcj4=";
+  src = fetchFromGitHub {
+    owner = "fisharebest";
+    repo = "webtrees";
+    rev = version;
+    hash = "sha256-060n/j7yMXipTb1XBaHn/3UO8gz/bIzUJGBq7RG5A8I=";
   };
 
   installPhase = ''
-    mkdir $out
-    mv * $out
+    mkdir -p $out/share
+    mv * $out/share
   '';
 
-  meta = with lib; {
-    description = "The web’s leading online collaborative genealogy application";
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
+    description = "Online genealogy";
     homepage = "https://webtrees.net/";
-    license = licenses.gpl2Only;
-    maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.linux;
+    license = lib.licenses.gpl3Only;
+    maintainers = with lib.maintainers; [ camillemndn ];
+    platforms = lib.platforms.all;
   };
 }
