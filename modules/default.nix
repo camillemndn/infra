@@ -1,5 +1,4 @@
 {
-  deluge-storm = import ./services/web-apps/deluge-storm;
   gdm = import ./services/x11/display-managers/gdm.nix;
   koel = import ./services/audio/koel;
   logiops = import ./services/misc/logiops;

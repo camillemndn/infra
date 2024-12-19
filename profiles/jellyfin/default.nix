@@ -53,14 +53,18 @@ lib.mkIf config.services.jellyfin.enable {
     deluge = {
       enable = true;
       inherit group;
-      storm.enable = true;
       web.enable = true;
     };
-    nginx.virtualHosts."torrents.kms" = {
+    nginx.virtualHosts."deluge.kms" = {
       port = 8112;
       extraConfig = delugeCSSFilter;
     };
-    nginx.virtualHosts."storm.kms".port = 8221;
+
+    flood = {
+      enable = true;
+      port = 3022;
+    };
+    nginx.virtualHosts."torrents.kms".port = 3022;
 
     jackett = {
       enable = true;
