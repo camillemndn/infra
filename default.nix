@@ -23,13 +23,13 @@ let
             nix-update-script =
               args:
               prev.nix-update-script (
-                {
+                args
+                // {
                   extraArgs = [
                     "-f"
                     "release.nix"
-                  ];
+                  ] ++ args.extraArgs or [ ];
                 }
-                // args
               );
           })
         ];
