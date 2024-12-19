@@ -8,22 +8,28 @@
 python3.pkgs.buildPythonPackage rec {
   pname = "pyalsaaudio";
   version = "0.11.0";
-  format = "setuptools";
+  pyproject = true;
 
   src = fetchPypi {
     inherit pname version;
     hash = "sha256-p4qdyjNSSyyQZLNOIfWrh0JyMTzzJKmndZLzlqXg/dw=";
   };
 
-  buildInputs = [ alsa-lib ];
-  doCheck = false;
-  pythonImportsCheck = [ "alsaaudio" ];
+  build-system = [
+    python3.pkgs.setuptools
+    python3.pkgs.wheel
+  ];
 
-  meta = with lib; {
+  buildInputs = [ alsa-lib ];
+
+  pythonImportsCheck = [
+    "alsaaudio"
+  ];
+
+  meta = {
     description = "ALSA bindings";
     homepage = "https://pypi.org/project/pyalsaaudio/";
-    license = licenses.psfl;
-    maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.linux;
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
   };
 }
