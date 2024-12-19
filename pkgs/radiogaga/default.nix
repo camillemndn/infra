@@ -48,7 +48,9 @@ stdenv.mkDerivation rec {
   };
 
   npmRoot = "front";
+
   npmDeps = fetchNpmDeps {
+    name = "${pname}-npm-deps-${version}";
     src = "${src}/${npmRoot}";
     hash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
   };
@@ -70,10 +72,9 @@ stdenv.mkDerivation rec {
   buildInputs = [ makeWrapper ];
 
   buildPhase = ''
-    (
-      cd front
-      npm run build --prod
-    )
+    pushd front
+    npm run build --prod
+    popd
   '';
 
   installPhase = ''

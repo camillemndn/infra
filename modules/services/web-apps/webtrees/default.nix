@@ -44,7 +44,7 @@ with lib;
     };
 
     services.nginx.virtualHosts.${cfg.hostName} = {
-      root = "${pkgs.webtrees}/share";
+      root = "${pkgs.webtrees}/share/php/webtrees";
       locations = {
         "/public/".extraConfig = ''
           expires 365d;
@@ -83,7 +83,7 @@ with lib;
     };
 
     systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [
-      "/var/lib/webtrees/:${pkgs.webtrees}/share/data/"
+      "/var/lib/webtrees/:${pkgs.webtrees}/share/php/webtrees/data/"
     ];
 
     systemd.services.webtrees-config = {
@@ -96,7 +96,7 @@ with lib;
       };
       script = ''
         if [ ! -f ${dataDir}/index.php ]; then
-          cp -r ${pkgs.webtrees}/share/data/* ${dataDir}
+        cp -r ${pkgs.webtrees}/share/php/webtrees/data/* ${dataDir}
           chown -R webtrees ${dataDir}
           chmod -R ugo=rX ${dataDir}
           chmod -R ug+w ${dataDir}
