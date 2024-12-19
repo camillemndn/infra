@@ -4,7 +4,6 @@
   logiops = import ./services/misc/logiops;
   lubelogger = import ./services/web-apps/lubelogger;
   nginx = import ./services/web-servers/nginx;
-  organizr = import ./services/web-apps/organizr;
   radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;
   yarr = import ./services/networking/yarr;
