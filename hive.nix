@@ -23,7 +23,7 @@ in
   defaults =
     { config, lib, ... }:
     {
-      deployment.targetHost = lib.infra.machines.${config.networking.hostName}.ipv6.public;
+      deployment.targetHost = lib.mkDefault lib.infra.machines.${config.networking.hostName}.ipv6.public;
     };
 }
 // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations
