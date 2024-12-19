@@ -48,7 +48,7 @@ in
           port = 4200;
         }
       ];
-      root = "${pkgs.radiogaga}/share/radiogaga-front";
+      root = "${pkgs.radiogaga}/share";
       locations = {
         "/".tryFiles = "$uri $uri/ /index.html =404";
         "/api".proxyPass = "http://127.0.0.1:8000";
@@ -77,7 +77,7 @@ in
           "audio"
           "pipewire"
         ];
-        WorkingDirectory = "${pkgs.radiogaga}/share/radiogaga";
+        WorkingDirectory = "${pkgs.radiogaga}/share";
         Restart = "on-failure";
       };
     };
