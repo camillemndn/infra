@@ -90,13 +90,9 @@ with lib;
         "catch_workers_output" = true;
       };
 
+      phpPackage = pkgs.php83;
+
       phpEnv = {
-        PATH =
-          with pkgs;
-          makeBinPath [
-            php
-            ffmpeg
-          ];
         FFMPEG_PATH = "${pkgs.ffmpeg}/bin/ffmpeg";
       } // envParams;
 
@@ -106,7 +102,7 @@ with lib;
     };
 
     services.nginx.virtualHosts.${cfg.hostName} = {
-      root = "${pkgs.koel}/share/public";
+      root = "${pkgs.koel}/share/php/koel/public";
       locations."~ (/|\.php)" = {
         tryFiles = "$uri $uri/ /index.php?$args";
         fastcgiParams = {
@@ -148,14 +144,14 @@ with lib;
     systemd.services."phpfpm-koel".serviceConfig = {
       EnvironmentFile = cfg.secretEnvFile;
       BindPaths = [
-        "${dataDir}/storage:${pkgs.koel}/share/storage"
-        "${dataDir}/database:${pkgs.koel}/share/database"
-        "${dataDir}/public/img:${pkgs.koel}/share/public/img"
+        "${dataDir}/storage:${pkgs.koel}/share/php/koel/storage"
+        "${dataDir}/database:${pkgs.koel}/share/php/koel/database"
+        "${dataDir}/public/img:${pkgs.koel}/share/php/koel/public/img"
       ];
     };
 
     systemd.services.nginx.serviceConfig.BindPaths = [
-      "${dataDir}/public/img:${pkgs.koel}/share/public/img"
+      "${dataDir}/public/img:${pkgs.koel}/share/php/koel/public/img"
     ];
 
     systemd.services."koel-config" = {
@@ -175,10 +171,10 @@ with lib;
 
         cp -r ${builtins.toFile "env-koel" envFile} .env
         echo "APP_KEY=base64:$(${pkgs.openssl}/bin/openssl rand -base64 32)" >> .env
-        cp -r ${pkgs.koel}/share/storage .
-        cp -r ${pkgs.koel}/share/database .
+        cp -r ${pkgs.koel}/share/php/koel/storage .
+        cp -r ${pkgs.koel}/share/php/koel/database .
         mkdir -p public
-        cp -r ${pkgs.koel}/share/public/img public
+        cp -r ${pkgs.koel}/share/php/koel/public/img public
 
         chown -R koel:mediasrv .
         chmod -R ugo = rX.chmod - R ug + w.fi
@@ -193,10 +189,10 @@ with lib;
         User = "koel";
         Group = cfg.group;
         BindPaths = [
-          "${dataDir}/storage:${pkgs.koel}/share/storage"
-          "${dataDir}/database:${pkgs.koel}/share/database"
-          "${dataDir}/public/img:${pkgs.koel}/share/public/img"
-          "${dataDir}/.env:${pkgs.koel}/share/.env"
+          "${dataDir}/storage:${pkgs.koel}/share/php/koel/storage"
+          "${dataDir}/database:${pkgs.koel}/share/php/koel/database"
+          "${dataDir}/public/img:${pkgs.koel}/share/php/koel/public/img"
+          "${dataDir}/.env:${pkgs.koel}/share/php/koel/.env"
         ];
         Type = "oneshot";
         ProtectHome = true;
@@ -221,7 +217,7 @@ with lib;
         cd ${dataDir}
         if [ ! -f storage/logs/laravel.log ];
         then
-          ${pkgs.php}/bin/php ${pkgs.koel}/share/artisan koel:init --no-interaction --no-assets
+          ${pkgs.php83}/bin/php ${pkgs.koel}/share/php/koel/artisan koel:init --no-interaction --no-assets
         fi
       '';
     };
@@ -229,7 +225,7 @@ with lib;
     users.users.koel = {
       isSystemUser = true;
       inherit (cfg) group;
-      packages = [ pkgs.php ];
+      packages = [ pkgs.php83 ];
     };
   };
 }

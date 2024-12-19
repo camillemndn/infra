@@ -1,11 +1,11 @@
 {
   lib,
-  stdenv,
+  php83,
   fetchFromGitHub,
   nix-update-script,
 }:
 
-stdenv.mkDerivation rec {
+php83.buildComposerProject rec {
   pname = "koel";
   version = "7.2.0";
 
@@ -14,13 +14,17 @@ stdenv.mkDerivation rec {
     repo = "koel";
     rev = "v${version}";
     hash = "sha256-XnDbHI2eJk8gJWLN6GE+ApSILEMFSUkGElEjmPNpYlQ=";
+    fetchSubmodules = true;
   };
 
-  installPhase = ''
-    mkdir -p $out/share
-    shopt -s dotglob
-    mv * $out/share
-    touch $out/share/.env
+  php = php83.buildEnv { extensions = { enabled, all }: enabled ++ (with all; [ xsl ]); };
+
+  vendorHash = "sha256-e9YxZeToiHJcT9BankKjvYMTJ1Fc1vvgFofBYHs5DAw=";
+  composerStrictValidation = false;
+
+  postInstall = ''
+    rm $out/share/php/koel/composer.lock
+    touch $out/share/php/koel/.env
   '';
 
   passthru.updateScript = nix-update-script { };
