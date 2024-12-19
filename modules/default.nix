@@ -1,7 +1,6 @@
 {
   deluge-storm = import ./services/web-apps/deluge-storm;
   gdm = import ./services/x11/display-managers/gdm.nix;
-  hammond = import ./services/web-apps/hammond;
   koel = import ./services/audio/koel;
   logiops = import ./services/misc/logiops;
   lubelogger = import ./services/web-apps/lubelogger;

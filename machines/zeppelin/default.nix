@@ -35,11 +35,6 @@
 
     jellyfin.enable = true;
 
-    hammond = {
-      enable = true;
-      hostName = "car.kms";
-    };
-
     jitsi-meet = {
       enable = true;
       hostName = "meet.mondon.xyz";
