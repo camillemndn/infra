@@ -219,7 +219,7 @@ with lib;
           nvim-colorizer-lua
           nvim-lilypond-suite
           nvim-lspconfig
-          Nvim-R
+          nvim-r
           nvim-treesitter
           nvim-treesitter-textobjects
           nvim-tree-lua
