@@ -9,17 +9,18 @@
 
 stdenv.mkDerivation {
   pname = "raspberrypi-utils";
-  version = "2024-05-23";
+  version = "0-unstable-2024-12-18";
 
   src = fetchFromGitHub {
     owner = "raspberrypi";
     repo = "utils";
-    rev = "b9c63214c535d7df2b0fa6743b7b3e508363c25a";
-    hash = "sha256-+z3nSILfI0YZHWKy90SV2Z2fziaAGEC4AKamEpf2+pQ=";
+    rev = "1b9cf7c2224641ff9bb08c9beaa1cdc30aad2a00";
+    hash = "sha256-p3Ski8QBWmAhGeB3t/ocjzuLDbkD47JeEVDwD/h59WI=";
   };
 
   nativeBuildInputs = [ cmake ];
   buildInputs = [ dtc ];
+  env.NIX_CFLAGS_COMPILE = "-Wno-error=maybe-uninitialized";
 
   passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
