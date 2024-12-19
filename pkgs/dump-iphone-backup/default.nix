@@ -5,6 +5,7 @@
   python3,
   makeWrapper,
   iphone-backup-decrypt,
+  nix-update-script,
 }:
 
 let
@@ -34,12 +35,14 @@ stdenv.mkDerivation {
       --add-flags "$out/share/dump-iphone-backup.py" \
   '';
 
-  meta = with lib; {
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+
+  meta = {
     description = "Dump an encrypted iPhone backup to a folder for analysis of any artifacts, organised by domain and path of the source file";
     homepage = "https://github.com/PeterUpfold/dump-iphone-backup";
-    license = licenses.mit;
-    maintainers = with maintainers; [ camillemndn ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "dump-iphone-backup";
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
   };
 }

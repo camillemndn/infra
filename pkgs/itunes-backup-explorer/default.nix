@@ -7,6 +7,7 @@
   wrapGAppsHook3,
   copyDesktopItems,
   makeDesktopItem,
+  nix-update-script,
 }:
 
 let
@@ -49,11 +50,14 @@ maven.buildMavenPackage rec {
       "''${gappsWrapperArgs[@]}" \
       --add-flags "-jar $out/share/itunes-backup-explorer.jar"
   '';
-  meta = with lib; {
+
+  passthru.updateScript = nix-update-script { };
+
+  meta = {
     description = "A graphical tool that can extract and replace files from encrypted and non-encrypted iOS backups";
     homepage = "https://github.com/MaxiHuHe04/iTunes-Backup-Explorer";
-    license = licenses.mit;
-    maintainers = with maintainers; [ camillemndn ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "itunes-backup-explorer";
     platforms = [ "x86_64-linux" ];
   };

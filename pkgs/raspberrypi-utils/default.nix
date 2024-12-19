@@ -4,6 +4,7 @@
   fetchFromGitHub,
   cmake,
   dtc,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation {
@@ -20,11 +21,13 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ cmake ];
   buildInputs = [ dtc ];
 
-  meta = with lib; {
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+
+  meta = {
     description = "A collection of scripts and simple applications";
     homepage = "https://github.com/raspberrypi/utils";
-    license = licenses.bsd3;
-    maintainers = with maintainers; [ camillemndn ];
-    platforms = platforms.all;
+    license = lib.licenses.bsd3;
+    maintainers = with lib.maintainers; [ camillemndn ];
+    platforms = lib.platforms.all;
   };
 }

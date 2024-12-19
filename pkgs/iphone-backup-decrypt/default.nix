@@ -29,11 +29,11 @@ python3.pkgs.buildPythonPackage {
 
   pythonImportsCheck = [ "iphone_backup_decrypt" ];
 
-  meta = with lib; {
+  meta = {
     description = "Decrypt an encrypted iOS backup created by iTunes on Windows or MacOS";
     homepage = "https://github.com/jsharkey13/iphone_backup_decrypt";
-    license = licenses.mit;
-    maintainers = with maintainers; [ camillemndn ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "iphone-backup-decrypt";
   };
 }

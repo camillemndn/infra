@@ -39,12 +39,12 @@ let
 
     dontFixup = true;
 
-    meta = with lib; {
+    meta = {
       description = "Un logiciel indispensable pour l'écriture et la composition musicale assistée par ordinateur";
       homepage = "https://www.myriad-online.com/fr/products/harmony.htm";
-      license = licenses.unfree;
-      maintainers = with maintainers; [ camillemndn ];
-      platforms = with platforms; linux;
+      license = lib.licenses.unfree;
+      maintainers = with lib.maintainers; [ camillemndn ];
+      platforms = lib.platforms.linux;
     };
   };
 in

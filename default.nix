@@ -1,23 +1,15 @@
 let
   inputs = import ./deps;
-  patch = import inputs.nix-patches { patchFile = ./patches; };
-  inputs_final = inputs // {
-    nixpkgs_patched = patch.mkNixpkgsSrc {
-      src = inputs.unstable;
-      version = "nixos-unstable";
-    };
-  };
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs_final);
-  mkLibForMachine =
-    machine:
-    (import "${lib.infra.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs_final);
+
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
+
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.system) (
       lib.filterAttrs (_n: v: builtins.hasAttr "system" v) lib.infra.machines
     )
   );
 
-  nixosSystem = import ./lib/nixos-system.nix inputs_final lib;
+  nixosSystem = import ./lib/nixos-system.nix inputs lib;
 
   nixpkgs_plats = builtins.listToAttrs (
     builtins.map (plat: {
@@ -75,17 +67,6 @@ rec {
       home-manager = lib.infra.machines.${name}.hm_version;
     })
   ) (lib.importConfig ./machines);
-
-  colmena = {
-    meta = {
-      nodeNixpkgs = builtins.mapAttrs (
-        n: _: import lib.infra.machines.${n}.nixpkgs_version
-      ) nixosConfigurations;
-      nodeSpecialArgs = builtins.mapAttrs (
-        n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
-      ) nixosConfigurations;
-    };
-  } // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations;
 
   packages = builtins.listToAttrs (
     builtins.map (plat: {

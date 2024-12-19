@@ -72,7 +72,6 @@ with lib;
     jellyfin-media-player
     lilypond-with-fonts
     musescore
-    rockbox-utility
     sonixd
     spotify
 

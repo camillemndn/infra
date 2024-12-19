@@ -13,6 +13,7 @@
   libuuid,
   raspberrypi-eeprom,
   raspberrypi-utils,
+  nix-update-script,
 }:
 
 stdenv.mkDerivation {
@@ -53,12 +54,14 @@ stdenv.mkDerivation {
       }
   '';
 
-  meta = with lib; {
+  passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+
+  meta = {
     description = "An easier way to update the firmware of your Raspberry Pi";
     homepage = "https://github.com/raspberrypi/rpi-update";
-    license = licenses.mit;
-    maintainers = with maintainers; [ camillemndn ];
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "rpi-update";
-    platforms = platforms.all;
+    platforms = lib.platforms.all;
   };
 }

@@ -28,14 +28,14 @@ python3.pkgs.buildPythonApplication rec {
     iphone-backup-decrypt
   ];
 
-  meta = with lib; {
+  meta = {
     description = "A customizable Android and iOS/iPadOS WhatsApp database parser that will give you the history of your WhatsApp conversations in HTML and JSON. Android Backup Crypt12, Crypt14, Crypt15, and new schema supported";
     homepage = "https://github.com/KnugiHK/Whatsapp-Chat-Exporter";
-    license = with licenses; [
+    license = with lib.licenses; [
       bsd3
       mit
     ];
-    maintainers = with maintainers; [ camillemndn ];
+    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "whatsapp-chat-exporter";
   };
 }
