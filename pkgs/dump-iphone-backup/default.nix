@@ -14,7 +14,7 @@ in
 
 stdenv.mkDerivation {
   pname = "dump-iphone-backup";
-  version = "unstable-2023-07-22";
+  version = "0-unstable-2023-07-22";
 
   src = fetchFromGitHub {
     owner = "PeterUpfold";
