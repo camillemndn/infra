@@ -36,7 +36,7 @@ with lib;
         "php_admin_flag[log_errors]" = true;
         "catch_workers_output" = true;
       };
-      phpEnv."PATH" = lib.makeBinPath [ pkgs.php ];
+      phpPackage = pkgs.php84;
       phpOptions = ''
         post_max_size = 5M
         upload_max_filesize = 5M
