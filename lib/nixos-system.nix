@@ -151,7 +151,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   );
 
                   vimPlugins =
-                    prev.vimPlugins // (lib.filterAttrs (n: v: v.vimPlugin or false) extraPackages.${system});
+                    prev.vimPlugins // (lib.filterAttrs (_: v: v.vimPlugin or false) extraPackages.${system});
                 }
               ]
             )
