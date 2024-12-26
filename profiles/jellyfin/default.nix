@@ -69,7 +69,20 @@ lib.mkIf config.services.jellyfin.enable {
     jackett = {
       enable = true;
       inherit group;
-      package = pkgs.jackett;
+      package = pkgs.unstable.jackett.overrideAttrs (
+        _: _:
+        let
+          ygg-api = pkgs.fetchurl {
+            url = "https://gist.github.com/Clemv95/8bfded23ef23ec78f6678896f42a2b60/raw/350af94aa453148e5a5f1811debfa1ae9e46cc9a/ygg-api.yml";
+            hash = "sha256-6X8mF1AXTkdJ9NAoO238XHZu9nFT7JJOknsL4ZCLzIE=";
+          };
+        in
+        {
+          postInstall = ''
+            cp ${ygg-api} $out/lib/jackett/Definitions/ygg-api.yml
+          '';
+        }
+      );
     };
     nginx.virtualHosts."trackers.kms".port = 9117;
 

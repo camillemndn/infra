@@ -117,7 +117,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit (prev) config;
                   };
                   inherit (final.unstable)
-                    jackett
                     jellyseerr
                     quarto
                     spotifyd
