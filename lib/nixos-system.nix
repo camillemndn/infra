@@ -121,6 +121,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     quarto
                     spotifyd
                     typst
+                    zoom-us
                     zotero
                     ;
 
