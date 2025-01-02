@@ -13,7 +13,10 @@
     };
   };
 
-  deployment.allowLocalDeployment = true;
+  deployment = {
+    allowLocalDeployment = true;
+    targetHost = null;
+  };
 
   environment.systemPackages = with pkgs; [
     android-tools
