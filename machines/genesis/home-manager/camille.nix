@@ -62,6 +62,7 @@ with lib;
     qbittorrent
 
     # Graphics
+    darktable
     gimp-with-plugins
     inkscape-with-extensions
 

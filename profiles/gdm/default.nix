@@ -36,16 +36,17 @@ in
         '';
       };
 
-      xkb = {
-        layout = "fr";
-        variant = "";
-      };
+      xkb.layout = "fr";
     };
 
-    environment.systemPackages = [
-      pkgs.libheif
-      pkgs.libheif.out
-    ];
-    environment.pathsToLink = [ "share/thumbnailers" ];
+    environment = {
+      pathsToLink = [ "share/thumbnailers" ];
+
+      systemPackages = with pkgs; [
+        libheif
+        libheif.out
+        nufraw-thumbnailer
+      ];
+    };
   };
 }

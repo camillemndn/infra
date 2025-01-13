@@ -61,7 +61,7 @@ mkIf config.mailserver.enable {
     enable = true;
 
     package = pkgs.fail2ban.overrideAttrs (
-      _final: prev: {
+      _: prev: {
         preConfigure =
           prev.preConfigure
           + ''
