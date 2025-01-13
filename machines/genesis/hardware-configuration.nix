@@ -47,7 +47,6 @@ with lib;
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [ "supergfxd.mode=integrated" ];
 
     tmp.cleanOnBoot = true;
