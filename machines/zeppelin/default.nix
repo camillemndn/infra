@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -70,10 +70,6 @@
 
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
-    nginx.virtualHosts."varanda.fr" = {
-      root = "/srv/sites/varanda.fr/www";
-      extraConfig = "error_page 404 /;";
-    };
     nginx.virtualHosts."camillemondon.com" = {
       root = "/srv/sites/camillemondon.com/www";
       extraConfig = ''
@@ -133,7 +129,10 @@
     };
 
     wordpress = {
-      sites."wordpress.kms" = { };
+      sites."varanda.fr" = {
+        languages = [ pkgs.wordpressPackages.languages.fr_FR ];
+        settings.WPLANG = "fr_FR";
+      };
       webserver = "nginx";
     };
 
