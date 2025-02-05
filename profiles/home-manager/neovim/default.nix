@@ -69,6 +69,7 @@ with lib;
             "python"
             "r"
             "rmd"
+            "rust"
           ];
 
           languageserver = {
@@ -178,6 +179,12 @@ with lib;
           };
 
           python.linting.flake8Enabled = true;
+
+          rust-analyzer = {
+            enable = true;
+            cargo.allFeatures = true;
+            checkOnSave.allTargets = true;
+          };
         };
       };
 
@@ -210,6 +217,7 @@ with lib;
           cmp-nvim-lsp
           coc-prettier
           coc-pyright
+          coc-rust-analyzer
           coc-texlab
           lspkind-nvim
           luasnip
@@ -254,10 +262,12 @@ with lib;
           lua.pkgs.luarocks-nix
           marksman
           nil
-          nixfmt-rfc-style
+          unstable.nixfmt-rfc-style
           ormolu
           pyright
           ripgrep
+          rust-analyzer
+          rustfmt
           shfmt
           texlab
           texliveFull
