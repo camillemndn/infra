@@ -50,6 +50,8 @@ let
         _module.freeformType = with types; attrs;
 
         machines = {
+          flamenca = { };
+
           genesis = { };
 
           greenday.ipv4.public = "82.66.152.179";
