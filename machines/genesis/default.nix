@@ -62,6 +62,7 @@
       drivers = with pkgs; [
         brlaser
         gutenprint
+        samsung-unified-linux-driver
       ];
     };
 
