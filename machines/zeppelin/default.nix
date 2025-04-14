@@ -68,8 +68,10 @@
       ];
     };
 
-    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
+    nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
+    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
+
     nginx.virtualHosts."camillemondon.com" = {
       root = "/srv/sites/camillemondon.com/www";
       extraConfig = ''
@@ -102,6 +104,8 @@
     nginx.virtualHosts."camillemondon.fr".locations."/".return =
       "301 https://camillemondon.com$request_uri";
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
+    nginx.virtualHosts."www.camillemondon.com".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
     collabora-online.enable = true;
@@ -140,6 +144,9 @@
 
     webhook.enable = true;
   };
+
+  security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
+  security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
 
   system.stateVersion = "21.11";
 }
