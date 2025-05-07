@@ -1,7 +1,8 @@
 let
   inputs = import ./deps;
 
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
+  dnsLib = (import inputs.dns).lib;
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs dnsLib);
 
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.system) (
