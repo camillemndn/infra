@@ -81,6 +81,7 @@
       locations = {
         "/dda/".alias = "/srv/sites/dda/www/";
         "/projects/ot/".alias = "/srv/sites/optimal-transport/www/";
+        "/projects/icscoda/".alias = "/srv/sites/icscoda/www/";
         "/projects/plnar/".alias = "/srv/sites/plnar/www/";
         "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
         "/random-densities/".return = "301 https://$server_name/projects$request_uri";
