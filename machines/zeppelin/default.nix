@@ -84,6 +84,8 @@
         "/projects/icscoda/".alias = "/srv/sites/icscoda/www/";
         "/projects/plnar/".alias = "/srv/sites/plnar/www/";
         "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
+        "/publications/2025/icscomplex/".alias = "/srv/sites/icscomplex/www/";
+        "/publications/2025/danova/".alias = "/srv/sites/danova/www/";
         "/random-densities/".return = "301 https://$server_name/projects$request_uri";
         "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
         "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
