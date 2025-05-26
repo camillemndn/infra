@@ -60,7 +60,7 @@
       package = pkgs.papermc;
       jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
     };
-    nginx.virtualHosts."minecraft.mondon.xyz".port = 25565;
+    nginx.virtualHosts."mc.varanda.fr".port = 25565;
 
     nextcloud.enable = true;
 
