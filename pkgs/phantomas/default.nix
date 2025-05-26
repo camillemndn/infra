@@ -13,16 +13,16 @@
 
 buildNpmPackage rec {
   pname = "phantomas";
-  version = "2.13.0";
+  version = "2.17.0";
 
   src = fetchFromGitHub {
     owner = "macbre";
     repo = "phantomas";
     rev = "v${version}";
-    hash = "sha256-5AC2LwGE2D1lbvVSIq22DJlBKKPIwLlR7RIMbwtxyYg=";
+    hash = "sha256-TBDtO7dRB9kCq358GZvMofGFr7VG+azP+wL7D0yEmGc=";
   };
 
-  npmDepsHash = "sha256-ejRfEYqeVRB1Z/cZtoe6j28QhTg1/2BsJXgynzWZLb0=";
+  npmDepsHash = "sha256-SwkgufiykpQ5wkALpqkzPfkbNO3pGtT6vl109BgJTpo=";
 
   nativeBuildInputs = [
     autoconf
