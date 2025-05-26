@@ -122,7 +122,7 @@ with lib;
   services = {
     asusd = {
       enable = true;
-      fanCurvesConfig = readFile ./fan_curves.ron;
+      fanCurvesConfig.source = ./fan_curves.ron;
     };
     fprintd.enable = true;
     logiops.enable = true;

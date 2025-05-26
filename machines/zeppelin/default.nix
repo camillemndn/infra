@@ -46,8 +46,8 @@
 
     mattermost = {
       enable = true;
+      database.peerAuth = true;
       siteUrl = "https://projects.mondon.xyz";
-      listenAddress = "127.0.0.1:8065";
     };
     nginx.virtualHosts."projects.mondon.xyz" = {
       port = 8065;
@@ -57,8 +57,8 @@
     minecraft-server = {
       enable = true;
       eula = true;
-      package = pkgs.papermcServers.papermc-1_21_5;
-      jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
+      package = pkgs.papermc;
+      jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
     };
     nginx.virtualHosts."minecraft.mondon.xyz".port = 25565;
 

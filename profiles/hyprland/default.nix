@@ -15,14 +15,10 @@ lib.mkIf config.programs.hyprland.enable {
   };
 
   fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "Ubuntu"
-        ];
-      })
+    packages = with pkgs.nerd-fonts; [
+      fira-code
+      jetbrains-mono
+      ubuntu
     ];
     fontconfig.antialias = true;
   };

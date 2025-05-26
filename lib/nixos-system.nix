@@ -82,7 +82,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "nvidia-settings"
                 "nvidia-x11"
                 "reaper"
-                "samsung-UnifiedLinuxDriver"
+                "samsung-unified-linux-driver"
                 "spotify"
                 "steam"
                 "steam-original"

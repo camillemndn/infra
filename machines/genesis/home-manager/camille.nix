@@ -32,14 +32,14 @@ with lib;
     unstable.lutris
     prismlauncher
     wineWow64Packages.waylandFull
-    (retroarch.override {
-      cores = with libretro; [
+    (retroarch.withCores (
+      cores: with cores; [
         dolphin
         citra
-      ];
-    })
+      ]
+    ))
     ryujinx
-    lime3ds
+    azahar
 
     # Social
     mattermost-desktop

@@ -9,7 +9,7 @@ lib.mkIf config.programs.kitty.enable {
   programs.kitty = {
     font = {
       name = "FiraCode Nerd Font Mono Reg";
-      package = with pkgs; (nerdfonts.override { fonts = [ "FiraCode" ]; });
+      package = pkgs.nerd-fonts.fira-code;
       size = lib.mkIf config.gtk.hidpi.enable 15;
     };
 

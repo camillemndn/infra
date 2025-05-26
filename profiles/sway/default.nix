@@ -22,13 +22,9 @@ lib.mkIf config.programs.sway.enable {
   };
 
   fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-        ];
-      })
+    packages = with pkgs.nerd-fonts; [
+      fira-code
+      jetbrains-mono
     ];
     fontconfig.antialias = true;
   };

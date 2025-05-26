@@ -6,6 +6,5 @@
   nginx = import ./services/web-servers/nginx;
   radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;
-  yarr = import ./services/networking/yarr;
   zfs-ssh = import ./services/misc/zfs-ssh;
 }

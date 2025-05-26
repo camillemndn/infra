@@ -14,19 +14,15 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
     };
   };
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   programs.xwayland.enable = true;
 
   fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "FiraCode"
-          "JetBrainsMono"
-          "Ubuntu"
-        ];
-      })
+    packages = with pkgs.nerd-fonts; [
+      fira-code
+      jetbrains-mono
+      ubuntu
     ];
     fontconfig.antialias = true;
   };
@@ -45,22 +41,21 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
       with gnomeExtensions;
       [
         pkgs.dconf-editor
-        tailscale-status
-        screen-rotate
-        nextcloud-folder
-        blur-my-shell
-        supergfxctl-gex
-        wireless-hid
-        vitals
-        hide-activities-button
-        custom-hot-corners-extended
-        hide-universal-access
-        arrange-windows
-        window-state-manager
-        appindicator
-        miniview
         alphabetical-app-grid
+        appindicator
+        arrange-windows
+        blur-my-shell
         color-picker
+        custom-hot-corners-extended
+        gpu-supergfxctl-switch
+        hide-activities-button
+        hide-universal-access
+        miniview
+        screen-rotate
+        tailscale-status
+        vitals
+        window-state-manager
+        wireless-hid
 
         (writeShellScriptBin "gnome-terminal" ''
           #!/bin/bash
