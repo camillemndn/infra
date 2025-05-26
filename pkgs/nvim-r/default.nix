@@ -7,13 +7,13 @@
 
 vimUtils.buildVimPlugin rec {
   pname = "nvim-r";
-  version = "0.9.20";
+  version = "0.9.21";
 
   src = fetchFromGitHub {
     owner = "jalvesaq";
     repo = "Nvim-R";
     rev = "v${version}";
-    hash = "sha256-YD0Vg1/N7jdoAfu7oytb47vcZqBtExDFka9kCP4/Vlc=";
+    hash = "sha256-LmqufF9Z70SOeyQi+JmsdhJgYseGflk7eLNJeDlfUYk=";
   };
 
   passthru.updateScript = nix-update-script { };
