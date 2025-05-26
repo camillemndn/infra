@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation {
   pname = "raspberrypi-utils";
-  version = "0-unstable-2024-12-18";
+  version = "0-unstable-2025-05-22";
 
   src = fetchFromGitHub {
     owner = "raspberrypi";
     repo = "utils";
-    rev = "1b9cf7c2224641ff9bb08c9beaa1cdc30aad2a00";
-    hash = "sha256-p3Ski8QBWmAhGeB3t/ocjzuLDbkD47JeEVDwD/h59WI=";
+    rev = "657359cd6d6d8ebc6ba431750dc3c2c1d91fd707";
+    hash = "sha256-D+KKexWKAmLmBjPZ4qTz7BLjB83T3Mr+rHIqNX7c6Pg=";
   };
 
   nativeBuildInputs = [ cmake ];
