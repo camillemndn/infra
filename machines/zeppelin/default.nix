@@ -31,6 +31,8 @@
   services = {
     buildbot-nix.master.enable = true;
 
+    collabora-online.enable = true;
+
     grafana.enable = true;
 
     jellyfin.enable = true;
@@ -51,6 +53,14 @@
       port = 8065;
       websockets = true;
     };
+
+    minecraft-server = {
+      enable = true;
+      eula = true;
+      package = pkgs.papermcServers.papermc-1_21_5;
+      jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
+    };
+    nginx.virtualHosts."minecraft.mondon.xyz".port = 25565;
 
     nextcloud.enable = true;
 
@@ -112,13 +122,11 @@
     nginx.virtualHosts."www.camillemondon.com".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
-    collabora-online.enable = true;
-
     openssh.enable = true;
 
-    plausible.enable = true;
-
     photoprism.enable = true;
+
+    plausible.enable = true;
 
     tailscale.enable = true;
 
