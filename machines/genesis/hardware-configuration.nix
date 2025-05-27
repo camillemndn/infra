@@ -29,11 +29,11 @@ with lib;
         "sd_mod"
         "tpm_crb"
       ];
+
       clevis = {
         enable = true;
         devices.luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.secretFile = ./luks.jwe;
       };
-      secrets."/crypto_keyfile.bin" = null;
 
       luks.devices = {
         luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
@@ -43,6 +43,10 @@ with lib;
           keyFile = "/crypto_keyfile.bin";
         };
       };
+
+      secrets."/crypto_keyfile.bin" = null;
+      systemd.enable = true;
+
     };
 
     blacklistedKernelModules = [ "nouveau" ];
