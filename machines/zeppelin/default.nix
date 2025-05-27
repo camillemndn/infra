@@ -5,7 +5,10 @@
 
   networking = {
     hostName = "zeppelin";
-    firewall.allowedTCPPorts = [ 2022 ];
+    firewall.allowedTCPPorts = [
+      2022
+      25565
+    ];
     firewall.allowedUDPPorts = [ 51820 ];
 
     wireguard.interfaces.wg0 = {
@@ -60,7 +63,6 @@
       package = pkgs.papermc;
       jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
     };
-    nginx.virtualHosts."mc.varanda.fr".port = 25565;
 
     nextcloud.enable = true;
 
