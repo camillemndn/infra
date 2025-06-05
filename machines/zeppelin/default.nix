@@ -29,8 +29,6 @@
     };
   };
 
-  mailserver.enable = true;
-
   services = {
     buildbot-nix.master.enable = true;
 
