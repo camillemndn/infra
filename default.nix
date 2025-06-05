@@ -68,36 +68,27 @@ rec {
     })
   ) (lib.importConfig ./machines);
 
-  packages = builtins.listToAttrs (
-    builtins.map (plat: {
-      name = plat;
-      value =
-        lib.filterAttrs
-          (
-            _name: value:
-            (
-              !lib.hasAttrByPath [
-                "meta"
-                "platforms"
-              ] value
-            )
-            || builtins.elem plat value.meta.platforms
-          )
-          (
-            let
-              callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
-                nixpkgs_plats.${plat} // ours
-              );
-              ours = builtins.listToAttrs (
-                builtins.map (e: {
-                  name = e;
-                  value = callPackage (./pkgs + "/${e}") { };
-                }) (builtins.attrNames (builtins.readDir ./pkgs))
-              );
-            in
-            ours
-          );
-    }) machines_plats
+  packages = lib.genAttrs machines_plats (
+    plat:
+    let
+      callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
+        nixpkgs_plats.${plat} // extraPackages
+      );
+
+      extraPackages = builtins.mapAttrs (pname: _: callPackage (./pkgs + "/${pname}") { }) (
+        lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./pkgs)
+      );
+    in
+    lib.filterAttrs (
+      _: derivation:
+      (
+        !lib.hasAttrByPath [
+          "meta"
+          "platforms"
+        ] derivation
+      )
+      || builtins.elem plat derivation.meta.platforms
+    ) extraPackages
   );
 
   inherit (lib.infra) machines;
