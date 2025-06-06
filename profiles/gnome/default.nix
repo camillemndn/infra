@@ -18,15 +18,6 @@ lib.mkIf config.services.xserver.desktopManager.gnome.enable {
 
   programs.xwayland.enable = true;
 
-  fonts = {
-    packages = with pkgs.nerd-fonts; [
-      fira-code
-      jetbrains-mono
-      ubuntu
-    ];
-    fontconfig.antialias = true;
-  };
-
   environment = {
     gnome.excludePackages = with pkgs; [
       geary

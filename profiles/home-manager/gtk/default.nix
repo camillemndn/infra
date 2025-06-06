@@ -25,19 +25,9 @@ with lib;
     };
 
     gtk = {
-      theme = {
-        name = "Yaru-dark";
-        package = pkgs.yaru-theme;
-      };
-
       iconTheme = {
         name = "Yaru";
         package = pkgs.yaru-theme;
-      };
-
-      font = {
-        name = "Cantarell";
-        size = 11;
       };
 
       gtk3.extraConfig = {
@@ -57,18 +47,7 @@ with lib;
 
     qt = {
       enable = true;
-      platformTheme.name = "adwaita";
-      style = {
-        package = pkgs.adwaita-qt;
-        name = "adwaita-dark";
-      };
-    };
-
-    home.pointerCursor = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-      size = 24;
-      gtk.enable = true;
+      platformTheme.name = lib.mkForce "adwaita";
     };
 
     home.sessionVariables = {

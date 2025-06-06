@@ -14,15 +14,6 @@ lib.mkIf config.programs.hyprland.enable {
     };
   };
 
-  fonts = {
-    packages = with pkgs.nerd-fonts; [
-      fira-code
-      jetbrains-mono
-      ubuntu
-    ];
-    fontconfig.antialias = true;
-  };
-
   environment = {
     systemPackages =
       with pkgs;

@@ -159,10 +159,6 @@ lib.mkIf config.wayland.windowManager.sway.enable {
         };
         startup = [
           { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
-          {
-            command = "swww img ~/Images/.wallpaper.jpg";
-            always = true;
-          }
           { command = "tailscale-systray"; }
           {
             command = "sworkstyle &> /tmp/sworkstyle.log";

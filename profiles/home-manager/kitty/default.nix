@@ -1,23 +1,9 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 lib.mkIf config.programs.kitty.enable {
-  programs.kitty = {
-    font = {
-      name = "FiraCode Nerd Font Mono Reg";
-      package = pkgs.nerd-fonts.fira-code;
-      size = lib.mkIf config.gtk.hidpi.enable 15;
-    };
-
-    themeFile = "Catppuccin-Mocha";
-
-    settings = {
-      wayland_titlebar_color = "background";
-      background_opacity = "0.8";
-    };
-  };
+  programs.kitty.settings.wayland_titlebar_color = "background";
 }

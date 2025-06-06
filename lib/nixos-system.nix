@@ -41,9 +41,10 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
-    (import inputs.musnix)
     (import inputs.lanzaboote).nixosModules.lanzaboote
+    (import inputs.musnix)
     (import "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/jellyseerr.nix")
+    (import inputs.stylix).nixosModules.stylix
 
     (
       { config, ... }:

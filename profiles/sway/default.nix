@@ -21,13 +21,5 @@ lib.mkIf config.programs.sway.enable {
     extraPackages = [ ];
   };
 
-  fonts = {
-    packages = with pkgs.nerd-fonts; [
-      fira-code
-      jetbrains-mono
-    ];
-    fontconfig.antialias = true;
-  };
-
   environment.systemPackages = lib.optional config.services.tailscale.enable pkgs.tailscale-systray;
 }

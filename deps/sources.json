@@ -209,6 +209,19 @@
       "revision": "62b852f6c6742134ade1abdd2a21685fd617a291",
       "url": "https://github.com/NixOS/nixpkgs/archive/62b852f6c6742134ade1abdd2a21685fd617a291.tar.gz",
       "hash": "04c6dkshw07bm2isv7rvl6xgr4hn7hqznr0v2kww6zjfz4awk4a7"
+    },
+    "stylix": {
+      "type": "Git",
+      "repository": {
+        "type": "GitHub",
+        "owner": "nix-community",
+        "repo": "stylix"
+      },
+      "branch": "release-25.05",
+      "submodules": false,
+      "revision": "3979552fe5fb3627a85cc70ceff6efb770c44531",
+      "url": "https://github.com/nix-community/stylix/archive/3979552fe5fb3627a85cc70ceff6efb770c44531.tar.gz",
+      "hash": "0m5pclqr3h9l2232ymnrhdnll330mpmbiymrr68qcmdmp31jjmgm"
     }
   },
   "version": 5
