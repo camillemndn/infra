@@ -47,7 +47,10 @@ lib.mkIf cfg.enable {
       };
     };
 
-    image = ./wallpaper.jpg;
+    image = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/waves.png";
+      hash = "sha256-I7RERKgoDsExGo6GjBKx0bOCkYlK+dgvlI29FHXA7AE=";
+    };
 
     opacity = {
       terminal = 0.95;
