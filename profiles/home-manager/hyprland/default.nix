@@ -38,21 +38,6 @@ lib.mkIf config.wayland.windowManager.hyprland.enable {
     provider = "geoclue2";
   };
 
-  systemd.user.services.swaybg = {
-    Unit = {
-      Description = "Wayland wallpaper daemon";
-      PartOf = [ "graphical-session.target" ];
-      After = [ "graphical-session.target" ];
-    };
-
-    Service = {
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -o * -m fill -i /home/camille/Images/.wallpaper.jpg";
-      Restart = "on-failure";
-    };
-
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
   home.packages =
     with pkgs;
     [
