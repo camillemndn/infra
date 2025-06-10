@@ -45,8 +45,6 @@ with lib;
       };
 
       secrets."/crypto_keyfile.bin" = null;
-      systemd.enable = true;
-
     };
 
     blacklistedKernelModules = [ "nouveau" ];
