@@ -58,6 +58,8 @@ python3.pkgs.buildPythonApplication rec {
     "organize"
   ];
 
+  dontCheckRuntimeDeps = true;
+
   postFixup = ''
     wrapProgram $out/bin/organize \
       --set ORGANIZE_EXIFTOOL_PATH ${exiftool}/bin/exiftool
