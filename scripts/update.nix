@@ -18,7 +18,7 @@
 }:
 
 let
-  pkgs = import (import ../deps).nixpkgs { };
+  pkgs = import (import ../lon.nix).nixpkgs { };
   ourpkgs = (import ../.).packages.x86_64-linux;
 
   inherit (pkgs) lib;

@@ -1,5 +1,5 @@
 let
-  inputs = import ./deps;
+  inputs = import ./lon.nix;
   pkgs = import inputs.nixpkgs-unstable { };
   agenix = pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { };
   nixos-anywhere = import scripts/nixos-anywhere.nix;
@@ -22,8 +22,8 @@ pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     agenix
     colmena
+    lon
     nixos-anywhere
-    npins
     statix
   ];
   shellHook = ''
