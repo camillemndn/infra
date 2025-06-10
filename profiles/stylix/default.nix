@@ -27,8 +27,8 @@ lib.mkIf cfg.enable {
       };
 
       sansSerif = {
-        name = "Fantasque Sans Mono";
-        package = pkgs.nerd-fonts.fantasque-sans-mono;
+        name = "Noto Sans";
+        package = pkgs.noto-fonts;
       };
 
       monospace = {

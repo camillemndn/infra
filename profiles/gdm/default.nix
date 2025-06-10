@@ -19,16 +19,7 @@ in
       enable = true;
 
       displayManager = {
-        gdm = {
-          wayland = true;
-
-          extraConfig = ''
-            [org/gnome/desktop/interface]
-            text-scaling-factor=${if cfg.hidpi.enable then "1.5" else "1.0"}
-            scaling-factor=${if cfg.hidpi.enable then "2" else "1"}
-            show-battery-percentage=true
-          '';
-        };
+        gdm.wayland = true;
 
         setupCommands = ''
           xrandr --setprovideroutputsource modesetting NVIDIA-0
@@ -48,5 +39,25 @@ in
         nufraw-thumbnailer
       ];
     };
+
+    programs.dconf.profiles.gdm.databases =
+      let
+        inherit (config.stylix.fonts) sansSerif serif monospace;
+        fontSize = toString config.stylix.fonts.sizes.applications;
+        documentFontSize = toString (config.stylix.fonts.sizes.applications - 1);
+      in
+      [
+        {
+          lockAll = true;
+          settings."org/gnome/desktop/interface" = {
+            text-scaling-factor = if cfg.hidpi.enable then 1.5 else 1.0;
+            scaling-factor = lib.gvariant.mkUint32 (if cfg.hidpi.enable then 2 else 1);
+            show-battery-percentage = true;
+            font-name = "${sansSerif.name} ${fontSize}";
+            document-font-name = "${serif.name}  ${documentFontSize}";
+            monospace-font-name = "${monospace.name} ${fontSize}";
+          };
+        }
+      ];
   };
 }
