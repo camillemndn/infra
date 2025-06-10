@@ -58,5 +58,7 @@ lib.mkIf cfg.enable {
     };
 
     polarity = "dark";
+
+    targets.fish.enable = false;
   };
 }
