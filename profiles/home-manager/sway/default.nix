@@ -152,10 +152,13 @@ lib.mkIf config.wayland.windowManager.sway.enable {
         menu = "${envVars} fuzzel";
         modifier = "Mod4";
         output."Hewlett Packard HP V194 3CQ9432LGC" = lib.mkIf config.gtk.hidpi.enable { scale = "0.75"; };
-        input."1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
-          drag = "enable";
-          drag_lock = "enable";
-          map_to_output = "eDP-1";
+        input = {
+          "type:touchpad".dwt = "disabled";
+          "1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
+            drag = "enable";
+            drag_lock = "enable";
+            map_to_output = "eDP-1";
+          };
         };
         startup = [
           { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
