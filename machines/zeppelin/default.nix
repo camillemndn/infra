@@ -34,6 +34,8 @@
 
     collabora-online.enable = true;
 
+    davmail.enable = true;
+
     grafana.enable = true;
 
     jellyfin.enable = true;
