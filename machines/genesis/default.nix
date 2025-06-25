@@ -79,5 +79,7 @@
     };
   };
 
+  stylix.enable = true;
+
   system.stateVersion = "23.05";
 }

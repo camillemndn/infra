@@ -9,9 +9,8 @@ let
   cfg = config.services.xserver;
 in
 
-lib.mkIf cfg.enable {
+lib.mkIf config.stylix.enable {
   stylix = {
-    enable = true;
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 
     cursor = {

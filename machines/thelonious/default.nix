@@ -53,5 +53,7 @@
     xserver.displayManager.gdm.enable = true;
   };
 
+  stylix.enable = true;
+
   system.stateVersion = "23.11";
 }
