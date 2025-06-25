@@ -26,7 +26,7 @@
       kdePackages.partitionmanager
       kdePackages.skanlite
       thunderbird
-      inkscape
+      inkscape-with-extensions
       gimp
       libreoffice-qt6-fresh
     ];
