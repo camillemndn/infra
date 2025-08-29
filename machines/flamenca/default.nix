@@ -1,49 +1,59 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
-  networking.hostName = "flamenca";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "flamenca";
+    networkmanager.enable = true;
+  };
 
   deployment = {
     targetHost = null;
     allowLocalDeployment = true;
   };
 
-  hardware.bluetooth.enable = true;
-
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "google-chrome"
-    ];
-
-  services.xserver.enable = true;
-
-  services.displayManager.sddm = {
-    enable = true;
-    autoLogin.relogin = true;
-    wayland.enable = true;
-  };
-  services.desktopManager.plasma6.enable = true;
-
-  services.printing = {
-    enable = true;
-    drivers = [ pkgs.gutenprint ];
+  hardware = {
+    bluetooth.enable = true;
+    sane.enable = true;
   };
 
-  hardware.sane.enable = true;
-  services.pulseaudio.enable = false;
+  programs.firefox.enable = true;
+
+  services = {
+    xserver.enable = true;
+    desktopManager.plasma6.enable = true;
+
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        autoLogin.user = "cecilia";
+      };
+      sddm = {
+        enable = true;
+        autoLogin.relogin = true;
+        wayland.enable = true;
+      };
+    };
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    pulseaudio.enable = false;
+
+    printing = {
+      enable = true;
+      drivers = [ pkgs.gutenprint ];
+    };
+
+    openssh.enable = true;
+    tailscale.enable = true;
+  };
+
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   users.users.cecilia = {
     isNormalUser = true;
@@ -59,7 +69,6 @@
       kdePackages.kpat
       kdePackages.skanlite
       thunderbird
-      google-chrome
       libreoffice-qt6-fresh
       gimp-with-plugins
       tenacity
@@ -69,14 +78,6 @@
       signal-desktop
     ];
   };
-
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "cecilia";
-
-  programs.firefox.enable = true;
-
-  services.openssh.enable = true;
-  services.tailscale.enable = true;
 
   system.stateVersion = "24.05";
 }
