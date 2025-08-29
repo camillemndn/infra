@@ -27,7 +27,7 @@
     displayManager = {
       autoLogin = {
         enable = true;
-        autoLogin.user = "cecilia";
+        user = "cecilia";
       };
       sddm = {
         enable = true;
