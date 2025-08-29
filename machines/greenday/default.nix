@@ -10,8 +10,11 @@
     allowLocalDeployment = true;
   };
 
-  networking.hostName = "greenday";
-  networking.networkmanager.enable = true;
+  networking = {
+    hostName = "greenday";
+    networkmanager.enable = true;
+    firewall.allowedTCPPorts = [ 3389 ];
+  };
 
   users.users.georgette = {
     isNormalUser = true;
@@ -22,8 +25,7 @@
     ];
     packages = with pkgs; [
       kdePackages.kate
-      kdePackages.krfb
-      kdePackages.partitionmanager
+      kdePackages.filelight
       kdePackages.skanlite
       thunderbird
       inkscape-with-extensions
@@ -50,14 +52,11 @@
 
     ipp-usb.enable = true;
 
-    xrdp = {
+    openssh = {
       enable = true;
-      defaultWindowManager = "startplasma-wayland";
-      openFirewall = true;
+      settings.PasswordAuthentication = true;
     };
 
-    openssh.enable = true;
-    openssh.settings.PasswordAuthentication = true;
     printing = {
       enable = true;
       drivers = with pkgs; [
@@ -65,6 +64,8 @@
         samsung-unified-linux-driver
       ];
     };
+
+    tailscale.enable = true;
   };
 
   programs.firefox.enable = true;
