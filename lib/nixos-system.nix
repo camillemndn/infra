@@ -58,7 +58,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
         home-manager = {
           useGlobalPkgs = true;
-          sharedModules = builtins.attrValues hmModules;
+          sharedModules = builtins.attrValues hmModules ++ [ (import inputs.stylix).homeModules.stylix ];
           users = lib.genAttrs (listUsers config) (
             user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
           );
