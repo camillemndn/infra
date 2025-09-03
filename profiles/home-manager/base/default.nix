@@ -18,6 +18,4 @@
       package = lib.mkDefault pkgs.nix-index-with-db;
     };
   };
-
-  stylix.targets.fish.enable = false;
 }

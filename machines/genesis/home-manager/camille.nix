@@ -25,6 +25,7 @@ with lib;
   };
 
   services.nextcloud-client.enable = true;
+  stylix.targets.fish.enable = false;
 
   home.packages = with pkgs; [
     # Games

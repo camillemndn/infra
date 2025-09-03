@@ -15,6 +15,8 @@ with lib;
     thunderbird.enable = true;
   };
 
+  stylix.targets.fish.enable = false;
+
   home.packages = with pkgs; [
     # Social
     mattermost-desktop
