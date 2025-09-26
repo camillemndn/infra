@@ -56,7 +56,6 @@ lib.mkIf config.wayland.windowManager.sway.enable {
     in
     {
       extraConfig = ''
-        bindswitch --reload --locked lid:on exec swaylock
         bar { 
           swaybar_command waybar
         }

@@ -54,7 +54,10 @@
       };
     };
 
-    logind.killUserProcesses = true;
+    logind = {
+      killUserProcesses = true;
+      lidSwitch = "suspend-then-hibernate";
+    };
     power-profiles-daemon.enable = false;
 
     printing = {
@@ -80,6 +83,10 @@
   };
 
   stylix.enable = true;
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=2h
+  '';
 
   system.stateVersion = "23.05";
 }
