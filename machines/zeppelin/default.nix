@@ -98,6 +98,7 @@
         "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
         "/publications/2025/icscomplex/".alias = "/srv/sites/icscomplex/www/";
         "/publications/2025/danova/".alias = "/srv/sites/danova/www/";
+        "/publications/2026/icsfobi/".alias = "/srv/sites/icsfobi/www/";
         "/random-densities/".return = "301 https://$server_name/projects$request_uri";
         "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
         "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
