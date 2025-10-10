@@ -35,7 +35,7 @@ keyset("n", "fh", builtin.help_tags, {})
 
 require("nvim-web-devicons").setup({})
 
-g.markdown_fenced_languages = { "html", "python", "bash=sh", "R=r", "latex" }
+g.markdown_fenced_languages = { "html", "python", "sage", "bash=sh", "R=r", "latex" }
 
 local tabsize = 2
 opt.expandtab = true

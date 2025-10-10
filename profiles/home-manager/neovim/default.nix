@@ -157,7 +157,10 @@ with lib;
 
             python = {
               command = "pyright";
-              filetypes = [ "py" ];
+              filetypes = [
+                "py"
+                "sage"
+              ];
             };
 
             r =
