@@ -36,7 +36,8 @@ let
     SPOTIFY_CLIENT_ID = "$SPOTIFY_CLIENT_ID";
     SPOTIFY_CLIENT_SECRET = "$SPOTIFY_CLIENT_SECRET";
     YOUTUBE_API_KEY = "$YOUTUBE_API_KEY";
-  } // cfg.extraConfig;
+  }
+  // cfg.extraConfig;
 
   envFile = with lib; concatStrings (mapAttrsToList (name: value: "${name}=${value}\n") envParams);
 in
@@ -94,7 +95,8 @@ with lib;
 
       phpEnv = {
         FFMPEG_PATH = "${pkgs.ffmpeg}/bin/ffmpeg";
-      } // envParams;
+      }
+      // envParams;
 
       phpOptions = ''
         memory_limit = 2G

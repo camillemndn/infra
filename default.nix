@@ -28,7 +28,8 @@ let
                   extraArgs = [
                     "-f"
                     "release.nix"
-                  ] ++ args.extraArgs or [ ];
+                  ]
+                  ++ args.extraArgs or [ ];
                 }
               );
           })
