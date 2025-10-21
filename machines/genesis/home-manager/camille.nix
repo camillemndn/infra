@@ -53,6 +53,11 @@ with lib;
     xournalpp
     zotero
 
+    # Tools
+    ocrmypdf
+    organize-tool
+    pdfarranger
+
     # Sync
     bitwarden
     bitwarden-cli
@@ -78,14 +83,15 @@ with lib;
 
     # Studio
     ardour
-    lmms
-    zrythm
-    lsp-plugins
-    zam-plugins
-    gxplugins-lv2
-    luppp
-    lenmus
     drumgizmo
+    gxplugins-lv2
+    lenmus
+    lmms
+    lsp-plugins
+    luppp
+    tenacity
+    zam-plugins
+    zrythm
   ];
 
   home.stateVersion = "23.05";
