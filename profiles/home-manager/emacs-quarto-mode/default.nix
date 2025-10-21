@@ -13,12 +13,5 @@
 
   config = lib.mkIf config.programs.emacs.quartoMode.enable {
     programs.emacs.extraPackages = epkgs: with epkgs; [ quarto-mode ];
-
-    programs.emacs.extraConfig = ''
-      (use-package quarto-mode
-        init
-        (setq markdown-enable-math t)
-        :mode (("\\.Rmd" . poly-quarto-mode)))
-    '';
   };
 }

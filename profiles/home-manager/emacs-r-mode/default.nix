@@ -13,10 +13,5 @@
 
   config = lib.mkIf config.programs.emacs.RMode.enable {
     programs.emacs.extraPackages = epkgs: with epkgs; [ ess ];
-
-    programs.emacs.extraConfig = ''
-      (use-package ess
-        :defer t)
-    '';
   };
 }

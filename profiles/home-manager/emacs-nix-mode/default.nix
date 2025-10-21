@@ -19,14 +19,5 @@
     ];
 
     programs.emacs.extraPackages = epkgs: with epkgs; [ nix-mode ];
-
-    programs.emacs.extraConfig = ''
-      (use-package nix-mode
-        :init
-        (setq lsp-nix-nil-formatter [ "nixfmt" ])
-        :mode "\\.nix\\'"
-        :hook (nix-mode . lsp-deferred)
-        :commands (lsp lsp-deferred))
-    '';
   };
 }
