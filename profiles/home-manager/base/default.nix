@@ -11,7 +11,6 @@
   programs = {
     fish.enable = true;
     home-manager.enable = true;
-    neovim.enable = true;
 
     nix-index = {
       enable = lib.mkDefault true;

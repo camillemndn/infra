@@ -5,8 +5,6 @@
   ...
 }:
 
-with lib;
-
 let
   sshPubKeys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBmuMNGkWQ7ozpC2UU0+jqMsRw1zVgT2Q9ORmLcTXpK2 camille@zeppelin"
@@ -45,10 +43,10 @@ in
     };
   };
 
-  deployment.buildOnTarget = mkDefault true;
+  deployment.buildOnTarget = lib.mkDefault true;
 
   console.keyMap = "fr";
-  time.timeZone = mkOverride 500 "Europe/Paris";
+  time.timeZone = lib.mkOverride 500 "Europe/Paris";
   i18n.defaultLocale = "fr_FR.UTF-8";
   i18n.extraLocaleSettings = {
     LANG = "fr_FR.UTF-8";
@@ -87,28 +85,22 @@ in
       '';
     };
 
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      vimAlias = true;
-      viAlias = true;
-      withRuby = false;
-    };
+    nixvim.enable = true;
 
     command-not-found.enable = false;
 
-    nix-index = {
-      enable = lib.mkDefault true;
-      package = lib.mkDefault pkgs.nix-index-with-db;
+    nix-index = lib.mkDefault {
+      enable = true;
+      package = pkgs.nix-index-with-db;
     };
   };
 
   services = {
     eternal-terminal.enable = true;
-    openssh.settings.PasswordAuthentication = mkDefault false;
+    openssh.settings.PasswordAuthentication = lib.mkDefault false;
 
     mysql = {
-      package = mkForce pkgs.mariadb;
+      package = lib.mkForce pkgs.mariadb;
       settings = {
         mysql.pager = "${pkgs.less}/bin/less -SFX";
         mysqld.init-connect = "'SET NAMES utf8mb4'";
@@ -123,7 +115,7 @@ in
   };
 
   networking = {
-    firewall.checkReversePath = mkIf config.services.tailscale.enable "loose";
+    firewall.checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };
 

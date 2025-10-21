@@ -44,6 +44,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import inputs.musnix)
     (import "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/jellyseerr.nix")
     (import inputs.stylix).nixosModules.stylix
+    (import inputs.nixvim).nixosModules.nixvim
 
     (
       { config, ... }:

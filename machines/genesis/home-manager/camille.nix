@@ -19,7 +19,6 @@ with lib;
 
     emacs.enable = true;
     kitty.enable = true;
-    neovim.full.enable = true;
     thunderbird.enable = true;
     waybar.bluetooth.enable = true;
   };

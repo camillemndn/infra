@@ -141,6 +141,16 @@
       "url": "https://github.com/NixOS/nixpkgs/archive/544961dfcce86422ba200ed9a0b00dd4b1486ec5.tar.gz",
       "hash": "sha256-EVAqOteLBFmd7pKkb0+FIUyzTF61VKi7YmvP1tw4nEw="
     },
+    "nixvim": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nix-community",
+      "repo": "nixvim",
+      "branch": "nixos-25.05",
+      "revision": "6c945865ba5de87fa2d0dd8a0e66ca572ddf9043",
+      "url": "https://github.com/nix-community/nixvim/archive/6c945865ba5de87fa2d0dd8a0e66ca572ddf9043.tar.gz",
+      "hash": "sha256-gi+tWWAknKuTNso3yMeKsT9nj0jx+tuYF7g7nmLUWT8="
+    },
     "stylix": {
       "type": "GitHub",
       "fetchType": "tarball",
