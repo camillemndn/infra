@@ -2,6 +2,11 @@
 
 {
   programs.nixvim = {
+    clipboard = {
+      register = "unnamedplus";
+      providers.wl-copy.enable = true;
+    };
+
     defaultEditor = true;
 
     extraPackages = with pkgs; [
