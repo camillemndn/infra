@@ -74,6 +74,11 @@ let
             ipv6.public = "2603:c027:c002:702:a0c:c8e:cc5e:c723";
           };
 
+          pinkfloyd = {
+            ipv4.vpn = "100.100.45.3";
+            ipv6.vpn = "fd7a:115c:a1e0::3";
+          };
+
           radiogaga.system = "aarch64-linux";
 
           thelonious = {
