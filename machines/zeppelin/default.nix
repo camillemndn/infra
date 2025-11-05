@@ -81,6 +81,12 @@
     };
 
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
+    nginx.virtualHosts."varanda.fr" = {
+      root = "/srv/sites/varanda.fr/www";
+      extraConfig = ''
+        error_page 404 /;
+      '';
+    };
     nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
     nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
 
@@ -146,14 +152,6 @@
     webtrees = {
       enable = true;
       hostName = "family.mondon.xyz";
-    };
-
-    wordpress = {
-      sites."varanda.fr" = {
-        languages = [ pkgs.wordpressPackages.languages.fr_FR ];
-        settings.WPLANG = "fr_FR";
-      };
-      webserver = "nginx";
     };
 
     yarr.enable = true;
