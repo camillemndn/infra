@@ -13,13 +13,16 @@
       black
       nil
       nixfmt-rfc-style
+      ormolu
       ripgrep
+      superhtml
     ];
 
     opts = {
       number = true;
       relativenumber = true;
       shiftwidth = 2;
+      tabstop = 2;
     };
 
     plugins = {
@@ -56,9 +59,11 @@
             lsp_fallback = true;
           };
           formatters_by_ft = {
-            quarto = [ "injected" ];
+            haskell = [ "ormolu" ];
+            html = [ "superhtml" ];
             nix = [ "nixfmt" ];
             python = [ "black" ];
+            quarto = [ "injected" ];
           };
         };
       };
@@ -68,13 +73,14 @@
       lsp = {
         enable = true;
 
-        servers.nil_ls = {
-          enable = true;
-          settings = {
-            formatting = {
-              command = [ "nixfmt" ];
-            };
+        servers = {
+          hls = {
+            enable = true;
+            package = null;
           };
+          nil_ls.enable = true;
+          pyright.enable = true;
+          superhtml.enable = true;
         };
       };
 
