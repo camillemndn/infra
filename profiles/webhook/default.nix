@@ -59,18 +59,6 @@ lib.mkIf config.services.webhook.enable {
                       "name": "X-Hub-Signature"
                     }
                   }
-                },
-                {
-                  "match":
-                  {
-                    "type": "value",
-                    "value": "tag",
-                    "parameter":
-                    {
-                      "source": "payload",
-                      "name": "ref_type"
-                    }
-                  }
                 }
               ]
             }
