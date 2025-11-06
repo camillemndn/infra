@@ -62,6 +62,10 @@
         error_page 404 /404.html;
       '';
       locations = {
+        "/assets/".extraConfig = ''
+          expires 1y;
+          add_header Cache-Control "public";
+        '';
         "/dda/".alias = "/srv/sites/dda/www/";
         "/projects/ot/".alias = "/srv/sites/optimal-transport/www/";
         "/projects/icscoda/".alias = "/srv/sites/icscoda/www/";
@@ -92,7 +96,13 @@
     nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
-    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
+    nginx.virtualHosts."ceciliaflamenca.com" = {
+      root = "/srv/sites/ceciliaflamenca.com/www";
+      locations."/images/".extraConfig = ''
+        expires 1y;
+        add_header cache-control "public";
+      '';
+    };
 
     nginx.virtualHosts."hidimdaml.camillemondon.com" = {
       extraConfig = ''
@@ -114,7 +124,13 @@
     };
     nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
 
-    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
+    nginx.virtualHosts."yali.es" = {
+      root = "/srv/sites/yali.es/www";
+      locations."/images/".extraConfig = ''
+        expires 1y;
+        add_header cache-control "public";
+      '';
+    };
 
     openssh.enable = true;
     photoprism.enable = true;
