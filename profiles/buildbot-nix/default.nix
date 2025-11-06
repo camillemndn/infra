@@ -25,7 +25,8 @@ lib.mkIf config.services.buildbot-nix.master.enable {
       webhookSecretFile = config.age.secrets.github-webhook-secret.path;
       topic = "nix-ci";
     };
-    evalWorkerCount = 10;
+    evalWorkerCount = 4;
+    evalMaxMemorySize = "1024";
   };
 
   services.buildbot-nix.worker = {

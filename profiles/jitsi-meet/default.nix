@@ -2,12 +2,13 @@
 
 lib.mkIf config.services.jitsi-meet.enable {
   services.jitsi-meet = {
+    hostName = "meet.mondon.xyz";
+    excalidraw.enable = true;
+    jicofo.enable = true;
     nginx.enable = true;
     prosody.enable = true;
-    videobridge.enable = true;
-    jicofo.enable = true;
-    excalidraw.enable = true;
     secureDomain.enable = true;
+    videobridge.enable = true;
   };
 
   services.jitsi-videobridge = {

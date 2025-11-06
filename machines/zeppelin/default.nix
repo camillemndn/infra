@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -31,68 +31,29 @@
 
   services = {
     buildbot-nix.master.enable = true;
-
     collabora-online.enable = true;
-
     davmail.enable = true;
-
     grafana.enable = true;
-
     jellyfin.enable = true;
-
-    jitsi-meet = {
-      enable = true;
-      hostName = "meet.mondon.xyz";
-    };
-
+    jitsi-meet.enable = true;
     lubelogger.enable = true;
-
-    mattermost = {
-      enable = true;
-      database.peerAuth = true;
-      siteUrl = "https://projects.mondon.xyz";
-    };
-    nginx.virtualHosts."projects.mondon.xyz" = {
-      port = 8065;
-      websockets = true;
-    };
-
-    minecraft-server = {
-      enable = true;
-      eula = true;
-      package = pkgs.unstable.papermcServers.papermc-1_21_9;
-      jvmOpts = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
-    };
-
+    mattermost.enable = true;
+    minecraft-server.enable = true;
     nextcloud.enable = true;
 
     nginx = {
       enable = true;
       noDefault.enable = true;
       publicDomains = [
-        "mondon.xyz"
-        "saumon.network"
-        "yali.es"
-        "ceciliaflamenca.com"
-        "varanda.fr"
         "camillemondon.com"
         "camillemondon.fr"
+        "ceciliaflamenca.com"
+        "mondon.xyz"
+        "saumon.network"
+        "varanda.fr"
+        "yali.es"
       ];
     };
-
-    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
-    nginx.virtualHosts."varanda.fr" = {
-      root = "/srv/sites/varanda.fr/www";
-      locations."/static/".extraConfig = ''
-        expires 1y;
-        add_header Cache-Control "public";
-      '';
-      extraConfig = ''
-        error_page 404 /404/;
-      '';
-    };
-    nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
-    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
 
     nginx.virtualHosts."camillemondon.com" = {
       root = "/srv/sites/camillemondon.com/www";
@@ -122,6 +83,17 @@
         "/teaching/ics/".alias = "/srv/sites/thesis/www/materials/ics/";
       };
     };
+    nginx.virtualHosts."www.camillemondon.com".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
+
+    nginx.virtualHosts."camillemondon.fr".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
+
+    nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
+      "301 https://camillemondon.com$request_uri";
+
+    nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
+
     nginx.virtualHosts."hidimdaml.camillemondon.com" = {
       extraConfig = ''
         error_page 404 https://camillemondon.com/404.html;
@@ -129,19 +101,24 @@
       root = "/srv/sites/hidimdaml/www";
       locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
     };
-    nginx.virtualHosts."camillemondon.fr".locations."/".return =
-      "301 https://camillemondon.com$request_uri";
-    nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
-      "301 https://camillemondon.com$request_uri";
-    nginx.virtualHosts."www.camillemondon.com".locations."/".return =
-      "301 https://camillemondon.com$request_uri";
+
+    nginx.virtualHosts."varanda.fr" = {
+      root = "/srv/sites/varanda.fr/www";
+      locations."/static/".extraConfig = ''
+        expires 1y;
+        add_header Cache-Control "public";
+      '';
+      extraConfig = ''
+        error_page 404 /404/;
+      '';
+    };
+    nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
+
+    nginx.virtualHosts."yali.es".root = "/srv/sites/yali.es/www";
 
     openssh.enable = true;
-
     photoprism.enable = true;
-
     plausible.enable = true;
-
     tailscale.enable = true;
 
     tandoor-recipes = {
@@ -159,7 +136,6 @@
     };
 
     yarr.enable = true;
-
     webhook.enable = true;
   };
 
