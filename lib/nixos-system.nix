@@ -123,10 +123,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit (final.unstable)
                     jellyseerr
                     quarto
-                    spotifyd
-                    typst
-                    zoom-us
-                    zotero
                     ;
 
                   # Adds some packages from other flakes
@@ -136,16 +132,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   };
                   comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
                     inherit nix-index-database;
-                  };
-
-                  firefoxpwa = final.unstable.firefoxpwa.override {
-                    extraLibs = with final.unstable; [
-                      alsa-lib
-                      ffmpeg_7
-                      libjack2
-                      pipewire
-                      libpulseaudio
-                    ];
                   };
 
                   lubelogger = final.unstable.lubelogger.overrideAttrs (
