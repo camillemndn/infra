@@ -28,5 +28,6 @@ pkgs.mkShell {
   ];
   shellHook = ''
     ${pre-commit-hook.shellHook}
+    statix fix
   '';
 }
