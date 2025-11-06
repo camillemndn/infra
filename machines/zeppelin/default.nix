@@ -83,8 +83,12 @@
     nginx.virtualHosts."ceciliaflamenca.com".root = "/srv/sites/ceciliaflamenca.com/www";
     nginx.virtualHosts."varanda.fr" = {
       root = "/srv/sites/varanda.fr/www";
+      locations."/static/".extraConfig = ''
+        expires 1y;
+        add_header Cache-Control "public";
+      '';
       extraConfig = ''
-        error_page 404 /;
+        error_page 404 /404/;
       '';
     };
     nginx.virtualHosts."www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
