@@ -15,6 +15,10 @@
       nixfmt-rfc-style
       ormolu
       ripgrep
+      rustywind
+      (rWrapper.override { packages = with rPackages; [ styler ]; })
+      shfmt
+      stylelint
       superhtml
     ];
 
@@ -54,16 +58,22 @@
       conform-nvim = {
         enable = true;
         settings = {
-          format_on_save = {
-            timeout_ms = 500;
-            lsp_fallback = true;
-          };
+          format_on_save = builtins.readFile ./format_on_save.lua;
           formatters_by_ft = {
+            bash = [ "shfmt" ];
+            css = [ "stylelint" ];
             haskell = [ "ormolu" ];
-            html = [ "superhtml" ];
+            html = [
+              "superhtml"
+              "rustywind"
+            ];
             nix = [ "nixfmt" ];
             python = [ "black" ];
-            quarto = [ "injected" ];
+            quarto = [
+              "injected"
+              "styler"
+            ];
+            R = [ "air" ];
           };
         };
       };
@@ -74,13 +84,16 @@
         enable = true;
 
         servers = {
+          air.enable = true;
           hls = {
             enable = true;
+            installGhc = false;
             package = null;
           };
           nil_ls.enable = true;
           pyright.enable = true;
           superhtml.enable = true;
+          tailwindcss.enable = true;
         };
       };
 
@@ -103,6 +116,19 @@
       };
 
       web-devicons.enable = true;
+    };
+
+    userCommands = {
+      FormatDisable = {
+        bang = true;
+        command.__raw = builtins.readFile ./FormatDisable.lua;
+        desc = "Disable autoformat-on-save";
+      };
+      FormatEnable = {
+        bang = true;
+        command.__raw = builtins.readFile ./FormatEnable.lua;
+        desc = "Enable autoformat-on-save";
+      };
     };
 
     viAlias = true;
