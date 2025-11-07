@@ -8,10 +8,7 @@
 lib.mkIf config.programs.sway.enable {
   services.xserver = {
     enable = true;
-    xkb = {
-      layout = "fr";
-      variant = "";
-    };
+    xkb.layout = "fr";
   };
 
   programs.dconf.enable = true;
