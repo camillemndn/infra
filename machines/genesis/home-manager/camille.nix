@@ -71,7 +71,7 @@ with lib;
     inkscape-with-extensions
 
     # Music & Video
-    clapper
+    mpv
     frescobaldi
     harmony-assistant
     jellyfin-media-player

@@ -38,7 +38,7 @@ with lib;
     inkscape-with-extensions
 
     # Music & Video
-    clapper
+    mpv
     spotify
   ];
 
