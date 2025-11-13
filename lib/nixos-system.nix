@@ -121,6 +121,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit (prev) config;
                   };
                   inherit (final.unstable)
+                    firefoxpwa
+                    zotero
                     jellyseerr
                     quarto
                     ;
