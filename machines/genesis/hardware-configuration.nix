@@ -11,14 +11,11 @@ with lib;
   boot = {
     lanzaboote = {
       enable = true;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
       configurationLimit = 5;
     };
 
-    loader = {
-      efi.canTouchEfiVariables = true;
-      efi.efiSysMountPoint = "/boot/efi";
-    };
+    loader.efi.canTouchEfiVariables = true;
 
     initrd = {
       availableKernelModules = [
@@ -73,7 +70,7 @@ with lib;
       fsType = "ext4";
     };
 
-    "/boot/efi" = {
+    "/boot" = {
       device = "/dev/disk/by-uuid/A48C-7D48";
       fsType = "vfat";
     };
