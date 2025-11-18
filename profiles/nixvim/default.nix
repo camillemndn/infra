@@ -79,6 +79,7 @@
       };
 
       iron.enable = true;
+      lilypond-suite.enable = true;
 
       lsp = {
         enable = true;
