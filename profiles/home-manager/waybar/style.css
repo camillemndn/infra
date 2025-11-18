@@ -21,7 +21,7 @@ window#waybar {
 window > box > * {
   background-color: rgba(24, 24, 37, 0.8);
   border-radius: 12px;
-  padding: 6px;
+  padding: 4px;
 	margin: 6px;
 	margin-bottom: 0;
 }

@@ -45,25 +45,6 @@ in
 
   deployment.buildOnTarget = lib.mkDefault true;
 
-  console.keyMap = "fr";
-  time.timeZone = lib.mkOverride 500 "Europe/Paris";
-  i18n.defaultLocale = "fr_FR.UTF-8";
-  i18n.extraLocaleSettings = {
-    LANG = "fr_FR.UTF-8";
-    LC_ADDRESS = "fr_FR.UTF-8";
-    LC_ALL = "fr_FR.UTF-8";
-    LC_CTYPE = "fr_FR.UTF-8";
-    LC_IDENTIFICATION = "fr_FR.UTF-8";
-    LC_MEASUREMENT = "fr_FR.UTF-8";
-    LC_MESSAGES = "fr_FR.UTF-8";
-    LC_MONETARY = "fr_FR.UTF-8";
-    LC_NAME = "fr_FR.UTF-8";
-    LC_NUMERIC = "fr_FR.UTF-8";
-    LC_PAPER = "fr_FR.UTF-8";
-    LC_TELEPHONE = "fr_FR.UTF-8";
-    LC_TIME = "fr_FR.UTF-8";
-  };
-
   programs = {
     git = {
       enable = true;
@@ -119,30 +100,34 @@ in
     nftables.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    attic-client
-    comma-with-db
-    dig
-    direnv
-    du-dust
-    htop
-    lazygit
-    lsof
-    neofetch
-    nix-init
-    nix-output-monitor
-    nix-tree
-    nix-update
-    nixos-option
-    nmap
-    ntfs3g
-    oh-my-fish
-    powertop
-    tldr
-    unzip
-    wget
-    zip
-  ];
+  environment = {
+    sessionVariables.NIXOS_OZONE_WL = "1";
+
+    systemPackages = with pkgs; [
+      attic-client
+      comma-with-db
+      dig
+      direnv
+      du-dust
+      htop
+      lazygit
+      lsof
+      neofetch
+      nix-init
+      nix-output-monitor
+      nix-tree
+      nix-update
+      nixos-option
+      nmap
+      ntfs3g
+      oh-my-fish
+      powertop
+      tldr
+      unzip
+      wget
+      zip
+    ];
+  };
 
   security = {
     acme = {

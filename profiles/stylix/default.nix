@@ -39,11 +39,6 @@ lib.mkIf config.stylix.enable {
         name = "Noto Color Emoji";
         package = pkgs.noto-fonts-emoji;
       };
-
-      sizes = {
-        terminal = lib.mkIf cfg.displayManager.gdm.hidpi.enable 15;
-        applications = lib.mkIf cfg.displayManager.gdm.hidpi.enable 11;
-      };
     };
 
     image = pkgs.fetchurl {

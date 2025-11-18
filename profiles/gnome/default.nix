@@ -6,10 +6,7 @@
 }:
 
 lib.mkIf config.services.xserver.desktopManager.gnome.enable {
-  services.xserver = {
-    enable = true;
-    xkb.layout = "fr";
-  };
+  services.xserver.enable = true;
 
   services.pulseaudio.enable = false;
 

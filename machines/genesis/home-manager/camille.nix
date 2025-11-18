@@ -8,8 +8,6 @@ with lib;
     sway.enable = true;
   };
 
-  gtk.hidpi.enable = true;
-
   programs = {
     chromium = {
       enable = true;

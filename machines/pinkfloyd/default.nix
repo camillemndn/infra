@@ -16,10 +16,7 @@
 
   hardware.sane.enable = true;
 
-  programs.firefox = {
-    enable = true;
-    languagePacks = [ "fr" ];
-  };
+  programs.firefox.enable = true;
 
   services = {
     desktopManager.plasma6.enable = true;

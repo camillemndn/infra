@@ -7,7 +7,6 @@
 
 lib.mkIf config.programs.firefox.enable {
   programs.firefox = {
-    languagePacks = [ "fr" ];
     nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
     preferences = {
       "browser.fixup.domainsuffixwhitelist.kms" = true;

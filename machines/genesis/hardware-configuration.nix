@@ -54,20 +54,6 @@ with lib;
     tmp.cleanOnBoot = true;
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
-      fsType = "ext4";
-    };
-
-    "/boot/efi" = {
-      device = "/dev/disk/by-uuid/A48C-7D48";
-      fsType = "vfat";
-    };
-  };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
-
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
@@ -81,10 +67,22 @@ with lib;
     sbctl
   ];
 
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
+      fsType = "ext4";
+    };
+
+    "/boot/efi" = {
+      device = "/dev/disk/by-uuid/A48C-7D48";
+      fsType = "vfat";
+    };
+  };
+
   hardware = {
+    bluetooth.enable = true;
     enableRedistributableFirmware = true;
     cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
-    sensor.iio.enable = true;
 
     graphics = {
       enable = true;
@@ -102,23 +100,20 @@ with lib;
         nvidiaBusId = "PCI:1:0:0";
       };
     };
+
+    sensor.iio.enable = true;
   };
 
-  security.rtkit.enable = true;
-  security.pam.loginLimits = [
-    {
-      domain = "@audio";
-      item = "memlock";
-      type = "-";
-      value = "unlimited";
-    }
-  ];
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
+  security = {
+    rtkit.enable = true;
+    pam.loginLimits = [
+      {
+        domain = "@audio";
+        item = "memlock";
+        type = "-";
+        value = "unlimited";
+      }
+    ];
   };
 
   services = {
@@ -142,8 +137,18 @@ with lib;
       };
     };
 
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
+
     xserver.videoDrivers = [ "nvidia" ];
   };
+
+  swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
 
   systemd.services.supergfxd.path = [
     pkgs.kmod

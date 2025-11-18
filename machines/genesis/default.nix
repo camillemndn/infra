@@ -42,6 +42,12 @@
   };
 
   services = {
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
+
     dnscrypt-proxy2 = {
       enable = true;
       settings = {
@@ -59,6 +65,7 @@
       killUserProcesses = true;
       lidSwitch = "suspend-then-hibernate";
     };
+
     power-profiles-daemon.enable = false;
 
     printing = {
@@ -75,12 +82,6 @@
     tzupdate.enable = true;
     udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
-
-    xserver.desktopManager.gnome.enable = true;
-    xserver.displayManager.gdm = {
-      enable = true;
-      hidpi.enable = true;
-    };
   };
 
   stylix.enable = true;

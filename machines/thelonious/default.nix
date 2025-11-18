@@ -35,7 +35,14 @@
   };
 
   services = {
+    desktopManager.plasma6.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
+
     logind.killUserProcesses = true;
+    openssh.enable = true;
     power-profiles-daemon.enable = false;
 
     printing = {
@@ -48,9 +55,6 @@
 
     tailscale.enable = true;
     usbmuxd.enable = true;
-    openssh.enable = true;
-    xserver.desktopManager.gnome.enable = true;
-    xserver.displayManager.gdm.enable = true;
   };
 
   stylix.enable = true;

@@ -22,7 +22,6 @@ lib.mkIf config.services.nextcloud.enable {
       dbtype = "mysql";
     };
     settings = {
-      default_phone_region = "FR";
       overwriteprotocol = "https";
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"

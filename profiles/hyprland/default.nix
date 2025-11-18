@@ -6,10 +6,7 @@
 }:
 
 lib.mkIf config.programs.hyprland.enable {
-  services.xserver = {
-    enable = true;
-    xkb.layout = "fr";
-  };
+  services.xserver.enable = true;
 
   environment = {
     systemPackages =

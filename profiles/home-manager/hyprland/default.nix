@@ -128,6 +128,8 @@ lib.mkIf config.wayland.windowManager.hyprland.enable {
       disable_hyprland_logo = true;
       disable_splash_rendering = true;
     };
+
+    monitor = [ "desc:Sharp Corporation LQ134R1JW51, preferred, auto, 2.5" ];
   };
 
   programs = {
