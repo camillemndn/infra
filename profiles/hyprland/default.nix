@@ -6,14 +6,16 @@
 }:
 
 lib.mkIf config.programs.hyprland.enable {
-  services.xserver.enable = true;
-
   environment = {
     systemPackages =
       with pkgs;
       [
-        waybar
-        hyprpaper
+        brightnessctl
+        grim
+        slurp
+        swayidle
+        swaylock
+        wl-clipboard
       ]
       ++ (lib.optional config.services.tailscale.enable tailscale-systray);
   };

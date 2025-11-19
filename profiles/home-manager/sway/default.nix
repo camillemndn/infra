@@ -38,14 +38,6 @@ in
     wlogout.enable = true;
   };
 
-  home.packages = with pkgs; [
-    brightnessctl
-    grim
-    slurp
-    swww
-    wl-clipboard
-  ];
-
   wayland.windowManager.sway.config = {
     bars = [
       {

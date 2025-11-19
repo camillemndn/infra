@@ -18,15 +18,19 @@
     targetHost = null;
   };
 
-  environment.systemPackages = with pkgs; [
-    android-tools
-    dump-iphone-backup
-    idevicerestore
-    ifuse
-    libimobiledevice
-    libirecovery
-    unstable.signalbackup-tools
-  ];
+  environment = {
+    plasma6.excludePackages = [ pkgs.kdePackages.konsole ];
+
+    systemPackages = with pkgs; [
+      android-tools
+      dump-iphone-backup
+      idevicerestore
+      ifuse
+      libimobiledevice
+      libirecovery
+      unstable.signalbackup-tools
+    ];
+  };
 
   hardware.sane = {
     enable = true;
@@ -39,6 +43,7 @@
     nixvim.enable = true;
     steam.enable = true;
     sway.enable = true;
+    xwayland.enable = true;
   };
 
   services = {

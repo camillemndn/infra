@@ -6,11 +6,7 @@
 }:
 
 lib.mkIf config.services.xserver.desktopManager.gnome.enable {
-  services.xserver.enable = true;
-
   services.pulseaudio.enable = false;
-
-  programs.xwayland.enable = true;
 
   environment = {
     gnome.excludePackages = with pkgs; [
