@@ -29,6 +29,8 @@
     };
   };
 
+  programs.nixvim.enable = true;
+
   services = {
     buildbot-nix.master.enable = true;
     collabora-online.enable = true;

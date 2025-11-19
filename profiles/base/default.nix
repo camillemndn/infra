@@ -66,7 +66,7 @@ in
       '';
     };
 
-    nixvim.enable = true;
+    neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 
     command-not-found.enable = false;
 

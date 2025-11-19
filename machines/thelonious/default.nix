@@ -31,6 +31,7 @@
   programs = {
     firefox.enable = true;
     hyprland.enable = true;
+    nixvim.enable = true;
     sway.enable = true;
   };
 

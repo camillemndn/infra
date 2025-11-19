@@ -42,18 +42,11 @@ in
     };
 
     kernelModules = [ "snd-aloop" ];
-    kernelPackages = pkgs.unstable.linuxPackages_rpi3;
     kernelParams = [
       "console=ttyS0,115200n8"
       "console=tty0"
     ];
   };
-
-  nixpkgs.overlays = [
-    (_final: super: {
-      makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
-    })
-  ];
 
   environment.systemPackages = [
     pkgs.raspberrypi-update

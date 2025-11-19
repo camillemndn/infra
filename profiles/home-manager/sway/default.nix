@@ -29,7 +29,7 @@ let
   );
 in
 
-{
+lib.mkIf config.wayland.windowManager.sway.enable {
   programs = {
     fuzzel.enable = true;
     kitty.enable = true;

@@ -21,8 +21,7 @@ window#waybar {
 window > box > * {
   background-color: rgba(24, 24, 37, 0.8);
   border-radius: 12px;
-	margin: 6px;
-	margin-bottom: 0;
+	margin: 6px 12px 0 12px;
 }
 
 /* ======== Modules ======== */
@@ -36,8 +35,7 @@ window > box > * {
 #bluetooth,
 #battery,
 #clock,
-#tray,
-#custom-powermenu {
+#tray {
 	margin: 4px 6px;
 }
 
@@ -89,9 +87,11 @@ tooltip label {
 
 /* ======== Power menu ======== */
 #custom-powermenu {
+	margin: 0 4px;
+  font-size: 20px;
   color: #f38ba8;
-  padding-left: 8px;
-  padding-right: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 #custom-powermenu:hover {
   color: #f8b4c0;

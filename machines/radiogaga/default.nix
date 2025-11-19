@@ -1,4 +1,4 @@
-_:
+{ lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -10,7 +10,7 @@ _:
   };
 
   deployment = {
-    targetHost = "radiogaga.local";
+    targetHost = lib.infra.machines.radiogaga.ipv4.local;
     buildOnTarget = false;
   };
 
@@ -31,9 +31,9 @@ _:
       soundcard = "sysdefault:CARD=Headphones";
     };
 
-    spotifyd = {
+    librespot = {
       enable = true;
-      settings.global.device_name = "radiogaga";
+      settings.name = "radiogaga";
     };
   };
 

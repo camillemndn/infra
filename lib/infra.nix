@@ -79,7 +79,10 @@ let
             ipv6.vpn = "fd7a:115c:a1e0::3";
           };
 
-          radiogaga.system = "aarch64-linux";
+          radiogaga = {
+            system = "aarch64-linux";
+            ipv4.local = "192.168.1.50";
+          };
 
           thelonious = {
             ipv4.vpn = "100.100.45.25";
