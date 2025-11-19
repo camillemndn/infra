@@ -9,6 +9,8 @@ with lib;
 
 {
   boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
