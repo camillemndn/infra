@@ -25,7 +25,7 @@ window > box > * {
 	margin-bottom: 0;
 }
 
-/* ======== Modules layout (padding + min-height) ======== */
+/* ======== Modules ======== */
 #cpu,
 #memory,
 #disk,
@@ -37,16 +37,15 @@ window > box > * {
 #battery,
 #clock,
 #tray,
-#custom-launcher,
 #custom-powermenu {
-	margin-left: 6px;
-	margin-right: 6px;
+	margin: 4px 6px;
 }
 
-/* ======== Workspace buttons ======== */
+/* ======== Workspaces ======== */
 #workspaces button {
   padding: 2px 8px;
   margin: 4px;
+	margin-left: 0;
   color: #cdd6f4;
   background: rgba(137, 180, 250, 0.15);
   border: none;
@@ -78,6 +77,7 @@ tooltip label {
 
 /* ======== Launcher ======== */
 #custom-launcher {
+	margin: 0 2px;
   font-size: 32px;
   color: #89b4fa;
   padding-left: 6px;
