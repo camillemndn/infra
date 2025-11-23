@@ -5,10 +5,6 @@
   ...
 }:
 
-let
-  cfg = config.services.xserver;
-in
-
 lib.mkIf config.stylix.enable {
   stylix = {
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";

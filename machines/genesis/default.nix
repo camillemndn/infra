@@ -19,8 +19,6 @@
   };
 
   environment = {
-    plasma6.excludePackages = [ pkgs.kdePackages.konsole ];
-
     systemPackages = with pkgs; [
       android-tools
       dump-iphone-backup

@@ -33,6 +33,7 @@ with lib;
     bitwarden
     bitwarden-cli
     localsend
+    tailscale-systray
 
     # Graphics
     inkscape-with-extensions

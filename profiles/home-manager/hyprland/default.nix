@@ -14,11 +14,26 @@ let
 in
 
 lib.mkIf config.wayland.windowManager.hyprland.enable {
+  home.packages = with pkgs; [
+    brightnessctl
+    grim
+    slurp
+    wl-ocr
+  ];
+
+  programs = {
+    fuzzel.enable = true;
+    kitty.enable = true;
+    swaylock.enable = true;
+    waybar.enable = true;
+    wlogout.enable = true;
+  };
+
   wayland.windowManager.hyprland.settings = {
     # Autostart
     exec-once = [
-      "waybar"
       "tailscale-systray"
+      "waybar"
     ];
 
     # Input configuration
@@ -131,33 +146,4 @@ lib.mkIf config.wayland.windowManager.hyprland.enable {
 
     monitor = [ "desc:Sharp Corporation LQ134R1JW51, preferred, auto, 2.5" ];
   };
-
-  programs = {
-    fuzzel.enable = true;
-    kitty.enable = true;
-    waybar.enable = true;
-    wlogout.enable = true;
-  };
-
-  services.gammastep = {
-    enable = true;
-    provider = "geoclue2";
-  };
-
-  home.packages =
-    with pkgs;
-    [
-      clipman
-      grim
-      pngquant
-      python3.pkgs.requests
-      slurp
-      swayidle
-      tesseract5
-      wf-recorder
-      wl-clipboard
-      wl-ocr
-      xorg.xprop
-    ]
-    ++ lib.optional (pkgs.system == "x86_64-linux") grimblast;
 }

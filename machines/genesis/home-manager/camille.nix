@@ -3,27 +3,6 @@
 with lib;
 
 {
-  wayland.windowManager = {
-    hyprland.enable = true;
-    sway.enable = true;
-  };
-
-  programs = {
-    chromium = {
-      enable = true;
-      package = pkgs.ungoogled-chromium;
-      commandLineArgs = [ "--force-device-scale-factor=1.5" ];
-    };
-
-    emacs.enable = true;
-    kitty.enable = true;
-    thunderbird.enable = true;
-    waybar.bluetooth.enable = true;
-  };
-
-  services.nextcloud-client.enable = true;
-  stylix.targets.fish.enable = false;
-
   home.packages = with pkgs; [
     # Games
     cemu
@@ -62,15 +41,15 @@ with lib;
     localsend
     nextcloud-client
     qbittorrent
+    tailscale-systray
 
     # Graphics
     darktable
-    gimp-with-plugins
+    gimp3-with-plugins
     inkscape-with-extensions
 
     # Music & Video
     mpv
-    frescobaldi
     harmony-assistant
     jellyfin-media-player
     lilypond-with-fonts
@@ -90,6 +69,26 @@ with lib;
     zam-plugins
     zrythm
   ];
+
+  programs = {
+    chromium = {
+      enable = true;
+      package = pkgs.ungoogled-chromium;
+    };
+
+    emacs.enable = true;
+    kitty.enable = true;
+    thunderbird.enable = true;
+    waybar.bluetooth.enable = true;
+  };
+
+  services.nextcloud-client.enable = true;
+  stylix.targets.fish.enable = false;
+
+  wayland.windowManager = {
+    hyprland.enable = true;
+    sway.enable = true;
+  };
 
   home.stateVersion = "23.05";
 }

@@ -30,6 +30,12 @@ let
 in
 
 lib.mkIf config.wayland.windowManager.sway.enable {
+  home.packages = with pkgs; [
+    brightnessctl
+    grim
+    slurp
+  ];
+
   programs = {
     fuzzel.enable = true;
     kitty.enable = true;

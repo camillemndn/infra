@@ -1,0 +1,11 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+lib.mkIf config.services.desktopManager.plasma6.enable {
+  environment.plasma6.excludePackages = [ pkgs.kdePackages.konsole ];
+  services.gnome.gnome-keyring.enable = true;
+}
