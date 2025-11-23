@@ -54,7 +54,7 @@ with lib;
     jellyfin-media-player
     lilypond-with-fonts
     musescore
-    sonixd
+    feishin
     spotify
 
     # Studio
