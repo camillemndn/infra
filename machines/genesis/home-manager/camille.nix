@@ -24,7 +24,7 @@ with lib;
     zoom-us
 
     # Desk
-    libreoffice-fresh
+    libreoffice-qt6-fresh
     pdftocgen
     xournalpp
     zotero
