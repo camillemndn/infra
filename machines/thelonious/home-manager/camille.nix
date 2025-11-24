@@ -39,6 +39,7 @@ with lib;
     inkscape-with-extensions
 
     # Music & Video
+    feishin
     mpv
     spotify
   ];
