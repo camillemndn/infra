@@ -44,15 +44,7 @@
     logind.killUserProcesses = true;
     openssh.enable = true;
     power-profiles-daemon.enable = false;
-
-    printing = {
-      enable = true;
-      drivers = with pkgs; [
-        brlaser
-        gutenprint
-      ];
-    };
-
+    printing.enable = true;
     tailscale.enable = true;
     usbmuxd.enable = true;
   };

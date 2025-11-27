@@ -73,8 +73,7 @@
     printing = {
       enable = true;
       drivers = with pkgs; [
-        brlaser
-        gutenprint
+        cups-brother-hll2340dw
         samsung-unified-linux-driver
       ];
     };

@@ -78,6 +78,8 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
             allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
+                "corefonts"
+                "cups-brother-hll2340dw"
                 "libsane-dsseries"
                 "mac"
                 "nvidia-settings"
@@ -90,7 +92,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "steam-run"
                 "steam-unwrapped"
                 "unrar"
-                "corefonts"
               ];
           };
           overlays = lib.mkAfter [

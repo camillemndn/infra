@@ -21,7 +21,6 @@
   programs.firefox.enable = true;
 
   services = {
-    xserver.enable = true;
     desktopManager.plasma6.enable = true;
 
     displayManager = {
@@ -36,21 +35,19 @@
       };
     };
 
+    openssh.enable = true;
+
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
     };
+
+    printing.enable = true;
     pulseaudio.enable = false;
-
-    printing = {
-      enable = true;
-      drivers = [ pkgs.gutenprint ];
-    };
-
-    openssh.enable = true;
     tailscale.enable = true;
+    xserver.enable = true;
   };
 
   security.rtkit.enable = true;
