@@ -40,7 +40,6 @@
     nixvim.enable = true;
     steam.enable = true;
     sway.enable = true;
-    xwayland.enable = true;
   };
 
   services = {
