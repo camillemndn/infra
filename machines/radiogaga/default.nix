@@ -24,13 +24,6 @@
     radiogaga.enable = true;
     nginx.virtualHosts."radiogaga.local".port = 4200;
 
-    snapserver.enable = true;
-    snapclient = {
-      enable = true;
-      serverHost = "radiogaga.local";
-      soundcard = "sysdefault:CARD=Headphones";
-    };
-
     librespot = {
       enable = true;
       settings.name = "radiogaga";

@@ -15,8 +15,8 @@ with lib;
     zotero
 
     # Sync
-    bitwarden
     bitwarden-cli
+    bitwarden-desktop
     localsend
     tailscale-systray
 

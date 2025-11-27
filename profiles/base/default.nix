@@ -108,7 +108,7 @@ in
       comma-with-db
       dig
       direnv
-      du-dust
+      dust
       htop
       lazygit
       lsof

@@ -17,7 +17,6 @@ lib.mkIf config.services.home-assistant.enable {
         "picotts"
         "piper"
         "radio_browser"
-        "snapcast"
         "spotify"
         "stt"
         "tradfri"

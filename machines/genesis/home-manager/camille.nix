@@ -15,7 +15,6 @@ with lib;
         citra
       ]
     ))
-    ryujinx
     azahar
 
     # Social
@@ -34,8 +33,8 @@ with lib;
     pdfarranger
 
     # Sync
-    bitwarden
     bitwarden-cli
+    bitwarden-desktop
     joplin-desktop
     localsend
     nextcloud-client

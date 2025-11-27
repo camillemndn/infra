@@ -41,7 +41,7 @@
       wayland.enable = true;
     };
 
-    logind.killUserProcesses = true;
+    logind.settings.Login.KillUserProcesses = true;
     openssh.enable = true;
     power-profiles-daemon.enable = false;
     printing.enable = true;

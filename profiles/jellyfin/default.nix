@@ -133,7 +133,7 @@ lib.mkIf config.services.jellyfin.enable {
   environment.systemPackages = with pkgs; [
     shntool
     cuetools
-    mac
+    monkeysAudio
     flac
   ];
 

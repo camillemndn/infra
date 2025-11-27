@@ -50,7 +50,7 @@
       wayland.enable = true;
     };
 
-    dnscrypt-proxy2 = {
+    dnscrypt-proxy = {
       enable = true;
       settings = {
         ipv6_servers = true;
@@ -63,9 +63,9 @@
       };
     };
 
-    logind = {
-      killUserProcesses = true;
-      lidSwitch = "suspend-then-hibernate";
+    logind.settings.Login = {
+      KillUserProcesses = true;
+      HandleLidSwitch = "suspend-then-hibernate";
     };
 
     power-profiles-daemon.enable = false;
@@ -81,7 +81,6 @@
     tailscale.enable = true;
     tlp.enable = true;
     tzupdate.enable = true;
-    udev.packages = [ pkgs.android-udev-rules ];
     usbmuxd.enable = true;
   };
 

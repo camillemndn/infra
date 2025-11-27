@@ -62,7 +62,6 @@ in
       after = [
         "network.target"
         "pipewire.service"
-        "snapserver.service"
       ];
       wantedBy = [ "multi-user.target" ];
       environment.BASE_DIR = "${cfg.dataDir}";

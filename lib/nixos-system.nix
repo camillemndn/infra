@@ -40,7 +40,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
-    (import inputs.lanzaboote).nixosModules.lanzaboote
+    (import inputs.lanzaboote { }).nixosModules.lanzaboote
     (import inputs.musnix)
     (import "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/jellyseerr.nix")
     (import inputs.stylix).nixosModules.stylix
@@ -69,11 +69,12 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           inherit system;
           config = {
             permittedInsecurePackages = [
+              "qtwebengine-5.15.19"
               "aspnetcore-runtime-6.0.36"
               "aspnetcore-runtime-wrapped-6.0.36"
               "dotnet-sdk-6.0.428"
               "dotnet-sdk-wrapped-6.0.428"
-              "jitsi-meet-1.0.8043"
+              "jitsi-meet-1.0.8792"
             ];
             allowUnfreePredicate =
               pkg:
@@ -81,7 +82,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "corefonts"
                 "cups-brother-hll2340dw"
                 "libsane-dsseries"
-                "mac"
                 "nvidia-settings"
                 "nvidia-x11"
                 "reaper"

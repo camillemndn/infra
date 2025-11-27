@@ -5,7 +5,7 @@
   ...
 }:
 
-lib.mkIf config.services.xserver.desktopManager.gnome.enable {
+lib.mkIf config.services.desktopManager.gnome.enable {
   services.pulseaudio.enable = false;
 
   environment = {
