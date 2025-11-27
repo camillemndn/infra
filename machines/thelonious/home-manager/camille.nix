@@ -3,25 +3,10 @@
 with lib;
 
 {
-  wayland.windowManager = {
-    hyprland.enable = true;
-    sway.enable = true;
-  };
-
-  programs = {
-    emacs.enable = true;
-    kitty.enable = true;
-    neovim.full.enable = true;
-    thunderbird.enable = true;
-  };
-
-  stylix.targets.fish.enable = false;
-
   home.packages = with pkgs; [
     # Social
     mattermost-desktop
     signal-desktop
-    zoom-us
 
     # Desk
     libreoffice-qt6-fresh
@@ -43,6 +28,16 @@ with lib;
     mpv
     spotify
   ];
+
+  programs = {
+    emacs.enable = true;
+    kitty.enable = true;
+    neovim.full.enable = true;
+    thunderbird.enable = true;
+  };
+
+  stylix.targets.fish.enable = false;
+  wayland.windowManager.sway.enable = true;
 
   home.stateVersion = "23.11";
 }

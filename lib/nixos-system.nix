@@ -90,7 +90,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "steam-run"
                 "steam-unwrapped"
                 "unrar"
-                "zoom"
                 "corefonts"
               ];
           };

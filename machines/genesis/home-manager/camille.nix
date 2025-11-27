@@ -21,7 +21,6 @@ with lib;
     # Social
     mattermost-desktop
     signal-desktop
-    zoom-us
 
     # Desk
     libreoffice-qt6-fresh
@@ -84,11 +83,7 @@ with lib;
 
   services.nextcloud-client.enable = true;
   stylix.targets.fish.enable = false;
-
-  wayland.windowManager = {
-    hyprland.enable = true;
-    sway.enable = true;
-  };
+  wayland.windowManager.sway.enable = true;
 
   home.stateVersion = "23.05";
 }
