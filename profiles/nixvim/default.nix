@@ -100,6 +100,7 @@
 
       molten.enable = true;
       quarto.enable = true;
+      otter.enable = true;
 
       telescope = {
         enable = true;
@@ -109,6 +110,11 @@
           "fg" = "live_grep";
           "fh" = "help_tags";
         };
+      };
+
+      treesitter = {
+        enable = true;
+        settings.highlight.enable = true;
       };
 
       vim-slime = {
