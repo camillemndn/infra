@@ -1,7 +1,7 @@
 {
   lib,
   maven,
-  jdk23,
+  jdk,
   fetchFromGitHub,
   makeWrapper,
   wrapGAppsHook3,
@@ -11,7 +11,7 @@
 }:
 
 let
-  jdk' = jdk23.override { enableJavaFX = true; };
+  jdk' = jdk.override { enableJavaFX = true; };
 in
 
 maven.buildMavenPackage rec {
