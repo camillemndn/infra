@@ -136,12 +136,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit nix-index-database;
                   };
 
-                  lubelogger = final.unstable.lubelogger.overrideAttrs (
-                    _: _: {
-                      makeWrapperArgs = [ "--set-default DOTNET_CONTENTROOT ${placeholder "out"}/lib/lubelogger" ];
-                    }
-                  );
-
                   vimPlugins =
                     prev.vimPlugins // (lib.filterAttrs (_: v: v.vimPlugin or false) extraPackages.${system});
                 }

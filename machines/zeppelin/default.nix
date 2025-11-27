@@ -38,7 +38,6 @@
     grafana.enable = true;
     jellyfin.enable = true;
     jitsi-meet.enable = true;
-    lubelogger.enable = true;
     mattermost.enable = true;
     minecraft-server.enable = true;
     nextcloud.enable = true;
