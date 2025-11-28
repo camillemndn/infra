@@ -44,17 +44,6 @@ with lib;
           port = 465;
         };
       };
-      "camille.mondon@ens.fr" = {
-        userName = "cmondon02";
-        imap = {
-          host = "clipper.ens.fr";
-          port = 993;
-        };
-        smtp = {
-          host = "clipper.ens.fr";
-          port = 465;
-        };
-      };
       "camille.mondon@tse-fr.eu" = {
         userName = "camille.mondon@tse-fr.eu";
         imap = {
