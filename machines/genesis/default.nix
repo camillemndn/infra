@@ -62,6 +62,8 @@
       };
     };
 
+    fwupd.enable = true;
+
     logind.settings.Login = {
       KillUserProcesses = true;
       HandleLidSwitch = "suspend-then-hibernate";
