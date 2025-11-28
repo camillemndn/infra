@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -10,7 +10,7 @@
       25565
     ];
     firewall.allowedUDPPorts = [ 51820 ];
-
+    useDHCP = false;
     wireguard.interfaces.wg0 = {
       ips = [ "10.100.45.3/24" ];
       allowedIPsAsRoutes = false;
@@ -158,6 +158,19 @@
 
   security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
   security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
+
+  systemd.network = {
+    enable = true;
+    networks."10-wan" = {
+      matchConfig.Type = "ether";
+      address = [
+        "${lib.infra.machines.zeppelin.ipv4.local}/21"
+        "${lib.infra.machines.zeppelin.ipv6.public}/64"
+      ];
+      routes = [ { Gateway = "192.168.0.1"; } ];
+      linkConfig.RequiredForOnline = "routable";
+    };
+  };
 
   system.stateVersion = "21.11";
 }

@@ -5,8 +5,6 @@
   ...
 }:
 
-with lib;
-
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
@@ -25,8 +23,6 @@ with lib;
       "sr_mod"
     ];
   };
-
-  hardware.cpu.amd.updateMicrocode = mkDefault config.hardware.enableRedistributableFirmware;
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07";
@@ -51,7 +47,4 @@ with lib;
       size = 4 * 1024;
     }
   ];
-
-  networking.useDHCP = mkDefault false;
-  networking.interfaces.ens18.useDHCP = mkDefault true;
 }
