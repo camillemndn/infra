@@ -10,7 +10,7 @@ lib.mkIf config.services.photoprism.enable {
 
   services = {
     photoprism = {
-      originalsPath = "/var/lib/nextcloud/data/Camille/files/Pictures";
+      originalsPath = "/var/lib/nextcloud/data/Camille/files/Images";
       importPath = "";
       passwordFile = config.age.secrets.photoprism-password.path;
       settings = {
