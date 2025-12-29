@@ -66,7 +66,9 @@
       kdePackages.filelight
       kdePackages.kate
       kdePackages.skanlite
+      kdePackages.partitionmanager
       libreoffice-qt6-fresh
+      metronome
       qgis
       thunderbird
     ];
