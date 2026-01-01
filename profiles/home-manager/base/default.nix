@@ -1,6 +1,17 @@
 { lib, pkgs, ... }:
 
+let
+  gtkConfig = {
+    gtk-decoration-layout = "icon:minimize,maximize,close";
+  };
+in
+
 {
+  gtk = {
+    gtk3.extraConfig = gtkConfig;
+    gtk4.extraConfig = gtkConfig;
+  };
+
   home = {
     keyboard.layout = "fr";
     language.base = "fr_FR.UTF-8";
