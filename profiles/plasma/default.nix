@@ -7,4 +7,6 @@
 
 lib.mkIf config.services.desktopManager.plasma6.enable {
   environment.plasma6.excludePackages = [ pkgs.kdePackages.konsole ];
+
+  programs.partition-manager.enable = true;
 }
