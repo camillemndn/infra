@@ -136,6 +136,11 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit nix-index-database;
                   };
 
+                  papermc = prev.callPackage "${inputs.nixpkgs}/pkgs/games/papermc/derivation.nix" {
+                    version = "1.21.11-69";
+                    hash = "sha256-zzdPKvnXHfzHU0Pze3IqerywkcV0ExuV47E8b8LLj64=";
+                  };
+
                   vimPlugins =
                     prev.vimPlugins // (lib.filterAttrs (_: v: v.vimPlugin or false) extraPackages.${system});
                 }
