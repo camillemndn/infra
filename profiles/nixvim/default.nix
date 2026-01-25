@@ -12,7 +12,7 @@
     extraPackages = with pkgs; [
       black
       nil
-      nixfmt-rfc-style
+      nixfmt
       ormolu
       ripgrep
       rustywind

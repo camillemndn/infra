@@ -265,7 +265,7 @@ with lib;
           lua.pkgs.luarocks-nix
           marksman
           nil
-          unstable.nixfmt-rfc-style
+          nixfmt
           ormolu
           pyright
           ripgrep

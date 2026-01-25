@@ -15,7 +15,7 @@
   config = lib.mkIf config.programs.emacs.nixMode.enable {
     home.packages = with pkgs; [
       nil
-      nixfmt-rfc-style
+      nixfmt
     ];
 
     programs.emacs.extraPackages = epkgs: with epkgs; [ nix-mode ];
