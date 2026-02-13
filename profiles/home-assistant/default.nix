@@ -7,8 +7,9 @@
 
 lib.mkIf config.services.home-assistant.enable {
   services = {
-    home-assistant = {
+    home-assistant = rec {
       package = pkgs.unstable.home-assistant;
+      customComponents = [ (package.python.pkgs.callPackage ./greeclimate.nix { }) ];
       extraComponents = [
         "ecovacs"
         "jellyfin"
@@ -21,10 +22,10 @@ lib.mkIf config.services.home-assistant.enable {
         "stt"
         "tradfri"
         "tts"
-        "zeroconf"
         "wake_word"
         "whisper"
         "wyoming"
+        "zeroconf"
       ];
       extraPackages =
         p: with p; [
