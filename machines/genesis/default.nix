@@ -26,7 +26,7 @@
       ifuse
       libimobiledevice
       libirecovery
-      unstable.signalbackup-tools
+      signalbackup-tools
     ];
   };
 

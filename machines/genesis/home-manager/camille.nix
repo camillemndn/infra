@@ -6,7 +6,7 @@ with lib;
   home.packages = with pkgs; [
     # Games
     cemu
-    unstable.lutris
+    lutris
     prismlauncher
     wineWow64Packages.waylandFull
     (retroarch.withCores (

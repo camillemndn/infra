@@ -122,9 +122,12 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   };
                   inherit (final.unstable)
                     firefoxpwa
-                    zotero
                     jellyseerr
+                    lutris
                     quarto
+                    signal-desktop
+                    signalbackup-tools
+                    zotero
                     ;
 
                   # Adds some packages from other flakes
