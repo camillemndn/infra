@@ -3,70 +3,76 @@
 with lib;
 
 {
-  home.packages = with pkgs; [
-    # Games
-    cemu
-    lutris
-    prismlauncher
-    wineWow64Packages.waylandFull
-    (retroarch.withCores (
-      cores: with cores; [
-        dolphin
-        citra
-      ]
-    ))
-    azahar
+  home.packages =
+    with pkgs;
+    with pkgs.unstable;
+    [
+      # Games
+      cemu
+      lutris
+      prismlauncher
+      wineWow64Packages.waylandFull
+      (retroarch.withCores (
+        cores: with cores; [
+          dolphin
+          citra
+        ]
+      ))
+      azahar
 
-    # Social
-    mattermost-desktop
-    signal-desktop
+      # Social
+      mattermost-desktop
+      signal-desktop
 
-    # Desk
-    libreoffice-qt6-fresh
-    pdftocgen
-    xournalpp
-    zotero
+      # Desk
+      libreoffice-qt6-fresh
+      tocpdf
+      xournalpp
+      zotero
 
-    # Tools
-    ocrmypdf
-    organize-tool
-    pdfarranger
+      # Tools
+      ocrmypdf
+      organize-tool
+      pdfarranger
 
-    # Sync
-    bitwarden-cli
-    bitwarden-desktop
-    joplin-desktop
-    localsend
-    nextcloud-client
-    qbittorrent
-    tailscale-systray
+      # Sync
+      bitwarden-cli
+      bitwarden-desktop
+      joplin-desktop
+      localsend
+      nextcloud-client
+      qbittorrent
+      tailscale-systray
 
-    # Graphics
-    darktable
-    gimp3-with-plugins
-    inkscape-with-extensions
+      # Graphics
+      darktable
+      gimp-with-plugins
+      inkscape-with-extensions
 
-    # Music & Video
-    mpv
-    harmony-assistant
-    jellyfin-media-player
-    lilypond-with-fonts
-    musescore
-    feishin
-    spotify
+      # Music & Video
+      feishin
+      ffmpeg
+      harmony-assistant
+      jellyfin-media-player
+      kdePackages.kdenlive
+      lilypond-with-fonts
+      mmt
+      mpv
+      musescore
+      spotify
 
-    # Studio
-    ardour
-    drumgizmo
-    gxplugins-lv2
-    lenmus
-    lmms
-    lsp-plugins
-    luppp
-    tenacity
-    zam-plugins
-    zrythm
-  ];
+      # Studio
+      ardour
+      audacity
+      drumgizmo
+      gxplugins-lv2
+      lenmus
+      lmms
+      lsp-plugins
+      luppp
+      zam-plugins
+      zrythm
+    ];
 
   programs = {
     chromium = {

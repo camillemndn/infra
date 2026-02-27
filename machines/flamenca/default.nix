@@ -68,7 +68,7 @@
       thunderbird
       libreoffice-qt6-fresh
       gimp-with-plugins
-      tenacity
+      audacity
       mpv
       vlc
       inkscape
