@@ -50,8 +50,6 @@
         "nix-command"
         "flakes"
       ];
-      extra-substituters = [ "https://cache.saumon.network/camille" ];
-      extra-trusted-public-keys = [ "camille:r1ElbcicaLHPlvECyy3wS+CUj4KWHaCEV2Kt1LEaYI0=" ];
       trusted-users = [ "camille" ];
     };
   };
