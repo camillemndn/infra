@@ -23,7 +23,10 @@
           port = 3001;
           websockets = true;
         };
-        "ntfy.mondon.xyz".port = 3002;
+        "ntfy.mondon.xyz" = {
+          port = 3002;
+          websockets = true;
+        };
       };
     };
 
