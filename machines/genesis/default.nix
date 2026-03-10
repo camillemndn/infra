@@ -37,6 +37,7 @@
 
   programs = {
     firefox.enable = true;
+    niri.enable = true;
     nixvim.enable = true;
     steam.enable = true;
     sway.enable = true;
