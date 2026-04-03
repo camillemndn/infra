@@ -42,15 +42,12 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.impermanence}/nixos.nix")
     (import inputs.lanzaboote { }).nixosModules.lanzaboote
     (import inputs.musnix)
-    (import "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/jellyseerr.nix")
     (import inputs.stylix).nixosModules.stylix
     (import inputs.nixvim).nixosModules.nixvim
 
     (
       { config, ... }:
       {
-        disabledModules = [ "services/misc/jellyseerr.nix" ];
-
         networking.hostName = name;
 
         system.nixos.version = "${config.system.nixos.release}.${
