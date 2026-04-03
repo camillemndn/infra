@@ -8,7 +8,7 @@
 
 {
   nix = {
-    package = pkgs.lix;
+    package = pkgs.lixPackageSets.lix_2_95.lix;
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
