@@ -144,7 +144,7 @@ with lib;
       jack.enable = true;
     };
 
-    # xserver.videoDrivers = [ "nvidia" ];
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
