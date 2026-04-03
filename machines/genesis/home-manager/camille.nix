@@ -59,7 +59,7 @@ with lib;
       mmt
       mpv
       musescore
-      spotify
+      # spotify
 
       # Studio
       ardour
