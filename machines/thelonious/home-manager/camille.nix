@@ -26,7 +26,7 @@ with lib;
     # Music & Video
     feishin
     mpv
-    spotify
+    # spotify
   ];
 
   programs = {
