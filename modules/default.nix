@@ -1,5 +1,4 @@
 {
-  koel = import ./services/audio/koel;
   librespot = import ./services/audio/librespot;
   logiops = import ./services/misc/logiops;
   nginx = import ./services/web-servers/nginx;
