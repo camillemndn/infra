@@ -8,17 +8,8 @@ with lib;
     with pkgs.unstable;
     [
       # Games
-      cemu
       lutris
       prismlauncher
-      wineWow64Packages.waylandFull
-      (retroarch.withCores (
-        cores: with cores; [
-          dolphin
-          citra
-        ]
-      ))
-      azahar
 
       # Social
       mattermost-desktop

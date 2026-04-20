@@ -72,7 +72,7 @@
       mpv
       vlc
       inkscape
-      signal-desktop
+      unstable.signal-desktop
     ];
   };
 
