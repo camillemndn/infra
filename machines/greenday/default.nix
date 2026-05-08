@@ -4,9 +4,7 @@
   imports = [ ./hardware-configuration.nix ];
 
   deployment = {
-    targetHost = lib.infra.machines.greenday.ipv4.public;
-    targetPort = 60;
-    buildOnTarget = false;
+    targetHost = lib.infra.machines.greenday.ipv6.vpn;
     allowLocalDeployment = true;
   };
 
@@ -29,6 +27,7 @@
       kdePackages.skanlite
       thunderbird
       inkscape-with-extensions
+      kitty
       gimp
       libreoffice-qt6-fresh
     ];

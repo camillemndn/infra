@@ -54,7 +54,10 @@ let
 
           genesis = { };
 
-          greenday.ipv4.public = "82.66.152.179";
+          greenday = {
+            ipv4.vpn = "100.100.45.42";
+            ipv6.vpn = "fd7a:115c:a1e0::2a";
+          };
 
           nickelback = {
             ipv4 = {
