@@ -43,6 +43,7 @@ lib.mkIf config.services.jellyfin.enable {
 
     calibre-web = {
       enable = true;
+      package = pkgs.unstable.calibre-web;
       inherit group;
       listen.ip = "127.0.0.1";
       options.calibreLibrary = "/srv/media/Bibliotheque";
