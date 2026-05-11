@@ -35,6 +35,7 @@
     buildbot-nix.master.enable = true;
     collabora-online.enable = true;
     davmail.enable = true;
+    firefly-iii.enable = true;
     grafana.enable = true;
     immich.enable = true;
     jellyfin.enable = true;
