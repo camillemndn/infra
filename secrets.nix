@@ -10,6 +10,7 @@ in
   "profiles/buildbot-nix/github-app-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/buildbot-nix/github-oauth-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/buildbot-nix/github-webhook-secret.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/firefly-iii/app-key.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/nextcloud/adminpass.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/photoprism/password.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/plausible/admin-password.age".publicKeys = admins ++ [ zeppelin ];

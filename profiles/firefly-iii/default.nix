@@ -10,7 +10,10 @@ lib.mkIf config.services.firefly-iii.enable {
     firefly-iii = {
       virtualHost = "finances.kms";
       enableNginx = true;
-      settings.DB_CONNECTION = "pgsql";
+      settings = {
+        APP_KEY_FILE = config.age.secrets.firefly-iii-app-key.path;
+        DB_CONNECTION = "pgsql";
+      };
     };
 
     firefly-iii-data-importer = {
@@ -18,4 +21,6 @@ lib.mkIf config.services.firefly-iii.enable {
       enableNginx = true;
     };
   };
+
+  age.secrets.firefly-iii-app-key.file = ./app-key.age;
 }
