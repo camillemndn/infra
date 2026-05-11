@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -17,10 +16,24 @@ lib.mkIf config.services.firefly-iii.enable {
     };
 
     firefly-iii-data-importer = {
+      enable = true;
       virtualHost = "import.finances.kms";
       enableNginx = true;
     };
+
+    postgresql = {
+      ensureUsers = [
+        {
+          name = "firefly-iii";
+          ensureDBOwnership = true;
+        }
+      ];
+      ensureDatabases = [ "firefly-iii" ];
+    };
   };
 
-  age.secrets.firefly-iii-app-key.file = ./app-key.age;
+  age.secrets.firefly-iii-app-key = {
+    owner = config.services.firefly-iii.user;
+    file = ./app-key.age;
+  };
 }
