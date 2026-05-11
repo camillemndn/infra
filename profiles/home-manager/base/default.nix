@@ -32,4 +32,13 @@ in
       package = lib.mkDefault pkgs.nix-index-with-db;
     };
   };
+
+  services.random-background = {
+    enable = true;
+    imageDirectory =
+      (builtins.fetchGit {
+        url = "https://github.com/orangci/walls-catppuccin-mocha/";
+        rev = "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8";
+      }).outPath;
+  };
 }
