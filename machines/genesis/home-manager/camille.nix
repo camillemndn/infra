@@ -3,67 +3,64 @@
 with lib;
 
 {
-  home.packages =
-    with pkgs;
-    with pkgs.unstable;
-    [
-      # Games
-      lutris
-      prismlauncher
+  home.packages = with pkgs; [
+    # Games
+    lutris
+    prismlauncher
 
-      # Social
-      mattermost-desktop
-      signal-desktop
+    # Social
+    mattermost-desktop
+    signal-desktop
 
-      # Desk
-      libreoffice-qt-fresh
-      tocpdf
-      xournalpp
-      zotero
+    # Desk
+    libreoffice-qt-fresh
+    tocpdf
+    xournalpp
+    zotero
 
-      # Tools
-      ocrmypdf
-      organize-tool
-      pdfarranger
+    # Tools
+    ocrmypdf
+    organize-tool
+    pdfarranger
 
-      # Sync
-      bitwarden-cli
-      bitwarden-desktop
-      joplin-desktop
-      localsend
-      nextcloud-client
-      qbittorrent
-      tailscale-systray
+    # Sync
+    bitwarden-cli
+    bitwarden-desktop
+    joplin-desktop
+    localsend
+    nextcloud-client
+    qbittorrent
+    tailscale-systray
 
-      # Graphics
-      darktable
-      gimp-with-plugins
-      inkscape-with-extensions
+    # Graphics
+    darktable
+    gimp-with-plugins
+    inkscape-with-extensions
 
-      # Music & Video
-      feishin
-      ffmpeg
-      harmony-assistant
-      jellyfin-media-player
-      kdePackages.kdenlive
-      lilypond-with-fonts
-      mmt
-      mpv
-      musescore
-      spotify
+    # Music & Video
+    feishin
+    ffmpeg
+    harmony-assistant
+    jellyfin-media-player
+    kdePackages.kdenlive
+    lilypond-with-fonts
+    mmt
+    mpv
+    musescore
+    spotify
 
-      # Studio
-      ardour
-      audacity
-      drumgizmo
-      gxplugins-lv2
-      lenmus
-      lmms
-      lsp-plugins
-      luppp
-      zam-plugins
-      zrythm
-    ];
+    # Studio
+    ardour
+    audacity
+    drumgizmo
+    gxplugins-lv2
+    lenmus
+    lmms
+    lsp-plugins
+    luppp
+    zam-plugins
+    zrythm
+  ];
 
   programs = {
     chromium = {
@@ -79,6 +76,7 @@ with lib;
 
   services.nextcloud-client.enable = true;
   stylix.targets.fish.enable = false;
+  stylix.targets.qt.enable = false;
   wayland.windowManager.sway.enable = true;
 
   home.stateVersion = "23.05";

@@ -118,9 +118,14 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     inherit (prev) config;
                   };
                   inherit (final.unstable)
+                    feishin
                     firefoxpwa
                     jellyseerr
+                    nextcloud-client
+                    ocrmypdf
                     quarto
+                    signalbackup-tools
+                    zotero
                     ;
 
                   # Adds some packages from other flakes

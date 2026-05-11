@@ -19,18 +19,15 @@
   };
 
   environment = {
-    systemPackages =
-      with pkgs;
-      with pkgs.unstable;
-      [
-        android-tools
-        dump-iphone-backup
-        idevicerestore
-        ifuse
-        libimobiledevice
-        libirecovery
-        signalbackup-tools
-      ];
+    systemPackages = with pkgs; [
+      android-tools
+      dump-iphone-backup
+      idevicerestore
+      ifuse
+      libimobiledevice
+      libirecovery
+      signalbackup-tools
+    ];
   };
 
   hardware.sane = {
