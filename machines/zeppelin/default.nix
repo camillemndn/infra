@@ -139,21 +139,12 @@
     photoprism.enable = true;
     plausible.enable = true;
     tailscale.enable = true;
-
-    tandoor-recipes = {
-      enable = true;
-      port = 8180;
-      extraConfig.GUNICORN_MEDIA = "1";
-    };
-    nginx.virtualHosts."meals.mondon.xyz".port = 8180;
-
+    tandoor-recipes.enable = true;
     vaultwarden.enable = true;
-
     webtrees = {
       enable = true;
       hostName = "family.mondon.xyz";
     };
-
     yarr.enable = true;
     webhook.enable = true;
   };
