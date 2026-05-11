@@ -29,7 +29,7 @@
       inkscape-with-extensions
       kitty
       gimp
-      libreoffice-qt6-fresh
+      libreoffice-qt-fresh
     ];
   };
 

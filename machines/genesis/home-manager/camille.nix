@@ -16,7 +16,7 @@ with lib;
       signal-desktop
 
       # Desk
-      libreoffice-qt6-fresh
+      libreoffice-qt-fresh
       tocpdf
       xournalpp
       zotero

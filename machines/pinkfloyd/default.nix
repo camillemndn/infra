@@ -60,13 +60,13 @@
     isNormalUser = true;
 
     packages = with pkgs; [
-      freecad-qt6
+      freecad
       gimp
       inkscape-with-extensions
       kdePackages.filelight
       kdePackages.kate
       kdePackages.skanlite
-      libreoffice-qt6-fresh
+      libreoffice-qt-fresh
       metronome
       qgis
       thunderbird

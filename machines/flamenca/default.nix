@@ -66,7 +66,7 @@
       kdePackages.kpat
       kdePackages.skanlite
       thunderbird
-      libreoffice-qt6-fresh
+      libreoffice-qt-fresh
       gimp-with-plugins
       audacity
       mpv
