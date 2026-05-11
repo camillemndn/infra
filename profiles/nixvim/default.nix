@@ -98,7 +98,6 @@
         };
       };
 
-      molten.enable = true;
       quarto.enable = true;
       otter.enable = true;
 
