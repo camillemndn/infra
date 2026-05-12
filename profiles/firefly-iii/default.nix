@@ -30,6 +30,11 @@ lib.mkIf config.services.firefly-iii.enable {
       ];
       ensureDatabases = [ "firefly-iii" ];
     };
+
+    phpfpm.pools.firefly-iii-data-importer.phpOptions = ''
+      log_errors = on
+      max_execution_time = 3600
+    '';
   };
 
   age.secrets.firefly-iii-app-key = {
