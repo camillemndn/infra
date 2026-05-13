@@ -31,10 +31,22 @@ lib.mkIf config.services.firefly-iii.enable {
       ensureDatabases = [ "firefly-iii" ];
     };
 
-    phpfpm.pools.firefly-iii-data-importer.phpOptions = ''
-      log_errors = on
-      max_execution_time = 3600
+    nginx.virtualHosts."finances.kms".locations."~ \\.php$".extraConfig = lib.mkAfter ''
+      fastcgi_read_timeout 3600;
     '';
+
+    phpfpm.pools = {
+      firefly-iii.phpOptions = ''
+        log_errors = on
+        max_execution_time = 3600
+        memory_limit = 4G
+      '';
+
+      firefly-iii-data-importer.phpOptions = ''
+        log_errors = on
+        max_execution_time = 3600
+      '';
+    };
   };
 
   age.secrets.firefly-iii-app-key = {
