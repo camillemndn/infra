@@ -1,10 +1,35 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
-lib.mkIf config.services.firefly-iii.enable {
+let
+  cfg = config.services.firefly-iii;
+
+  env-file-values = lib.attrsets.mapAttrs' (
+    n: v: lib.attrsets.nameValuePair (lib.strings.removeSuffix "_FILE" n) v
+  ) (lib.attrsets.filterAttrs (n: v: lib.strings.hasSuffix "_FILE" n) cfg.settings);
+
+  env-nonfile-values = lib.attrsets.filterAttrs (n: v: !lib.strings.hasSuffix "_FILE" n) cfg.settings;
+
+  firefly-iii-manage = pkgs.writeShellScriptBin "firefly-iii-manage" ''
+    set -euo pipefail
+    set -a
+    ${lib.strings.toShellVars env-nonfile-values}
+    ${lib.strings.concatLines (
+      lib.attrsets.mapAttrsToList (n: v: "${n}=\"$(< ${v})\"") env-file-values
+    )}
+    set +a
+    cd ${cfg.package}
+    exec ${pkgs.util-linux}/bin/runuser -u ${cfg.user} --preserve-environment -- ${cfg.package}/artisan "$@"
+  '';
+in
+
+lib.mkIf cfg.enable {
+  environment.systemPackages = [ firefly-iii-manage ];
+
   services = {
     firefly-iii = {
       virtualHost = "finances.kms";
@@ -50,7 +75,7 @@ lib.mkIf config.services.firefly-iii.enable {
   };
 
   age.secrets.firefly-iii-app-key = {
-    owner = config.services.firefly-iii.user;
+    owner = cfg.user;
     file = ./app-key.age;
   };
 }
