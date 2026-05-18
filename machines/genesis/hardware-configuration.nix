@@ -48,7 +48,6 @@ with lib;
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-    kernelParams = [ "supergfxd.mode=integrated" ];
 
     tmp.cleanOnBoot = true;
   };
@@ -63,6 +62,7 @@ with lib;
     amdctl
     asusctl
     bluetuith
+    nvtopPackages.full
     sbctl
   ];
 
@@ -118,23 +118,15 @@ with lib;
   services = {
     asusd = {
       enable = true;
+      asusdConfig.source = ./asusd.ron;
       fanCurvesConfig.source = ./fan_curves.ron;
     };
+
     fprintd.enable = true;
     logiops.enable = true;
+    power-profiles-daemon.enable = true;
 
-    supergfxd = {
-      enable = true;
-      settings = {
-        mode = "Integrated";
-        vfio_enable = false;
-        vfio_save = false;
-        always_reboot = false;
-        no_logind = false;
-        logout_timeout_s = 10;
-        hotplug_type = "Asus";
-      };
-    };
+    supergfxd.enable = true;
 
     pipewire = {
       enable = true;
@@ -144,13 +136,11 @@ with lib;
       jack.enable = true;
     };
 
-    xserver.videoDrivers = [ "nvidia" ];
+    xserver.videoDrivers = [
+      "amdgpu"
+      "nvidia"
+    ];
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
-
-  systemd.services.supergfxd.path = [
-    pkgs.kmod
-    pkgs.pciutils
-  ];
 }

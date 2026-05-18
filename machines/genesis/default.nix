@@ -70,8 +70,6 @@
       HandleLidSwitch = "suspend-then-hibernate";
     };
 
-    power-profiles-daemon.enable = false;
-
     printing = {
       enable = true;
       drivers = with pkgs; [
@@ -81,7 +79,6 @@
     };
 
     tailscale.enable = true;
-    tlp.enable = true;
     tzupdate.enable = true;
     usbmuxd.enable = true;
   };
