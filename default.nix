@@ -37,8 +37,7 @@ let
       };
     }) machines_plats
   );
-in
-rec {
+
   nixosModules =
     import ./modules
     // (builtins.listToAttrs (
@@ -85,10 +84,20 @@ rec {
     ) extraPackages
   );
 
-  inherit (lib.infra) machines;
-
   checks = {
     inherit packages;
     machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
   };
+in
+
+{
+  inherit
+    packages
+    nixosModules
+    homeManagerModules
+    nixosConfigurations
+    checks
+    ;
+
+  inherit (lib.infra) machines;
 }
