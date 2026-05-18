@@ -4,7 +4,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   networking = {
-    hostName = "thelonious";
     networkmanager.enable = true;
 
     firewall = {

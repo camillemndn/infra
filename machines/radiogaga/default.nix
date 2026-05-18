@@ -4,7 +4,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   networking = {
-    hostName = "radiogaga";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };

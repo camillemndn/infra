@@ -109,10 +109,10 @@ in
       dig
       direnv
       dust
+      fastfetch
       htop
       lazygit
       lsof
-      neofetch
       nix-init
       nix-output-monitor
       nix-tree

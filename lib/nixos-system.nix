@@ -12,21 +12,15 @@ inputs: lib:
 }:
 
 let
-  pkgs = import nixpkgs { inherit system; };
-
   listUsers = config: builtins.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
 
-  nixpkgsTree = builtins.fetchTree {
-    type = "github";
-    owner = "NixOS";
-    repo = "nixpkgs";
-    rev = (builtins.fromJSON (builtins.readFile ../lon.lock)).sources.nixpkgs.revision;
-  };
+  nixpkgsLock = (builtins.fromJSON (builtins.readFile ../lon.lock)).sources.nixpkgs;
+  nixpkgsVersion = builtins.substring 0 7 nixpkgsLock.revision;
 in
 
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = pkgs.lib.extend (import ./default.nix inputs);
+  lib = (import "${nixpkgs}/lib").extend (import ./default.nix inputs);
 
   specialArgs = {
     inherit inputs;
@@ -50,9 +44,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
       {
         networking.hostName = name;
 
-        system.nixos.version = "${config.system.nixos.release}.${
-          builtins.substring 0 8 nixpkgsTree.lastModifiedDate
-        }.${nixpkgsTree.shortRev}";
+        system.nixos.version = "${config.system.nixos.release}.${nixpkgsVersion}";
 
         home-manager = {
           useGlobalPkgs = true;
@@ -66,14 +58,18 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           inherit system;
           config = {
             permittedInsecurePackages = [
-              "qtwebengine-5.15.19"
-              "aspnetcore-runtime-6.0.36"
-              "aspnetcore-runtime-wrapped-6.0.36"
-              "dotnet-sdk-6.0.428"
-              "dotnet-sdk-wrapped-6.0.428"
-              "jitsi-meet-1.0.8792"
             ];
             allowUnfreePredicate =
+              let
+                cudaLicenseNames = [
+                  "CUDA EULA"
+                  "cuDNN EULA"
+                  "cuSPARSELt EULA"
+                  "cuTENSOR EULA"
+                  "NVIDIA Math SDK SLA"
+                  "TensorRT EULA"
+                ];
+              in
               pkg:
               builtins.elem (lib.getName pkg) [
                 "corefonts"
@@ -88,7 +84,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "steam-run"
                 "steam-unwrapped"
               ]
-              || pkgs._cuda.lib.allowUnfreeCudaPredicate pkg;
+              || lib.all (license: license.free || lib.elem (license.shortName or null) cudaLicenseNames) (
+                lib.toList pkg.meta.license
+              );
           };
           overlays = lib.mkAfter [
             (

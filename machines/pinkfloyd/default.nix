@@ -9,7 +9,6 @@
   };
 
   networking = {
-    hostName = "pinkfloyd";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 3389 ];
   };

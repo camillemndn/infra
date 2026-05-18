@@ -4,7 +4,6 @@
   imports = [ ./hardware-configuration.nix ];
 
   networking = {
-    hostName = "flamenca";
     networkmanager.enable = true;
   };
 

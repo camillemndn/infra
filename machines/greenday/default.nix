@@ -9,7 +9,6 @@
   };
 
   networking = {
-    hostName = "greenday";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 3389 ];
   };

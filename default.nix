@@ -81,14 +81,7 @@ rec {
       );
     in
     lib.filterAttrs (
-      _: derivation:
-      (
-        !lib.hasAttrByPath [
-          "meta"
-          "platforms"
-        ] derivation
-      )
-      || builtins.elem plat derivation.meta.platforms
+      _: drv: !(drv ? meta.platforms) || builtins.elem plat drv.meta.platforms
     ) extraPackages
   );
 

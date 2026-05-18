@@ -4,7 +4,6 @@ _:
   imports = [ ./hardware-configuration.nix ];
 
   networking = {
-    hostName = "nickelback";
     networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 2022 ];
   };
