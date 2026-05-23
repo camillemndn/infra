@@ -143,7 +143,6 @@
       enable = true;
       hostName = "family.mondon.xyz";
     };
-    yarr.enable = true;
     webhook.enable = true;
   };
 

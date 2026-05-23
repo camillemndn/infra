@@ -18,5 +18,4 @@ in
   "profiles/spotifyd/spotify-password.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/spotifyd/spotify-username.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/webhook/secret.age".publicKeys = admins ++ [ zeppelin ];
-  "profiles/yarr/auth.age".publicKeys = admins ++ [ zeppelin ];
 }
