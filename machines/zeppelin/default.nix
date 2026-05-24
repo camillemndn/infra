@@ -94,9 +94,6 @@
     nginx.virtualHosts."camillemondon.fr".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
-    nginx.virtualHosts."camille.mndn.fr".locations."/".return =
-      "301 https://camillemondon.com$request_uri";
-
     nginx.virtualHosts."ceciliaflamenca.com" = {
       root = "/srv/sites/ceciliaflamenca.com/www";
       locations."/images/".extraConfig = ''
