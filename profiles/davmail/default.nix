@@ -6,7 +6,7 @@
 }:
 
 let
-  fqdn = "mail.saumon.network";
+  fqdn = "bridge.saumon.network";
 in
 
 lib.mkIf config.services.davmail.enable {
