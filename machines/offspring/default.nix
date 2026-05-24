@@ -41,7 +41,6 @@ _:
         "mndn.fr"
         "saumon.network"
       ];
-      virtualHosts."lists.saumon.network".locations."/".proxyPass = "http://10.100.46.2";
     };
 
     uptime-kuma.enable = true;
