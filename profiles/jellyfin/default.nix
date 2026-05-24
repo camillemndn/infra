@@ -49,7 +49,7 @@ lib.mkIf config.services.jellyfin.enable {
       options.calibreLibrary = "/srv/media/Bibliotheque";
     };
     nginx.virtualHosts."library.kms".port = 8083;
-    nginx.virtualHosts."library.mondon.xyz".port = 8083;
+    nginx.virtualHosts."library.mndn.fr".port = 8083;
 
     deluge = {
       enable = true;
@@ -81,14 +81,14 @@ lib.mkIf config.services.jellyfin.enable {
       port = 8096;
       websockets = true;
     };
-    nginx.virtualHosts."media.mondon.xyz" = {
+    nginx.virtualHosts."media.mndn.fr" = {
       port = 8096;
       websockets = true;
     };
 
     jellyseerr.enable = true;
     nginx.virtualHosts."requests.kms".port = 5055;
-    nginx.virtualHosts."requests.mondon.xyz".port = 5055;
+    nginx.virtualHosts."requests.mndn.fr".port = 5055;
 
     lidarr = {
       enable = true;

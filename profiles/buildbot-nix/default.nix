@@ -8,7 +8,7 @@
 lib.mkIf config.services.buildbot-nix.master.enable {
 
   services.buildbot-nix.master = {
-    domain = "ci.mondon.xyz";
+    domain = "ci.mndn.fr";
     workersFile = config.age.secrets.buildbot-nix-workers.path;
     admins = [ "camillemndn" ];
     buildSystems = [
@@ -44,7 +44,7 @@ lib.mkIf config.services.buildbot-nix.master.enable {
     pkgs.coreutils
   ];
 
-  services.nginx.virtualHosts."ci.mondon.xyz" = {
+  services.nginx.virtualHosts."ci.mndn.fr" = {
     forceSSL = true;
     enableACME = true;
   };

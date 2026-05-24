@@ -67,7 +67,7 @@ lib.mkIf config.services.webhook.enable {
     };
   };
 
-  services.nginx.virtualHosts."webhooks.mondon.xyz".port = config.services.webhook.port;
+  services.nginx.virtualHosts."webhooks.mndn.fr".port = config.services.webhook.port;
 
   age.secrets.webhook-secret.file = ./secret.age;
   systemd.services.webhook.serviceConfig.EnvironmentFile = config.age.secrets.webhook-secret.path;

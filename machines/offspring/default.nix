@@ -25,7 +25,7 @@ _:
     };
   };
 
-  deployment.targetHost = "offspring.mondon.xyz";
+  deployment.targetHost = "offspring.mndn.fr";
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICu2PXuhmCpgkN3b0jWQIbNpYBDlzhGbeSpbK+k4nbRO camille@offspring"
@@ -38,7 +38,7 @@ _:
       enable = true;
       noDefault.enable = true;
       publicDomains = [
-        "mondon.xyz"
+        "mndn.fr"
         "saumon.network"
       ];
       virtualHosts."lists.saumon.network".locations."/".proxyPass = "http://10.100.46.2";

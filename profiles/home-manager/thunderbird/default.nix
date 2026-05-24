@@ -47,11 +47,11 @@ with lib;
       "camille.mondon@tse-fr.eu" = {
         userName = "camille.mondon@tse-fr.eu";
         imap = {
-          host = "mail.saumon.network";
+          host = "bridge.saumon.network";
           port = 1143;
         };
         smtp = {
-          host = "mail.saumon.network";
+          host = "bridge.saumon.network";
           port = 1025;
         };
         signature = {

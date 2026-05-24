@@ -49,7 +49,7 @@
         "camillemondon.com"
         "camillemondon.fr"
         "ceciliaflamenca.com"
-        "mondon.xyz"
+        "mndn.fr"
         "saumon.network"
         "varanda.fr"
         "yali.es"
@@ -94,7 +94,7 @@
     nginx.virtualHosts."camillemondon.fr".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
-    nginx.virtualHosts."camille.mondon.xyz".locations."/".return =
+    nginx.virtualHosts."camille.mndn.fr".locations."/".return =
       "301 https://camillemondon.com$request_uri";
 
     nginx.virtualHosts."ceciliaflamenca.com" = {
@@ -141,7 +141,7 @@
     vaultwarden.enable = true;
     webtrees = {
       enable = true;
-      hostName = "family.mondon.xyz";
+      hostName = "family.mndn.fr";
     };
     webhook.enable = true;
   };

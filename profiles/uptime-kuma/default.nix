@@ -6,7 +6,7 @@
       ntfy-sh = {
         enable = true;
         settings = {
-          base-url = "https://ntfy.mondon.xyz";
+          base-url = "https://ntfy.mndn.fr";
           upstream-base-url = "https://ntfy.sh";
           auth-file = "/var/lib/ntfy-sh/user.db";
           auth-default-access = "deny-all";
@@ -15,15 +15,15 @@
       };
 
       nginx.virtualHosts = {
-        "uptime.mondon.xyz" = {
+        "uptime.mndn.fr" = {
           port = 3001;
           websockets = true;
         };
-        "status.mondon.xyz" = {
+        "status.mndn.fr" = {
           port = 3001;
           websockets = true;
         };
-        "ntfy.mondon.xyz" = {
+        "ntfy.mndn.fr" = {
           port = 3002;
           websockets = true;
         };
