@@ -1,6 +1,5 @@
 {
   librespot = import ./services/audio/librespot;
-  logiops = import ./services/misc/logiops;
   nginx = import ./services/web-servers/nginx;
   radiogaga = import ./services/web-apps/radiogaga;
   webtrees = import ./services/web-apps/webtrees;

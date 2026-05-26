@@ -123,7 +123,6 @@ with lib;
     };
 
     fprintd.enable = true;
-    logiops.enable = true;
     power-profiles-daemon.enable = true;
 
     supergfxd.enable = true;
