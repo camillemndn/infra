@@ -80,6 +80,7 @@
         "/talks/jds2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
         "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/codawork2024/";
         "/talks/helsinki2025/".alias = "/srv/sites/thesis/www/materials/helsinki2025/";
+        "/talks/helsinki2026/".alias = "/srv/sites/icsfobi/www/slides/";
         "/talks/tse2025/".alias = "/srv/sites/thesis/www/materials/tse2025/";
         "/teaching/hidimdaml".extraConfig = ''
           rewrite ^/teaching/hidimdaml/(.*)$ https://hidimdaml.camillemondon.com/$1 permanent;
