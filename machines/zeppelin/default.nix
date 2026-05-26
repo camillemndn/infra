@@ -35,7 +35,6 @@
     collabora-online.enable = true;
     davmail.enable = true;
     firefly-iii.enable = true;
-    grafana.enable = true;
     immich.enable = true;
     jellyfin.enable = true;
     mattermost.enable = true;

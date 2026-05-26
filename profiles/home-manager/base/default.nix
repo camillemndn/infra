@@ -9,7 +9,10 @@ in
 {
   gtk = {
     gtk3.extraConfig = gtkConfig;
-    gtk4.extraConfig = gtkConfig;
+    gtk4 = {
+      theme = null;
+      extraConfig = gtkConfig;
+    };
   };
 
   home = {

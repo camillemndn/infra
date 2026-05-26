@@ -117,7 +117,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   inherit (final.unstable)
                     feishin
                     firefoxpwa
-                    jellyseerr
                     nextcloud-client
                     ocrmypdf
                     quarto

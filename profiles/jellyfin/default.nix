@@ -86,7 +86,7 @@ lib.mkIf config.services.jellyfin.enable {
       websockets = true;
     };
 
-    jellyseerr.enable = true;
+    seerr.enable = true;
     nginx.virtualHosts."requests.kms".port = 5055;
     nginx.virtualHosts."requests.mndn.fr".port = 5055;
 

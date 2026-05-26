@@ -1,17 +1,13 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
 lib.mkIf config.services.immich.enable {
   services = {
     immich = {
-      database = {
-        enable = true;
-        enableVectors = false;
-      };
+      database.enable = true;
       host = "127.0.0.1";
     };
 

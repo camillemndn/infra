@@ -64,11 +64,6 @@
 
     fwupd.enable = true;
 
-    logind.settings.Login = {
-      KillUserProcesses = true;
-      HandleLidSwitch = "suspend-then-hibernate";
-    };
-
     printing = {
       enable = true;
       drivers = with pkgs; [
@@ -83,10 +78,6 @@
   };
 
   stylix.enable = true;
-
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=2h
-  '';
 
   system.stateVersion = "23.05";
 }

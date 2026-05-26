@@ -90,8 +90,10 @@ in
 
     resolved = {
       enable = true;
-      dnssec = "allow-downgrade";
-      dnsovertls = "opportunistic";
+      settings.Resolve = {
+        DNSOverTLS = "opportunistic";
+        DNSSEC = "allow-downgrade";
+      };
     };
   };
 

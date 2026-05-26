@@ -198,11 +198,6 @@ in
       ];
 
       style = builtins.readFile ./style.css;
-
-      systemd = {
-        enable = false;
-        target = "graphical-session.target";
-      };
     };
   };
 }

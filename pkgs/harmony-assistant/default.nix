@@ -5,7 +5,7 @@
   alsa-lib,
   freetype,
   fontconfig,
-  xorg,
+  libx11,
   expat,
   buildFHSEnv,
 }:
@@ -60,7 +60,7 @@ buildFHSEnv {
     alsa-lib
     freetype
     fontconfig
-    xorg.libX11
+    libx11
     expat
   ];
 
