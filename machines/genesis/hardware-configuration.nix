@@ -116,17 +116,8 @@ with lib;
   };
 
   services = {
-    asusd = {
-      enable = true;
-      asusdConfig.source = ./asusd.ron;
-      fanCurvesConfig.source = ./fan_curves.ron;
-    };
-
+    asusd.enable = true;
     fprintd.enable = true;
-    power-profiles-daemon.enable = true;
-
-    supergfxd.enable = true;
-
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -134,6 +125,9 @@ with lib;
       pulse.enable = true;
       jack.enable = true;
     };
+
+    power-profiles-daemon.enable = true;
+    supergfxd.enable = true;
 
     xserver.videoDrivers = [
       "amdgpu"
