@@ -34,7 +34,7 @@ php84.buildComposerProject rec {
   ];
 
   postBuild = ''
-    rm -r public/css/{*.css,colors} public/js
+    rm -r public/css/*.css public/js
     npm run production
   '';
 
