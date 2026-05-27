@@ -49,5 +49,8 @@ lib.mkIf config.services.davmail.enable {
     SupplementaryGroups = "nginx";
   };
 
-  services.nginx.virtualHosts."${fqdn}" = { };
+  services.nginx = {
+    publicDomains = [ "saumon.network" ];
+    virtualHosts."${fqdn}" = { };
+  };
 }
