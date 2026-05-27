@@ -22,6 +22,8 @@ lib.mkIf config.services.jellyfin.enable {
   users.groups.${group}.name = group;
 
   services = {
+    nginx.publicDomains = [ "mndn.fr" ];
+
     bazarr = {
       enable = true;
       inherit group;
