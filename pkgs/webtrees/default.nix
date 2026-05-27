@@ -10,23 +10,23 @@
 
 php84.buildComposerProject rec {
   pname = "webtrees";
-  version = "2.2.1";
+  version = "2.2.6";
 
   src = fetchFromGitHub {
     owner = "fisharebest";
     repo = "webtrees";
     rev = version;
-    hash = "sha256-Q225wwXqW76SFoobM7eGITA6/kOpIag6EgA8e8S+tkU=";
+    hash = "sha256-1AWn2c1RDSek2c5nZ6/obJjDx5eENGdRw3q2IyV1qkg=";
     fetchSubmodules = true;
   };
 
   npmDeps = fetchNpmDeps {
     name = "${pname}-npm-deps-${version}";
     inherit src;
-    hash = "sha256-V5kXyKw7amKKmz9YQngDgFcPraQUrSGBT1UsHEAJbww=";
+    hash = "sha256-l9OguC59KFZFbDCMhJFocuepLMurC3b/DPvEqZhFNhs=";
   };
 
-  vendorHash = "sha256-fv/6RlwjF5W4m7539pOUrRQPtJmHEwmdi/PrO+vGdII=";
+  vendorHash = "sha256-/StT0p/uieWjtiS8TxucDeS8fkNUs2zCDj+tlL/AkN0=";
 
   nativeBuildInputs = [
     nodejs
