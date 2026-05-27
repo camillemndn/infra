@@ -1,6 +1,7 @@
-{ lib, ... }:
-
-{
+let
+  meta = import ./meta.nix;
+in
+_: {
   networking = {
     firewall.allowedTCPPorts = [
       25565
@@ -35,8 +36,8 @@
     networks."10-wan" = {
       matchConfig.Type = "ether";
       address = [
-        "${lib.infra.machines.zeppelin.ipv4.local}/21"
-        "${lib.infra.machines.zeppelin.ipv6.public}/64"
+        "${meta.ipv4.local}/21"
+        "${meta.ipv6.public}/64"
       ];
       routes = [ { Gateway = "192.168.0.1"; } ];
       linkConfig.RequiredForOnline = "routable";

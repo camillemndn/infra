@@ -108,7 +108,7 @@ with lib;
       clientMaxBodySize = "20m";
 
       # Do not fallback to default
-      virtualHosts.default = mkIf (!cfg.enableDefault.enable) {
+      virtualHosts.default = mkIf (!cfg.enableDefault) {
         default = true;
         addSSL = true;
         # To generate the certificates: nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem

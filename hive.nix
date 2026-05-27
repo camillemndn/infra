@@ -1,19 +1,14 @@
 let
   inputs = import ./lon.nix;
 
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
+  inherit ((import ./.)) nixosConfigurations machines;
 
   mkLibForMachine =
-    machine:
-    (import "${lib.infra.machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs);
-
-  inherit ((import ./.)) nixosConfigurations;
+    machine: (import "${machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs);
 in
 {
   meta = {
-    nodeNixpkgs = builtins.mapAttrs (
-      n: _: import lib.infra.machines.${n}.nixpkgs_version
-    ) nixosConfigurations;
+    nodeNixpkgs = builtins.mapAttrs (n: _: import machines.${n}.nixpkgs_version) nixosConfigurations;
 
     nodeSpecialArgs = builtins.mapAttrs (
       n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
@@ -23,7 +18,7 @@ in
   defaults =
     { config, lib, ... }:
     {
-      deployment.targetHost = lib.mkDefault lib.infra.machines.${config.networking.hostName}.ipv6.public;
+      deployment.targetHost = lib.mkDefault machines.${config.networking.hostName}.ipv6.public;
     };
 }
 // builtins.mapAttrs (_: v: { imports = v._module.args.modules; }) nixosConfigurations

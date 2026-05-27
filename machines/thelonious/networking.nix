@@ -1,6 +1,7 @@
-{ lib, ... }:
-
-{
+let
+  meta = import ./meta.nix;
+in
+_: {
   networking = {
     networkmanager.enable = true;
 
@@ -12,7 +13,7 @@
 
   deployment = {
     allowLocalDeployment = true;
-    targetHost = lib.infra.machines.thelonious.ipv4.vpn;
+    targetHost = meta.ipv4.vpn;
   };
 
   services = {

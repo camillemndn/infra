@@ -1,3 +1,6 @@
+let
+  offspringMeta = import ../../machines/offspring/meta.nix;
+in
 {
   config,
   lib,
@@ -12,7 +15,7 @@
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
-        hostName = lib.infra.machines.offspring.ipv4.public;
+        hostName = offspringMeta.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
         maxJobs = 8;

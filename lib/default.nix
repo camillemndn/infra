@@ -7,8 +7,6 @@ inputs: lib: _:
       lib.filterAttrs (_: v: v == "directory") (builtins.readDir path)
     ));
 
-  infra = import ./infra.nix inputs lib;
-
   hasSuffixIn = l: x: builtins.any (s: lib.hasSuffix s x) l;
 
   updateManyAttrs = lib.foldl (x: y: x // y) { };

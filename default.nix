@@ -3,9 +3,20 @@ let
 
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
 
+  machines = builtins.mapAttrs (
+    name: _:
+    lib.recursiveUpdate {
+      hostname = name;
+      system = "x86_64-linux";
+      nixpkgs_version = inputs.nixpkgs;
+      hm_version = inputs.home-manager;
+      tld = "kms";
+    } (import (./machines + "/${name}/meta.nix"))
+  ) (lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./machines));
+
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.system) (
-      lib.filterAttrs (_n: v: builtins.hasAttr "system" v) lib.infra.machines
+      lib.filterAttrs (_n: v: builtins.hasAttr "system" v) machines
     )
   );
 
@@ -61,10 +72,10 @@ let
       host-config = value;
       modules = nixosModules;
       hmModules = homeManagerModules;
-      nixpkgs = lib.infra.machines.${name}.nixpkgs_version;
+      nixpkgs = machines.${name}.nixpkgs_version;
       extraPackages = packages;
-      inherit (lib.infra.machines.${name}) system;
-      home-manager = lib.infra.machines.${name}.hm_version;
+      inherit (machines.${name}) system;
+      home-manager = machines.${name}.hm_version;
     })
   ) (lib.importConfig ./machines);
 
@@ -99,5 +110,5 @@ in
     checks
     ;
 
-  inherit (lib.infra) machines;
+  inherit machines;
 }

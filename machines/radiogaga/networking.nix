@@ -1,8 +1,9 @@
-{ lib, ... }:
-
-{
+let
+  meta = import ./meta.nix;
+in
+_: {
   deployment = {
-    targetHost = lib.infra.machines.radiogaga.ipv4.local;
+    targetHost = meta.ipv4.local;
     buildOnTarget = false;
   };
 

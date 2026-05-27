@@ -1,8 +1,9 @@
-{ lib, ... }:
-
-{
+let
+  meta = import ./meta.nix;
+in
+_: {
   deployment = {
-    targetHost = lib.infra.machines.greenday.ipv6.vpn;
+    targetHost = meta.ipv6.vpn;
     allowLocalDeployment = true;
   };
 
