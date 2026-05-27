@@ -1,7 +1,6 @@
 let
-  inputs = import ./lon.nix;
-
-  inherit ((import ./.)) nixosConfigurations machines;
+  flake = import ./.;
+  inherit (flake) nixosConfigurations machines inputs;
 
   mkLibForMachine =
     machine: (import "${machines.${machine}.nixpkgs_version}/lib").extend (import ./lib inputs);

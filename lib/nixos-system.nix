@@ -13,9 +13,6 @@ inputs: lib:
 
 let
   listUsers = config: builtins.attrNames (lib.filterAttrs (_: u: u.isNormalUser) config.users.users);
-
-  nixpkgsLock = (builtins.fromJSON (builtins.readFile ../lon.lock)).sources.nixpkgs;
-  nixpkgsVersion = builtins.substring 0 7 nixpkgsLock.revision;
 in
 
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
@@ -34,21 +31,24 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
-    (import inputs.lanzaboote { }).nixosModules.lanzaboote
+    inputs.lanzaboote.nixosModules.lanzaboote
     (import inputs.musnix)
+    inputs.niri-flake.nixosModules.niri
     (import inputs.stylix).nixosModules.stylix
     (import inputs.nixvim).nixosModules.nixvim
 
     (
-      { config, ... }:
+      { config, pkgs, ... }:
       {
         networking.hostName = name;
 
-        system.nixos.version = "${config.system.nixos.release}.${nixpkgsVersion}";
-
         home-manager = {
           useGlobalPkgs = true;
-          sharedModules = builtins.attrValues hmModules;
+          sharedModules =
+            builtins.attrValues hmModules
+            ++ lib.optionals (!config.stylix.enable) [
+              inputs.stylix.homeModules.stylix
+            ];
           users = lib.genAttrs (listUsers config) (
             user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
           );

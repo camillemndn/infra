@@ -1,6 +1,5 @@
+{ pkgs, inputs }:
 let
-  inputs = import ../lon.nix;
-  pkgs = import inputs.nixpkgs { };
   nixos-anywhere = pkgs.callPackage "${inputs.nixos-anywhere}/src/default.nix" { };
 in
 pkgs.writeShellScriptBin "nixos-anywhere" ''
