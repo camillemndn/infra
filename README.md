@@ -10,7 +10,7 @@ NixOS is a Linux distribution based on the Nix/[Lix](https://lix.systems/) packa
 
 ## 📌 About [`lon`](https://github.com/nikstur/lon)
 
-`npins` is a simple and convenient dependency pinning for Nix, that enables the use of other Nix projects, flake or not.
+`lon` is a simple and convenient dependency pinning for Nix, that enables the use of other Nix projects, flake or not.
 
 ## 💡 Inspiration
 
