@@ -25,8 +25,8 @@ lib.mkIf config.services.buildbot-nix.master.enable {
       webhookSecretFile = config.age.secrets.github-webhook-secret.path;
       topic = "nix-ci";
     };
-    evalWorkerCount = 4;
-    evalMaxMemorySize = "1024";
+    evalWorkerCount = 12;
+    evalMaxMemorySize = "16384";
   };
 
   services.buildbot-nix.worker = {
@@ -66,6 +66,7 @@ lib.mkIf config.services.buildbot-nix.master.enable {
       pkgs.buildbot-plugins.www
     ];
     extraConfig = ''
+      c['buildbotNetUsageData'] = None
       c["www"].update({"plugins": {"badges": {
         "left_pad"  : 5,
         "left_text": "Build Status",  # text on the left part of the image
