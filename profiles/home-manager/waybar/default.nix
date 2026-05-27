@@ -29,8 +29,7 @@ in
             "memory"
             "disk"
           ]
-          ++ lib.optionals config.wayland.windowManager.sway.enable [ "sway/workspaces" ]
-          ++ lib.optionals config.programs.niri.enable [ "niri/workspaces" ];
+          ++ lib.optionals config.wayland.windowManager.sway.enable [ "sway/workspaces" ];
 
           modules-center = [ "clock" ];
 
@@ -54,10 +53,6 @@ in
 
           "sway/workspaces" = {
             disable-scroll = true;
-            all-outputs = true;
-          };
-
-          "niri/workspaces" = {
             all-outputs = true;
           };
 
