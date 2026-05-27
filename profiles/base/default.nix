@@ -114,7 +114,6 @@ in
       htop
       lazygit
       lsof
-      nh
       nix-init
       nix-output-monitor
       nix-tree

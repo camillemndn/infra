@@ -50,5 +50,6 @@ lib.mkIf config.stylix.enable {
     polarity = "dark";
 
     targets.fish.enable = false;
+    targets.qt.enable = false;
   };
 }

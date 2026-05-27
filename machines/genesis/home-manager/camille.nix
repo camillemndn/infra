@@ -77,6 +77,7 @@ with lib;
 
   services.nextcloud-client.enable = true;
   stylix.targets.fish.enable = false;
+  stylix.targets.qt.enable = false;
   wayland.windowManager.sway.enable = true;
 
   home.stateVersion = "23.05";
