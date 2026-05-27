@@ -2,6 +2,11 @@ let
   meta = import ./meta.nix;
 in
 _: {
+  deployment = {
+    targetHost = "zeppelin.kms";
+    allowLocalDeployment = true;
+  };
+
   networking = {
     firewall.allowedTCPPorts = [
       25565
