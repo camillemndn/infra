@@ -5,7 +5,6 @@
 
   networking = {
     networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 2022 ];
   };
 
   deployment = {

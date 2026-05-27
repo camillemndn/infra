@@ -77,7 +77,6 @@ in
   };
 
   services = {
-    eternal-terminal.enable = true;
     openssh.settings.PasswordAuthentication = lib.mkDefault false;
 
     mysql = {

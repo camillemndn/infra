@@ -5,7 +5,6 @@
 
   networking = {
     firewall.allowedTCPPorts = [
-      2022
       25565
     ];
     firewall.allowedUDPPorts = [ 51820 ];
