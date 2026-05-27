@@ -70,6 +70,7 @@ with lib;
 
     emacs.enable = true;
     kitty.enable = true;
+    niri.enable = true;
     thunderbird.enable = true;
     waybar.bluetooth.enable = true;
   };
