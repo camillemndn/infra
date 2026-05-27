@@ -145,7 +145,7 @@ async def check_changes(package: Dict, worktree: str, update_info: str):
 
         if 'newVersion' not in changes[0]:
             attr_path = changes[0]['attrPath']
-            obtain_new_version_output = await check_subprocess_output('nix-instantiate', '--expr', f'with (import ./.).packages.x86_64-linux; (import (import ./deps).nixpkgs {{ }}).lib.getVersion {attr_path}', '--eval', '--strict', '--json', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, cwd=worktree)
+            obtain_new_version_output = await check_subprocess_output('nix-instantiate', '--expr', f'with (import ./.).packages.x86_64-linux; (import (import ./lon.nix).nixpkgs {{ }}).lib.getVersion {attr_path}', '--eval', '--strict', '--json', stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE, cwd=worktree)
             changes[0]['newVersion'] = json.loads(
                 obtain_new_version_output.decode('utf-8'))
 
