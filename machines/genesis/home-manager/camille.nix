@@ -5,7 +5,7 @@ with lib;
 {
   home.packages = with pkgs; [
     # Games
-    lutris
+    # lutris
     prismlauncher
 
     # Social
