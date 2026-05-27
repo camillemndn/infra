@@ -1,23 +1,10 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  networking = {
-    networkmanager.enable = true;
-
-    firewall = {
-      allowedTCPPorts = [
-        53317
-      ];
-      allowedUDPPorts = [ 53317 ];
-    };
-  };
-
-  deployment = {
-    allowLocalDeployment = true;
-    targetHost = lib.infra.machines.thelonious.ipv4.vpn;
-  };
+  imports = [
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   environment.systemPackages = with pkgs; [
     idevicerestore
@@ -28,6 +15,7 @@
 
   programs = {
     firefox.enable = true;
+    niri.enable = true;
     nixvim.enable = true;
     sway.enable = true;
   };
@@ -38,12 +26,9 @@
       enable = true;
       wayland.enable = true;
     };
-
     logind.settings.Login.KillUserProcesses = true;
-    openssh.enable = true;
     power-profiles-daemon.enable = false;
     printing.enable = true;
-    tailscale.enable = true;
     usbmuxd.enable = true;
   };
 

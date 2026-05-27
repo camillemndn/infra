@@ -7,7 +7,7 @@ with lib;
 
 {
   options.services.nginx = {
-    noDefault.enable = mkEnableOption "Don't fallback to default page";
+    enableDefault = mkEnableOption "Fallback to default page";
 
     publicDomains = mkOption {
       default = [ "mndn.fr" ];
@@ -108,7 +108,7 @@ with lib;
       clientMaxBodySize = "20m";
 
       # Do not fallback to default
-      virtualHosts.default = mkIf cfg.noDefault.enable {
+      virtualHosts.default = mkIf (!cfg.enableDefault.enable) {
         default = true;
         addSSL = true;
         # To generate the certificates: nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem

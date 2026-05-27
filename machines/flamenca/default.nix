@@ -1,16 +1,10 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  networking = {
-    networkmanager.enable = true;
-  };
-
-  deployment = {
-    targetHost = null;
-    allowLocalDeployment = true;
-  };
+  imports = [
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   hardware = {
     bluetooth.enable = true;
@@ -21,7 +15,6 @@
 
   services = {
     desktopManager.plasma6.enable = true;
-
     displayManager = {
       autoLogin = {
         enable = true;
@@ -33,9 +26,6 @@
         wayland.enable = true;
       };
     };
-
-    openssh.enable = true;
-
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -45,7 +35,6 @@
 
     printing.enable = true;
     pulseaudio.enable = false;
-    tailscale.enable = true;
     xserver.enable = true;
   };
 

@@ -1,17 +1,10 @@
 { lib, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  deployment = {
-    targetHost = lib.infra.machines.greenday.ipv6.vpn;
-    allowLocalDeployment = true;
-  };
-
-  networking = {
-    networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 3389 ];
-  };
+  imports = [
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   users.users.georgette = {
     isNormalUser = true;
@@ -35,7 +28,6 @@
   services = {
     xserver.enable = true;
     desktopManager.plasma6.enable = true;
-
     displayManager = {
       sddm = {
         enable = true;
@@ -47,20 +39,11 @@
         user = "georgette";
       };
     };
-
     ipp-usb.enable = true;
-
-    openssh = {
-      enable = true;
-      settings.PasswordAuthentication = true;
-    };
-
     printing = {
       enable = true;
       drivers = with pkgs; [ samsung-unified-linux-driver ];
     };
-
-    tailscale.enable = true;
   };
 
   programs.firefox.enable = true;

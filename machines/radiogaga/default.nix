@@ -1,31 +1,21 @@
-{ lib, ... }:
-
-{
-  imports = [ ./hardware-configuration.nix ];
-
-  networking = {
-    networkmanager.enable = true;
-  };
-
-  deployment = {
-    targetHost = lib.infra.machines.radiogaga.ipv4.local;
-    buildOnTarget = false;
-  };
+_: {
+  imports = [
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   services = {
     home-assistant.enable = true;
-
-    nginx.enable = true;
-
-    openssh.enable = true;
-
-    radiogaga.enable = true;
-    nginx.virtualHosts."radiogaga.local".port = 4200;
-
     librespot = {
       enable = true;
       settings.name = "radiogaga";
     };
+    nginx = {
+      enable = true;
+      enableDefault = true;
+      virtualHosts."radiogaga.local".port = 4200;
+    };
+    radiogaga.enable = true;
   };
 
   system.stateVersion = "22.11";

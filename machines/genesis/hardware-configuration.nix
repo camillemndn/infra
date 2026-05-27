@@ -118,6 +118,7 @@ with lib;
   services = {
     asusd.enable = true;
     fprintd.enable = true;
+    fwupd.enable = true;
     pipewire = {
       enable = true;
       alsa.enable = true;

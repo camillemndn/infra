@@ -1,25 +1,16 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-
-  deployment = {
-    targetHost = lib.infra.machines.pinkfloyd.ipv6.vpn;
-    allowLocalDeployment = true;
-  };
-
-  networking = {
-    networkmanager.enable = true;
-    firewall.allowedTCPPorts = [ 3389 ];
-  };
+  imports = [
+    ./hardware-configuration.nix
+    ./networking.nix
+  ];
 
   hardware.sane.enable = true;
-
   programs.firefox.enable = true;
 
   services = {
     desktopManager.plasma6.enable = true;
-
     displayManager = {
       sddm = {
         enable = true;
@@ -31,20 +22,11 @@
         user = "michel";
       };
     };
-
     ipp-usb.enable = true;
-
-    openssh = {
-      enable = true;
-      settings.PasswordAuthentication = true;
-    };
-
     printing = {
       enable = true;
       drivers = with pkgs; [ samsung-unified-linux-driver ];
     };
-
-    tailscale.enable = true;
     xserver.enable = true;
   };
 
