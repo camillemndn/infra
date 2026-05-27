@@ -9,6 +9,8 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
+    kernel.sysctl."vm.swappiness" = 1;
+
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
