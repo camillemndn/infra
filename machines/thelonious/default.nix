@@ -14,6 +14,7 @@
   ];
 
   programs = {
+    dms-shell.enable = true;
     firefox.enable = true;
     niri.enable = true;
     nixvim.enable = true;
@@ -22,9 +23,9 @@
 
   services = {
     desktopManager.plasma6.enable = true;
-    displayManager.sddm = {
+    displayManager.dms-greeter = {
       enable = true;
-      wayland.enable = true;
+      compositor.name = "niri";
     };
     logind.settings.Login.KillUserProcesses = true;
     power-profiles-daemon.enable = false;

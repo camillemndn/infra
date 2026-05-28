@@ -18,12 +18,28 @@
     ];
   };
 
+  fonts.packages = with pkgs; [
+    caladea
+    carlito
+    ibm-plex
+    jetbrains-mono
+    liberation_ttf
+    nerd-fonts.fira-code
+    nerd-fonts.symbols-only
+    roboto
+    roboto-slab
+    source-code-pro
+    source-sans
+    source-serif
+  ];
+
   hardware.sane = {
     enable = true;
     dsseries.enable = true;
   };
 
   programs = {
+    dms-shell.enable = true;
     firefox.enable = true;
     niri.enable = true;
     nixvim.enable = true;
@@ -33,9 +49,9 @@
 
   services = {
     desktopManager.plasma6.enable = true;
-    displayManager.sddm = {
+    displayManager.dms-greeter = {
       enable = true;
-      wayland.enable = true;
+      compositor.name = "niri";
     };
     printing = {
       enable = true;
