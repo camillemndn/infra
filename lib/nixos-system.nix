@@ -34,7 +34,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
-    (import inputs.lanzaboote { }).nixosModules.lanzaboote
+    (import inputs.lanzaboote { inherit system; }).nixosModules.lanzaboote
     (import inputs.musnix)
     (import inputs.stylix).nixosModules.stylix
     (import inputs.nixvim).nixosModules.nixvim
