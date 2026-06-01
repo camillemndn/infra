@@ -6,6 +6,11 @@
 }:
 
 lib.mkIf config.programs.dms-shell.enable {
+  environment.systemPackages = with pkgs; [
+    dsearch
+    yazi
+  ];
+
   fonts.packages = with pkgs; [
     inter
     material-symbols
