@@ -14,9 +14,15 @@
 
       virtualHosts."ceciliaflamenca.com" = {
         root = "/srv/sites/ceciliaflamenca.com/www";
-        locations."/images/".extraConfig = ''
+        locations."/static/".extraConfig = ''
           expires 1y;
-          add_header cache-control "public";
+          add_header Cache-Control "public";
+        '';
+        locations."/es/".extraConfig = ''
+          error_page 404 /es/404/;
+        '';
+        extraConfig = ''
+          error_page 404 /fr/404/;
         '';
       };
     };
