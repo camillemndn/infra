@@ -13,9 +13,15 @@
 
       virtualHosts."yali.es" = {
         root = "/srv/sites/yali.es/www";
-        locations."/images/".extraConfig = ''
+        locations."/static/".extraConfig = ''
           expires 1y;
           add_header cache-control "public";
+        '';
+        locations."/es/".extraConfig = ''
+          error_page 404 /es/404/;
+        '';
+        extraConfig = ''
+          error_page 404 /fr/404/;
         '';
       };
     };
