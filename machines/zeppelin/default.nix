@@ -22,6 +22,7 @@
       websites = {
         "camillemondon.com".enable = true;
         "ceciliaflamenca.com".enable = true;
+        "natachamondonericpierre.fr".enable = true;
         "varanda.fr".enable = true;
         "yali.es".enable = true;
       };
