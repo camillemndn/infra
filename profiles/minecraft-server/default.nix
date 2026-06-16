@@ -69,9 +69,13 @@ let
       lazymc = {
         enable = true;
         config = {
-          public.address = if public then "0.0.0.0:25565" else "127.0.0.1:${toString (25570 + idx)}";
+          public = {
+            address = if public then "0.0.0.0:25565" else "127.0.0.1:${toString (25570 + idx)}";
+            version = lib.head (lib.splitString "-" package.version);
+          };
           server.wake_whitelist = true;
-          time.sleep_after = 300;
+          server.freeze_process = false;
+          time.sleep_after = 180;
         };
       };
     };
@@ -80,6 +84,10 @@ in
 lib.mkIf config.services.minecraft-servers.enable {
   services.minecraft-servers = {
     eula = true;
+    managementSystem = {
+      tmux.enable = false;
+      systemd-socket.enable = true;
+    };
 
     servers = {
       v1 = mkVanillaServer {
@@ -104,7 +112,7 @@ lib.mkIf config.services.minecraft-servers.enable {
         public = true;
       };
 
-      cobbleverse = {
+      cobbleverse = rec {
         enable = enableIf "cobbleverse";
         openFirewall = true;
         package = pkgs.fabricServers.fabric-1_21_1;
@@ -129,10 +137,14 @@ lib.mkIf config.services.minecraft-servers.enable {
         lazymc = {
           enable = true;
           config = {
-            public.address = "0.0.0.0:25565";
+            public = {
+              address = "0.0.0.0:25565";
+              version = lib.head (lib.splitString "-" package.version);
+            };
+            join.hold.timeout = 60;
             server.wake_whitelist = true;
-            time.sleep_after = 600;
-            time.minimum_online_time = 60;
+            server.freeze_process = false;
+            time.sleep_after = 300;
           };
         };
       };
