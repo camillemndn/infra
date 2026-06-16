@@ -15,7 +15,7 @@
     firefly-iii.enable = true;
     immich.enable = true;
     jellyfin.enable = true;
-    minecraft-server.enable = true;
+    minecraft-servers.enable = true;
     nextcloud.enable = true;
     nginx = {
       enable = true;

@@ -8,9 +8,6 @@ _: {
   };
 
   networking = {
-    firewall.allowedTCPPorts = [
-      25565
-    ];
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
     wireguard.interfaces.wg0 = {

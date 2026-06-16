@@ -111,6 +111,16 @@
       "url": "https://github.com/mic92/nix-index-database/archive/8fba98c80b48fa013820e0163c5096922fea4ddd.tar.gz",
       "hash": "sha256-ZQ5z+fVhxYKtIFwtqGp5O0PD84BM1riASvqDaN5Xs+s="
     },
+    "nix-minecraft": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "Yeshey",
+      "repo": "nix-minecraft",
+      "branch": "master",
+      "revision": "a1092e2081902e0a95dd25a8d96336e9c8535f40",
+      "url": "https://github.com/Yeshey/nix-minecraft/archive/a1092e2081902e0a95dd25a8d96336e9c8535f40.tar.gz",
+      "hash": "sha256-JeLkRZJ7g6ppJbitF3D/erKxM8AdEAxobLLCi1clTQo="
+    },
     "nixos-anywhere": {
       "type": "GitHub",
       "fetchType": "tarball",

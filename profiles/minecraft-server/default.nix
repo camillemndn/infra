@@ -5,25 +5,56 @@
   ...
 }:
 
-lib.mkIf config.services.minecraft-server.enable {
-  services.minecraft-server = {
+lib.mkIf config.services.minecraft-servers.enable {
+  services.minecraft-servers = {
     eula = true;
-    package =
-      (pkgs.papermc.override {
-        jre = pkgs.jdk25;
-        version = "26.1.2-70";
-        hash = "sha256-bFnu/idS+X7nn4OtCmH+FIZaCXbkrAZZf1PebESv1sU=";
-      }).overrideAttrs
-        (_: {
-          src = pkgs.fetchurl {
-            url = "https://fill-data.papermc.io/v1/objects/6c59eefe2752f97ee79f83ad0a61fe14865a0976e4ac06597f53de6c44afd6c5/paper-26.1.2-70.jar";
-            hash = "sha256-bFnu/idS+X7nn4OtCmH+FIZaCXbkrAZZf1PebESv1sU=";
-          };
-        });
-    jvmOpts = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
+
+    servers.vanilla = {
+      enable = true;
+      openFirewall = true;
+
+      package = pkgs.paperServers.paper.override {
+        version = "26.2-rc-2-9";
+        url = "https://fill-data.papermc.io/v1/objects/52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1/paper-26.2-rc-2-9.jar";
+        sha256 = "52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1";
+      };
+
+      jvmOpts = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
+
+      serverProperties = {
+        online-mode = false;
+        server-port = 25566;
+        white-list = true;
+      };
+
+      files = {
+        "whitelist.json" = config.age.secrets.minecraft-whitelist.path;
+        "ops.json" = config.age.secrets.minecraft-ops.path;
+      };
+
+      lazymc = {
+        enable = true;
+        config = {
+          public.address = "0.0.0.0:25565";
+          server.wake_whitelist = true;
+        };
+      };
+    };
   };
 
-  systemd.services.minecraft-server.wantedBy = lib.mkForce [ ];
+  age.secrets.minecraft-whitelist = {
+    file = ./whitelist.json.age;
+    owner = "minecraft";
+    group = "minecraft";
+    mode = "0440";
+  };
 
-  environment.systemPackages = [ config.services.minecraft-server.package ];
+  age.secrets.minecraft-ops = {
+    file = ./ops.json.age;
+    owner = "minecraft";
+    group = "minecraft";
+    mode = "0440";
+  };
+
+  environment.systemPackages = [ config.services.minecraft-servers.servers.vanilla.package ];
 }

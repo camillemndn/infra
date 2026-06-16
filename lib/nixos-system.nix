@@ -34,6 +34,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
     (import "${inputs.impermanence}/nixos.nix")
+    (import "${inputs.nix-minecraft}/modules/minecraft-servers.nix")
     (import inputs.lanzaboote { inherit system; }).nixosModules.lanzaboote
     (import inputs.musnix)
     (import inputs.stylix).nixosModules.stylix
@@ -89,6 +90,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
               );
           };
           overlays = lib.mkAfter [
+            (import "${inputs.nix-minecraft}/overlay.nix")
             (
               final: prev:
               let
@@ -131,11 +133,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                   };
                   comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
                     inherit nix-index-database;
-                  };
-
-                  papermc = prev.callPackage "${inputs.nixpkgs}/pkgs/games/papermc/derivation.nix" {
-                    version = "1.21.11-69";
-                    hash = "sha256-zzdPKvnXHfzHU0Pze3IqerywkcV0ExuV47E8b8LLj64=";
                   };
 
                   vimPlugins =
