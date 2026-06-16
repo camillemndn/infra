@@ -76,6 +76,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                 "corefonts"
                 "cups-brother-hll2340dw"
                 "libsane-dsseries"
+                "minecraft-server"
                 "nvidia-settings"
                 "nvidia-x11"
                 "samsung-unified-linux-driver"
