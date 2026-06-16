@@ -8,6 +8,7 @@
 lib.mkIf config.programs.dms-shell.enable {
   environment.systemPackages = with pkgs; [
     dsearch
+    nemo
     yazi
   ];
 
