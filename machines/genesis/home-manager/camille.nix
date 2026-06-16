@@ -7,6 +7,7 @@ with lib;
     # Games
     # lutris
     prismlauncher
+    xwayland-satellite
 
     # Social
     mattermost-desktop
