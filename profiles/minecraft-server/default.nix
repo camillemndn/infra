@@ -6,7 +6,21 @@
 }:
 
 let
-  paper = pkgs.paperServers.paper-26_1_2;
+  # Flip this to swap what listens on TCP 25565. Only one server may bind
+  # the public port at a time; the unmatched options resolve to enable=false.
+  #
+  #   "velocity"   — Velocity proxy + v1/v2/v3 paper backends (loopback)
+  #   "v4"         — single paper 26.2-rc-2 server, no proxy
+  #   "cobbleverse" — single Fabric 1.21.1 modpack server, no proxy
+  mode = "v4";
+  enableIf = m: mode == m;
+
+  paper-26-1 = pkgs.paperServers.paper-26_1_2;
+  paper-26-2 = pkgs.paperServers.paper.override {
+    version = "26.2-rc-2-9";
+    url = "https://fill-data.papermc.io/v1/objects/52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1/paper-26.2-rc-2-9.jar";
+    sha256 = "52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1";
+  };
 
   paperJvm = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
 
@@ -32,55 +46,35 @@ let
             old.buildPhase;
       });
 
-  # idx ∈ 1..N: server-port = 25580+idx, lazymc loopback port = 25570+idx
-  mkVanillaServer = idx: {
-    enable = true;
-    openFirewall = false;
-    package = paper;
-    jvmOpts = paperJvm;
-    serverProperties = {
-      online-mode = false;
-      server-port = 25580 + idx;
-      white-list = true;
-    };
-    files = whitelistFiles;
-    lazymc = {
-      enable = true;
-      config = {
-        public.address = "127.0.0.1:${toString (25570 + idx)}";
-        server.wake_whitelist = true;
-        time.sleep_after = 300;
+  # idx ∈ 1..N: server-port = 25580+idx, lazymc loopback port = 25570+idx.
+  # When `public` is true, lazymc binds 0.0.0.0:25565 instead.
+  mkVanillaServer =
+    {
+      idx,
+      package,
+      enable,
+      public ? false,
+    }:
+    {
+      inherit enable package;
+      openFirewall = public;
+      jvmOpts = paperJvm;
+      serverProperties = {
+        motd = "Un nouveau monde";
+        online-mode = false;
+        server-port = 25580 + idx;
+        white-list = true;
+      };
+      files = whitelistFiles;
+      lazymc = {
+        enable = true;
+        config = {
+          public.address = if public then "0.0.0.0:25565" else "127.0.0.1:${toString (25570 + idx)}";
+          server.wake_whitelist = true;
+          time.sleep_after = 300;
+        };
       };
     };
-  };
-
-  velocityToml = (pkgs.formats.toml { }).generate "velocity.toml" {
-    config-version = "2.7";
-    bind = "0.0.0.0:25565";
-    motd = "<bold>mndn minecraft</bold>";
-    show-max-players = 100;
-    online-mode = false;
-    player-info-forwarding-mode = "none";
-    servers = {
-      v1 = "127.0.0.1:25571";
-      v2 = "127.0.0.1:25572";
-      v3 = "127.0.0.1:25573";
-      v4 = "127.0.0.1:25574";
-      cobbleverse = "127.0.0.1:25575";
-      try = [ "v1" ];
-    };
-    forced-hosts = {
-      "v1.mc.mndn.fr" = [ "v1" ];
-      "v2.mc.mndn.fr" = [ "v2" ];
-      "v3.mc.mndn.fr" = [ "v3" ];
-      "v4.mc.mndn.fr" = [ "v4" ];
-      "cobbleverse.mc.mndn.fr" = [ "cobbleverse" ];
-    };
-    advanced = {
-      compression-threshold = 256;
-      compression-level = -1;
-    };
-  };
 in
 
 lib.mkIf config.services.minecraft-servers.enable {
@@ -88,48 +82,90 @@ lib.mkIf config.services.minecraft-servers.enable {
     eula = true;
 
     servers = {
-      v1 = mkVanillaServer 1;
-      v2 = mkVanillaServer 2;
-      v3 = mkVanillaServer 3;
-      v4 = mkVanillaServer 4;
+      v1 = mkVanillaServer {
+        idx = 1;
+        package = paper-26-1;
+        enable = enableIf "velocity";
+      };
+      v2 = mkVanillaServer {
+        idx = 2;
+        package = paper-26-1;
+        enable = enableIf "velocity";
+      };
+      v3 = mkVanillaServer {
+        idx = 3;
+        package = paper-26-1;
+        enable = enableIf "velocity";
+      };
+      v4 = mkVanillaServer {
+        idx = 4;
+        package = paper-26-2;
+        enable = enableIf "v4";
+        public = true;
+      };
 
-      # Cobbleverse 1.7.31 — Fabric 1.21.1, Pokémon adventure (Cobblemon).
-      # First nixos-rebuild will fail with the real packHash; paste it into
-      # `cobbleverse.packHash` above and rebuild. Then flip enable = true.
       cobbleverse = {
-        enable = true;
-        openFirewall = false;
+        enable = enableIf "cobbleverse";
+        openFirewall = true;
         package = pkgs.fabricServers.fabric-1_21_1;
         jvmOpts = "-Xms4G -Xmx8G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
         serverProperties = {
+          motd = "Un monde Pokémon";
           online-mode = false;
           server-port = 25585;
           white-list = true;
         };
-        files = whitelistFiles;
+        # config/ must be writable: many Fabric mods rewrite their config
+        # at startup. Copy it into the data dir (nix-minecraft deletes the
+        # copy on stop, restoring known-good state from the store on restart).
+        files = whitelistFiles // {
+          "config" = "${cobbleverse}/config";
+        };
         symlinks = {
           "mods" = "${cobbleverse}/mods";
-          "config" = "${cobbleverse}/config";
-          "defaultconfigs" = "${cobbleverse}/defaultconfigs";
+          "datapacks" = "${cobbleverse}/datapacks";
+          "resourcepacks" = "${cobbleverse}/resourcepacks";
         };
         lazymc = {
           enable = true;
           config = {
-            public.address = "127.0.0.1:25575";
+            public.address = "0.0.0.0:25565";
             server.wake_whitelist = true;
-            time.sleep_after = 600; # modpack: longer idle before sleep
-            time.minimum_online_time = 60; # avoid rapid sleep/wake while booting
+            time.sleep_after = 600;
+            time.minimum_online_time = 60;
           };
         };
       };
 
       proxy = {
-        enable = true;
+        enable = enableIf "velocity";
         openFirewall = true;
         package = pkgs.velocityServers.velocity;
         jvmOpts = "-Xms512M -Xmx1G -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
         serverProperties = { }; # Velocity ignores server.properties
-        files."velocity.toml" = velocityToml;
+        files."velocity.toml" = (pkgs.formats.toml { }).generate "velocity.toml" {
+          config-version = "2.7";
+          bind = "0.0.0.0:25565";
+          motd = "Une porte sur des mondes";
+          show-max-players = 100;
+          online-mode = false;
+          player-info-forwarding-mode = "none";
+          servers = {
+            v1 = "127.0.0.1:25571";
+            v2 = "127.0.0.1:25572";
+            v3 = "127.0.0.1:25573";
+            try = [ "v1" ];
+          };
+          forced-hosts = {
+            "v1.mc.mndn.fr" = [ "v1" ];
+            "v2.mc.mndn.fr" = [ "v2" ];
+            "v3.mc.mndn.fr" = [ "v3" ];
+          };
+          advanced = {
+            compression-threshold = 256;
+            compression-level = -1;
+          };
+        };
       };
     };
   };
@@ -148,5 +184,14 @@ lib.mkIf config.services.minecraft-servers.enable {
     mode = "0440";
   };
 
-  environment.systemPackages = [ config.services.minecraft-servers.servers.v1.package ];
+  environment.systemPackages = [
+    (
+      if mode == "cobbleverse" then
+        pkgs.fabricServers.fabric-1_21_1
+      else if mode == "v4" then
+        paper-26-2
+      else
+        paper-26-1
+    )
+  ];
 }
