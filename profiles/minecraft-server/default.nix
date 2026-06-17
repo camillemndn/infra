@@ -15,13 +15,6 @@ let
   mode = "v4";
   enableIf = m: mode == m;
 
-  paper-26-1 = pkgs.paperServers.paper-26_1_2;
-  paper-26-2 = pkgs.paperServers.paper.override {
-    version = "26.2-rc-2-9";
-    url = "https://fill-data.papermc.io/v1/objects/52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1/paper-26.2-rc-2-9.jar";
-    sha256 = "52d1ef0ed78597f5d4bcf1067788cfd009a15f97dc9633fcef2ef10cadae38e1";
-  };
-
   paperJvm = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
 
   whitelistFiles = {
@@ -92,22 +85,25 @@ lib.mkIf config.services.minecraft-servers.enable {
     servers = {
       v1 = mkVanillaServer {
         idx = 1;
-        package = paper-26-1;
+        package = pkgs.paperServers.paper-26_1_2;
         enable = enableIf "velocity";
       };
+
       v2 = mkVanillaServer {
         idx = 2;
-        package = paper-26-1;
+        package = pkgs.paperServers.paper-26_1_2;
         enable = enableIf "velocity";
       };
+
       v3 = mkVanillaServer {
         idx = 3;
-        package = paper-26-1;
+        package = pkgs.paperServers.paper-26_1_2;
         enable = enableIf "velocity";
       };
+
       v4 = mkVanillaServer {
         idx = 4;
-        package = paper-26-2;
+        package = pkgs.paperServers.paper-26_2-rc-2;
         enable = enableIf "v4";
         public = true;
       };
@@ -195,15 +191,4 @@ lib.mkIf config.services.minecraft-servers.enable {
     group = "minecraft";
     mode = "0440";
   };
-
-  environment.systemPackages = [
-    (
-      if mode == "cobbleverse" then
-        pkgs.fabricServers.fabric-1_21_1
-      else if mode == "v4" then
-        paper-26-2
-      else
-        paper-26-1
-    )
-  ];
 }
