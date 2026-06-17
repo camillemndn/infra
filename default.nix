@@ -1,5 +1,5 @@
 let
-  inputs = import ./lon.nix;
+  inputs = import ./inputs.nix;
 
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
 
