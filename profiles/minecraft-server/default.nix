@@ -6,13 +6,12 @@
 }:
 
 let
-  # Flip this to swap what listens on TCP 25565. Only one server may bind
-  # the public port at a time; the unmatched options resolve to enable=false.
+  # Flip this to swap what listens on TCP 25565. Only one server group
+  # may bind the public port at a time.
   #
-  #   "velocity"   — Velocity proxy + v1/v2/v3 paper backends (loopback)
-  #   "v4"         — single paper 26.2-rc-2 server, no proxy
+  #   "velocity"   — Velocity proxy + v1/v2/v3 (paper 26.1.2) + v4 (paper 26.2-rc-2)
   #   "cobbleverse" — single Fabric 1.21.1 modpack server, no proxy
-  mode = "v4";
+  mode = "velocity";
   enableIf = m: mode == m;
 
   paperJvm = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
@@ -104,8 +103,7 @@ lib.mkIf config.services.minecraft-servers.enable {
       v4 = mkVanillaServer {
         idx = 4;
         package = pkgs.paperServers.paper-26_2-rc-2;
-        enable = enableIf "v4";
-        public = true;
+        enable = enableIf "velocity";
       };
 
       cobbleverse = rec {
@@ -162,12 +160,14 @@ lib.mkIf config.services.minecraft-servers.enable {
             v1 = "127.0.0.1:25571";
             v2 = "127.0.0.1:25572";
             v3 = "127.0.0.1:25573";
+            v4 = "127.0.0.1:25574";
             try = [ "v1" ];
           };
           forced-hosts = {
             "v1.mc.mndn.fr" = [ "v1" ];
             "v2.mc.mndn.fr" = [ "v2" ];
             "v3.mc.mndn.fr" = [ "v3" ];
+            "v4.mc.mndn.fr" = [ "v4" ];
           };
           advanced = {
             compression-threshold = 256;

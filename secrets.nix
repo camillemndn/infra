@@ -11,6 +11,9 @@ in
   "profiles/buildbot-nix/github-oauth-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/buildbot-nix/github-webhook-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/firefly-iii/app-key.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/jupyter/oidc-client-secret.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/kanidm/idm-admin-password.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/oauth2-proxy/cookie-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/minecraft-server/ops.json.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/minecraft-server/whitelist.json.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/nextcloud/adminpass.age".publicKeys = admins ++ [ zeppelin ];

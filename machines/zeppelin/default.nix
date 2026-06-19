@@ -15,6 +15,9 @@
     firefly-iii.enable = true;
     immich.enable = true;
     jellyfin.enable = true;
+    jupyter.enable = true;
+    kanidm.server.enable = true;
+    oauth2-proxy.enable = true;
     minecraft-servers.enable = true;
     nextcloud.enable = true;
     nginx = {
