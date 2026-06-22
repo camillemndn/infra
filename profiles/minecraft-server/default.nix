@@ -9,7 +9,7 @@ let
   # Flip this to swap what listens on TCP 25565. Only one server group
   # may bind the public port at a time.
   #
-  #   "velocity"   — Velocity proxy + v1/v2/v3 (paper 26.1.2) + v4 (paper 26.2-rc-2)
+  #   "velocity"   — Velocity proxy + v1/v2/v3 (paper 26.1.2) + v4 (paper 26.2)
   #   "cobbleverse" — single Fabric 1.21.1 modpack server, no proxy
   mode = "velocity";
   enableIf = m: mode == m;
@@ -102,7 +102,7 @@ lib.mkIf config.services.minecraft-servers.enable {
 
       v4 = mkVanillaServer {
         idx = 4;
-        package = pkgs.paperServers.paper-26_2-rc-2;
+        package = pkgs.paperServers.paper-26_2;
         enable = enableIf "velocity";
       };
 

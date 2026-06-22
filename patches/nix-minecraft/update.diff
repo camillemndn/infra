@@ -138,10 +138,10 @@ index 2eac969..f07db88 100644
    }
  }
 diff --git a/pkgs/paper-servers/lock.json b/pkgs/paper-servers/lock.json
-index 057a78e..330b33a 100644
+index 057a78e..7707ef2 100644
 --- a/pkgs/paper-servers/lock.json
 +++ b/pkgs/paper-servers/lock.json
-@@ -22285,6 +22285,74 @@
+@@ -22285,6 +22285,138 @@
      "66": {
        "url": "https://fill-data.papermc.io/v1/objects/2c2af90d6ef0e823c272e7059873e3b7a24e07674e56e3b8d6c63ebff03cf827/paper-26.1.2-66.jar",
        "sha256": "2c2af90d6ef0e823c272e7059873e3b7a24e07674e56e3b8d6c63ebff03cf827"
@@ -161,6 +161,14 @@ index 057a78e..330b33a 100644
 +    "70": {
 +      "url": "https://fill-data.papermc.io/v1/objects/6c59eefe2752f97ee79f83ad0a61fe14865a0976e4ac06597f53de6c44afd6c5/paper-26.1.2-70.jar",
 +      "sha256": "6c59eefe2752f97ee79f83ad0a61fe14865a0976e4ac06597f53de6c44afd6c5"
++    },
++    "71": {
++      "url": "https://fill-data.papermc.io/v1/objects/542288423062864e56969a44c6927b860152cb827c65ff5f841178602bc99e9a/paper-26.1.2-71.jar",
++      "sha256": "542288423062864e56969a44c6927b860152cb827c65ff5f841178602bc99e9a"
++    },
++    "72": {
++      "url": "https://fill-data.papermc.io/v1/objects/0555a0b0468a5198d8fb1a16e1f9e95c81a917a2dc8f2e09867b4044742f6401/paper-26.1.2-72.jar",
++      "sha256": "0555a0b0468a5198d8fb1a16e1f9e95c81a917a2dc8f2e09867b4044742f6401"
 +    }
 +  },
 +  "26.2": {
@@ -179,6 +187,62 @@ index 057a78e..330b33a 100644
 +    "15": {
 +      "url": "https://fill-data.papermc.io/v1/objects/9cab3b719581cbad16b3ee9e9a11fc0def08d09359539745e82d00e82a44bed9/paper-26.2-15.jar",
 +      "sha256": "9cab3b719581cbad16b3ee9e9a11fc0def08d09359539745e82d00e82a44bed9"
++    },
++    "16": {
++      "url": "https://fill-data.papermc.io/v1/objects/5cbfffabef1e3e6cdbfc17c87a0809eb52d980132657d612f7615946fd7919dd/paper-26.2-16.jar",
++      "sha256": "5cbfffabef1e3e6cdbfc17c87a0809eb52d980132657d612f7615946fd7919dd"
++    },
++    "17": {
++      "url": "https://fill-data.papermc.io/v1/objects/48e56649eadb8d7032d0a8f98576e090a498905f1f5828ae94d66da4675d58cf/paper-26.2-17.jar",
++      "sha256": "48e56649eadb8d7032d0a8f98576e090a498905f1f5828ae94d66da4675d58cf"
++    },
++    "18": {
++      "url": "https://fill-data.papermc.io/v1/objects/25d6b3fedd99e6e1acb5b5fd7d859e72409e4bd228e2d8f869956c931f0d3547/paper-26.2-18.jar",
++      "sha256": "25d6b3fedd99e6e1acb5b5fd7d859e72409e4bd228e2d8f869956c931f0d3547"
++    },
++    "19": {
++      "url": "https://fill-data.papermc.io/v1/objects/4fdcd26fb11d41b5c6fccc947c692f5ed552b442093a0d64ae88b85414f5a19f/paper-26.2-19.jar",
++      "sha256": "4fdcd26fb11d41b5c6fccc947c692f5ed552b442093a0d64ae88b85414f5a19f"
++    },
++    "20": {
++      "url": "https://fill-data.papermc.io/v1/objects/8f129683f098688959488d6dfe0d2dc7130b5cc237e82f0ea138ca664678ca2e/paper-26.2-20.jar",
++      "sha256": "8f129683f098688959488d6dfe0d2dc7130b5cc237e82f0ea138ca664678ca2e"
++    },
++    "21": {
++      "url": "https://fill-data.papermc.io/v1/objects/806b6846ebe262b9921759a64b9eea910af8f9e69a6b594f2d37d65e6dc403ed/paper-26.2-21.jar",
++      "sha256": "806b6846ebe262b9921759a64b9eea910af8f9e69a6b594f2d37d65e6dc403ed"
++    },
++    "22": {
++      "url": "https://fill-data.papermc.io/v1/objects/957dbe5c40135eb2ed145775d423f01d84f9b9a7531490e6b2cad341b47abd32/paper-26.2-22.jar",
++      "sha256": "957dbe5c40135eb2ed145775d423f01d84f9b9a7531490e6b2cad341b47abd32"
++    },
++    "23": {
++      "url": "https://fill-data.papermc.io/v1/objects/d175ef544246c69df6689d80f2525bad2faf41aa24c88f08fd6cfca15139495c/paper-26.2-23.jar",
++      "sha256": "d175ef544246c69df6689d80f2525bad2faf41aa24c88f08fd6cfca15139495c"
++    },
++    "24": {
++      "url": "https://fill-data.papermc.io/v1/objects/668ca744350ff08c27b5f51d2c929a1dc2b3c4b7cdc1408295c61211e6e924fc/paper-26.2-24.jar",
++      "sha256": "668ca744350ff08c27b5f51d2c929a1dc2b3c4b7cdc1408295c61211e6e924fc"
++    },
++    "25": {
++      "url": "https://fill-data.papermc.io/v1/objects/83c6af7161cebd44dad740759750fa321287a7083ce4cd3a6fb28d89c7bc97cc/paper-26.2-25.jar",
++      "sha256": "83c6af7161cebd44dad740759750fa321287a7083ce4cd3a6fb28d89c7bc97cc"
++    },
++    "26": {
++      "url": "https://fill-data.papermc.io/v1/objects/e4fabdd4aef2f69c6a476ff4a94439bd67622123531b5702cbd44e84e7d8b8bf/paper-26.2-26.jar",
++      "sha256": "e4fabdd4aef2f69c6a476ff4a94439bd67622123531b5702cbd44e84e7d8b8bf"
++    },
++    "27": {
++      "url": "https://fill-data.papermc.io/v1/objects/df0bc37ebae587f2885a6055f99d7d3f67a88da42951097c04dcac510d5902fa/paper-26.2-27.jar",
++      "sha256": "df0bc37ebae587f2885a6055f99d7d3f67a88da42951097c04dcac510d5902fa"
++    },
++    "28": {
++      "url": "https://fill-data.papermc.io/v1/objects/906fd8dde4f93275cb8bac7e13858c57cda0f890ca95e123de7a7e11c817b834/paper-26.2-28.jar",
++      "sha256": "906fd8dde4f93275cb8bac7e13858c57cda0f890ca95e123de7a7e11c817b834"
++    },
++    "29": {
++      "url": "https://fill-data.papermc.io/v1/objects/65cc3f761c551fff53bd4eaac44d12af971ecd139039bd3d5cd2f021fad5f977/paper-26.2-29.jar",
++      "sha256": "65cc3f761c551fff53bd4eaac44d12af971ecd139039bd3d5cd2f021fad5f977"
 +    }
 +  },
 +  "26.2-rc-2": {
@@ -216,11 +280,24 @@ index 057a78e..330b33a 100644
      }
    }
  }
+diff --git a/pkgs/purpur-servers/bad.json b/pkgs/purpur-servers/bad.json
+index 38409c5..e8c31d8 100644
+--- a/pkgs/purpur-servers/bad.json
++++ b/pkgs/purpur-servers/bad.json
+@@ -241,5 +241,6 @@
+   ],
+   "26.1.2": [
+     "2576"
+-  ]
++  ],
++  "26.2": []
+ }
+\ No newline at end of file
 diff --git a/pkgs/purpur-servers/lock.json b/pkgs/purpur-servers/lock.json
-index 15fb6f8..019cac6 100644
+index 15fb6f8..ff9bcf9 100644
 --- a/pkgs/purpur-servers/lock.json
 +++ b/pkgs/purpur-servers/lock.json
-@@ -7290,6 +7290,21 @@
+@@ -7290,6 +7290,35 @@
      },
      "2587": {
        "sha256": "5dc074d4d9c9785f6684432a104abb7daa6abd7a5a6715d0319d2cf8c35f74b7"
@@ -239,6 +316,20 @@ index 15fb6f8..019cac6 100644
 +    },
 +    "2592": {
 +      "sha256": "d88e3826a7f3ad3cb4b07be02fc732ba732bf1a1b113d96b605e9f8d1d119608"
++    }
++  },
++  "26.2": {
++    "2593": {
++      "sha256": "538697303016aa7cdf88e4a891601588b1bd1c94f1a6f0ed975b900b508ffe6b"
++    },
++    "2594": {
++      "sha256": "555dc5e5f308ddd192bd019d0b6ed0107ae93572e2186c08db22f496e58b471a"
++    },
++    "2595": {
++      "sha256": "f8faa7359a696d2cfeb4708fbd692a1b55b09c3f36d0010be4686d65211000f6"
++    },
++    "2596": {
++      "sha256": "660c173db7d03df88946a6b7caabd070b446d655b80fde2f328df7c2eefe13a8"
      }
    }
  }
