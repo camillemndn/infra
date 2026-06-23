@@ -37,16 +37,16 @@
             "/publications/2026/icsfobi/".alias = "/srv/sites/icsfobi/www/";
             "/random-densities/".return = "301 https://$server_name/projects$request_uri";
             "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
-            "/talks/fda/".alias = "/srv/sites/thesis/www/materials/fda/";
-            "/talks/jds2024/".alias = "/srv/sites/thesis/www/materials/jds2024/";
-            "/talks/codawork2024/".alias = "/srv/sites/thesis/www/materials/codawork2024/";
-            "/talks/helsinki2025/".alias = "/srv/sites/thesis/www/materials/helsinki2025/";
+            "/talks/fda/".alias = "/srv/sites/thesis/www/slides/fda/";
+            "/talks/jds2024/".alias = "/srv/sites/thesis/www/slides/jds2024/";
+            "/talks/codawork2024/".alias = "/srv/sites/thesis/www/slides/codawork2024/";
+            "/talks/helsinki2025/".alias = "/srv/sites/thesis/www/slides/helsinki2025/";
             "/talks/helsinki2026/".alias = "/srv/sites/icsfobi/www/slides/";
-            "/talks/tse2025/".alias = "/srv/sites/thesis/www/materials/tse2025/";
+            "/talks/tse2025/".alias = "/srv/sites/thesis/www/slides/tse2025/";
             "/teaching/hidimdaml".extraConfig = ''
               rewrite ^/teaching/hidimdaml/(.*)$ https://hidimdaml.camillemondon.com/$1 permanent;
             '';
-            "/teaching/ics/".alias = "/srv/sites/thesis/www/materials/ics/";
+            "/teaching/ics/".alias = "/srv/sites/thesis/www/slides/ics/";
           };
         };
         "www.camillemondon.com".locations."/".return = "301 https://camillemondon.com$request_uri";
