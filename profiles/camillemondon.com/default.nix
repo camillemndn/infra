@@ -4,6 +4,19 @@
   ...
 }:
 
+let
+  quartoCache = ''
+    location ~ /(site_libs|images)/ {
+      expires 30d;
+      add_header Cache-Control "public";
+    }
+    location ~ /figure-(html|revealjs)/ {
+      expires 30d;
+      add_header Cache-Control "public";
+    }
+  '';
+in
+
 {
   options.services.nginx.websites."camillemondon.com".enable =
     lib.mkEnableOption "Camille Mondon's website.";
@@ -27,26 +40,74 @@
               expires 1y;
               add_header Cache-Control "public";
             '';
-            "/dda/".alias = "/srv/sites/dda/www/";
-            "/projects/ot/".alias = "/srv/sites/optimal-transport/www/";
-            "/projects/icscoda/".alias = "/srv/sites/icscoda/www/";
-            "/projects/plnar/".alias = "/srv/sites/plnar/www/";
-            "/projects/random-densities/".alias = "/srv/sites/thesis/www/";
-            "/publications/2025/icscomplex/".alias = "/srv/sites/icscomplex/www/";
-            "/publications/2025/danova/".alias = "/srv/sites/danova/www/";
-            "/publications/2026/icsfobi/".alias = "/srv/sites/icsfobi/www/";
+            "/dda/" = {
+              alias = "/srv/sites/dda/www/";
+              extraConfig = quartoCache;
+            };
+            "/projects/ot/" = {
+              alias = "/srv/sites/optimal-transport/www/";
+              extraConfig = quartoCache;
+            };
+            "/projects/icscoda/" = {
+              alias = "/srv/sites/icscoda/www/";
+              extraConfig = quartoCache;
+            };
+            "/projects/plnar/" = {
+              alias = "/srv/sites/plnar/www/";
+              extraConfig = quartoCache;
+            };
+            "/projects/random-densities/" = {
+              alias = "/srv/sites/thesis/www/";
+              extraConfig = quartoCache;
+            };
             "/random-densities/".return = "301 https://$server_name/projects$request_uri";
-            "/talks/fosdem24-clevis/".alias = "/srv/sites/fosdem24-clevis/www/";
-            "/talks/fda/".alias = "/srv/sites/thesis/www/slides/fda/";
-            "/talks/jds2024/".alias = "/srv/sites/thesis/www/slides/jds2024/";
-            "/talks/codawork2024/".alias = "/srv/sites/thesis/www/slides/codawork2024/";
-            "/talks/helsinki2025/".alias = "/srv/sites/thesis/www/slides/helsinki2025/";
-            "/talks/helsinki2026/".alias = "/srv/sites/icsfobi/www/slides/";
-            "/talks/tse2025/".alias = "/srv/sites/thesis/www/slides/tse2025/";
+            "/publications/2025/icscomplex/" = {
+              alias = "/srv/sites/icscomplex/www/";
+              extraConfig = quartoCache;
+            };
+            "/publications/2025/danova/" = {
+              alias = "/srv/sites/danova/www/";
+              extraConfig = quartoCache;
+            };
+            "/publications/2026/icsfobi/" = {
+              alias = "/srv/sites/icsfobi/www/";
+              extraConfig = quartoCache;
+            };
+            "/talks/fosdem24-clevis/" = {
+              alias = "/srv/sites/fosdem24-clevis/www/";
+              extraConfig = quartoCache;
+            };
+            "/talks/fda/" = {
+              alias = "/srv/sites/thesis/www/slides/fda/";
+              extraConfig = quartoCache;
+            };
+            "/talks/jds2024/" = {
+              alias = "/srv/sites/thesis/www/slides/jds2024/";
+              extraConfig = quartoCache;
+            };
+            "/talks/codawork2024/" = {
+              alias = "/srv/sites/thesis/www/slides/codawork2024/";
+              extraConfig = quartoCache;
+            };
+            "/talks/helsinki2025/" = {
+              alias = "/srv/sites/thesis/www/slides/helsinki2025/";
+              extraConfig = quartoCache;
+            };
+            "/talks/helsinki2026/" = {
+              alias = "/srv/sites/icsfobi/www/slides/";
+              extraConfig = quartoCache;
+            };
+            "/talks/tse2025/" = {
+              alias = "/srv/sites/thesis/www/slides/tse2025/";
+              extraConfig = quartoCache;
+            };
             "/teaching/hidimdaml".extraConfig = ''
               rewrite ^/teaching/hidimdaml/(.*)$ https://hidimdaml.camillemondon.com/$1 permanent;
             '';
-            "/teaching/ics/".alias = "/srv/sites/thesis/www/slides/ics/";
+            "/teaching/ics/" = {
+              alias = "/srv/sites/thesis/www/slides/ics/";
+              extraConfig = quartoCache;
+            };
           };
         };
         "www.camillemondon.com".locations."/".return = "301 https://camillemondon.com$request_uri";
@@ -56,7 +117,8 @@
         "hidimdaml.camillemondon.com" = {
           extraConfig = ''
             error_page 404 https://camillemondon.com/404.html;
-          '';
+          ''
+          + quartoCache;
           root = "/srv/sites/hidimdaml/www";
           locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
         };
