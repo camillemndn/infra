@@ -10,12 +10,12 @@
 
   services = {
     buildbot-nix.master.enable = true;
+    code-server.enable = true;
     collabora-online.enable = true;
     davmail.enable = true;
     firefly-iii.enable = true;
     immich.enable = true;
     jellyfin.enable = true;
-    jupyter.enable = true;
     kanidm.server.enable = true;
     oauth2-proxy.enable = true;
     minecraft-servers.enable = true;

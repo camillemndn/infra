@@ -68,11 +68,11 @@ lib.mkIf config.services.oauth2-proxy.enable {
   };
 
   age.secrets.oauth2-proxy-client-secret = {
-    file = ../jupyter/oidc-client-secret.age;
+    file = ./oidc-client-secret.age;
     owner = "oauth2-proxy";
   };
   age.secrets.oauth2-proxy-client-secret-for-kanidm = {
-    file = ../jupyter/oidc-client-secret.age;
+    file = ./oidc-client-secret.age;
     owner = "kanidm";
   };
   age.secrets.oauth2-proxy-cookie-secret = {
