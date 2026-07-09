@@ -9,43 +9,62 @@ let
   hostName = "code.mndn.fr";
   codePort = 4444;
 
-  # nixpkgs' buildVscodeMarketplaceExtension defaults to the MS Marketplace,
-  # but accepts a `vsix` override — we pipe the VSIX from Open VSX so we stay
-  # on the open registry (and pick up the typefox/quarto/kermanx publishers
-  # who don't publish to MS).
-  openVsxExt =
+  vsixFromOpenVsx =
     {
       publisher,
       name,
       version,
       hash,
     }:
-    pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-      mktplcRef = { inherit publisher name version; };
-      vsix = pkgs.fetchurl {
-        url = "https://open-vsx.org/api/${publisher}/${name}/${version}/file/${publisher}.${name}-${version}.vsix";
-        inherit hash;
-      };
+    pkgs.fetchurl {
+      url = "https://open-vsx.org/api/${publisher}/${name}/${version}/file/${publisher}.${name}-${version}.vsix";
+      inherit hash;
     };
 
-  extensionsDir = pkgs.symlinkJoin {
-    name = "code-server-extensions";
-    paths = [
-      (openVsxExt {
-        publisher = "quarto";
-        name = "quarto";
-        version = "1.134.0";
-        hash = "sha256-3ypPji5oSGqcfhCOvr4gMMCYiQvpSG2TDyMDOT9f++Q=";
-      })
-      # Peer-to-peer Live Share alternative (WebRTC, no relay server needed).
-      (openVsxExt {
-        publisher = "kermanx";
-        name = "p2p-live-share";
-        version = "0.1.1";
-        hash = "sha256-b5gaIRVLaUZPlgkidsZSdo1KksWkzFxFiB6TN9zYBNA=";
-      })
-    ];
-  };
+  # code-server refuses to enumerate a read-only extensions dir (it can't
+  # write its `extensions.json` manifest there), so instead of building a
+  # store-path extensions tree we hand it the raw VSIX files and let the
+  # `--install-extension` codepath populate the writable user dir at startup.
+  # Idempotent: re-installing an already-present same-version extension is a
+  # no-op.
+  extensionVsixs = [
+    (vsixFromOpenVsx {
+      publisher = "quarto";
+      name = "quarto";
+      version = "1.134.0";
+      hash = "sha256-3ypPji5oSGqcfhCOvr4gMMCYiQvpSG2TDyMDOT9f++Q=";
+    })
+    # Peer-to-peer Live Share alternative (WebRTC, no relay server needed).
+    (vsixFromOpenVsx {
+      publisher = "kermanx";
+      name = "p2p-live-share";
+      version = "0.1.1";
+      hash = "sha256-b5gaIRVLaUZPlgkidsZSdo1KksWkzFxFiB6TN9zYBNA=";
+    })
+    # Cell execution UI (Run Cell, kernel picker, inline output) — the
+    # Quarto extension defers all notebook UI to ms-toolsai.jupyter.
+    (vsixFromOpenVsx {
+      publisher = "ms-toolsai";
+      name = "jupyter";
+      version = "2025.9.1";
+      hash = "sha256-EQZgZWlExKsP9ofbSIwujFnGfsEh3PCbyqVLbt2c5x8=";
+    })
+    # Python LSP for chunks ```{python}```.
+    (vsixFromOpenVsx {
+      publisher = "ms-python";
+      name = "python";
+      version = "2026.4.0";
+      hash = "sha256-Iyrq+wHwaYJP3ZLT5ijBxEK7z6HTzJRf+XB2NAuytKY=";
+    })
+    # R LSP for chunks ```{r}```. Open VSX preserves capital "R" in the
+    # publisher slug.
+    (vsixFromOpenVsx {
+      publisher = "REditorSupport";
+      name = "r";
+      version = "2.8.8";
+      hash = "sha256-mt2bes7aHcAHLMngSLW/zI3kSIzNKALqX+g0UXo84uI=";
+    })
+  ];
 
   pythonKernelEnv = pkgs.python3.withPackages (
     ps: with ps; [
@@ -73,7 +92,7 @@ lib.mkIf config.services.code-server.enable {
     auth = "none";
     host = "127.0.0.1";
     port = codePort;
-    extensionsDir = "${extensionsDir}/share/vscode/extensions";
+    disableTelemetry = true;
     extraPackages = [
       pkgs.git
       pkgs.pandoc
@@ -83,6 +102,10 @@ lib.mkIf config.services.code-server.enable {
       rKernelEnv
     ];
   };
+
+  systemd.services.code-server.serviceConfig.ExecStartPre = map (
+    vsix: "${lib.getExe config.services.code-server.package} --install-extension ${vsix}"
+  ) extensionVsixs;
 
   services.nginx.virtualHosts.${hostName} = {
     locations."/" = {
