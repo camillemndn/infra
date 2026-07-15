@@ -30,6 +30,7 @@
     };
 
     plugins = {
+      aerial.enable = true;
       bufferline.enable = true;
 
       cmp = {
