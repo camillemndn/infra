@@ -84,19 +84,19 @@ lib.mkIf config.services.minecraft-servers.enable {
     servers = {
       v1 = mkVanillaServer {
         idx = 1;
-        package = pkgs.paperServers.paper-26_1_2;
+        package = pkgs.paperServers.paper-26_2;
         enable = enableIf "velocity";
       };
 
       v2 = mkVanillaServer {
         idx = 2;
-        package = pkgs.paperServers.paper-26_1_2;
+        package = pkgs.paperServers.paper-26_2;
         enable = enableIf "velocity";
       };
 
       v3 = mkVanillaServer {
         idx = 3;
-        package = pkgs.paperServers.paper-26_1_2;
+        package = pkgs.paperServers.paper-26_2;
         enable = enableIf "velocity";
       };
 
