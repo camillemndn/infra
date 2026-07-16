@@ -30,7 +30,11 @@
     };
 
     plugins = {
-      aerial.enable = true;
+      aerial = {
+        enable = true;
+        settings.on_attach.__raw = builtins.readFile ./aerial_on_attach.lua;
+      };
+
       bufferline.enable = true;
 
       cmp = {
