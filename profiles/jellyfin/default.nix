@@ -44,14 +44,14 @@ lib.mkIf config.services.jellyfin.enable {
     nginx.virtualHosts."manage.library.kms".port = 8079;
 
     calibre-web = {
-      enable = true;
+      enable = false;
       package = pkgs.unstable.calibre-web;
       inherit group;
       listen.ip = "127.0.0.1";
       options.calibreLibrary = "/srv/media/Bibliotheque";
     };
-    nginx.virtualHosts."library.kms".port = 8083;
-    nginx.virtualHosts."library.mndn.fr".port = 8083;
+    # nginx.virtualHosts."library.kms".port = 8083;
+    # nginx.virtualHosts."library.mndn.fr".port = 8083;
 
     deluge = {
       enable = true;
