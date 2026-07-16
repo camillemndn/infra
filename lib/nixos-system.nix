@@ -59,6 +59,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           inherit system;
           config = {
             permittedInsecurePackages = [
+              "pnpm-9.15.9"
             ];
             allowUnfreePredicate =
               let
