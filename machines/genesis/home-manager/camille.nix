@@ -26,7 +26,6 @@ with lib;
 
     # Sync
     bitwarden-cli
-    bitwarden-desktop
     joplin-desktop
     localsend
     nextcloud-client

@@ -16,7 +16,6 @@ with lib;
 
     # Sync
     bitwarden-cli
-    bitwarden-desktop
     localsend
     tailscale-systray
 
