@@ -9,7 +9,7 @@ lib.mkIf config.services.home-assistant.enable {
   services = {
     home-assistant = rec {
       package = pkgs.unstable.home-assistant;
-      customComponents = [ (package.python.pkgs.callPackage ./greeclimate.nix { }) ];
+      customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
       extraComponents = [
         "ecovacs"
         "jellyfin"
