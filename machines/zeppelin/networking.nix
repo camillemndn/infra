@@ -11,18 +11,22 @@ _: {
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
     wireguard.interfaces.wg0 = {
-      ips = [ "10.100.45.3/24" ];
+      # Device: Pretty Ox
+      ips = [
+        "10.66.154.125/32"
+        "fc00:bbbb:bbbb:bb01::3:9a7c/128"
+      ];
       allowedIPsAsRoutes = false;
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
-
       peers = [
         {
-          # lisa
-          publicKey = "oYsN1Qy+a7dwVOKapN5s5KJOmhSflLHZqh+GLMeNpHw=";
-          allowedIPs = [ "0.0.0.0/0" ];
-          endpoint = "[2001:0bc8:3d24::45]:51821";
-          persistentKeepalive = 25;
+          publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
+          allowedIPs = [
+            "0.0.0.0/0"
+            "::0/0"
+          ];
+          endpoint = "[2a03:1b20:9:f011::a01f]:51820";
         }
       ];
     };
