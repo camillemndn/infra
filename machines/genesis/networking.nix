@@ -1,4 +1,6 @@
-_: {
+{ pkgs, ... }:
+
+{
   deployment = {
     allowLocalDeployment = true;
     targetHost = null;
@@ -25,6 +27,11 @@ _: {
           minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
         };
       };
+    };
+
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
     };
 
     tailscale.enable = true;
