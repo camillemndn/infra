@@ -1,3 +1,37 @@
+diff --git a/flake.lock b/flake.lock
+index 4356d22..242c384 100644
+--- a/flake.lock
++++ b/flake.lock
+@@ -3,11 +3,11 @@
+     "flake-compat": {
+       "flake": false,
+       "locked": {
+-        "lastModified": 1747046372,
+-        "narHash": "sha256-CIVLLkVgvHYbgI2UpXvIIBJ12HWgX+fjA8Xf8PUmqCY=",
++        "lastModified": 1767039857,
++        "narHash": "sha256-vNpUSpF5Nuw8xvDLj2KCwwksIbjua2LZCqhV1LNRDns=",
+         "owner": "edolstra",
+         "repo": "flake-compat",
+-        "rev": "9100a0f413b0c601e0533d1d94ffd501ce2e7885",
++        "rev": "5edf11c44bc78a0d334f6334cdaf7d60d732daab",
+         "type": "github"
+       },
+       "original": {
+@@ -18,11 +18,11 @@
+     },
+     "nixpkgs": {
+       "locked": {
+-        "lastModified": 1769461804,
+-        "narHash": "sha256-msG8SU5WsBUfVVa/9RPLaymvi5bI8edTavbIq3vRlhI=",
++        "lastModified": 1785318670,
++        "narHash": "sha256-dN6Ou5x/+23FZLEpYP3IffO+NyJFzUlGumt1uu3MMaY=",
+         "owner": "nixos",
+         "repo": "nixpkgs",
+-        "rev": "bfc1b8a4574108ceef22f02bafcf6611380c100d",
++        "rev": "0954f7ee2f6bb3dc7d4e3d0d8bcb8fd4bde4cfc5",
+         "type": "github"
+       },
+       "original": {
 diff --git a/pkgs/fabric-servers/game_locks.json b/pkgs/fabric-servers/game_locks.json
 index f6c1c64..3671855 100644
 --- a/pkgs/fabric-servers/game_locks.json
@@ -3025,6 +3059,28 @@ index ba45340..c75496c 100644
 +    "manifestUrl": "https://piston-meta.mojang.com/v1/packages/87546cee994d18c4a2c7a2fa578d39f0ec38638e/26.3-snapshot-2.json"
    }
  }
+diff --git a/pkgs/velocity-servers/derivation.nix b/pkgs/velocity-servers/derivation.nix
+index 5c87f22..47b6c4a 100644
+--- a/pkgs/velocity-servers/derivation.nix
++++ b/pkgs/velocity-servers/derivation.nix
+@@ -3,7 +3,7 @@
+   stdenvNoCC,
+   fetchurl,
+   nixosTests,
+-  jre_headless,
++  jdk25_headless,
+   version,
+   url,
+   sha256,
+@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation {
+     cp -v $src $out/lib/minecraft/server.jar
+     cat > $out/bin/velocity << EOF
+     #!/bin/sh
+-    exec ${jre_headless}/bin/java \$@ -jar $out/lib/minecraft/server.jar nogui
++    exec ${jdk25_headless}/bin/java \$@ -jar $out/lib/minecraft/server.jar nogui
+     EOF
+     chmod +x $out/bin/velocity
+   '';
 diff --git a/pkgs/velocity-servers/lock.json b/pkgs/velocity-servers/lock.json
 index 9198388..365921a 100644
 --- a/pkgs/velocity-servers/lock.json
