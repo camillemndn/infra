@@ -17,6 +17,7 @@
     immich.enable = true;
     jellyfin.enable = true;
     kanidm.server.enable = true;
+    lidarr-youtube-downloader.enable = true;
     oauth2-proxy.enable = true;
     minecraft-servers.enable = true;
     navidrome.enable = true;
