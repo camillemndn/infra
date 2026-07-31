@@ -19,6 +19,7 @@
     kanidm.server.enable = true;
     oauth2-proxy.enable = true;
     minecraft-servers.enable = true;
+    navidrome.enable = true;
     nextcloud.enable = true;
     nginx = {
       enable = true;
