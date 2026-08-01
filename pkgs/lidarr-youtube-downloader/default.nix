@@ -59,6 +59,16 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ makeWrapper ];
 
+  # The album-download flow reads DOWNLOAD_DIR only from the DOWNLOAD_PATH env
+  # var, ignoring the download_path saved in config.json / the settings UI
+  # (unlike lidarr_path). Fall back to the configured value so the UI setting
+  # works as the app's own error message promises.
+  postPatch = ''
+    substituteInPlace app.py processing.py \
+      --replace-fail 'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "")' \
+        'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "") or load_config().get("download_path", "")'
+  '';
+
   # Plain collection of Flask modules launched via `python app.py`; there is
   # no build system, so just install the sources and wrap the entrypoint.
   dontConfigure = true;

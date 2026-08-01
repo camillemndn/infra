@@ -110,6 +110,13 @@ lib.mkIf config.services.jellyfin.enable {
       websockets = true;
     };
 
+    lidarr-youtube-downloader = {
+      enable = true;
+      group = "media";
+      downloadPath = "/srv/media/Téléchargements";
+      musicPath = "/srv/media/Musique";
+    };
+
     sonarr = {
       enable = true;
       inherit group;

@@ -30,7 +30,7 @@ with lib;
 
     lidarrUrl = mkOption {
       type = types.nullOr types.str;
-      default = null;
+      default = "http://127.0.0.1:8686";
       example = "http://127.0.0.1:8686";
       description = "Base URL of the Lidarr instance to sync with.";
     };
@@ -104,6 +104,12 @@ with lib;
     users.groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
       lidarr-youtube-downloader = { };
     };
+
+    # ReadWritePaths (and the app) require the download directory to exist;
+    # create it group-writable so the service can write there.
+    systemd.tmpfiles.rules = optional (
+      cfg.downloadPath != null
+    ) "d ${cfg.downloadPath} 2775 ${cfg.user} ${cfg.group} - -";
 
     systemd.services.lidarr-youtube-downloader = {
       description = "Lidarr YouTube Downloader";
