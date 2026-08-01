@@ -23,8 +23,6 @@ lib.mkIf config.services.home-assistant.enable {
         "tradfri"
         "tts"
         "wake_word"
-        "whisper"
-        "wyoming"
         "zeroconf"
       ];
       extraPackages =
@@ -39,23 +37,6 @@ lib.mkIf config.services.home-assistant.enable {
         homeassistant.name = "Cama";
         scene = "!include scenes.yaml";
         automation = "!include automations.yaml";
-      };
-    };
-
-    wyoming = {
-      faster-whisper = {
-        package = pkgs.unstable.wyoming-faster-whisper;
-        servers.ha = {
-          enable = true;
-          uri = "tcp://0.0.0.0:10300";
-          language = "en";
-        };
-      };
-
-      piper.servers.ha = {
-        enable = true;
-        uri = "tcp://0.0.0.0:10200";
-        voice = "en-us-ryan-medium";
       };
     };
   };
