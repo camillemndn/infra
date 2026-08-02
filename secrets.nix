@@ -15,6 +15,7 @@ in
   "profiles/kanidm/idm-admin-password.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/oauth2-proxy/cookie-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/minecraft-server/ops.json.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/mopidy/subidy.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/minecraft-server/whitelist.json.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/nextcloud/adminpass.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/photoprism/password.age".publicKeys = admins ++ [ zeppelin ];
