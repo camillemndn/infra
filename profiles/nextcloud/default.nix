@@ -7,7 +7,7 @@
 
 lib.mkIf config.services.nextcloud.enable {
   services.nextcloud = {
-    package = pkgs.nextcloud33;
+    package = pkgs.nextcloud34;
     hostName = "cloud.mndn.fr";
 
     autoUpdateApps.enable = true;
@@ -22,6 +22,13 @@ lib.mkIf config.services.nextcloud.enable {
       dbtype = "mysql";
     };
     settings = {
+      mail_smtphost = "mail.luj.fr";
+      mail_smtpport = 465;
+      mail_smtpsecure = "ssl";
+      mail_smtpauth = true;
+      mail_smtpname = "camille";
+      mail_from_address = "cloud";
+      mail_domain = "mondon.me";
       overwriteprotocol = "https";
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"
