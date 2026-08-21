@@ -26,7 +26,7 @@ lib.mkIf config.services.davmail.enable {
           persistToken = true;
           tokenFilePath = "/var/lib/davmail/token";
         };
-        mode = "O365Manual";
+        mode = "O365DeviceCode";
         ssl = {
           keystoreType = "PKCS12";
           keystoreFile = "/var/lib/davmail/davmail.p12";
