@@ -20,13 +20,19 @@ lib.mkIf config.services.davmail.enable {
     config = {
       davmail = {
         allowRemote = true;
+        # EWS for Exchange Online retires 2026-10-01; use the Graph backend.
+        # davmail >= 6.8 splits protocol (mode) from auth (authentication).
+        mode = "O365Graph";
+        # Headless device-code flow: davmail logs a microsoft.com/devicelogin
+        # URL + code on first connect; approve it from any browser.
+        authentication = "O365DeviceCode";
         oauth = {
+          # First-party Office app: pre-consented in every tenant, so no admin
+          # action needed (same reason EWS worked). Do NOT drop this.
           clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
-          redirectUri = "urn:ietf:wg:oauth:2.0:oob";
           persistToken = true;
           tokenFilePath = "/var/lib/davmail/token";
         };
-        mode = "O365Manual";
         ssl = {
           keystoreType = "PKCS12";
           keystoreFile = "/var/lib/davmail/davmail.p12";
