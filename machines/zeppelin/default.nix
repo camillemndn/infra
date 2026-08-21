@@ -42,5 +42,10 @@
     webhook.enable = true;
   };
 
+  systemd.services.oauth2-proxy = {
+    after = [ "kanidm.service" ];
+    wants = [ "kanidm.service" ];
+  };
+
   system.stateVersion = "21.11";
 }
