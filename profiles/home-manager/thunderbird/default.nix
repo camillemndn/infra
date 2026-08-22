@@ -30,52 +30,5 @@ with lib;
         "mail.identity.id3.sig_on_fwd" = true;
       };
     };
-
-    accounts.email.accounts = {
-      "camillemondon@online.fr" = {
-        userName = "camillemondon";
-        primary = true;
-        imap = {
-          host = "imap.free.fr";
-          port = 993;
-        };
-        smtp = {
-          host = "smtp.free.fr";
-          port = 465;
-        };
-      };
-      "camille.mondon@tse-fr.eu" = {
-        userName = "camille.mondon@tse-fr.eu";
-        imap = {
-          host = "bridge.saumon.network";
-          port = 1143;
-        };
-        smtp = {
-          host = "bridge.saumon.network";
-          port = 1025;
-        };
-        signature = {
-          showSignature = "append";
-          text = ''
-            <small><p><b>Camille MONDON<br></b>
-            Doctorant<br>
-            <i>TSE-R | Bureau T.234<br>
-            1, Esplanade de l'Université 31000 Toulouse</i></p></small>
-          '';
-        };
-      };
-      "contact@varanda.fr" = {
-        realName = "Varanda";
-        userName = "varanda";
-        imap = {
-          host = "mail.luj.fr";
-          port = 993;
-        };
-        smtp = {
-          host = "mail.luj.fr";
-          port = 465;
-        };
-      };
-    };
   };
 }
