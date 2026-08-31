@@ -93,7 +93,10 @@
             package = null;
           };
           nil_ls.enable = true;
-          panache.enable = true;
+          panache = {
+            enable = true;
+            package = pkgs.panache;
+          };
           pyright.enable = true;
           superhtml.enable = true;
           tailwindcss.enable = true;

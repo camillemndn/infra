@@ -124,11 +124,29 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     firefoxpwa
                     nextcloud-client
                     ocrmypdf
-                    panache
                     quarto
                     signalbackup-tools
                     zotero
                     ;
+
+                  panache = prev.panache.overrideAttrs (
+                    finalAttrs: _: {
+                      version = "3.7.0";
+
+                      src = prev.fetchFromGitHub {
+                        owner = "jolars";
+                        repo = "panache";
+                        tag = "v${finalAttrs.version}";
+                        hash = "sha256-vxTiVs9zqowWqdGIgJ3w+3PDkNRVcOVnibAerBb1wK0=";
+                      };
+
+                      cargoDeps = prev.rustPlatform.fetchCargoVendor {
+                        inherit (finalAttrs) src;
+                        name = "panache-${finalAttrs.version}";
+                        hash = "sha256-uUEYzPFMMWEOe44TDhT58E68yJiUP3dkddOSs/ojjEg=";
+                      };
+                    }
+                  );
 
                   # Adds some packages from other flakes
                   inherit nix-index-database;
