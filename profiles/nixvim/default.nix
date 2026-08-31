@@ -74,10 +74,6 @@
             ];
             nix = [ "nixfmt" ];
             python = [ "black" ];
-            quarto = [
-              "injected"
-              "styler"
-            ];
             R = [ "air" ];
           };
         };
@@ -97,6 +93,7 @@
             package = null;
           };
           nil_ls.enable = true;
+          panache.enable = true;
           pyright.enable = true;
           superhtml.enable = true;
           tailwindcss.enable = true;

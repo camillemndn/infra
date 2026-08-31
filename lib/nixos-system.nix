@@ -124,6 +124,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     firefoxpwa
                     nextcloud-client
                     ocrmypdf
+                    panache
                     quarto
                     signalbackup-tools
                     zotero
