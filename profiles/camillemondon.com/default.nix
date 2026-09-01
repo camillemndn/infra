@@ -59,6 +59,7 @@ in
             "/projects/random-densities/" = {
               alias = "/srv/sites/thesis/www/";
               extraConfig = quartoCache;
+              basicAuthFile = "/srv/sites/thesis_auth";
             };
             "/random-densities/".return = "301 https://$server_name/projects$request_uri";
             "/publications/2025/icscomplex/" = {
