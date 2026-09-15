@@ -131,19 +131,19 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
 
                   panache = prev.panache.overrideAttrs (
                     finalAttrs: _: {
-                      version = "3.7.0";
+                      version = "3.10.0";
 
                       src = prev.fetchFromGitHub {
                         owner = "jolars";
                         repo = "panache";
                         tag = "v${finalAttrs.version}";
-                        hash = "sha256-vxTiVs9zqowWqdGIgJ3w+3PDkNRVcOVnibAerBb1wK0=";
+                        hash = "sha256-13v2J7qRgkX55vjFt0daU26J/IhmECCr1H0fVEW72rk=";
                       };
 
                       cargoDeps = prev.rustPlatform.fetchCargoVendor {
                         inherit (finalAttrs) src;
                         name = "panache-${finalAttrs.version}";
-                        hash = "sha256-uUEYzPFMMWEOe44TDhT58E68yJiUP3dkddOSs/ojjEg=";
+                        hash = "sha256-D8SfoPjfIHnrvjYG6lJbqAHL1jkAI5st2105OP9md6s=";
                       };
                     }
                   );
