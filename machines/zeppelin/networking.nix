@@ -41,10 +41,7 @@ _: {
     enable = true;
     networks."10-wan" = {
       matchConfig.Type = "ether";
-      address = [
-        "${meta.ipv4.local}/21"
-        "${meta.ipv6.public}/64"
-      ];
+      address = [ "${meta.ipv4.local}/21" ];
       routes = [ { Gateway = "192.168.0.1"; } ];
       linkConfig.RequiredForOnline = "routable";
     };
