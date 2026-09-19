@@ -10,7 +10,7 @@
 
   config = lib.mkIf config.services.nginx.websites."natachamondonericpierre.fr".enable {
     services.nginx = {
-      publicDomains = [ "www.natachamondonericpierre.mndn.fr" ];
+      publicDomains = [ "mndn.fr" ];
 
       virtualHosts = {
         "www.natachamondonericpierre.mndn.fr" = {
