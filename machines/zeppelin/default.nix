@@ -17,6 +17,7 @@
     immich.enable = true;
     jellyfin.enable = true;
     kanidm.server.enable = true;
+    knot.enable = true;
     oauth2-proxy.enable = true;
     minecraft-servers.enable = true;
     navidrome.enable = true;
@@ -31,7 +32,6 @@
         "yali.es".enable = true;
       };
     };
-    nsd.enable = true;
     photoprism.enable = true;
     plausible.enable = true;
     tandoor-recipes.enable = true;
