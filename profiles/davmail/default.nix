@@ -6,7 +6,7 @@
 }:
 
 let
-  fqdn = "bridge.saumon.network";
+  fqdn = "bridge.mndn.fr";
 in
 
 lib.mkIf config.services.davmail.enable {
@@ -50,7 +50,7 @@ lib.mkIf config.services.davmail.enable {
   };
 
   services.nginx = {
-    publicDomains = [ "saumon.network" ];
+    publicDomains = [ "mndn.fr" ];
     virtualHosts."${fqdn}" = { };
   };
 }
