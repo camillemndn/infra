@@ -41,6 +41,16 @@
       "url": "https://github.com/nix-community/disko/archive/ff8702b4de27f72b4c78573dfb89ec74e36abdf1.tar.gz",
       "hash": "sha256-RxWs5ND31KzTG7wvMM+PMfUjyNpmIEr999lqNARaM5o="
     },
+    "dns": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "kirelagin",
+      "repo": "dns.nix",
+      "branch": "master",
+      "revision": "4710a34f2c36e7a0d634d7ba8fe2499d75f012a2",
+      "url": "https://github.com/kirelagin/dns.nix/archive/4710a34f2c36e7a0d634d7ba8fe2499d75f012a2.tar.gz",
+      "hash": "sha256-sD4UyILWAhk7aexE3YpDOdb71ZEeL+1/+LV05XIWCBo="
+    },
     "git-hooks": {
       "type": "GitHub",
       "fetchType": "tarball",

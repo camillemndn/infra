@@ -31,6 +31,7 @@
         "yali.es".enable = true;
       };
     };
+    nsd.enable = true;
     photoprism.enable = true;
     plausible.enable = true;
     tandoor-recipes.enable = true;
