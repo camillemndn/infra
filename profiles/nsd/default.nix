@@ -16,6 +16,9 @@ let
 
   meta = machines.${hostName};
 
+  # Zones of services.nginx.publicDomains whose records live in another repository.
+  foreignZones = [ "saumon.network" ];
+
   # This machine holds the zones and signs them. It shares its public IPv4
   # with the router, which answers DNS there, so it is a nameserver over
   # IPv6 only.
@@ -43,10 +46,8 @@ let
     else
       nixosConfigurations.${name}.config.services.nginx;
 
-  # services.nginx.publicDomains lists the domains served to the internet,
-  # which are the zones to be authoritative for.
-  zoneNames = lib.unique (
-    lib.concatMap (name: (nginxOf name).publicDomains) (lib.attrNames publicMachines)
+  zoneNames = lib.subtractLists foreignZones (
+    lib.unique (lib.concatMap (name: (nginxOf name).publicDomains) (lib.attrNames publicMachines))
   );
 
   zoneOf =
