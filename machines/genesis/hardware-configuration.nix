@@ -125,7 +125,18 @@ with lib;
     };
 
     power-profiles-daemon.enable = true;
-    supergfxd.enable = true;
+    supergfxd = {
+      enable = true;
+      settings = {
+        mode = "Integrated";
+        vfio_enable = false;
+        vfio_save = false;
+        always_reboot = false;
+        no_logind = true;
+        logout_timeout_s = 180;
+        hotplug_type = "Asus";
+      };
+    };
 
     xserver.videoDrivers = [
       "amdgpu"
@@ -134,4 +145,15 @@ with lib;
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
+
+  systemd.services.asusd.postStart = ''
+    busctl set-property xyz.ljones.Asusd /xyz/ljones xyz.ljones.Platform PlatformProfileOnAc u 2
+  '';
+
+  systemd.services.supergfxd.serviceConfig.ExecStartPre = pkgs.writeShellScript "wait-igpu-panel" ''
+    for _ in $(seq 100); do
+      grep -qs connected /sys/class/drm/card*-eDP-1/status && exit 0
+      sleep 0.1
+    done
+  '';
 }
