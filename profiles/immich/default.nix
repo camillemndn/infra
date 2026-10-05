@@ -1,12 +1,14 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
 lib.mkIf config.services.immich.enable {
   services = {
     immich = {
+      package = pkgs.unstable.immich;
       database.enable = true;
       host = "127.0.0.1";
     };

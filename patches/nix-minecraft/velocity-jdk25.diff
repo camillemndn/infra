@@ -1,0 +1,22 @@
+diff --git a/pkgs/velocity-servers/derivation.nix b/pkgs/velocity-servers/derivation.nix
+index 5c87f22..47b6c4a 100644
+--- a/pkgs/velocity-servers/derivation.nix
++++ b/pkgs/velocity-servers/derivation.nix
+@@ -3,7 +3,7 @@
+   stdenvNoCC,
+   fetchurl,
+   nixosTests,
+-  jre_headless,
++  jdk25_headless,
+   version,
+   url,
+   sha256,
+@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation {
+     cp -v $src $out/lib/minecraft/server.jar
+     cat > $out/bin/velocity << EOF
+     #!/bin/sh
+-    exec ${jre_headless}/bin/java \$@ -jar $out/lib/minecraft/server.jar nogui
++    exec ${jdk25_headless}/bin/java \$@ -jar $out/lib/minecraft/server.jar nogui
+     EOF
+     chmod +x $out/bin/velocity
+   '';

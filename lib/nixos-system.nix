@@ -126,6 +126,21 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
                     ocrmypdf
                     quarto
                     signalbackup-tools
+                    ;
+
+                  # Zotero 10 runs only on Firefox ESR 140, which unstable dropped; this is the
+                  # last revision Hydra built it from. https://github.com/NixOS/nixpkgs/issues/568692
+                  inherit
+                    (import
+                      (fetchTarball {
+                        url = "https://github.com/NixOS/nixpkgs/archive/f45c6f04c2f013f004bf94e284e95d72898d9393.tar.gz";
+                        sha256 = "081f0i3lav0gmwad7vmmpxlrjs4aa7gwz4sm0anrxcclgpnyfkga";
+                      })
+                      {
+                        inherit system;
+                        inherit (prev) config;
+                      }
+                    )
                     zotero
                     ;
 

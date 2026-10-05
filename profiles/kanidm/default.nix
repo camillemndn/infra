@@ -13,7 +13,7 @@ in
 
 lib.mkIf config.services.kanidm.server.enable {
   services.kanidm = {
-    package = pkgs.kanidmWithSecretProvisioning_1_10;
+    package = pkgs.kanidmWithSecretProvisioning_1_11;
     client.enable = true;
 
     server.settings = {
