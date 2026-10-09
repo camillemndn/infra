@@ -13,6 +13,7 @@ _:
   services = {
     openssh.enable = true;
     nginx.enable = true;
+    nsd.enable = true;
     uptime-kuma.enable = true;
   };
 

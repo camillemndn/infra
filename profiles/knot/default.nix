@@ -18,35 +18,49 @@ let
   # Zones of services.nginx.publicDomains whose records live in another repository.
   foreignZones = [ "saumon.network" ];
 
-  # This machine holds the zones and signs them. It shares its public IPv4
-  # with the router, which answers DNS there, so it is a nameserver over
-  # IPv6 only.
-  nameServers = {
-    # SaumonNet router, a secondary configured in saumonnet/infra.
+  # This machine holds the zones and signs them. The delegation names the
+  # secondaries below, which transfer from here and answer the public. Moving
+  # a role to another machine is a change of addresses here and nowhere else.
+  # Both ends of a transfer name the key identically.
+  tsigKey = "xfr.mndn.fr.";
+
+  secondaries = {
+    # SaumonNet host, configured in saumonnet/infra. It transfers over the
+    # tailnet, which authenticates its address.
     ns1 = {
       A = [ "77.42.114.11" ];
       AAAA = [ "2a01:4f9:3090:2b8c::2" ];
+      transfer.address = "fd7a:115c:a1e0::2";
     };
-    ns2.AAAA = [ meta.ipv6.public ];
+
+    # Off the tailnet, so its transfers cross the internet under a TSIG key.
+    ns2 = {
+      A = [ machines.offspring.ipv4.public ];
+      AAAA = [ machines.offspring.ipv6.public ];
+      transfer = {
+        address = machines.offspring.ipv6.public;
+        key = tsigKey;
+      };
+    };
   };
 
-  # The router pulls the zones over the tailnet, which authenticates its address.
-  router = "fd7a:115c:a1e0::1";
+  nameServers = lib.mapAttrs (_: ns: builtins.removeAttrs ns [ "transfer" ]) secondaries;
 
   ### Zones from the nginx virtual hosts of every publicly reachable machine
 
-  publicMachines = lib.filterAttrs (_: m: m ? ipv4.public || m ? ipv6.public) machines;
+  dnsZones = lib.dnsZones {
+    inherit
+      config
+      hostName
+      machines
+      nixosConfigurations
+      foreignZones
+      ;
+  };
 
-  nginxOf =
-    name:
-    if name == hostName then
-      config.services.nginx
-    else
-      nixosConfigurations.${name}.config.services.nginx;
+  inherit (dnsZones) publicMachines nginxOf;
 
-  zoneNames = lib.subtractLists foreignZones (
-    lib.unique (lib.concatMap (name: (nginxOf name).publicDomains) (lib.attrNames publicMachines))
-  );
+  zoneNames = dnsZones.names;
 
   zoneOf =
     name:
@@ -135,18 +149,16 @@ lib.mkIf cfg.enable {
       "${meta.ipv6.public}@53"
     ];
 
-    remote = {
-      router.address = router;
+    remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
       resolver.address = [
         "2606:4700:4700::1111"
         "1.1.1.1"
       ];
     };
 
-    acl.router-transfer = {
-      address = router;
-      action = "transfer";
-    };
+    acl = lib.mapAttrs' (
+      name: ns: lib.nameValuePair "${name}-transfer" (ns.transfer // { action = "transfer"; })
+    ) secondaries;
 
     # A new key counts as submitted once the resolver sees its DS at the registry.
     submission.registry.parent = "resolver";
@@ -162,8 +174,8 @@ lib.mkIf cfg.enable {
       semantic-checks = true;
       dnssec-signing = true;
       dnssec-policy = "csk";
-      notify = "router";
-      acl = "router-transfer";
+      notify = lib.attrNames secondaries;
+      acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
 
       # The zone files are in the store: Knot takes the records from them,
       # keeps signatures and the serial in its journal, and never writes back.
@@ -174,6 +186,15 @@ lib.mkIf cfg.enable {
     };
 
     zone = lib.mapAttrs (name: zone: { file = zoneFile name zone; }) zones;
+  };
+
+  # The TSIG secret would be world-readable in the store, so knotd includes it
+  # from a file at runtime instead.
+  services.knot.keyFiles = [ config.age.secrets.knot-tsig.path ];
+
+  age.secrets.knot-tsig = {
+    file = ./tsig.age;
+    owner = "knot";
   };
 
   # The tailnet address appears after boot.

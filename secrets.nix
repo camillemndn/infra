@@ -1,6 +1,7 @@
 let
   camille = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINg9kUL5kFcPOWmGy/7kJZMlG2+Ls79XiWgvO8p+OQ3f";
   admins = [ camille ];
+  offspring = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTQP1XL41AvmwxYaoFSAK6p8X9NPdMg8jppRspeV4cy";
   radiogaga = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOOEMuVU61nnhMux78nRO0PD7nalwLGbDfdWYSCawRFC";
   zeppelin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNKOAMN3AxfW6HKrom5s6D4Yy9WYEAK2FuOQYWLuFm3";
 in
@@ -13,6 +14,8 @@ in
   "profiles/firefly-iii/app-key.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/oauth2-proxy/oidc-client-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/kanidm/idm-admin-password.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/knot/tsig.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/nsd/tsig.age".publicKeys = admins ++ [ offspring ];
   "profiles/oauth2-proxy/cookie-secret.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/minecraft-server/ops.json.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/mopidy/subidy.age".publicKeys = admins ++ [ radiogaga ];
