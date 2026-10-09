@@ -30,7 +30,10 @@ let
     ns1 = {
       A = [ "77.42.114.11" ];
       AAAA = [ "2a01:4f9:3090:2b8c::2" ];
-      transfer.address = "fd7a:115c:a1e0::2";
+      transfer = {
+        address = "fd7a:115c:a1e0::2";
+        via = meta.ipv6.vpn;
+      };
     };
 
     # Off the tailnet, so its transfers cross the internet under a TSIG key.
@@ -38,8 +41,11 @@ let
       A = [ machines.offspring.ipv4.public ];
       AAAA = [ machines.offspring.ipv6.public ];
       transfer = {
+        # Privacy extensions would otherwise send the notify from a temporary
+        # address, which the secondary does not know.
         address = machines.offspring.ipv6.public;
         key = tsigKey;
+        via = meta.ipv6.public;
       };
     };
   };
@@ -61,6 +67,59 @@ let
   inherit (dnsZones) publicMachines nginxOf;
 
   zoneNames = dnsZones.names;
+
+  ### The tailnet zone, which this machine also holds
+
+  vpnTld = "kms";
+
+  # Who may ask for it: the tailnet and the home network, nobody else.
+  vpnRanges = [
+    "100.100.45.0/24"
+    "fd7a:115c:a1e0::/48"
+    "192.168.0.0/21"
+    "fde7:d935:2cb6:f86c::/64"
+  ];
+
+  vpnMachines = lib.filterAttrs (_: m: m ? ipv4.vpn || m ? ipv6.vpn) machines;
+
+  vpnAddresses =
+    m:
+    lib.filterAttrs (_: v: v != [ ]) {
+      A = lib.optional (m ? ipv4.vpn) m.ipv4.vpn;
+      AAAA = lib.optional (m ? ipv6.vpn) m.ipv6.vpn;
+    };
+
+  # The machine itself, plus every virtual host it serves over the tailnet.
+  vpnNames =
+    name: m:
+    [ name ]
+    ++ lib.optionals (nginxOf name).enable (
+      map (lib.removeSuffix ".${vpnTld}") (
+        lib.filter (lib.hasSuffix ".${vpnTld}") (lib.attrNames (nginxOf name).virtualHosts)
+      )
+    );
+
+  vpnZone = {
+    TTL = 60 * 60;
+    SOA = {
+      nameServer = "ns1";
+      adminEmail = "hostmaster@${vpnTld}";
+      serial = 1;
+      refresh = 4 * 60 * 60;
+      retry = 60 * 60;
+      expire = 14 * 24 * 60 * 60;
+      minimum = 60 * 60;
+    };
+    NS = [ "ns1" ];
+    subdomains = {
+      ns1 = vpnAddresses meta;
+    }
+    // lib.foldl lib.recursiveUpdate { } (
+      lib.concatLists (
+        lib.mapAttrsToList (name: m: map (n: { ${n} = vpnAddresses m; }) (vpnNames name m)) vpnMachines
+      )
+    );
+  };
 
   zoneOf =
     name:
@@ -144,10 +203,15 @@ in
 
 lib.mkIf cfg.enable {
   services.knot.settings = {
-    server.listen = [
-      "${meta.ipv6.vpn}@53"
-      "${meta.ipv6.public}@53"
-    ];
+    server = {
+      listen = [
+        "${meta.ipv6.vpn}@53"
+        "${meta.ipv6.public}@53"
+      ];
+
+      # A scanner learns which advisories to try from the version string.
+      version = "none";
+    };
 
     remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
       resolver.address = [
@@ -157,8 +221,16 @@ lib.mkIf cfg.enable {
     };
 
     acl = lib.mapAttrs' (
-      name: ns: lib.nameValuePair "${name}-transfer" (ns.transfer // { action = "transfer"; })
+      name: ns:
+      lib.nameValuePair "${name}-transfer" (
+        builtins.removeAttrs ns.transfer [ "via" ] // { action = "transfer"; }
+      )
     ) secondaries;
+
+    # An ACL cannot keep a zone private: a plain query needs no authorisation
+    # and is always answered. This module is what turns the others away, with
+    # NOTAUTH.
+    mod-queryacl.internal.address = vpnRanges;
 
     # A new key counts as submitted once the resolver sees its DS at the registry.
     submission.registry.parent = "resolver";
@@ -168,24 +240,47 @@ lib.mkIf cfg.enable {
     policy.csk = {
       single-type-signing = true;
       ksk-submission = "registry";
+
+      # NSEC lets anyone read the zone back name by name; NSEC3 publishes
+      # hashes instead. Iterations stay at 0, as RFC 9276 asks.
+      nsec3 = true;
+      nsec3-iterations = 0;
     };
 
-    template.default = {
-      semantic-checks = true;
-      dnssec-signing = true;
-      dnssec-policy = "csk";
-      notify = lib.attrNames secondaries;
-      acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
+    template = {
+      default = {
+        semantic-checks = true;
+        dnssec-signing = true;
+        dnssec-policy = "csk";
+        notify = lib.attrNames secondaries;
+        acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
 
-      # The zone files are in the store: Knot takes the records from them,
-      # keeps signatures and the serial in its journal, and never writes back.
-      zonefile-sync = -1;
-      zonefile-load = "difference-no-serial";
-      journal-content = "all";
-      serial-policy = "unixtime";
+        # The zone files are in the store: Knot takes the records from them,
+        # keeps signatures and the serial in its journal, and never writes back.
+        zonefile-sync = -1;
+        zonefile-load = "difference-no-serial";
+        journal-content = "all";
+        serial-policy = "unixtime";
+      };
+
+      # The tailnet zone has no parent to publish a DS, and no secondary: the
+      # resolver on the gateway forwards to this machine for it.
+      internal = {
+        semantic-checks = true;
+        module = "mod-queryacl/internal";
+        zonefile-sync = -1;
+        zonefile-load = "difference-no-serial";
+        journal-content = "all";
+        serial-policy = "unixtime";
+      };
     };
 
-    zone = lib.mapAttrs (name: zone: { file = zoneFile name zone; }) zones;
+    zone = lib.mapAttrs (name: zone: { file = zoneFile name zone; }) zones // {
+      ${vpnTld} = {
+        file = zoneFile vpnTld vpnZone;
+        template = "internal";
+      };
+    };
   };
 
   # The TSIG secret would be world-readable in the store, so knotd includes it

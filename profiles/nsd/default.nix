@@ -22,6 +22,10 @@ let
   # the internet, so they carry a TSIG key.
   primary = "zeppelin";
   primaryAddress = machines.${primary}.ipv6.public;
+  # Transfers are pulled from the address above, but a notify arrives from
+  # whichever address the primary happens to send from, so the key is what
+  # authenticates it.
+  primaryPrefix = "${lib.concatStringsSep ":" (lib.take 4 (lib.splitString ":" primaryAddress))}::/64";
   # Both ends of a transfer name the key identically.
   tsigKey = "xfr.mndn.fr.";
 
@@ -63,7 +67,7 @@ lib.mkIf cfg.enable {
     zones = lib.genAttrs zoneNames (name: {
       data = dns.lib.toString name (emptyZone name);
       requestXFR = [ "AXFR ${primaryAddress} ${tsigKey}" ];
-      allowNotify = [ "${primaryAddress} ${tsigKey}" ];
+      allowNotify = [ "${primaryPrefix} ${tsigKey}" ];
     });
   };
 
