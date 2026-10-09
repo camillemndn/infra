@@ -9,14 +9,17 @@ with lib;
   options.services.nginx = {
     enableDefault = mkEnableOption "Fallback to default page";
 
+    # Several profiles name the same domain, and list options concatenate.
     publicDomains = mkOption {
       default = [ "mndn.fr" ];
       type = types.listOf types.str;
+      apply = unique;
     };
 
     vpnDomains = mkOption {
       default = [ ".kms" ];
       type = types.listOf types.str;
+      apply = unique;
     };
 
     vpnAcmeServer = mkOption {
@@ -24,12 +27,11 @@ with lib;
       type = types.str;
     };
 
+    # Suffixes no certificate authority can validate, so they keep plain HTTP.
     localDomains = mkOption {
-      default = [
-        ".lan"
-        ".local"
-      ];
+      default = [ ];
       type = types.listOf types.str;
+      apply = unique;
     };
 
     virtualHosts = mkOption {

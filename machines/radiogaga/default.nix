@@ -13,7 +13,6 @@ _: {
     nginx = {
       enable = true;
       enableDefault = true;
-      virtualHosts."radiogaga.local".port = 4200;
     };
     radiogaga.enable = true;
 
