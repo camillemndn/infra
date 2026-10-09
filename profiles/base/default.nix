@@ -49,7 +49,7 @@ in
     git = {
       enable = true;
       config = {
-        user.name = "Camille M. (${config.networking.hostName})";
+        user.name = "Camille M.";
         user.email = "camillemondon@free.fr";
         pull.rebase = true;
         fetch.prune = true;
