@@ -1,0 +1,1018 @@
+Gramps Web packages from https://github.com/NixOS/nixpkgs/pull/566475,
+rebased onto nixos-26.05 (gexiv2_0_10 is still named gexiv2 there).
+Drop once the PR reaches the pinned branch.
+
+diff --git a/pkgs/by-name/gr/gramps-web/package.nix b/pkgs/by-name/gr/gramps-web/package.nix
+new file mode 100644
+index 000000000..5ac80461d
+--- /dev/null
++++ b/pkgs/by-name/gr/gramps-web/package.nix
+@@ -0,0 +1,38 @@
++{
++  lib,
++  buildNpmPackage,
++  fetchFromGitHub,
++}:
++
++buildNpmPackage (finalAttrs: {
++  pname = "gramps-web";
++  version = "26.9.1";
++
++  __structuredAttrs = true;
++
++  src = fetchFromGitHub {
++    owner = "gramps-project";
++    repo = "gramps-web";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-ej2uTYfdw0as31Xg5yXwpHl8OVJAzVFnTTnA/q3I4Nk=";
++  };
++
++  npmDepsHash = "sha256-Wm4+0GihvvcBXs1oaaBzmKrS5/sqCUeoBrU9LlUDMgU=";
++
++  installPhase = ''
++    runHook preInstall
++    cp -r dist $out
++    runHook postInstall
++  '';
++
++  meta = {
++    description = "Open source online genealogy system, the frontend of Gramps Web";
++    homepage = "https://www.grampsweb.org/";
++    changelog = "https://github.com/gramps-project/gramps-web/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.agpl3Only;
++    maintainers = with lib.maintainers; [
++      anthonyroussel
++      jk
++    ];
++  };
++})
+diff --git a/pkgs/by-name/gr/gramps-webapi/package.nix b/pkgs/by-name/gr/gramps-webapi/package.nix
+new file mode 100644
+index 000000000..8c8b554ba
+--- /dev/null
++++ b/pkgs/by-name/gr/gramps-webapi/package.nix
+@@ -0,0 +1,126 @@
++{
++  lib,
++  python3Packages,
++  fetchFromGitHub,
++  gobject-introspection,
++  wrapGAppsHook3,
++  writableTmpDirAsHomeHook,
++}:
++
++python3Packages.buildPythonApplication (finalAttrs: {
++  pname = "gramps-webapi";
++  version = "3.22.1";
++  pyproject = true;
++
++  __structuredAttrs = true;
++
++  src = fetchFromGitHub {
++    owner = "gramps-project";
++    repo = "gramps-web-api";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-0z1r1tkXafn4sw+T2hFd5jz53nRRKIq1c9V3GKQPWXw=";
++  };
++
++  pythonRelaxDeps = [
++    "pillow"
++    "pygobject"
++  ];
++
++  build-system = with python3Packages; [
++    setuptools
++    setuptools-scm
++  ];
++
++  dependencies =
++    with python3Packages;
++    [
++      alembic
++      authlib
++      bleach
++      boto3
++      celery
++      click
++      ffmpeg-python
++      flask
++      flask-caching
++      flask-compress
++      flask-cors
++      flask-jwt-extended
++      flask-limiter
++      flask-smorest
++      flask-sqlalchemy
++      gramps
++      gramps-gedcom7
++      gramps-object-query-language
++      gramps-ql
++      httpx
++      jsonschema
++      limits
++      marshmallow
++      object-ql
++      orjson
++      pdf2image
++      pillow
++      pygobject3
++      pytesseract
++      requests
++      sifts
++      sqlalchemy
++      typing-extensions
++      unidecode
++      waitress
++      webargs
++      yclade
++    ]
++    ++ bleach.optional-dependencies.css
++    ++ celery.optional-dependencies.redis;
++
++  optional-dependencies = {
++    ai =
++      with python3Packages;
++      [
++        pydantic-ai-slim
++        sentence-transformers
++        accelerate
++      ]
++      ++ pydantic-ai-slim.optional-dependencies.openai;
++  };
++
++  nativeBuildInputs = [
++    gobject-introspection
++    wrapGAppsHook3
++  ];
++
++  nativeCheckInputs =
++    with python3Packages;
++    [
++      pytestCheckHook
++      moto
++      writableTmpDirAsHomeHook
++    ]
++    ++ moto.optional-dependencies.s3;
++
++  preCheck = ''
++    export GRAMPSWEB_VECTOR_EMBEDDING_MODEL=test-model-ignore
++    export GRAMPSWEB_VECTOR_EMBEDDING_BASE_URL=http://localhost:1234
++  '';
++
++  disabledTestPaths = [
++    "tests/test_llm_errors.py"
++    "tests/test_llm_tools.py"
++    "tests/test_endpoints"
++  ];
++
++  pythonImportsCheck = [ "gramps_webapi" ];
++
++  meta = {
++    description = "RESTful web API for Gramps, the backend of Gramps Web";
++    homepage = "https://www.grampsweb.org/";
++    changelog = "https://github.com/gramps-project/gramps-web-api/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.agpl3Plus;
++    maintainers = with lib.maintainers; [
++      anthonyroussel
++      jk
++    ];
++  };
++})
+diff --git a/pkgs/by-name/gr/gramps/package.nix b/pkgs/by-name/gr/gramps/package.nix
+index 290f80bfd..44075dc3b 100644
+--- a/pkgs/by-name/gr/gramps/package.nix
++++ b/pkgs/by-name/gr/gramps/package.nix
+@@ -1,126 +1,12 @@
+ {
+-  stdenv,
+-  lib,
+-  fetchFromGitHub,
+-  gtk3,
+   python3Packages,
+-  glibcLocales,
+-  intltool,
+-  gexiv2,
+-  pango,
+-  gobject-introspection,
+-  wrapGAppsHook3,
+-  gettext,
+-  desktopToDarwinBundle,
+-  # Optional packages:
+   enableOSM ? true,
+-  osm-gps-map,
+-  glib-networking,
+   enableGraphviz ? true,
+-  graphviz,
+   enableGhostscript ? true,
+-  ghostscript,
+ }:
+ 
+-python3Packages.buildPythonApplication (finalAttrs: {
+-  version = "6.0.6";
+-  pname = "gramps";
+-  pyproject = true;
+-
+-  src = fetchFromGitHub {
+-    owner = "gramps-project";
+-    repo = "gramps";
+-    tag = "v${finalAttrs.version}";
+-    hash = "sha256-+sWO+c7haKXH42JVT6Zpz70cHdGC/TPgBUMSD+0+/JI=";
+-  };
+-
+-  patches = [
+-    # textdomain doesn't exist as a property on locale when running on Darwin
+-    ./check-locale-hasattr-textdomain.patch
+-    # disables the startup warning about bad GTK installation
+-    ./disable-gtk-warning-dialog.patch
+-  ];
+-
+-  build-system = [
+-    python3Packages.setuptools
+-  ];
+-
+-  dependencies = with python3Packages; [
+-    berkeleydb
+-    orjson
+-    pyicu
+-    pygobject3
+-    pycairo
+-  ];
+-
+-  nativeBuildInputs = [
+-    wrapGAppsHook3
+-    intltool
+-    gettext
+-    gobject-introspection
+-  ];
+-
+-  nativeCheckInputs = [
+-    glibcLocales
+-    python3Packages.unittestCheckHook
+-    python3Packages.jsonschema
+-    python3Packages.mock
+-    python3Packages.lxml
+-  ]
+-  # TODO: use JHBuild to build the Gramps' bundle
+-  ++ lib.optionals stdenv.hostPlatform.isDarwin [
+-    desktopToDarwinBundle
+-  ];
+-
+-  buildInputs = [
+-    gtk3
+-    pango
+-    gexiv2
+-  ]
+-  # Map support
+-  ++ lib.optionals enableOSM [
+-    osm-gps-map
+-    glib-networking
+-  ]
+-  # Graphviz support
+-  ++ lib.optional enableGraphviz graphviz
+-  # Ghostscript support
+-  ++ lib.optional enableGhostscript ghostscript;
+-
+-  preCheck = ''
+-    export HOME=$(mktemp -d)
+-    mkdir .git # Make gramps think that it's not in an installed state
+-  '';
+-
+-  dontWrapGApps = true;
+-
+-  preFixup = ''
+-    makeWrapperArgs+=(
+-      "''${gappsWrapperArgs[@]}"
+-    )
+-  '';
+-
+-  # https://github.com/NixOS/nixpkgs/issues/149812
+-  # https://nixos.org/manual/nixpkgs/stable/#ssec-gnome-hooks-gobject-introspection
+-  strictDeps = false;
+-
+-  meta = {
+-    description = "Genealogy software";
+-    mainProgram = "gramps";
+-    homepage = "https://gramps-project.org";
+-    maintainers = with lib.maintainers; [
+-      jk
+-      pinpox
+-      tomasajt
+-    ];
+-    changelog = "https://github.com/gramps-project/gramps/blob/${finalAttrs.src.rev}/ChangeLog";
+-    longDescription = ''
+-      Every person has their own story but they are also part of a collective
+-      family history. Gramps gives you the ability to record the many details of
+-      an individual's life as well as the complex relationships between various
+-      people, places and events. All of your research is kept organized,
+-      searchable and as precise as you need it to be.
+-    '';
+-    license = lib.licenses.gpl2Plus;
+-  };
+-})
++python3Packages.toPythonApplication (
++  python3Packages.gramps.override {
++    inherit enableOSM enableGraphviz enableGhostscript;
++  }
++)
+diff --git a/pkgs/development/python-modules/flask-smorest/default.nix b/pkgs/development/python-modules/flask-smorest/default.nix
+new file mode 100644
+index 000000000..e1f5361bc
+--- /dev/null
++++ b/pkgs/development/python-modules/flask-smorest/default.nix
+@@ -0,0 +1,54 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  pytestCheckHook,
++  flit-core,
++  apispec,
++  flask,
++  marshmallow,
++  pyyaml,
++  webargs,
++  werkzeug,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "flask-smorest";
++  version = "0.47.0";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "marshmallow-code";
++    repo = "flask-smorest";
++    tag = finalAttrs.version;
++    hash = "sha256-fznW4wVLjmGHXHciXES7SBU/ImuY8//8vpQIY9gUyv0=";
++  };
++
++  build-system = [
++    flit-core
++  ];
++
++  dependencies = [
++    apispec
++    flask
++    marshmallow
++    webargs
++    werkzeug
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    pyyaml
++  ]
++  ++ flask.optional-dependencies.async;
++
++  pythonImportsCheck = [ "flask_smorest" ];
++
++  meta = {
++    description = "DB agnostic framework to build auto-documented REST APIs with Flask and marshmallow";
++    homepage = "https://flask-smorest.readthedocs.io";
++    changelog = "https://github.com/marshmallow-code/flask-smorest/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/gedcom7/default.nix b/pkgs/development/python-modules/gedcom7/default.nix
+new file mode 100644
+index 000000000..27d06a6cb
+--- /dev/null
++++ b/pkgs/development/python-modules/gedcom7/default.nix
+@@ -0,0 +1,40 @@
++{
++  lib,
++  fetchFromGitHub,
++  buildPythonPackage,
++  pytestCheckHook,
++  setuptools-scm,
++  setuptools,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "gedcom7";
++  version = "1.1.0";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "DavidMStraub";
++    repo = "python-gedcom7";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-4gsQ7Cnk83NVGuwvnMFsKUN58DsnRuNY1P1xVMkxLoU=";
++  };
++
++  build-system = [
++    setuptools
++    setuptools-scm
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++  ];
++
++  pythonImportsCheck = [ "gedcom7" ];
++
++  meta = {
++    description = "GEDCOM 7 parser and serializer for Python";
++    homepage = "https://github.com/DavidMStraub/python-gedcom7";
++    changelog = "https://github.com/DavidMStraub/python-gedcom7/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/gramps-gedcom7/default.nix b/pkgs/development/python-modules/gramps-gedcom7/default.nix
+new file mode 100644
+index 000000000..3f14cf2fc
+--- /dev/null
++++ b/pkgs/development/python-modules/gramps-gedcom7/default.nix
+@@ -0,0 +1,57 @@
++{
++  lib,
++  fetchFromGitHub,
++  buildPythonPackage,
++  click,
++  gedcom7,
++  gobject-introspection,
++  gramps,
++  gtk3,
++  pytestCheckHook,
++  setuptools-scm,
++  setuptools,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "gramps-gedcom7";
++  version = "0.3.1";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "DavidMStraub";
++    repo = "gramps-gedcom7";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-yRHDF327gR8R7QcVk+7db+fk0IGo9ZiD3qIodlj7lT0=";
++  };
++
++  build-system = [
++    setuptools
++    setuptools-scm
++  ];
++
++  dependencies = [
++    click
++    gedcom7
++    gramps
++  ];
++
++  nativeCheckInputs = [
++    gobject-introspection
++    gtk3
++    pytestCheckHook
++  ];
++
++  # https://github.com/NixOS/nixpkgs/issues/149812
++  # https://nixos.org/manual/nixpkgs/stable/#ssec-gnome-hooks-gobject-introspection
++  strictDeps = false;
++
++  pythonImportsCheck = [ "gramps_gedcom7" ];
++
++  meta = {
++    description = "GEDCOM 7 support for Gramps";
++    homepage = "https://github.com/DavidMStraub/gramps-gedcom7";
++    changelog = "https://github.com/DavidMStraub/gramps-gedcom7/releases/tag/v${finalAttrs.version}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/gramps-object-query-language/default.nix b/pkgs/development/python-modules/gramps-object-query-language/default.nix
+new file mode 100644
+index 000000000..e33773e0a
+--- /dev/null
++++ b/pkgs/development/python-modules/gramps-object-query-language/default.nix
+@@ -0,0 +1,45 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  gramps,
++  pytestCheckHook,
++  setuptools,
++  writableTmpDirAsHomeHook,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "gramps-object-query-language";
++  version = "0.5.3";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "dsblank";
++    repo = "gramps-object-query-language";
++    tag = finalAttrs.version;
++    hash = "sha256-/zvy93yFsz3buYwQ6SKXWPKH77o1q8k1Zg448GOIdWs=";
++  };
++
++  build-system = [
++    setuptools
++  ];
++
++  dependencies = [
++    gramps
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    writableTmpDirAsHomeHook
++  ];
++
++  pythonImportsCheck = [ "gramps_object_query_language" ];
++
++  meta = {
++    description = "Gramps query language and compiler to SQL for gramps-web-api";
++    homepage = "https://github.com/dsblank/gramps-object-query-language";
++    changelog = "https://github.com/dsblank/gramps-object-query-language/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.agpl3Plus;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/gramps-ql/default.nix b/pkgs/development/python-modules/gramps-ql/default.nix
+new file mode 100644
+index 000000000..6ad1e8f6e
+--- /dev/null
++++ b/pkgs/development/python-modules/gramps-ql/default.nix
+@@ -0,0 +1,49 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  gramps,
++  pyparsing,
++  pytestCheckHook,
++  setuptools-scm,
++  setuptools,
++  writableTmpDirAsHomeHook,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "gramps-ql";
++  version = "0.5.0";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "DavidMStraub";
++    repo = "gramps-ql";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-EBmReELjLWjV+xqbMbPg9yiBf5TP4V2GmoXABzb4f3s=";
++  };
++
++  build-system = [
++    setuptools
++    setuptools-scm
++  ];
++
++  dependencies = [
++    gramps
++    pyparsing
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    writableTmpDirAsHomeHook
++  ];
++
++  pythonImportsCheck = [ "gramps_ql" ];
++
++  meta = {
++    description = "GQL - the Gramps Query Language";
++    homepage = "https://github.com/DavidMStraub/gramps-ql";
++    changelog = "https://github.com/DavidMStraub/gramps-ql/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/by-name/gr/gramps/check-locale-hasattr-textdomain.patch b/pkgs/development/python-modules/gramps/check-locale-hasattr-textdomain.patch
+similarity index 100%
+rename from pkgs/by-name/gr/gramps/check-locale-hasattr-textdomain.patch
+rename to pkgs/development/python-modules/gramps/check-locale-hasattr-textdomain.patch
+diff --git a/pkgs/development/python-modules/gramps/default.nix b/pkgs/development/python-modules/gramps/default.nix
+new file mode 100644
+index 000000000..5b083caa1
+--- /dev/null
++++ b/pkgs/development/python-modules/gramps/default.nix
+@@ -0,0 +1,154 @@
++{
++  stdenv,
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  versionCheckHook,
++
++  # nativeBuildInputs
++  desktopToDarwinBundle,
++  gettext,
++  gobject-introspection,
++  intltool,
++  wrapGAppsHook3,
++
++  # buildInputs
++  gexiv2,
++  gtk3,
++  pango,
++
++  # build-system
++  setuptools,
++
++  # dependencies
++  berkeleydb,
++  orjson,
++  pycairo,
++  pygobject3,
++  pyicu,
++
++  # nativeCheckInputs
++  glibcLocales,
++  jsonschema,
++  lxml,
++  mock,
++  unittestCheckHook,
++  writableTmpDirAsHomeHook,
++
++  # Optional packages:
++  enableOSM ? true,
++  glib-networking,
++  osm-gps-map,
++  enableGraphviz ? true,
++  graphviz,
++  enableGhostscript ? true,
++  ghostscript,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "gramps";
++  version = "6.0.8";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "gramps-project";
++    repo = "gramps";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
++  };
++
++  patches = [
++    # textdomain doesn't exist as a property on locale when running on Darwin
++    ./check-locale-hasattr-textdomain.patch
++    # disables the startup warning about bad GTK installation
++    ./disable-gtk-warning-dialog.patch
++  ];
++
++  nativeBuildInputs = [
++    gettext
++    gobject-introspection
++    intltool
++    wrapGAppsHook3
++  ]
++  # TODO: use JHBuild to build the Gramps' bundle
++  ++ lib.optionals stdenv.hostPlatform.isDarwin [
++    desktopToDarwinBundle
++  ];
++
++  buildInputs = [
++    gexiv2
++    gtk3
++    pango
++  ]
++  # Map support
++  ++ lib.optionals enableOSM [
++    glib-networking
++    osm-gps-map
++  ]
++  # Graphviz support
++  ++ lib.optional enableGraphviz graphviz
++  # Ghostscript support
++  ++ lib.optional enableGhostscript ghostscript;
++
++  build-system = [
++    setuptools
++  ];
++
++  dependencies = [
++    berkeleydb
++    orjson
++    pycairo
++    pygobject3
++    pyicu
++  ];
++
++  nativeCheckInputs = [
++    glibcLocales
++    jsonschema
++    lxml
++    mock
++    unittestCheckHook
++    writableTmpDirAsHomeHook
++  ];
++
++  dontWrapGApps = true;
++
++  preFixup = ''
++    makeWrapperArgs+=(
++      "''${gappsWrapperArgs[@]}"
++    )
++  '';
++
++  # https://github.com/NixOS/nixpkgs/issues/149812
++  # https://nixos.org/manual/nixpkgs/stable/#ssec-gnome-hooks-gobject-introspection
++  strictDeps = false;
++
++  pythonImportsCheck = [ "gramps" ];
++
++  nativeInstallCheckInputs = [
++    versionCheckHook
++    writableTmpDirAsHomeHook
++  ];
++  doInstallCheck = true;
++  versionCheckKeepEnvironment = [ "HOME" ];
++
++  meta = {
++    description = "Genealogy software";
++    mainProgram = "gramps";
++    homepage = "https://gramps-project.org";
++    maintainers = with lib.maintainers; [
++      jk
++      pinpox
++      tomasajt
++    ];
++    changelog = "https://github.com/gramps-project/gramps/blob/${finalAttrs.src.rev}/ChangeLog";
++    longDescription = ''
++      Every person has their own story but they are also part of a collective
++      family history. Gramps gives you the ability to record the many details of
++      an individual's life as well as the complex relationships between various
++      people, places and events. All of your research is kept organized,
++      searchable and as precise as you need it to be.
++    '';
++    license = lib.licenses.gpl2Plus;
++  };
++})
+diff --git a/pkgs/by-name/gr/gramps/disable-gtk-warning-dialog.patch b/pkgs/development/python-modules/gramps/disable-gtk-warning-dialog.patch
+similarity index 100%
+rename from pkgs/by-name/gr/gramps/disable-gtk-warning-dialog.patch
+rename to pkgs/development/python-modules/gramps/disable-gtk-warning-dialog.patch
+diff --git a/pkgs/development/python-modules/object-ql/default.nix b/pkgs/development/python-modules/object-ql/default.nix
+new file mode 100644
+index 000000000..59c16db41
+--- /dev/null
++++ b/pkgs/development/python-modules/object-ql/default.nix
+@@ -0,0 +1,46 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  gramps,
++  pyparsing,
++  pytestCheckHook,
++  setuptools,
++  writableTmpDirAsHomeHook,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "object-ql";
++  version = "0.1.3-unstable-2025-02-12";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "dsblank";
++    repo = "object-ql";
++    rev = "81809e980faed7e8a5b5ba661b6b271d18408747";
++    hash = "sha256-N1RucnR/QQvFf+RzSv45T5neU8QR2UN+nftZAy5LUkg=";
++  };
++
++  build-system = [
++    setuptools
++  ];
++
++  dependencies = [
++    gramps
++    pyparsing
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++    writableTmpDirAsHomeHook
++  ];
++
++  pythonImportsCheck = [ "object_ql" ];
++
++  meta = {
++    description = "Python query system for querying objects";
++    homepage = "https://github.com/dsblank/object-ql";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/pydantic-ai-slim/default.nix b/pkgs/development/python-modules/pydantic-ai-slim/default.nix
+index fc22d1832..7b77da082 100644
+--- a/pkgs/development/python-modules/pydantic-ai-slim/default.nix
++++ b/pkgs/development/python-modules/pydantic-ai-slim/default.nix
+@@ -16,6 +16,9 @@
+   pydantic,
+   typing-inspection,
+ 
++  # optional-dependencies
++  openai,
++  tiktoken,
+ }:
+ 
+ buildPythonPackage (finalAttrs: {
+@@ -47,6 +50,13 @@ buildPythonPackage (finalAttrs: {
+     typing-inspection
+   ];
+ 
++  optional-dependencies = {
++    openai = [
++      openai
++      tiktoken
++    ];
++  };
++
+   pythonImportsCheck = [
+     "pydantic_ai"
+   ];
+diff --git a/pkgs/development/python-modules/sifts/default.nix b/pkgs/development/python-modules/sifts/default.nix
+new file mode 100644
+index 000000000..1003ad580
+--- /dev/null
++++ b/pkgs/development/python-modules/sifts/default.nix
+@@ -0,0 +1,54 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  numpy,
++  psycopg2-binary,
++  pytestCheckHook,
++  setuptools-scm,
++  setuptools,
++  sqlalchemy,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "sifts";
++  version = "1.3.1";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "DavidMStraub";
++    repo = "sifts";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-mh2lkiKiyQTvDnMJeIwicLN0BEE9UBfPiw6rXuMNwZw=";
++  };
++
++  build-system = [
++    setuptools
++    setuptools-scm
++  ];
++
++  dependencies = [
++    numpy
++    psycopg2-binary
++    sqlalchemy
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++  ];
++
++  disabledTestPaths = [
++    # requires Docker
++    "tests/sifts/test_postgres.py"
++  ];
++
++  pythonImportsCheck = [ "sifts" ];
++
++  meta = {
++    description = "Simple full text and vector search engine Python library";
++    homepage = "https://github.com/DavidMStraub/sifts";
++    changelog = "https://github.com/DavidMStraub/sifts/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/development/python-modules/yclade/default.nix b/pkgs/development/python-modules/yclade/default.nix
+new file mode 100644
+index 000000000..d09912241
+--- /dev/null
++++ b/pkgs/development/python-modules/yclade/default.nix
+@@ -0,0 +1,47 @@
++{
++  lib,
++  buildPythonPackage,
++  fetchFromGitHub,
++  networkx,
++  platformdirs,
++  pytestCheckHook,
++  setuptools-scm,
++  setuptools,
++}:
++
++buildPythonPackage (finalAttrs: {
++  pname = "yclade";
++  version = "0.7.0";
++  pyproject = true;
++
++  src = fetchFromGitHub {
++    owner = "DavidMStraub";
++    repo = "yclade";
++    tag = "v${finalAttrs.version}";
++    hash = "sha256-YtFvSxMwOxgdaAVY5Vfyyz5B2KP0DcEBB09APAO8yuY=";
++  };
++
++  build-system = [
++    setuptools
++    setuptools-scm
++  ];
++
++  dependencies = [
++    networkx
++    platformdirs
++  ];
++
++  nativeCheckInputs = [
++    pytestCheckHook
++  ];
++
++  pythonImportsCheck = [ "yclade" ];
++
++  meta = {
++    description = "Python library to determine Y DNA haplogroups from SNP data";
++    homepage = "https://github.com/DavidMStraub/yclade";
++    changelog = "https://github.com/DavidMStraub/yclade/releases/tag/${finalAttrs.src.tag}";
++    license = lib.licenses.mit;
++    maintainers = with lib.maintainers; [ anthonyroussel ];
++  };
++})
+diff --git a/pkgs/top-level/python-packages.nix b/pkgs/top-level/python-packages.nix
+index 7b523906a..a34d0fe9f 100644
+--- a/pkgs/top-level/python-packages.nix
++++ b/pkgs/top-level/python-packages.nix
+@@ -5793,6 +5793,8 @@ self: super: with self; {
+ 
+   flask-simpleldap = callPackage ../development/python-modules/flask-simpleldap { };
+ 
++  flask-smorest = callPackage ../development/python-modules/flask-smorest { };
++
+   flask-sock = callPackage ../development/python-modules/flask-sock { };
+ 
+   flask-socketio = callPackage ../development/python-modules/flask-socketio { };
+@@ -6171,6 +6173,8 @@ self: super: with self; {
+     }
+   );
+ 
++  gedcom7 = callPackage ../development/python-modules/gedcom7 { };
++
+   gehomesdk = callPackage ../development/python-modules/gehomesdk { };
+ 
+   gekitchen = callPackage ../development/python-modules/gekitchen { };
+@@ -6740,6 +6744,16 @@ self: super: with self; {
+ 
+   grammalecte = callPackage ../development/python-modules/grammalecte { };
+ 
++  gramps = callPackage ../development/python-modules/gramps { };
++
++  gramps-gedcom7 = callPackage ../development/python-modules/gramps-gedcom7 { };
++
++  gramps-object-query-language =
++    callPackage ../development/python-modules/gramps-object-query-language
++      { };
++
++  gramps-ql = callPackage ../development/python-modules/gramps-ql { };
++
+   grandalf = callPackage ../development/python-modules/grandalf { };
+ 
+   granian = callPackage ../development/python-modules/granian { };
+@@ -11495,6 +11509,8 @@ self: super: with self; {
+ 
+   obfsproxy = callPackage ../development/python-modules/obfsproxy { };
+ 
++  object-ql = callPackage ../development/python-modules/object-ql { };
++
+   objexplore = callPackage ../development/python-modules/objexplore { };
+ 
+   objgraph = callPackage ../development/python-modules/objgraph {
+@@ -17923,6 +17939,8 @@ self: super: with self; {
+ 
+   sievelib = callPackage ../development/python-modules/sievelib { };
+ 
++  sifts = callPackage ../development/python-modules/sifts { };
++
+   signalrcore = callPackage ../development/python-modules/signalrcore { };
+ 
+   signalslot = callPackage ../development/python-modules/signalslot { };
+@@ -21799,6 +21817,8 @@ self: super: with self; {
+ 
+   yaxmldiff = callPackage ../development/python-modules/yaxmldiff { };
+ 
++  yclade = callPackage ../development/python-modules/yclade { };
++
+   ydata-profiling = callPackage ../development/python-modules/ydata-profiling { };
+ 
+   ydiff = callPackage ../development/python-modules/ydiff { };

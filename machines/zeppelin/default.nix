@@ -14,6 +14,10 @@
     collabora-online.enable = true;
     davmail.enable = true;
     firefly-iii.enable = true;
+    gramps-web = {
+      enable = true;
+      hostName = "genealogy.mndn.fr";
+    };
     immich.enable = true;
     jellyfin.enable = true;
     kanidm.server.enable = true;

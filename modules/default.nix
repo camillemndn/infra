@@ -1,4 +1,5 @@
 {
+  gramps-web = import ./services/web-apps/gramps-web;
   librespot = import ./services/audio/librespot;
   lidarr-youtube-downloader = import ./services/web-apps/lidarr-youtube-downloader;
   nginx = import ./services/web-servers/nginx;
