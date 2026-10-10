@@ -27,5 +27,6 @@ in
   "profiles/slskd/env.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/spotifyd/spotify-password.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/spotifyd/spotify-username.age".publicKeys = admins ++ [ radiogaga ];
+  "profiles/uptime-kuma/password.age".publicKeys = admins ++ [ offspring ];
   "profiles/webhook/secret.age".publicKeys = admins ++ [ zeppelin ];
 }

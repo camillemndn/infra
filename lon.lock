@@ -171,6 +171,16 @@
       "url": "https://github.com/nix-community/nixvim/archive/4836e77b1798cd42e2de28593bec4c1788da08f5.tar.gz",
       "hash": "sha256-9oBHyJtUyunZL+6v0Ub8Y759cXcejQiTHpXtGcx5RLs="
     },
+    "stateless-uptime-kuma": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "master",
+      "revision": "720c506b7128c9a24e1e05fff37f5ee3162f9c95",
+      "url": "https://git.dgnum.eu/DGNum/stateless-uptime-kuma.git",
+      "hash": "sha256-WrszmZdb3TJPqCva0mLo3TlrMU3QHFgDAlF48jF6TJc=",
+      "lastModified": 1765019238,
+      "submodules": false
+    },
     "stylix": {
       "type": "GitHub",
       "fetchType": "tarball",
@@ -180,6 +190,16 @@
       "revision": "078d8f7f514bbe4987a754eb4a2d9e7088e9867a",
       "url": "https://github.com/nix-community/stylix/archive/078d8f7f514bbe4987a754eb4a2d9e7088e9867a.tar.gz",
       "hash": "sha256-ODfnSwAhOl727PhoZu5N3CwTAK8ykDX1Sm5+VD8d3Fk="
+    },
+    "uptime-kuma-api": {
+      "type": "Git",
+      "fetchType": "git",
+      "branch": "master",
+      "revision": "63c01d206d34856dc6aecabc84611986b5d40b56",
+      "url": "https://git.dgnum.eu/Luj/uptime-kuma-api.git",
+      "hash": "sha256-YX/deLO98JyWlBGRvIaxUCiaoxHX9GRqG4F4TqUqFvM=",
+      "lastModified": 1790762750,
+      "submodules": false
     }
   }
 }
