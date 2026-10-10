@@ -18,7 +18,7 @@ in
         hostName = offspringMeta.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
-        maxJobs = 8;
+        maxJobs = 2;
       })
     ];
 
@@ -50,5 +50,15 @@ in
       ];
       trusted-users = [ "camille" ];
     };
+  };
+
+  # Remote builds run unattended and cannot accept an unknown host key; offspring's sshd
+  # penalises every connection that drops before authenticating.
+  programs.ssh.knownHosts.offspring = {
+    hostNames = [
+      offspringMeta.ipv4.public
+      offspringMeta.ipv6.public
+    ];
+    publicKey = offspringMeta.hostKey;
   };
 }

@@ -9,6 +9,8 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+
     kernel.sysctl."vm.swappiness" = 1;
 
     loader = {
