@@ -9,6 +9,15 @@ in
   ...
 }:
 
+let
+  # The patched nixpkgs from inputs.nix is built for the evaluating machine; re-apply the
+  # same patches with this machine's pkgs so the NIX_PATH copy builds on the target.
+  nixpkgs =
+    if inputs.nixpkgs ? patches then
+      pkgs.applyPatches { inherit (inputs.nixpkgs) name src patches; }
+    else
+      inputs.nixpkgs;
+in
 {
   nix = {
     # package = pkgs.lix;
@@ -37,8 +46,8 @@ in
     };
 
     nixPath = [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixos=${inputs.nixpkgs}"
+      "nixpkgs=${nixpkgs}"
+      "nixos=${nixpkgs}"
     ];
 
     settings = {
