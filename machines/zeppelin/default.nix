@@ -38,6 +38,7 @@
     };
     photoprism.enable = true;
     plausible.enable = true;
+    slskd.enable = true;
     tandoor-recipes.enable = true;
     vaultwarden.enable = true;
     webtrees = {

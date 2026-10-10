@@ -24,6 +24,7 @@ in
   "profiles/photoprism/password.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/plausible/admin-password.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/plausible/secret-key-base.age".publicKeys = admins ++ [ zeppelin ];
+  "profiles/slskd/env.age".publicKeys = admins ++ [ zeppelin ];
   "profiles/spotifyd/spotify-password.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/spotifyd/spotify-username.age".publicKeys = admins ++ [ radiogaga ];
   "profiles/webhook/secret.age".publicKeys = admins ++ [ zeppelin ];
