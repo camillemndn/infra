@@ -18,6 +18,7 @@ with lib;
     tocpdf
     xournalpp
     zotero
+    unstable.gramps
 
     # Tools
     ocrmypdf
