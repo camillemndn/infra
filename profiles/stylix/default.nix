@@ -27,7 +27,7 @@ lib.mkIf config.stylix.enable {
       };
 
       monospace = {
-        name = "FiraCode Nerd Font Mono Reg";
+        name = "FiraCode Nerd Font Mono";
         package = pkgs.nerd-fonts.fira-code;
       };
 
