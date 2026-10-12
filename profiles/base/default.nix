@@ -66,6 +66,8 @@ in
       '';
     };
 
+    direnv.enable = true;
+
     neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 
     command-not-found.enable = false;
@@ -108,7 +110,6 @@ in
       attic-client
       comma-with-db
       dig
-      direnv
       dust
       fastfetch
       htop
