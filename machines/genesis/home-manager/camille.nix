@@ -72,6 +72,7 @@ with lib;
     emacs.enable = true;
     kitty.enable = true;
     thunderbird.enable = true;
+    vscodium.enable = true;
     waybar.bluetooth.enable = true;
   };
 
