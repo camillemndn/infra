@@ -119,6 +119,6 @@ stdenv.mkDerivation rec {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ camillemndn ];
     platforms = lib.platforms.linux;
-    mainProgram = "whatsapp-chat-exporter";
+    mainProgram = "radiogaga";
   };
 }
