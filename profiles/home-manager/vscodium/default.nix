@@ -32,6 +32,13 @@ lib.mkIf config.programs.vscodium.enable (
             ms-python.python
             ms-python.vscode-python-envs
             ms-toolsai.jupyter
+            # The Jupyter extension's pack; it cannot install them into a
+            # read-only extensions directory. The renderers draw widgets,
+            # plots and images in cell outputs.
+            ms-toolsai.jupyter-keymap
+            ms-toolsai.jupyter-renderers
+            ms-toolsai.vscode-jupyter-cell-tags
+            ms-toolsai.vscode-jupyter-slideshow
             myriad-dreamin.tinymist
             reditorsupport.r
             # The preview sends the page in a GET query string, which servers
