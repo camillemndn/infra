@@ -9,7 +9,7 @@
 let
   cfg = config.services.knot;
   inherit (config.networking) hostName;
-  inherit (import ../..) machines nixosConfigurations;
+  inherit (import ../../../..) machines nixosConfigurations;
 
   dns = import inputs.dns { inherit pkgs; };
 

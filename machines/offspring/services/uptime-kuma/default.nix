@@ -7,7 +7,7 @@
 
 let
   inherit (config.networking) hostName;
-  inherit (import ../..) machines nixosConfigurations;
+  inherit (import ../../../..) machines nixosConfigurations;
 
   inherit
     (lib.dnsZones {

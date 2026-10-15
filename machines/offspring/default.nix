@@ -4,6 +4,7 @@ _:
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
+    ./services
   ];
 
   users.users.root.openssh.authorizedKeys.keys = [

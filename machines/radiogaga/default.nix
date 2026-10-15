@@ -2,6 +2,7 @@ _: {
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
+    ./services
   ];
 
   services = {
@@ -18,11 +19,11 @@ _: {
 
     # Headless player that streams from zeppelin's Navidrome (Subsonic API).
     # Control it from Android via the Iris web UI (:6680/iris) or an MPD client
-    # (:6600). Configured in profiles/mopidy (secret creds via agenix).
+    # (:6600). Configured in services/mopidy (secret creds via agenix).
     mopidy.enable = true;
 
     # NB: Avahi (with publish + userServices) is already enabled by the
-    # profiles/librespot module, which is active because librespot is enabled
+    # services/librespot module, which is active because librespot is enabled
     # above. The AirPlay receiver and the network sink below reuse it for mDNS.
 
     # AirPlay 2 receiver: shows up as "radiogaga" to iOS/macOS. Outputs through

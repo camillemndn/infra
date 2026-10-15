@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./networking.nix
+    ./services
   ];
 
   programs.nixvim.enable = true;

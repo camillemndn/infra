@@ -1,0 +1,28 @@
+{
+  imports = [
+    ./buildbot-nix
+    ./camillemondon.com
+    ./ceciliaflamenca.com
+    ./code-server
+    ./davmail
+    ./firefly-iii
+    ./immich
+    ./jellyfin
+    ./kanidm
+    ./knot
+    ./minecraft-server
+    ./natachamondonericpierre.fr
+    ./navidrome
+    ./nextcloud
+    ./oauth2-proxy
+    ./photoprism
+    ./plausible
+    ./postgresql
+    ./slskd
+    ./tandoor-recipes
+    ./varanda.fr
+    ./vaultwarden
+    ./webhook
+    ./yali.es
+  ];
+}
