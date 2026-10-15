@@ -79,6 +79,9 @@ in
       python3Packages.jupytext
     ];
 
+    # Highlights code inside <syntaxhighlight> blocks and detects .mediawiki files.
+    extraPlugins = [ pkgs.vimPlugins.mediawiki-vim ];
+
     keymaps = [
       {
         mode = "n";
@@ -123,6 +126,19 @@ in
         options.desc = "Run selection";
       }
     ];
+
+    lsp.servers.wikitext = {
+      enable = true;
+      package = pkgs.wikitext-lsp;
+      config = {
+        cmd = [
+          "wikitext-lsp"
+          "--stdio"
+        ];
+        filetypes = [ "mediawiki" ];
+        settings.wikiparser.linter.severity = "errors and warnings";
+      };
+    };
 
     opts = {
       number = true;

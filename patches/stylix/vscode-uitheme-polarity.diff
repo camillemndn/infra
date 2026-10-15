@@ -1,0 +1,35 @@
+diff --git a/modules/vscode/each-config.nix b/modules/vscode/each-config.nix
+index a860a46..fca3002 100644
+--- a/modules/vscode/each-config.nix
++++ b/modules/vscode/each-config.nix
+@@ -35,11 +35,28 @@ mkTarget {
+               vscodeExtPublisher = "stylix";
+               version = "0.0.0";
+               theme = builtins.toJSON (import ./templates/theme.nix colors);
+-              passAsFile = [ "theme" ];
++              # The theme's light/dark kind follows the polarity; VSCode uses
++              # it for webviews (vscode-dark class) and its own UI defaults.
++              package = builtins.toJSON (
++                let
++                  pkg = lib.importJSON ./package.json;
++                  uiTheme = if config.stylix.polarity == "light" then "vs" else "vs-dark";
++                in
++                pkg
++                // {
++                  contributes = pkg.contributes // {
++                    themes = map (t: t // { inherit uiTheme; }) pkg.contributes.themes;
++                  };
++                }
++              );
++              passAsFile = [
++                "theme"
++                "package"
++              ];
+             }
+             ''
+               mkdir -p "$out/share/vscode/extensions/$vscodeExtUniqueId/themes"
+-              ln -s ${./package.json} "$out/share/vscode/extensions/$vscodeExtUniqueId/package.json"
++              cp "$packagePath" "$out/share/vscode/extensions/$vscodeExtUniqueId/package.json"
+               cp "$themePath" "$out/share/vscode/extensions/$vscodeExtUniqueId/themes/stylix.json"
+             ''
+         );

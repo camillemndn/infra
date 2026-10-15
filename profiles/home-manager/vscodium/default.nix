@@ -1,61 +1,86 @@
 {
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
 
-lib.mkIf config.programs.vscodium.enable {
-  # Stylix sets VSCodium font sizes to 4/3 of the terminal size: 10.5 pt gives 14 px.
-  stylix.targets.vscodium.fonts.override.sizes.terminal = 10.5;
+lib.mkIf config.programs.vscodium.enable (
+  # Only machines with Stylix have its options.
+  lib.optionalAttrs (options ? stylix) {
+    # Stylix sets VSCodium font sizes to 4/3 of the terminal size: 10.5 pt gives 14 px.
+    stylix.targets.vscodium.fonts.override.sizes.terminal = 10.5;
+  }
+  // {
+    programs.vscodium = {
+      mutableExtensionsDir = false;
 
-  programs.vscodium = {
-    mutableExtensionsDir = false;
+      profiles.default = {
+        enableUpdateCheck = false;
+        enableExtensionUpdateCheck = false;
 
-    profiles.default = {
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
+        extensions =
+          with pkgs.vscode-extensions;
+          [
+            charliermarsh.ruff
+            detachhead.basedpyright
+            james-yu.latex-workshop
+            jnoortheen.nix-ide
+            mkhl.direnv
+            ms-python.debugpy
+            ms-python.python
+            ms-python.vscode-python-envs
+            ms-toolsai.jupyter
+            myriad-dreamin.tinymist
+            reditorsupport.r
+            # The preview sends the page in a GET query string, which servers
+            # reject past ~8 KB; POST carries it in the body instead.
+            (RoweWilsonFrederiskHolme.wikitext.overrideAttrs (old: {
+              postInstall = (old.postInstall or "") + ''
+                substituteInPlace $out/share/vscode/extensions/RoweWilsonFrederiskHolme.wikitext/dist/extension-node.js \
+                  --replace-fail 'i.request(r,{method:"GET"}),g=o.View' 'i.request(r,{method:"POST"}),g=o.View'
+              '';
+            }))
+          ]
+          ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+            {
+              publisher = "Bhsd";
+              name = "vscode-extension-wikiparser";
+              version = "1.8.0";
+              sha256 = "1f9a7fypzzjiqgi80icdx33gzhsks0p4gccyc1j4wl89pvjzy0v3";
+            }
+            {
+              publisher = "quarto";
+              name = "quarto";
+              version = "1.138.0";
+              sha256 = "07wrx4hqwd98r1ckybc71n5bnwf20rj8rjskxvj8k0d1r3dsq2n7";
+            }
+          ];
 
-      extensions =
-        with pkgs.vscode-extensions;
-        [
-          charliermarsh.ruff
-          detachhead.basedpyright
-          james-yu.latex-workshop
-          jnoortheen.nix-ide
-          mkhl.direnv
-          ms-python.debugpy
-          ms-python.python
-          ms-python.vscode-python-envs
-          ms-toolsai.jupyter
-          myriad-dreamin.tinymist
-          reditorsupport.r
-        ]
-        ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
-          {
-            publisher = "quarto";
-            name = "quarto";
-            version = "1.138.0";
-            sha256 = "07wrx4hqwd98r1ckybc71n5bnwf20rj8rjskxvj8k0d1r3dsq2n7";
-          }
-        ];
+        userSettings = {
+          "direnv.restart.automatic" = true;
 
-      userSettings = {
-        "direnv.restart.automatic" = true;
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = lib.getExe pkgs.nixd;
+          "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
 
-        "nix.enableLanguageServer" = true;
-        "nix.serverPath" = lib.getExe pkgs.nixd;
-        "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+          # basedpyright provides completion and type checking.
+          "python.languageServer" = "None";
+          "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
 
-        # basedpyright provides completion and type checking.
-        "python.languageServer" = "None";
-        "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
+          "r.plot.useHttpgd" = true;
 
-        "r.plot.useHttpgd" = true;
+          # The Wikitext extension starts the WikiParser language server.
+          "wikitext.wikiparser.enable" = true;
+          "wikiparser.linter.severity" = "errors and warnings";
+          # Previews work anonymously; logging in is only needed to save pages.
+          "wikitext.autoLogin" = "Never";
 
-        # Redrawing animations while a cell runs takes CPU from the kernel.
-        "workbench.reduceMotion" = "on";
+          # Redrawing animations while a cell runs takes CPU from the kernel.
+          "workbench.reduceMotion" = "on";
+        };
       };
     };
-  };
-}
+  }
+)
