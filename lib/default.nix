@@ -1,4 +1,4 @@
-inputs: lib: _:
+lib: _:
 
 {
   importConfig =

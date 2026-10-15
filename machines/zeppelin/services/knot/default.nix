@@ -91,7 +91,7 @@ let
 
   # The machine itself, plus every virtual host it serves over the tailnet.
   vpnNames =
-    name: m:
+    name: _m:
     [ name ]
     ++ lib.optionals (nginxOf name).enable (
       map (lib.removeSuffix ".${vpnTld}") (

@@ -40,7 +40,6 @@ with lib;
           {
             name,
             config,
-            publicDomains,
             ...
           }:
           {

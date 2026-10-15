@@ -10,9 +10,11 @@ let
 
   env-file-values = lib.attrsets.mapAttrs' (
     n: v: lib.attrsets.nameValuePair (lib.strings.removeSuffix "_FILE" n) v
-  ) (lib.attrsets.filterAttrs (n: v: lib.strings.hasSuffix "_FILE" n) cfg.settings);
+  ) (lib.attrsets.filterAttrs (n: _v: lib.strings.hasSuffix "_FILE" n) cfg.settings);
 
-  env-nonfile-values = lib.attrsets.filterAttrs (n: v: !lib.strings.hasSuffix "_FILE" n) cfg.settings;
+  env-nonfile-values = lib.attrsets.filterAttrs (
+    n: _v: !lib.strings.hasSuffix "_FILE" n
+  ) cfg.settings;
 
   firefly-iii-manage = pkgs.writeShellScriptBin "firefly-iii-manage" ''
     set -euo pipefail

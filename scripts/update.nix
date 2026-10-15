@@ -54,7 +54,7 @@ let
           result = builtins.tryEval pathContent;
 
           somewhatUniqueRepresentant =
-            { package, attrPath }:
+            { package, ... }:
             {
               updateScript = get-script package;
               # Some updaters use the same `updateScript` value for all packages.

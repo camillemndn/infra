@@ -1,6 +1,4 @@
-{ pkgs, lib, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [

@@ -7,6 +7,7 @@ let
     src = ./.;
 
     hooks = {
+      deadnix.enable = true;
       statix.enable = true;
       rfc101 = {
         enable = true;

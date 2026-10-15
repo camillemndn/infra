@@ -20,7 +20,7 @@ in
 
 import "${nixpkgs}/nixos/lib/eval-config.nix" {
   inherit system;
-  lib = (import "${nixpkgs}/lib").extend (import ./default.nix inputs);
+  lib = (import "${nixpkgs}/lib").extend (import ./default.nix);
 
   specialArgs = {
     inherit inputs;

@@ -1,7 +1,7 @@
 let
   inputs = import ./inputs.nix;
 
-  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib inputs);
+  lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib);
 
   machines = builtins.mapAttrs (
     name: _:

@@ -1,11 +1,8 @@
-{ pkgs, lib, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
   home.packages = with pkgs; [
     # Games
-    # lutris
     prismlauncher
     xwayland-satellite
 
