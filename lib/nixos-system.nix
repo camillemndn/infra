@@ -33,11 +33,9 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
     (import "${inputs.buildbot-nix}/nix/master.nix")
     (import "${inputs.buildbot-nix}/nix/worker.nix")
     (import "${inputs.agenix}/modules/age.nix")
-    (import "${inputs.impermanence}/nixos.nix")
     (import "${inputs.nix-minecraft}/modules/minecraft-servers.nix")
     (import "${inputs.stateless-uptime-kuma}/nixos/module.nix")
     (import inputs.lanzaboote { inherit system; }).nixosModules.lanzaboote
-    (import inputs.musnix)
     (import inputs.stylix).nixosModules.stylix
     (import inputs.nixvim).nixosModules.nixvim
 

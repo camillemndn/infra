@@ -61,16 +61,6 @@
       "url": "https://github.com/cachix/git-hooks.nix/archive/a0e4241b51206fbcbf52fd322eb5f0cd80f153c4.tar.gz",
       "hash": "sha256-XN3sDtn8TU9hAc9xqZ+SqRB/HHm2wjxM6aSWYLJU+oo="
     },
-    "gradle2nix": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "milahu",
-      "repo": "gradle2nix",
-      "branch": "pull69-patch1",
-      "revision": "8f203488797538001216d35eb5b315aa2b49fa14",
-      "url": "https://github.com/milahu/gradle2nix/archive/8f203488797538001216d35eb5b315aa2b49fa14.tar.gz",
-      "hash": "sha256-UPRvX7wM5axBhcLhoUugOO8Zd40tEInmI76Gd7XkQK4="
-    },
     "home-manager": {
       "type": "GitHub",
       "fetchType": "tarball",
@@ -81,16 +71,6 @@
       "url": "https://github.com/nix-community/home-manager/archive/db7d5e2332710f5abb088f6b5de927d7f9511b35.tar.gz",
       "hash": "sha256-f+kOxEmOUnQazVAmGg0i8hzwgd1kX/geY+k/Dpheye8="
     },
-    "impermanence": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "nix-community",
-      "repo": "impermanence",
-      "branch": "master",
-      "revision": "7b1d382faf603b6d264f58627330f9faa5cba149",
-      "url": "https://github.com/nix-community/impermanence/archive/7b1d382faf603b6d264f58627330f9faa5cba149.tar.gz",
-      "hash": "sha256-03+JxvzmfwRu+5JafM0DLbxgHttOQZkUtDWBmeUkN8Y="
-    },
     "lanzaboote": {
       "type": "GitHub",
       "fetchType": "tarball",
@@ -100,16 +80,6 @@
       "revision": "ba33415d747d8dedd2931af107521634f1f2e8a8",
       "url": "https://github.com/nix-community/lanzaboote/archive/ba33415d747d8dedd2931af107521634f1f2e8a8.tar.gz",
       "hash": "sha256-v5+DBEGnMC6phAf+/Rt7EtxjIDzy+NMKdHJIFJGh5qc="
-    },
-    "musnix": {
-      "type": "GitHub",
-      "fetchType": "tarball",
-      "owner": "musnix",
-      "repo": "musnix",
-      "branch": "master",
-      "revision": "8548782f0d1d0928daa3fffde8a008f72219a3f3",
-      "url": "https://github.com/musnix/musnix/archive/8548782f0d1d0928daa3fffde8a008f72219a3f3.tar.gz",
-      "hash": "sha256-Dj51C0NWsglqRrCpdmMr2nFiYacFOid1Tor4H9yG2HY="
     },
     "nix-index-database": {
       "type": "GitHub",

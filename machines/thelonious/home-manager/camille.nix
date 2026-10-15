@@ -31,7 +31,6 @@ with lib;
   programs = {
     emacs.enable = true;
     kitty.enable = true;
-    neovim.full.enable = true;
     thunderbird.enable = true;
   };
 

@@ -30,7 +30,6 @@ let
         config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "harmony-assistant" ];
         overlays = [
           (_: prev: {
-            gradle2nix = prev.callPackage inputs.gradle2nix { };
             nix-update-script =
               args:
               prev.nix-update-script (
