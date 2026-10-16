@@ -11,12 +11,10 @@ lib.mkIf config.programs.dms-shell.enable {
     nemo
     yazi
   ];
-
   fonts.packages = with pkgs; [
     inter
     material-symbols
   ];
-
   programs.dms-shell = {
     systemd = {
       enable = true;

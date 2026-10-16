@@ -5,6 +5,7 @@ _:
     tandoor-recipes = {
       enable = true;
       port = 8180;
+
       extraConfig = {
         ALLOWED_HOSTS = [ "meals.mndn.fr" ];
         GUNICORN_MEDIA = "1";

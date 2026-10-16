@@ -2,8 +2,10 @@
   disko.devices.disk.main = {
     type = "disk";
     device = "/dev/disk/by-id/nvme-WDC_PC_SN530_SDBPTPZ-1T00-1002_211142450407";
+
     content = {
       type = "gpt";
+
       partitions = {
         ESP = {
           priority = 1;
@@ -16,11 +18,11 @@
             mountpoint = "/boot";
           };
         };
-
         root = {
           priority = 2;
           end = "-34G";
           device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
+
           content = {
             type = "luks";
             name = "luks-d0de046c-c584-4761-a3cb-66fc7a1802b8";
@@ -32,11 +34,11 @@
             };
           };
         };
-
         swap = {
           priority = 3;
           size = "100%";
           device = "/dev/disk/by-uuid/dd5289a3-7499-4efe-8354-2bf713b672df";
+
           content = {
             type = "luks";
             name = "luks-dd5289a3-7499-4efe-8354-2bf713b672df";

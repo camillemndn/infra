@@ -1,10 +1,8 @@
 _:
 
 {
-
   services.nginx = {
     publicDomains = [ "yali.es" ];
-
     virtualHosts."yali.es" = {
       root = "/srv/sites/yali.es/www";
       locations = {

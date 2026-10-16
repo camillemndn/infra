@@ -14,7 +14,6 @@ with lib;
 {
   options.services.webtrees = {
     enable = mkEnableOption "Webtrees";
-
     hostName = mkOption {
       type = types.str;
       description = "FQDN for the Webtrees instance.";
@@ -43,8 +42,10 @@ with lib;
           upload_max_filesize = 5M
         '';
       };
+
       nginx.virtualHosts.${cfg.hostName} = {
         root = "${pkgs.webtrees}/share/php/webtrees";
+
         locations = {
           "/public/".extraConfig = ''
             expires 365d;
@@ -56,6 +57,7 @@ with lib;
           "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
             deny all;
           '';
+
           "/index.php" = {
             fastcgiParams = {
               HTTP_PROXY = "";
@@ -70,6 +72,7 @@ with lib;
       mysql = {
         enable = true;
         package = mkDefault pkgs.mariadb;
+
         ensureUsers = [
           {
             name = "webtrees";
@@ -78,10 +81,10 @@ with lib;
             };
           }
         ];
+
         ensureDatabases = [ "webtrees" ];
       };
     };
-
     systemd = {
       services = {
         "phpfpm-webtrees".serviceConfig.BindPaths = [
@@ -114,6 +117,5 @@ with lib;
       };
       groups.webtrees = { };
     };
-
   };
 }

@@ -10,7 +10,6 @@
       enable = true;
       package = pkgs.nextcloud34;
       hostName = "cloud.mndn.fr";
-
       autoUpdateApps.enable = true;
       caching.redis = true;
       database.createLocally = true;
@@ -54,6 +53,7 @@
         ];
       };
     };
+
     redis.servers.nextcloud = {
       enable = true;
       user = "nextcloud";

@@ -29,15 +29,12 @@
         ];
         stateVersion = "23.11";
       };
-
       programs = {
         emacs.enable = true;
         kitty.enable = true;
         thunderbird.enable = true;
       };
-
       stylix.targets.fish.enable = false;
       wayland.windowManager.sway.enable = true;
-
     };
 }

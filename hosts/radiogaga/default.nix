@@ -1,5 +1,4 @@
 _: {
-
   services = {
     nginx = {
       enable = true;
@@ -15,7 +14,6 @@ _: {
       openFirewall = true;
       settings.general.name = "radiogaga";
     };
-
     # DLNA/UPnP renderer. Its DynamicUser is only in `audio`; system-wide PipeWire
     # may also require the pipewire group.
     gmediarender = {

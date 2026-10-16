@@ -1,15 +1,11 @@
 let
   inputs = import ./inputs.nix;
-
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib);
-
   systems = [
     "x86_64-linux"
     "aarch64-linux"
   ];
-
   unstable = lib.genAttrs systems (system: import inputs.nixpkgs-unstable { inherit system; });
-
   packages = lib.genAttrs systems (
     system:
     let
@@ -19,7 +15,6 @@ let
       };
 
       callPackage = pkgs.lib.customisation.callPackageWith (pkgs // ownPackages);
-
       ownPackages = builtins.mapAttrs (pname: _: callPackage (./pkgs + "/${pname}") { }) (
         lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./pkgs)
       );
@@ -28,7 +23,6 @@ let
       _: drv: !(drv ? meta.platforms) || builtins.elem system drv.meta.platforms
     ) ownPackages
   );
-
   nixosConfigurations = builtins.mapAttrs (
     name: _:
     import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
@@ -55,7 +49,6 @@ in
 
 {
   inherit packages nixosConfigurations;
-
   checks = lib.genAttrs systems (
     system:
     packages.${system}
@@ -80,6 +73,7 @@ in
     system:
     let
       pkgs = unstable.${system};
+
       gitHooks =
         (import "${inputs.git-hooks}/nix" {
           inherit system;
@@ -87,6 +81,7 @@ in
         }).run
           {
             src = ./.;
+
             hooks = {
               deadnix.enable = true;
               statix.enable = true;
@@ -96,6 +91,14 @@ in
                 entry = lib.getExe pkgs.nixfmt;
                 files = "\\.nix$";
               };
+              blank-lines = {
+                enable = true;
+                name = "Blank lines between bindings";
+                entry = "${pkgs.python3.interpreter} ${./scripts/blank-lines.py}";
+                files = "\\.nix$";
+                excludes = [ "^lon\\.nix$" ];
+              };
+
               commitizen.enable = true;
             };
           };
@@ -109,6 +112,7 @@ in
           pkgs.lon
           pkgs.statix
         ];
+
         shellHook = ''
           ${gitHooks.shellHook}
           statix fix

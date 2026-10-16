@@ -24,7 +24,6 @@
               {
                 layer = "top";
                 position = "top";
-
                 modules-left = [
                   "custom/launcher"
                   "temperature"
@@ -35,7 +34,6 @@
                 ++ lib.optionals config.wayland.windowManager.sway.enable [ "sway/workspaces" ];
 
                 modules-center = [ "clock" ];
-
                 modules-right = [
                   "battery"
                   "backlight"
@@ -45,39 +43,32 @@
                   "tray"
                   "custom/powermenu"
                 ];
-
                 "custom/launcher" = {
                   format = "";
                   on-click = "pkill ${launcher} || ${launcher}";
                   tooltip = false;
                 };
-
                 "sway/workspaces" = {
                   disable-scroll = true;
                   all-outputs = true;
                 };
-
                 temperature = {
                   format = " {temperatureC}°C";
                 };
-
                 cpu = {
                   interval = 1;
                   format = "󰍛 {usage}%";
                 };
-
                 memory = {
                   interval = 1;
                   format = "󰻠 {percentage}%";
                   states.warning = 85;
                 };
-
                 disk = {
                   path = "/";
                   interval = 180;
                   format = "󰨣 {percentage_used}%";
                 };
-
                 backlight = {
                   format = "{icon} {percent}%";
                   format-icons = [
@@ -85,11 +76,11 @@
                     ""
                   ];
                 };
-
                 pulseaudio = {
                   format = "{icon} {volume}%";
                   format-bluetooth = "{icon} {volume}%";
                   format-muted = "󰝟";
+
                   format-icons = {
                     headphone = "";
                     phone = "";
@@ -101,6 +92,7 @@
                       ""
                     ];
                   };
+
                   scroll-step = 1;
                   on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
                   on-click-right = "pavucontrol";
@@ -118,7 +110,6 @@
                   tooltip-format-disconnected = "Disconnected";
                   on-click-right = "kitty -e nmtui";
                 };
-
                 bluetooth = {
                   format = " {status}";
                   format-connected = " {device_alias}";
@@ -137,7 +128,6 @@
                   tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
                   tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
                 };
-
                 battery = {
                   bat = "BAT0";
                   interval = 60;
@@ -155,11 +145,11 @@
                     ""
                   ];
                 };
-
                 clock = {
                   format = " {:%H:%M}";
                   format-alt = " {:L%A %d %B %Y (%R)}";
                   tooltip-format = "<tt><small>{calendar}</small></tt>";
+
                   calendar = {
                     mode = "year";
                     mode-mon-col = 3;
@@ -188,7 +178,6 @@
                   on-click = "wlogout -p layer-shell";
                   tooltip = false;
                 };
-
                 tray = {
                   icon-size = 15;
                   spacing = 5;

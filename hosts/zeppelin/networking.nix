@@ -26,16 +26,13 @@ let
     "flood"
     "slskd"
   ];
-
   # Relayed to the host loopback for nginx and the *arr clients.
   vpnPorts = [
     3022 # flood
     5030 # slskd
     8112 # deluge-web
   ];
-
   vpnAddress = "10.200.0.2";
-
   vpnRules = pkgs.writeText "netns-vpn.nft" ''
     table inet filter {
       chain input {
@@ -46,7 +43,6 @@ let
       }
     }
   '';
-
   proxyName = port: "netns-vpn-proxy-${toString port}";
 in
 {
@@ -55,6 +51,7 @@ in
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
     networkmanager.enable = false;
+
     wireguard.interfaces.wg0 = {
       # Device: Pretty Ox
       ips = [
@@ -65,6 +62,7 @@ in
       interfaceNamespace = "vpn";
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
+
       peers = [
         {
           publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
@@ -81,12 +79,10 @@ in
   deployment = {
     targetHost = "zeppelin.kms";
   };
-
   # Mullvad's resolver, reachable only through the tunnel.
   environment.etc."netns/vpn/resolv.conf".text = ''
     nameserver 10.64.0.1
   '';
-
   services = {
     # Inside the namespace, localhost is not reachable from the relay.
     flood.host = "0.0.0.0";
@@ -121,7 +117,6 @@ in
             ip netns del vpn || true
           '';
         };
-
         wireguard-wg0 = {
           requires = [ "netns-vpn.service" ];
           after = [ "netns-vpn.service" ];
@@ -158,6 +153,7 @@ in
         flood.environment.HOME = "/var/lib/flood";
       }
     ];
+
     sockets = lib.listToAttrs (
       map (
         port:
@@ -167,8 +163,10 @@ in
         }
       ) vpnPorts
     );
+
     network = {
       enable = true;
+
       networks = {
         # Before 10-wan, whose Type=ether would claim the veth.
         "05-veth-vpn" = {
@@ -181,10 +179,10 @@ in
           matchConfig.Type = "ether";
           address = [ "${addresses.ipv4.local}/21" ];
           routes = [ { Gateway = "192.168.0.1"; } ];
+
           linkConfig.RequiredForOnline = "routable";
         };
       };
     };
   };
-
 }

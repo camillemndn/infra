@@ -6,6 +6,7 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager = {
       sddm = {
         enable = true;
@@ -17,24 +18,23 @@
         user = "michel";
       };
     };
+
     ipp-usb.enable = true;
+
     printing = {
       enable = true;
       drivers = with pkgs; [ samsung-unified-linux-driver ];
     };
+
     xserver.enable = true;
   };
-
   users.users.michel = {
     description = "Michel";
-
     extraGroups = [
       "networkmanager"
       "wheel"
     ];
-
     isNormalUser = true;
-
     packages = with pkgs; [
       freecad
       gimp

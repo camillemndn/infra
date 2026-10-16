@@ -23,7 +23,6 @@ in
       package = pkgs.unstable.librespot.override (_: {
         withAvahi = true;
       });
-
     };
     avahi = {
       enable = true;
@@ -32,8 +31,7 @@ in
         userServices = true;
       };
     };
-
   };
-  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 
+  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 }

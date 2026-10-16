@@ -9,6 +9,7 @@
         secretKeybaseFile = config.age.secrets.plausible-secret-key-base.path;
       };
     };
+
     nginx.virtualHosts."analytics.mndn.fr".port = config.services.plausible.server.port;
   };
 

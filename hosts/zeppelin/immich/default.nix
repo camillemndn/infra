@@ -12,7 +12,6 @@
       database.enable = true;
       host = "127.0.0.1";
     };
-
     nginx.virtualHosts."gallery.kms" = {
       inherit (config.services.immich) port;
       websockets = true;

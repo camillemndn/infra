@@ -5,17 +5,14 @@
   "camillemondon.com".TXT = [
     "google-site-verification=Odt_5IG_8vzpI3cXbsDTdIHD6s6Zvi_Yca8O8aaFIKE"
   ];
-
   "ceciliaflamenca.com".TXT = [
     "google-site-verification=CDech686xA5kFgUs_Ndh-QJY-HtkoJLjOvegsh5VHH0"
   ];
-
   # Minecraft servers are routed by hostname.
   "mndn.fr".subdomains."*.mc" = {
     A = [ hosts.zeppelin.ipv4.public ];
     AAAA = [ hosts.zeppelin.ipv6.public ];
   };
-
   # Mail is hosted on mail.luj.fr.
   "varanda.fr" = {
     MX = [

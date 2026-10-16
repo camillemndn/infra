@@ -5,13 +5,10 @@
 }:
 
 {
-
   services.postgresql.package = pkgs.postgresql_17;
-
   environment.systemPackages =
     let
       newPostgres = pkgs.postgresql_17.withPackages (_pp: [ ]);
-
       upgrade-pg-cluster = pkgs.writeScriptBin "upgrade-pg-cluster" ''
         set -eux
         # XXX it's perhaps advisable to stop all services that depend on postgresql

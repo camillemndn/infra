@@ -12,7 +12,6 @@
       signalbackup-tools
     ];
   };
-
   fonts.packages = with pkgs; [
     caladea
     carlito
@@ -27,12 +26,10 @@
     source-sans
     source-serif
   ];
-
   hardware.sane = {
     enable = true;
     dsseries.enable = true;
   };
-
   programs = {
     dms-shell.enable = true;
     firefox.enable = true;
@@ -56,11 +53,11 @@
         samsung-unified-linux-driver
       ];
     };
+
     tzupdate.enable = true;
     usbmuxd.enable = true;
   };
 
   stylix.enable = true;
-
   system.stateVersion = "23.05";
 }

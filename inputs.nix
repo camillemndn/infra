@@ -11,7 +11,6 @@ let
   };
 
   patchesDir = ./patches;
-
   patchesFor =
     name:
     let
@@ -22,7 +21,6 @@ let
       map (n: dir + "/${n}") (builtins.filter isPatch (builtins.attrNames (builtins.readDir dir)))
     else
       [ ];
-
   applyIfPatches =
     name: src:
     let

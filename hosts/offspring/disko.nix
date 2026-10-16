@@ -2,8 +2,10 @@
   disko.devices.disk.main = {
     type = "disk";
     device = "/dev/disk/by-id/scsi-3609bcf57116c481d8008b8c5e218697a";
+
     content = {
       type = "gpt";
+
       partitions = {
         root = {
           priority = 1;
@@ -16,7 +18,6 @@
             mountpoint = "/";
           };
         };
-
         swap = {
           priority = 2;
           end = "-512M";
@@ -24,7 +25,6 @@
           device = "/dev/disk/by-uuid/0f02375d-b47b-45c7-a0d3-391c39cb2570";
           content.type = "swap";
         };
-
         ESP = {
           priority = 3;
           size = "100%";

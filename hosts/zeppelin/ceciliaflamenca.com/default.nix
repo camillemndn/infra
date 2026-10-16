@@ -1,10 +1,8 @@
 _:
 
 {
-
   services.nginx = {
     publicDomains = [ "ceciliaflamenca.com" ];
-
     virtualHosts."ceciliaflamenca.com" = {
       root = "/srv/sites/ceciliaflamenca.com/www";
       locations = {

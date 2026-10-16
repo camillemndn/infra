@@ -7,7 +7,6 @@
 
 let
   group = "media";
-
   delugeCSSFilter = ''
     proxy_set_header Accept-Encoding "";
     sub_filter
@@ -24,6 +23,7 @@ in
       enable = true;
       inherit group;
     };
+
     nginx = {
       publicDomains = [ "mndn.fr" ];
       virtualHosts = {
@@ -67,7 +67,6 @@ in
       enable = true;
       inherit group;
     };
-
     calibre-server = {
       enable = true;
       inherit group;
@@ -76,7 +75,6 @@ in
         "/srv/media/Bibliotheque-universitaire"
       ];
     };
-
     calibre-web = {
       enable = false;
       package = pkgs.unstable.calibre-web;
@@ -84,57 +82,48 @@ in
       listen.ip = "127.0.0.1";
       options.calibreLibrary = "/srv/media/Bibliotheque";
     };
-
     deluge = {
       enable = true;
       inherit group;
       web.enable = true;
     };
-
     flood = {
       enable = true;
       port = 3022;
     };
-
     jackett = {
       enable = true;
       inherit group;
       package = pkgs.unstable.jackett;
     };
-
     seerr.enable = true;
-
     lidarr = {
       enable = true;
       inherit group;
     };
-
     radarr = {
       enable = true;
       inherit group;
     };
-
     lidarr-youtube-downloader = {
       enable = true;
       group = "media";
       downloadPath = "/srv/media/Téléchargements";
       musicPath = "/srv/media/Musique";
     };
-
     sonarr = {
       enable = true;
       inherit group;
     };
   };
-  users.groups.${group}.name = group;
 
+  users.groups.${group}.name = group;
   environment.systemPackages = with pkgs; [
     shntool
     cuetools
     monkeysAudio
     flac
   ];
-
   systemd.services.calibre-server.serviceConfig.ExecStart =
     lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
 }

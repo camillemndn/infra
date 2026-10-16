@@ -5,11 +5,11 @@
     bluetooth.enable = true;
     sane.enable = true;
   };
-
   programs.firefox.enable = true;
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager = {
       autoLogin = {
         enable = true;

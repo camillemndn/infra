@@ -1,7 +1,6 @@
 _:
 
 {
-
   services.nginx = {
     publicDomains = [ "mndn.fr" ];
 

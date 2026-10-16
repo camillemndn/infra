@@ -20,7 +20,6 @@ let
     publicMachines
     nginxOf
     ;
-
   # Status page groups, in order; other monitors show only in the dashboard.
   groups = [
     "Hosts"
@@ -59,6 +58,7 @@ let
       name = "🌳 Genealogy";
       headers = builtins.toJSON { "User-Agent" = "mndn-status/1.0"; };
     };
+
     "genealogy.mndn.fr".name = "🌲 Family tree";
     "meals.mndn.fr".name = "🍲 Recipes";
     "media.mndn.fr" = {
@@ -85,7 +85,6 @@ let
       group = null;
       keyword = "OK";
     };
-
     "camillemondon.com" = {
       name = "🌐 Camille Mondon";
       group = "Websites";
@@ -117,25 +116,21 @@ let
     "hidimdaml.camillemondon.com"
     "bridge.mndn.fr"
   ];
-
   machineTag = machine: [
     {
       name = "machine";
       value = machine;
     }
   ];
-
   # Every public virtual host over HTTPS; redirects and wildcards have no page.
   vhostChecks = lib.concatLists (
     lib.mapAttrsToList (
       machine: _:
       let
         nginx = nginxOf machine;
-
         isRedirect =
           vhost:
           vhost.globalRedirect != null || lib.hasPrefix "30" (toString (vhost.locations."/".return or null));
-
         isMonitored =
           name: vhost:
           lib.hasSuffixIn nginx.publicDomains name
@@ -173,7 +168,6 @@ let
       )
     ) publicMachines
   );
-
   # SSH over IPv6: offspring cannot reach its own public IPv4 through its NAT.
   hostChecks = lib.mapAttrsToList (machine: m: {
     name = machine;
@@ -185,7 +179,6 @@ let
       tags = machineTag machine;
     };
   }) publicMachines;
-
   # Zones are checked through mndn.fr: ns1 is the SaumonNet router, ns2 offspring
   # behind its NAT. A validating resolver answers SERVFAIL on broken signatures.
   dnsCheck = name: server: {
@@ -199,7 +192,6 @@ let
       port = 53;
     };
   };
-
   otherChecks = [
     (dnsCheck "📝 ns1" "77.42.114.11")
     (dnsCheck "📝 ns2" hosts.offspring.ipv4.local)
@@ -236,13 +228,13 @@ let
   ];
 
   checks = hostChecks ++ vhostChecks ++ otherChecks;
-
   monitorsIn = group: map (c: c.name) (lib.filter (c: c.group == group) checks);
 in
 
 {
   services = {
     uptime-kuma.enable = true;
+
     ntfy-sh = {
       enable = true;
       settings = {
@@ -253,7 +245,6 @@ in
         listen-http = "127.0.0.1:3002";
       };
     };
-
     nginx.virtualHosts = {
       "uptime.mndn.fr" = {
         port = 3001;

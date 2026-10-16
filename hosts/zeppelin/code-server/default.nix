@@ -8,7 +8,6 @@
 let
   hostName = "code.mndn.fr";
   codePort = 4444;
-
   vsixFromOpenVsx =
     {
       publisher,
@@ -20,7 +19,6 @@ let
       url = "https://open-vsx.org/api/${publisher}/${name}/${version}/file/${publisher}.${name}-${version}.vsix";
       inherit hash;
     };
-
   # code-server cannot use a read-only extensions dir: the VSIX files are
   # installed into the user dir at startup, which is a no-op when present.
   extensionVsixs = [
@@ -59,7 +57,6 @@ let
       hash = "sha256-mt2bes7aHcAHLMngSLW/zI3kSIzNKALqX+g0UXo84uI=";
     })
   ];
-
   pythonKernelEnv = pkgs.python3.withPackages (
     ps: with ps; [
       ipykernel
@@ -69,7 +66,6 @@ let
       pandas
     ]
   );
-
   rKernelEnv = pkgs.rWrapper.override {
     packages = with pkgs.rPackages; [
       IRkernel
@@ -119,5 +115,4 @@ in
   systemd.services.code-server.serviceConfig.ExecStartPre = map (
     vsix: "${lib.getExe config.services.code-server.package} --install-extension ${vsix}"
   ) extensionVsixs;
-
 }

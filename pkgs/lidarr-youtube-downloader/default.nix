@@ -14,26 +14,21 @@ let
     pname = "bing-image-downloader";
     version = "1.1.3";
     pyproject = true;
-
     src = python3.pkgs.fetchPypi {
       pname = "bing_image_downloader";
       inherit version;
       hash = "sha256-MKr3TWnepYGIBZoViPiZ+3CkuUj6K2oXIAeWE53UPV0=";
     };
-
     build-system = [ python3.pkgs.setuptools ];
-
     # No test suite.
     doCheck = false;
     pythonImportsCheck = [ "bing_image_downloader" ];
-
     meta = {
       description = "Python library to download bulk images from Bing.com";
       homepage = "https://github.com/gurugaurav/bing_image_downloader";
       license = lib.licenses.mit;
     };
   };
-
   pythonEnv = python3.withPackages (ps: [
     ps.flask
     ps.requests
@@ -49,27 +44,22 @@ in
 stdenv.mkDerivation {
   pname = "lidarr-youtube-downloader";
   version = "1.8.5-unstable-2026-07-22";
-
   src = fetchFromGitHub {
     owner = "Angrido";
     repo = "Lidarr-YouTube-Downloader";
     rev = "d9fd071d668610acb1848568318742a4a6881e7d";
     hash = "sha256-fXapKSHJQbK0YzvqrcP+ccu1GFbhJj0oHFfDqrJGjl0=";
   };
-
   nativeBuildInputs = [ makeWrapper ];
-
   # The album flow reads DOWNLOAD_DIR only from DOWNLOAD_PATH; fall back to the configured download_path.
   postPatch = ''
     substituteInPlace app.py processing.py \
       --replace-fail 'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "")' \
         'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "") or load_config().get("download_path", "")'
   '';
-
   # No build system: install the sources and wrap app.py.
   dontConfigure = true;
   dontBuild = true;
-
   installPhase = ''
     runHook preInstall
 
@@ -90,7 +80,6 @@ stdenv.mkDerivation {
 
     runHook postInstall
   '';
-
   meta = {
     description = "Self-hosted bridge that finds and downloads missing Lidarr albums from YouTube";
     homepage = "https://github.com/Angrido/Lidarr-YouTube-Downloader";

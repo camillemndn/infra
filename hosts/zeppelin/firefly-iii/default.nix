@@ -7,15 +7,12 @@
 
 let
   cfg = config.services.firefly-iii;
-
   env-file-values = lib.attrsets.mapAttrs' (
     n: v: lib.attrsets.nameValuePair (lib.strings.removeSuffix "_FILE" n) v
   ) (lib.attrsets.filterAttrs (n: _v: lib.strings.hasSuffix "_FILE" n) cfg.settings);
-
   env-nonfile-values = lib.attrsets.filterAttrs (
     n: _v: !lib.strings.hasSuffix "_FILE" n
   ) cfg.settings;
-
   firefly-iii-manage = pkgs.writeShellScriptBin "firefly-iii-manage" ''
     set -euo pipefail
     set -a
@@ -40,7 +37,6 @@ in
         DB_CONNECTION = "pgsql";
       };
     };
-
     firefly-iii-data-importer = {
       enable = true;
       virtualHost = "import.finances.kms";
@@ -60,22 +56,20 @@ in
     nginx.virtualHosts."finances.kms".locations."~ \\.php$".extraConfig = lib.mkAfter ''
       fastcgi_read_timeout 3600;
     '';
-
     phpfpm.pools = {
       firefly-iii.phpOptions = ''
         log_errors = on
         max_execution_time = 3600
         memory_limit = 4G
       '';
-
       firefly-iii-data-importer.phpOptions = ''
         log_errors = on
         max_execution_time = 3600
       '';
     };
   };
-  environment.systemPackages = [ firefly-iii-manage ];
 
+  environment.systemPackages = [ firefly-iii-manage ];
   age.secrets.firefly-iii-app-key = {
     owner = cfg.user;
     file = ./app-key.age;

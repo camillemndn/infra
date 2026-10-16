@@ -20,7 +20,6 @@ let
     # when attempting to show low-voltage or overtemperature warnings.
     avoid_warnings=1
   '';
-
   raspberrypi-update-3b = pkgs.writeShellScriptBin "rpi-update-3b" ''
     mount /dev/disk/by-label/FIRMWARE
     (cd ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot && cp bootcode.bin fixup*.dat start*.elf /mnt)
@@ -41,29 +40,23 @@ in
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
     };
-
     kernelModules = [ "snd-aloop" ];
     kernelParams = [
       "console=ttyS0,115200n8"
       "console=tty0"
     ];
   };
-
   environment.systemPackages = [
     pkgs.raspberrypi-update
     pkgs.raspberrypi-utils
     raspberrypi-update-3b
   ];
-
   system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
-
   hardware.enableRedistributableFirmware = mkDefault true;
-
   services.pipewire = {
     enable = true;
     systemWide = true;
   };
-
   powerManagement.cpuFreqGovernor = mkDefault "ondemand";
 
   fileSystems = {
@@ -76,14 +69,12 @@ in
       fsType = "vfat";
     };
   };
-
   swapDevices = [
     {
       device = "/swapfile";
       size = 1024;
     }
   ];
-
   networking = {
     useDHCP = mkDefault false;
     interfaces = {

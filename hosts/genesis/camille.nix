@@ -63,13 +63,11 @@
         ];
         stateVersion = "23.05";
       };
-
       programs = {
         chromium = {
           enable = true;
           package = pkgs.ungoogled-chromium;
         };
-
         emacs.enable = true;
         kitty.enable = true;
         thunderbird.enable = true;
@@ -78,13 +76,14 @@
       };
 
       services.nextcloud-client.enable = true;
+
       stylix = {
         targets = {
           fish.enable = false;
           qt.enable = false;
         };
       };
-      wayland.windowManager.sway.enable = true;
 
+      wayland.windowManager.sway.enable = true;
     };
 }

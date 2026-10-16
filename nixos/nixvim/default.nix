@@ -49,14 +49,11 @@ in
         callback.__raw = builtins.readFile ./molten_export_on_save.lua;
       }
     ];
-
     clipboard = {
       register = "unnamedplus";
       providers.wl-copy.enable = true;
     };
-
     defaultEditor = true;
-
     # The project's JUPYTER_PATH takes precedence.
     extraConfigLuaPre = ''
       vim.env.JUPYTER_PATH = (vim.env.JUPYTER_PATH and vim.env.JUPYTER_PATH .. ":" or "")
@@ -79,7 +76,6 @@ in
 
     # Highlights code inside <syntaxhighlight> blocks and detects .mediawiki files.
     extraPlugins = [ pkgs.vimPlugins.mediawiki-vim ];
-
     keymaps = [
       {
         mode = "n";
@@ -124,10 +120,10 @@ in
         options.desc = "Run selection";
       }
     ];
-
     lsp.servers.wikitext = {
       enable = true;
       package = pkgs.wikitext-lsp;
+
       config = {
         cmd = [
           "wikitext-lsp"
@@ -150,12 +146,12 @@ in
         enable = true;
         settings.on_attach.__raw = builtins.readFile ./aerial_on_attach.lua;
       };
-
       bufferline.enable = true;
 
       cmp = {
         enable = true;
         autoEnableSources = true;
+
         settings = {
           mapping = {
             "<C-Space>" = "cmp.mapping.complete()";
@@ -178,8 +174,10 @@ in
 
       conform-nvim = {
         enable = true;
+
         settings = {
           format_on_save = builtins.readFile ./format_on_save.lua;
+
           formatters_by_ft = {
             bash = [ "shfmt" ];
             css = [ "stylelint" ];
@@ -199,9 +197,7 @@ in
         enable = true;
         settings.backend = "kitty";
       };
-
       iron.enable = true;
-
       lilypond-suite.enable = true;
 
       lsp = {
@@ -224,9 +220,9 @@ in
           tailwindcss.enable = true;
         };
       };
-
       molten = {
         enable = true;
+
         # wezterm.nvim (unfree) is only a check input.
         package = pkgs.vimPlugins.molten-nvim.overrideAttrs {
           checkInputs = with pkgs.vimPlugins; [
@@ -241,7 +237,6 @@ in
           virt_text_output = true;
         };
       };
-
       quarto = {
         enable = true;
         settings.codeRunner = {
@@ -249,6 +244,7 @@ in
           default_method = "molten";
         };
       };
+
       otter.enable = true;
 
       telescope = {
@@ -260,21 +256,19 @@ in
           "fh" = "help_tags";
         };
       };
-
       treesitter = {
         enable = true;
         settings.highlight.enable = true;
       };
-
       vim-slime = {
         enable = true;
         settings.target = "neovim";
       };
-
       web-devicons.enable = true;
 
       which-key = {
         enable = true;
+
         settings.spec = [
           {
             __unkeyed-1 = "<localleader>m";

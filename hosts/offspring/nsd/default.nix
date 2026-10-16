@@ -11,9 +11,7 @@
 let
 
   dns = import inputs.dns { inherit pkgs; };
-
   meta = config.networking.addresses;
-
   # Secondary for zones signed elsewhere; transfers cross the internet under a TSIG key.
   primary = "zeppelin";
   primaryAddress = hosts.${primary}.ipv6.public;
@@ -21,7 +19,6 @@ let
   primaryPrefix = "${lib.concatStringsSep ":" (lib.take 4 (lib.splitString ":" primaryAddress))}::/64";
   # Same key name on both ends.
   tsigKey = "xfr.mndn.fr.";
-
   zoneNames =
     (lib.dnsZones {
       inherit
@@ -30,7 +27,6 @@ let
         nixosConfigurations
         ;
     }).names;
-
   # Placeholder until the first transfer.
   emptyZone = name: {
     SOA = {
@@ -50,12 +46,10 @@ in
         meta.ipv4.local
         meta.ipv6.public
       ];
-
       keys.${tsigKey} = {
         algorithm = "hmac-sha256";
         keyFile = config.age.secrets.nsd-tsig.path;
       };
-
       zones = lib.genAttrs zoneNames (name: {
         data = dns.lib.toString name (emptyZone name);
         requestXFR = [ "AXFR ${primaryAddress} ${tsigKey}" ];

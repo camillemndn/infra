@@ -15,6 +15,7 @@ in
     kanidm = {
       server = {
         enable = true;
+
         settings = {
           domain = hostName;
           origin = "https://${hostName}";
@@ -27,6 +28,7 @@ in
           ];
         };
       };
+
       package = pkgs.kanidmWithSecretProvisioning_1_11;
       client = {
         enable = true;
@@ -43,6 +45,7 @@ in
         };
       };
     };
+
     nginx.virtualHosts.${hostName} = {
       websockets = true;
       locations."/" = {
@@ -66,7 +69,6 @@ in
     group = "acme";
     reloadServices = [ "kanidm.service" ];
   };
-
   age.secrets.kanidm-idm-admin-password = {
     file = ./idm-admin-password.age;
     owner = "kanidm";

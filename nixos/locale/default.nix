@@ -24,13 +24,10 @@
       LC_TIME = "fr_FR.UTF-8";
     };
   };
-
   programs.firefox.languagePacks = [ "fr" ];
-
   services = {
     nextcloud.settings.default_phone_region = "FR";
     xserver.xkb.layout = "fr";
   };
-
   time.timeZone = lib.mkOverride 500 "Europe/Paris";
 }

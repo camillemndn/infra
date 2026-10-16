@@ -27,14 +27,17 @@
           webhookSecretFile = config.age.secrets.github-webhook-secret.path;
           topic = "nix-ci";
         };
+
         evalWorkerCount = 12;
         evalMaxMemorySize = "16384";
       };
+
       worker = {
         enable = true;
         workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
       };
     };
+
     nginx.virtualHosts."ci.mndn.fr" = {
       forceSSL = true;
       enableACME = true;
@@ -80,7 +83,6 @@
     pkgs.nix-eval-jobs
     pkgs.coreutils
   ];
-
   age.secrets = {
     buildbot-nix-worker-password = {
       file = ./buildbot-nix-worker-password.age;
@@ -91,5 +93,4 @@
     github-oauth-secret.file = ./github-oauth-secret.age;
     github-webhook-secret.file = ./github-webhook-secret.age;
   };
-
 }

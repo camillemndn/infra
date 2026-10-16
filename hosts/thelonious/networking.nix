@@ -8,11 +8,9 @@ _: {
   networking = {
     inherit addresses;
   };
-
   deployment = {
     targetHost = addresses.ipv4.vpn;
   };
-
   services = {
   };
 }

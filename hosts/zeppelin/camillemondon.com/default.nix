@@ -14,7 +14,6 @@ let
 in
 
 {
-
   services.nginx = {
     publicDomains = [
       "camillemondon.com"
@@ -28,6 +27,7 @@ in
           rewrite ^([^.]*[^/])$ $1/ permanent;
           error_page 404 /404.html;
         '';
+
         locations = {
           "/assets/".extraConfig = ''
             expires 1y;
@@ -104,10 +104,9 @@ in
           };
         };
       };
+
       "www.camillemondon.com".locations."/".return = "301 https://camillemondon.com$request_uri";
-
       "camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
-
       "hidimdaml.camillemondon.com" = {
         extraConfig = ''
           error_page 404 https://camillemondon.com/404.html;

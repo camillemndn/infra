@@ -15,18 +15,15 @@ with lib;
       type = types.listOf types.str;
       apply = unique;
     };
-
     vpnDomains = mkOption {
       default = [ ".kms" ];
       type = types.listOf types.str;
       apply = unique;
     };
-
     vpnAcmeServer = mkOption {
       default = "https://ca.luj/acme/acme/directory";
       type = types.str;
     };
-
     # Suffixes no CA can validate stay on plain HTTP.
     localDomains = mkOption {
       default = [ ];
@@ -53,7 +50,6 @@ with lib;
                 default = false;
               };
             };
-
             config = {
               forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
               enableACME = mkDefault config.forceSSL;
@@ -83,14 +79,12 @@ with lib;
       );
     };
   };
-
   config = {
     services.nginx = mkIf cfg.enable {
       recommendedOptimisation = mkDefault true;
       recommendedProxySettings = mkDefault true;
       recommendedGzipSettings = mkDefault true;
       recommendedTlsSettings = mkDefault true;
-
       appendHttpConfig = ''
         geo $bad_ip {
           default 1;
@@ -105,9 +99,7 @@ with lib;
         proxy_headers_hash_max_size 512;
         proxy_headers_hash_bucket_size 128;
       '';
-
       clientMaxBodySize = "20m";
-
       virtualHosts.default = mkIf (!cfg.enableDefault) {
         default = true;
         addSSL = true;
@@ -119,7 +111,6 @@ with lib;
         '';
       };
     };
-
     security.acme.certs = mapAttrs (
       n: _:
       mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {

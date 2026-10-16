@@ -17,7 +17,6 @@
     (import inputs.nixvim).nixosModules.nixvim
     (import inputs.stylix).nixosModules.stylix
   ];
-
   boot.lanzaboote.package =
     lib.mkDefault
       (import inputs.lanzaboote {

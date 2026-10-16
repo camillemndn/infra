@@ -11,14 +11,11 @@ let
   #   "cobbleverse" Fabric 1.21.1 modpack, no proxy
   mode = "velocity";
   enableIf = m: mode == m;
-
   paperJvm = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
-
   whitelistFiles = {
     "whitelist.json" = config.age.secrets.minecraft-whitelist.path;
     "ops.json" = config.age.secrets.minecraft-ops.path;
   };
-
   # The .mrpack has mode-0000 shader files that break cp: chmod after unzip.
   cobbleverse =
     (pkgs.fetchModrinthModpack {
@@ -53,8 +50,10 @@ let
         white-list = true;
       };
       files = whitelistFiles;
+
       lazymc = {
         enable = true;
+
         config = {
           public = {
             address = if public then "0.0.0.0:25565" else "127.0.0.1:${toString (25570 + idx)}";
@@ -86,19 +85,16 @@ in
           package = pkgs.paperServers.paper-26_2;
           enable = enableIf "velocity";
         };
-
         v2 = mkVanillaServer {
           idx = 2;
           package = pkgs.paperServers.paper-26_2;
           enable = enableIf "velocity";
         };
-
         v3 = mkVanillaServer {
           idx = 3;
           package = pkgs.paperServers.paper-26_2;
           enable = enableIf "velocity";
         };
-
         v4 = mkVanillaServer {
           idx = 4;
           package = pkgs.paperServers.paper-26_2;
@@ -125,8 +121,10 @@ in
             "datapacks" = "${cobbleverse}/datapacks";
             "resourcepacks" = "${cobbleverse}/resourcepacks";
           };
+
           lazymc = {
             enable = true;
+
             config = {
               public = {
                 address = "0.0.0.0:25565";
@@ -141,13 +139,13 @@ in
             };
           };
         };
-
         proxy = {
           enable = enableIf "velocity";
           openFirewall = true;
           package = pkgs.velocityServers.velocity;
           jvmOpts = "-Xms512M -Xmx1G -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
           serverProperties = { }; # Velocity ignores server.properties
+
           files."velocity.toml" = (pkgs.formats.toml { }).generate "velocity.toml" {
             config-version = "2.7";
             bind = "0.0.0.0:25565";
@@ -155,6 +153,7 @@ in
             show-max-players = 100;
             online-mode = false;
             player-info-forwarding-mode = "none";
+
             servers = {
               v1 = "127.0.0.1:25571";
               v2 = "127.0.0.1:25572";
@@ -194,5 +193,4 @@ in
       };
     };
   };
-
 }

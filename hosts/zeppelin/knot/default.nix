@@ -10,11 +10,8 @@
 
 let
   cfg = config.services.knot;
-
   dns = import inputs.dns { inherit pkgs; };
-
   meta = config.networking.addresses;
-
   # Primary: signs the zones; the secondaries below transfer from here and
   # answer the public. Both ends name the TSIG key identically.
   tsigKey = "xfr.mndn.fr.";
@@ -29,7 +26,6 @@ let
         via = meta.ipv6.vpn;
       };
     };
-
     # Off the tailnet: transfers use the TSIG key.
     ns2 = {
       A = [ hosts.offspring.ipv4.public ];
@@ -54,15 +50,12 @@ let
       nixosConfigurations
       ;
   };
-
   inherit (dnsZones) publicMachines nginxOf configOf;
-
   zoneNames = dnsZones.names;
 
   # ## Tailnet zone
 
   vpnTld = "kms";
-
   # Tailnet and home network only.
   vpnRanges = [
     "100.100.45.0/24"
@@ -70,16 +63,13 @@ let
     "192.168.0.0/21"
     "fde7:d935:2cb6:f86c::/64"
   ];
-
   vpnMachines = lib.filterAttrs (_: m: m ? ipv4.vpn || m ? ipv6.vpn) hosts;
-
   vpnAddresses =
     m:
     lib.filterAttrs (_: v: v != [ ]) {
       A = lib.optional (m ? ipv4.vpn) m.ipv4.vpn;
       AAAA = lib.optional (m ? ipv6.vpn) m.ipv6.vpn;
     };
-
   # The machine and its tailnet virtual hosts.
   vpnNames =
     name:
@@ -89,7 +79,6 @@ let
         lib.filter (lib.hasSuffix ".${vpnTld}") (lib.attrNames (nginxOf name).virtualHosts)
       )
     );
-
   vpnZone = {
     TTL = 60 * 60;
     SOA = {
@@ -111,7 +100,6 @@ let
       )
     );
   };
-
   zoneOf =
     name:
     let
@@ -121,16 +109,13 @@ let
       null
     else
       lib.last (lib.sort (a: b: lib.stringLength a < lib.stringLength b) matches);
-
   addresses =
     m:
     lib.filterAttrs (_: v: v != [ ]) {
       A = lib.optional (m ? ipv4.public) m.ipv4.public;
       AAAA = lib.optional (m ? ipv6.public) m.ipv6.public;
     };
-
   domainOf = name: (configOf name).networking.domain;
-
   namesOf =
     name:
     lib.optionals (nginxOf name).enable (lib.attrNames (nginxOf name).virtualHosts)
@@ -154,7 +139,6 @@ let
       ) (namesOf machine)
     ) publicMachines
   );
-
   zones = lib.genAttrs zoneNames (
     zone:
     lib.foldl lib.recursiveUpdate
@@ -178,7 +162,6 @@ let
         ++ [ ((import ./records.nix { inherit hosts; }).${zone} or { }) ]
       )
   );
-
   # Checked at build time: bad records fail the deployment.
   zoneFile =
     name: zone:
@@ -198,47 +181,40 @@ in
   services = {
     knot = {
       enable = true;
+
       settings = {
         server = {
           listen = [
             "${meta.ipv6.vpn}@53"
             "${meta.ipv6.public}@53"
           ];
-
           # Hidden from scanners.
           version = "none";
         };
-
         remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
           resolver.address = [
             "2606:4700:4700::1111"
             "1.1.1.1"
           ];
         };
-
         acl = lib.mapAttrs' (
           name: ns:
           lib.nameValuePair "${name}-transfer" (
             builtins.removeAttrs ns.transfer [ "via" ] // { action = "transfer"; }
           )
         ) secondaries;
-
         # Plain queries ignore ACLs; this module answers outsiders NOTAUTH.
         mod-queryacl.internal.address = vpnRanges;
-
         # Submitted once the resolver sees the DS at the registry.
         submission.registry.parent = "resolver";
-
         # One CSK per zone, never rolled, so registrar DS records stay valid (keymgr <zone> ds).
         policy.csk = {
           single-type-signing = true;
           ksk-submission = "registry";
-
           # NSEC3 against zone walking, 0 iterations (RFC 9276).
           nsec3 = true;
           nsec3-iterations = 0;
         };
-
         template = {
           default = {
             semantic-checks = true;
@@ -246,14 +222,12 @@ in
             dnssec-policy = "csk";
             notify = lib.attrNames secondaries;
             acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
-
             # Zone files live in the store; signatures and serial stay in the journal.
             zonefile-sync = -1;
             zonefile-load = "difference-no-serial";
             journal-content = "all";
             serial-policy = "unixtime";
           };
-
           # No parent DS and no secondary: the gateway's resolver forwards here.
           internal = {
             semantic-checks = true;
@@ -264,7 +238,6 @@ in
             serial-policy = "unixtime";
           };
         };
-
         zone = lib.mapAttrs (name: zone: { file = zoneFile name zone; }) zones // {
           ${vpnTld} = {
             file = zoneFile vpnTld vpnZone;
@@ -272,6 +245,7 @@ in
           };
         };
       };
+
       # Read at runtime, keeping the TSIG secret out of the store.
       keyFiles = [ config.age.secrets.knot-tsig.path ];
     };
@@ -281,11 +255,9 @@ in
     file = ./tsig.age;
     owner = "knot";
   };
-
   # The tailnet address appears after boot.
   boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
   systemd.services.knot.after = [ "tailscaled.service" ];
-
   networking.firewall = {
     allowedTCPPorts = [ 53 ];
     allowedUDPPorts = [ 53 ];

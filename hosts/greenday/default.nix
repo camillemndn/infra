@@ -19,10 +19,10 @@
       libreoffice-qt-fresh
     ];
   };
-
   services = {
     xserver.enable = true;
     desktopManager.plasma6.enable = true;
+
     displayManager = {
       sddm = {
         enable = true;
@@ -34,7 +34,9 @@
         user = "georgette";
       };
     };
+
     ipp-usb.enable = true;
+
     printing = {
       enable = true;
       drivers = with pkgs; [ samsung-unified-linux-driver ];
@@ -42,8 +44,6 @@
   };
 
   programs.firefox.enable = true;
-
   environment.systemPackages = with pkgs; [ waypipe ];
-
   system.stateVersion = "24.05";
 }

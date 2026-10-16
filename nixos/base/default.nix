@@ -32,7 +32,6 @@ in
         ];
         openssh.authorizedKeys.keys = sshPubKeys;
       };
-
       root = {
         extraGroups = [
           "audio"
@@ -47,14 +46,13 @@ in
     buildOnTarget = lib.mkDefault true;
     allowLocalDeployment = lib.mkDefault true;
   };
-
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   programs = {
     git = {
       enable = true;
+
       config = {
         user = {
           name = "Camille M.";
@@ -74,25 +72,19 @@ in
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       '';
     };
-
     direnv.enable = true;
-
     neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
-
     command-not-found.enable = false;
-
     nix-index = lib.mkDefault {
       enable = true;
       package = pkgs.nix-index-with-db;
     };
   };
-
   services = {
     openssh = {
       enable = lib.mkDefault true;
       settings.PasswordAuthentication = lib.mkDefault false;
     };
-
     tailscale.enable = lib.mkDefault true;
 
     mysql = {
@@ -102,7 +94,6 @@ in
         mysqld.init-connect = "'SET NAMES utf8mb4'";
       };
     };
-
     resolved = {
       enable = true;
       settings.Resolve = {
@@ -117,10 +108,8 @@ in
     firewall.checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };
-
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
-
     systemPackages = with pkgs; [
       attic-client
       comma-with-db
@@ -146,7 +135,6 @@ in
       zip
     ];
   };
-
   security = {
     acme = {
       defaults.email = "camillemondon@free.fr";
@@ -154,6 +142,7 @@ in
     };
     pki.certificateFiles = [ ./saumonnet.crt ];
   };
+
   home-manager.sharedModules = [
     (
       { lib, pkgs, ... }:
@@ -172,7 +161,6 @@ in
             extraConfig = gtkConfig;
           };
         };
-
         home = {
           keyboard.layout = "fr";
           language.base = "fr_FR.UTF-8";
@@ -183,17 +171,14 @@ in
           };
           stateVersion = lib.mkDefault "24.05";
         };
-
         programs = {
           fish.enable = true;
           home-manager.enable = true;
-
           nix-index = {
             enable = lib.mkDefault true;
             package = lib.mkDefault pkgs.nix-index-with-db;
           };
         };
-
         services.random-background = {
           enable = true;
           imageDirectory =

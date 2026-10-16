@@ -16,15 +16,12 @@
         "usb_storage"
         "sd_mod"
       ];
-
       clevis = {
         enable = true;
         devices.crypted.secretFile = "${./luks.jwe}";
       };
-
       systemd.enable = true;
     };
-
     kernelModules = [ "kvm-amd" ];
   };
 
@@ -33,5 +30,4 @@
     enableRedistributableFirmware = lib.mkDefault true;
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
-
 }

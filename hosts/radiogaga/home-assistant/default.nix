@@ -8,6 +8,7 @@
     home-assistant = rec {
       enable = true;
       package = pkgs.unstable.home-assistant;
+
       customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
       extraComponents = [
         "ecovacs"
@@ -31,6 +32,7 @@
           python-otbr-api
         ];
       openFirewall = true;
+
       config = {
         default_config = { };
         homeassistant.name = "Cama";

@@ -12,6 +12,7 @@ in
   services = {
     davmail = {
       enable = true;
+
       config = {
         davmail = {
           allowRemote = true;
@@ -33,14 +34,15 @@ in
 
       url = "https://outlook.office365.com/EWS/Exchange.asmx";
     };
+
     nginx.virtualHosts."${fqdn}" = { };
   };
+
   networking.firewall.allowedTCPPorts = [
     443
     1143
     1025
   ];
-
   systemd.services.davmail.serviceConfig = {
     ExecStartPre =
       let
@@ -50,5 +52,4 @@ in
     StateDirectory = "davmail";
     SupplementaryGroups = "nginx";
   };
-
 }

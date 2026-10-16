@@ -64,26 +64,20 @@
                     sha256 = "07wrx4hqwd98r1ckybc71n5bnwf20rj8rjskxvj8k0d1r3dsq2n7";
                   }
                 ];
-
               userSettings = {
                 "direnv.restart.automatic" = true;
-
                 "nix.enableLanguageServer" = true;
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
-
                 # basedpyright provides completion and type checking.
                 "python.languageServer" = "None";
                 "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
-
                 "r.plot.useHttpgd" = true;
-
                 # The Wikitext extension starts the WikiParser language server.
                 "wikitext.wikiparser.enable" = true;
                 "wikiparser.linter.severity" = "errors and warnings";
                 # Previews work anonymously; logging in is only needed to save pages.
                 "wikitext.autoLogin" = "Never";
-
                 # Redrawing animations while a cell runs takes CPU from the kernel.
                 "workbench.reduceMotion" = "on";
               };

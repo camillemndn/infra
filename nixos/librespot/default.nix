@@ -7,14 +7,12 @@
 
 let
   inherit (lib) types;
-
   cfg = config.services.librespot;
 
 in
 {
   options.services.librespot = {
     enable = lib.mkEnableOption "Librespot (Spotify Connect speaker daemon)";
-
     package = lib.mkPackageOption pkgs "librespot" { };
 
     settings = lib.mkOption {
@@ -25,6 +23,7 @@ in
         Null values are ignored.
         All other values are rendered as options with an argument.
       '';
+
       type = types.submodule {
         freeformType =
           let
@@ -40,14 +39,12 @@ in
               ]
             )
           );
-
         options = {
           cache = lib.mkOption {
             default = "/var/cache/librespot";
             type = types.nullOr types.path;
             description = "Directory where audio files are cached.";
           };
-
           system-cache = lib.mkOption {
             default = "/var/lib/librespot";
             type = types.nullOr types.path;
@@ -55,6 +52,7 @@ in
           };
         };
       };
+
       default = { };
     };
 
@@ -63,14 +61,12 @@ in
       internal = true;
       description = "CLI arguments generated from services.librespot.settings";
     };
-
     user = lib.mkOption {
       type = types.str;
       default = "librespot";
       description = "User under which librespot runs.";
     };
   };
-
   config = lib.mkIf cfg.enable {
     users.users.${cfg.user} = {
       isSystemUser = true;
@@ -79,7 +75,6 @@ in
       home = "/var/lib/librespot";
       createHome = true;
     };
-
     services.librespot.args = lib.concatLists (
       lib.mapAttrsToList (
         k: v:
@@ -100,7 +95,6 @@ in
       ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
-
       serviceConfig = {
         User = cfg.user;
         Group = "audio";
@@ -108,7 +102,6 @@ in
         ExecStart = pkgs.writeShellScript "librespot" ''
           exec '${cfg.package}/bin/librespot' ${lib.escapeShellArgs cfg.args}
         '';
-
         Restart = "always";
         RestartSec = 12;
         StateDirectory = "librespot";

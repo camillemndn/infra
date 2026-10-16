@@ -47,6 +47,7 @@ in
           lib.toList pkg.meta.license
         );
     };
+
     overlays = lib.mkAfter [
       (import "${inputs.nix-minecraft}/overlay.nix")
       (
@@ -66,7 +67,6 @@ in
         packages.${config.nixpkgs.hostPlatform.system}
         // {
           inherit lib;
-
           unstable = import inputs.nixpkgs-unstable {
             inherit (config.nixpkgs.hostPlatform) system;
             inherit (prev) config;
@@ -79,7 +79,6 @@ in
             quarto
             signalbackup-tools
             ;
-
           # Zotero 10 needs Firefox ESR 140, dropped from unstable: https://github.com/NixOS/nixpkgs/issues/568692
           inherit
             (import
@@ -94,18 +93,15 @@ in
             )
             zotero
             ;
-
           panache = prev.panache.overrideAttrs (
             finalAttrs: _: {
               version = "3.10.0";
-
               src = prev.fetchFromGitHub {
                 owner = "jolars";
                 repo = "panache";
                 tag = "v${finalAttrs.version}";
                 hash = "sha256-13v2J7qRgkX55vjFt0daU26J/IhmECCr1H0fVEW72rk=";
               };
-
               cargoDeps = prev.rustPlatform.fetchCargoVendor {
                 inherit (finalAttrs) src;
                 name = "panache-${finalAttrs.version}";
@@ -121,7 +117,6 @@ in
           comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
             inherit nix-index-database;
           };
-
         }
       )
     ];

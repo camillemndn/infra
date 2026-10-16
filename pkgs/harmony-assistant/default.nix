@@ -14,16 +14,13 @@ let
   harmony-assistant-unwrapped = stdenv.mkDerivation rec {
     pname = "harmony-assistant";
     version = "9.9.9e";
-
     src = fetchurl {
       url = "https://myriad-online.com/linux/harmony-assistant-${version}.0.run";
       hash = "sha256-TQGENwLYoCY9THqUBKa+gz1ssOaOEm44OaX7m2gWPB0=";
     };
-
     unpackPhase = ''
       bash $src || true
     '';
-
     installPhase = ''
       mkdir -p $out/{bin,share/icons/hicolor/256x256/apps}
       cd harmony-assistant-${version}.0/InstallFiles
@@ -36,7 +33,6 @@ let
       substituteInPlace "$out/share/applications/harmony-assistant.desktop" \
         --replace-fail "/usr/bin/Harmony Assistant" "harmony-assistant"
     '';
-
     dontFixup = true;
 
     meta = {
@@ -51,11 +47,8 @@ in
 
 buildFHSEnv {
   name = "harmony-assistant";
-
   runScript = "harmony-assistant";
-
   targetPkgs = _: [ harmony-assistant-unwrapped ];
-
   multiPkgs = _: [
     alsa-lib
     freetype
@@ -63,10 +56,8 @@ buildFHSEnv {
     libx11
     expat
   ];
-
   extraInstallCommands = ''
     cp -Lr ${harmony-assistant-unwrapped}/share $out
   '';
-
   inherit (harmony-assistant-unwrapped) meta;
 }

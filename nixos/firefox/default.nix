@@ -21,6 +21,5 @@ lib.mkIf config.programs.firefox.enable {
       pipewireSupport = true;
     };
   };
-
   environment.systemPackages = [ pkgs.firefoxpwa ];
 }

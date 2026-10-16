@@ -11,11 +11,13 @@ in
       group = "media";
       domain = null;
       environmentFile = config.age.secrets.slskd.path;
+
       settings = {
         shares.directories = [ ];
         directories.downloads = downloads;
       };
     };
+
     nginx.virtualHosts."soulseek.kms" = {
       port = 5030;
       websockets = true;

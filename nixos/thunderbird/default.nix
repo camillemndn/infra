@@ -14,6 +14,7 @@
                 config = mkDefault {
                   address = name;
                   realName = "Camille Mondon";
+
                   thunderbird = {
                     enable = true;
                     profiles = [ "camille" ];

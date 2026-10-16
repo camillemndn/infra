@@ -9,13 +9,10 @@ _: {
     inherit addresses;
     firewall.allowedTCPPorts = [ 3389 ];
   };
-
   deployment = {
     targetHost = addresses.ipv6.vpn;
   };
-
   services = {
     openssh.settings.PasswordAuthentication = true;
-
   };
 }

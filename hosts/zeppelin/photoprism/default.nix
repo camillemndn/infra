@@ -23,18 +23,17 @@
         PHOTOPRISM_WORKERS = "12";
       };
     };
-
     nginx.virtualHosts."photos.kms" = {
       port = 2342;
       websockets = true;
     };
   };
+
   environment.systemPackages = [ pkgs.photoprism ];
 
   systemd = {
     services = {
       photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
-
       photoprism-index = {
         description = "Photoprism automatic indexer";
         after = [ "multi-user.target" ];
@@ -48,7 +47,6 @@
         inherit (config.systemd.services.photoprism) environment;
       };
     };
-
     timers.photoprism-index = {
       description = "Photoprism automatic indexer";
       wantedBy = [ "timers.target" ];

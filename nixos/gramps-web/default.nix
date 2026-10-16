@@ -10,16 +10,13 @@ let
   stateDir = "/var/lib/gramps-web";
   cacheDir = "/var/cache/gramps-web";
   redis = config.services.redis.servers.gramps-web;
-
   python = pkgs.python3.withPackages (ps: [ (ps.toPythonModule pkgs.gramps-webapi) ]);
   gramps-webapi = "${python}/bin/python -m gramps_webapi";
-
   # Alembic needs alembic.ini and the migrations in its working directory; the wheel ships neither.
   migrations = pkgs.runCommand "gramps-webapi-migrations" { } ''
     mkdir $out
     cp -r ${pkgs.gramps-webapi.src}/{alembic.ini,alembic_users} $out
   '';
-
   environment = {
     GI_TYPELIB_PATH = lib.makeSearchPath "lib/girepository-1.0" (
       map lib.getLib (
@@ -55,7 +52,6 @@ let
     GRAMPSWEB_CELERY_CONFIG__result_backend = "redis+socket://${redis.unixSocket}";
     GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis+unix://${redis.unixSocket}?db=1";
   };
-
   # Same dynamic user for both units: shared data and secret key.
   serviceConfig = {
     DynamicUser = true;
@@ -72,18 +68,15 @@ with lib;
 {
   options.services.gramps-web = {
     enable = mkEnableOption "Gramps Web";
-
     hostName = mkOption {
       type = types.str;
       description = "FQDN for the Gramps Web instance.";
     };
-
     port = mkOption {
       type = types.port;
       default = 5056;
       description = "Local port the API server listens on.";
     };
-
     tree = mkOption {
       type = types.str;
       default = "Family";
@@ -115,9 +108,7 @@ with lib;
             "network.target"
             "redis-gramps-web.service"
           ];
-
           inherit environment serviceConfig;
-
           # The Flask secret key is generated once and kept with the data.
           preStart = ''
             if [ ! -s ${stateDir}/secret ]; then
@@ -126,7 +117,6 @@ with lib;
             mkdir -p ${stateDir}/media ${stateDir}/grampsdb
             (cd ${migrations} && GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret) ${gramps-webapi} user migrate)
           '';
-
           script = ''
             export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
             exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
@@ -141,9 +131,7 @@ with lib;
             "gramps-web.service"
             "redis-gramps-web.service"
           ];
-
           inherit environment serviceConfig;
-
           script = ''
             export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
             exec ${python}/bin/celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2
@@ -151,6 +139,5 @@ with lib;
         };
       };
     };
-
   };
 }

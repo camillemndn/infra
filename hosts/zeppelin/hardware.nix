@@ -5,16 +5,12 @@
 
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
-
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-
     kernel.sysctl."vm.swappiness" = 1;
-
     loader = {
       systemd-boot.enable = true;
     };
-
     initrd.availableKernelModules = [
       "ata_piix"
       "uhci_hcd"
@@ -24,7 +20,6 @@
       "sr_mod"
     ];
   };
-
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07";
@@ -41,12 +36,10 @@
       depends = [ "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07" ];
     };
   };
-
   swapDevices = [
     {
       device = "/swapfile";
       size = 4 * 1024;
     }
   ];
-
 }
