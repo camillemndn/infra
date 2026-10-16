@@ -6,14 +6,14 @@
 
 python3.pkgs.buildPythonPackage rec {
   pname = "iphone-backup-decrypt";
-  version = "0.8.0";
+  version = "0.11.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "jsharkey13";
     repo = "iphone_backup_decrypt";
     tag = "v${version}";
-    hash = "sha256-hJ45R/F3NRn24GKWvGx5N10/ZB6aC8blrIgDEN40FRY=";
+    hash = "sha256-bUzKb57Nd52+EF7isNc4F4tfRSm4H853TeeVu81mjs4=";
   };
 
   nativeBuildInputs = [
