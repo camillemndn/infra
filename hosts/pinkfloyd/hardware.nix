@@ -1,15 +1,10 @@
 {
   config,
   lib,
-  modulesPath,
   ...
 }:
 
 {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
-
   boot = {
     lanzaboote.enable = true;
 
@@ -35,6 +30,7 @@
 
   hardware = {
     bluetooth.enable = true;
+    enableRedistributableFirmware = lib.mkDefault true;
     cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
