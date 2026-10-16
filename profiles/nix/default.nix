@@ -1,5 +1,5 @@
 let
-  offspringMeta = import ../../machines/offspring/meta.nix;
+  offspringMeta = import ../../hosts/offspring/meta.nix;
 in
 {
   config,

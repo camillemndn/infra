@@ -51,7 +51,7 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
           backupFileExtension = "hm-bak";
           sharedModules = builtins.attrValues hmModules;
           users = lib.genAttrs (listUsers config) (
-            user: lib.importIfExists ../machines/${name}/home-manager/${user}.nix
+            user: lib.importIfExists ../hosts/${name}/home-manager/${user}.nix
           );
         };
 

@@ -11,8 +11,8 @@ let
       nixpkgs_version = inputs.nixpkgs;
       hm_version = inputs.home-manager;
       tld = "kms";
-    } (import (./machines + "/${name}/meta.nix"))
-  ) (lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./machines));
+    } (import (./hosts + "/${name}/meta.nix"))
+  ) (lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
 
   machines_plats = lib.lists.unique (
     lib.mapAttrsToList (_name: value: value.system) (
@@ -76,7 +76,7 @@ let
       inherit (machines.${name}) system;
       home-manager = machines.${name}.hm_version;
     })
-  ) (lib.importConfig ./machines);
+  ) (lib.importConfig ./hosts);
 
   packages = lib.genAttrs machines_plats (
     plat:
