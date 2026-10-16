@@ -1,0 +1,74 @@
+{
+  config,
+  pkgs,
+  ...
+}:
+
+let
+  hostName = "auth.mndn.fr";
+  kanidmPort = 8443;
+  cert = config.security.acme.certs.${hostName};
+in
+
+{
+  services = {
+    kanidm = {
+      server = {
+        enable = true;
+        settings = {
+          domain = hostName;
+          origin = "https://${hostName}";
+          bindaddress = "127.0.0.1:${toString kanidmPort}";
+          tls_chain = "${cert.directory}/fullchain.pem";
+          tls_key = "${cert.directory}/key.pem";
+          http_client_address_info."x-forward-for" = [
+            "127.0.0.1"
+            "::1"
+          ];
+        };
+      };
+      package = pkgs.kanidmWithSecretProvisioning_1_11;
+      client = {
+        enable = true;
+        settings.uri = "https://${hostName}";
+      };
+
+      provision = {
+        enable = true;
+        idmAdminPasswordFile = config.age.secrets.kanidm-idm-admin-password.path;
+
+        persons.camille = {
+          displayName = "Camille";
+          mailAddresses = [ "camillemondon@free.fr" ];
+        };
+      };
+    };
+    nginx.virtualHosts.${hostName} = {
+      websockets = true;
+      locations."/" = {
+        proxyPass = "https://127.0.0.1:${toString kanidmPort}";
+        extraConfig = ''
+          proxy_buffer_size       16k;
+          proxy_buffers           8 16k;
+          proxy_busy_buffers_size 32k;
+        '';
+      };
+    };
+  };
+
+  users = {
+    users = {
+      kanidm.extraGroups = [ "acme" ];
+      nginx.extraGroups = [ "acme" ];
+    };
+  };
+  security.acme.certs.${hostName} = {
+    group = "acme";
+    reloadServices = [ "kanidm.service" ];
+  };
+
+  age.secrets.kanidm-idm-admin-password = {
+    file = ./idm-admin-password.age;
+    owner = "kanidm";
+  };
+}

@@ -19,14 +19,14 @@ lib.mkIf config.programs.dms-shell.enable {
 
   programs.dms-shell = {
     systemd = {
-      enable = true; # Systemd service for auto-start
-      restartIfChanged = true; # Auto-restart dms.service when dms-shell changes
-      target = "niri.service"; # Only auto-start in niri sessions, not Plasma/sway
+      enable = true;
+      restartIfChanged = true;
+      target = "niri.service";
     };
-    enableSystemMonitoring = true; # System monitoring widgets (dgop)
-    enableDynamicTheming = true; # Wallpaper-based theming (matugen)
-    enableAudioWavelength = true; # Audio visualizer (cava)
-    enableCalendarEvents = true; # Calendar integration (khal)
-    enableClipboardPaste = true; # Pasting from the clipboard history (wtype)
+    enableSystemMonitoring = true;
+    enableDynamicTheming = true;
+    enableAudioWavelength = true;
+    enableCalendarEvents = true;
+    enableClipboardPaste = true;
   };
 }

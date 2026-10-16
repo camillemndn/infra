@@ -46,8 +46,6 @@
                   "custom/powermenu"
                 ];
 
-                ### --- Modules ---
-
                 "custom/launcher" = {
                   format = "";
                   on-click = "pkill ${launcher} || ${launcher}";
@@ -109,7 +107,6 @@
                   ignored-sinks = [ "Easy Effects Sink" ];
                 };
 
-                ### --- Network ---
                 network = {
                   format-disconnected = "";
                   format-ethernet = " Connected!";
@@ -122,7 +119,6 @@
                   on-click-right = "kitty -e nmtui";
                 };
 
-                ### --- Bluetooth ---
                 bluetooth = {
                   format = " {status}";
                   format-connected = " {device_alias}";

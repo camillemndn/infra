@@ -12,7 +12,7 @@
       lib.mkIf config.programs.vscodium.enable (
         # Only machines with Stylix have its options.
         lib.optionalAttrs (options ? stylix) {
-          # Stylix sets VSCodium font sizes to 4/3 of the terminal size: 10.5 pt gives 14 px.
+          # Stylix scales by 4/3: 10.5 pt gives 14 px.
           stylix.targets.vscodium.fonts.override.sizes.terminal = 10.5;
         }
         // {
@@ -35,17 +35,14 @@
                   ms-python.python
                   ms-python.vscode-python-envs
                   ms-toolsai.jupyter
-                  # The Jupyter extension's pack; it cannot install them into a
-                  # read-only extensions directory. The renderers draw widgets,
-                  # plots and images in cell outputs.
+                  # Jupyter's extension pack, which it cannot install read-only; renderers for cell outputs.
                   ms-toolsai.jupyter-keymap
                   ms-toolsai.jupyter-renderers
                   ms-toolsai.vscode-jupyter-cell-tags
                   ms-toolsai.vscode-jupyter-slideshow
                   myriad-dreamin.tinymist
                   reditorsupport.r
-                  # The preview sends the page in a GET query string, which servers
-                  # reject past ~8 KB; POST carries it in the body instead.
+                  # POST: servers reject GET queries past ~8 KB.
                   (RoweWilsonFrederiskHolme.wikitext.overrideAttrs (old: {
                     postInstall = (old.postInstall or "") + ''
                       substituteInPlace $out/share/vscode/extensions/RoweWilsonFrederiskHolme.wikitext/dist/extension-node.js \

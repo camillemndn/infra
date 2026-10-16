@@ -55,39 +55,42 @@ in
       };
     };
 
-    systemd.tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
-
-    systemd.services.radiogaga = {
-      description = "radiogaga";
-      after = [
-        "network.target"
-        "pipewire.service"
-      ];
-      wantedBy = [ "multi-user.target" ];
-      environment.BASE_DIR = "${cfg.dataDir}";
-      serviceConfig = {
-        Type = "simple";
-        User = cfg.user;
-        Group = cfg.group;
-        ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
-        CacheDirectory = "radiogaga";
-        StateDirectory = "radiogaga";
-        SupplementaryGroups = [
-          "audio"
-          "pipewire"
+    systemd = {
+      tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
+      services.radiogaga = {
+        description = "radiogaga";
+        after = [
+          "network.target"
+          "pipewire.service"
         ];
-        WorkingDirectory = "${pkgs.radiogaga}/share";
-        Restart = "on-failure";
+        wantedBy = [ "multi-user.target" ];
+        environment.BASE_DIR = "${cfg.dataDir}";
+        serviceConfig = {
+          Type = "simple";
+          User = cfg.user;
+          Group = cfg.group;
+          ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
+          CacheDirectory = "radiogaga";
+          StateDirectory = "radiogaga";
+          SupplementaryGroups = [
+            "audio"
+            "pipewire"
+          ];
+          WorkingDirectory = "${pkgs.radiogaga}/share";
+          Restart = "on-failure";
+        };
       };
     };
 
-    users.users = mkIf (cfg.user == "radiogaga") {
-      radiogaga = {
-        inherit (cfg) group;
-        home = cfg.dataDir;
-        isSystemUser = true;
+    users = {
+      users = mkIf (cfg.user == "radiogaga") {
+        radiogaga = {
+          inherit (cfg) group;
+          home = cfg.dataDir;
+          isSystemUser = true;
+        };
       };
+      groups.radiogaga = { };
     };
-    users.groups.radiogaga = { };
   };
 }

@@ -1,5 +1,5 @@
 let
-  offspringMeta = import ../hosts/offspring/meta.nix;
+  offspring = (import ../.).nixosConfigurations.offspring.config.networking.addresses;
 in
 {
   config,
@@ -10,8 +10,7 @@ in
 }:
 
 let
-  # The patched nixpkgs from inputs.nix is built for the evaluating machine; re-apply the
-  # same patches with this machine's pkgs so the NIX_PATH copy builds on the target.
+  # Re-patched with this machine's pkgs, so the NIX_PATH copy builds on the target.
   nixpkgs =
     if inputs.nixpkgs ? patches then
       pkgs.applyPatches { inherit (inputs.nixpkgs) name src patches; }
@@ -20,11 +19,10 @@ let
 in
 {
   nix = {
-    # package = pkgs.lix;
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
-        hostName = offspringMeta.ipv4.public;
+        hostName = offspring.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
         maxJobs = 2;
@@ -61,13 +59,12 @@ in
     };
   };
 
-  # Remote builds run unattended and cannot accept an unknown host key; offspring's sshd
-  # penalises every connection that drops before authenticating.
+  # Unattended builds can't accept unknown host keys, and offspring's sshd penalises dropped connections.
   programs.ssh.knownHosts.offspring = {
     hostNames = [
-      offspringMeta.ipv4.public
-      offspringMeta.ipv6.public
+      offspring.ipv4.public
+      offspring.ipv6.public
     ];
-    publicKey = offspringMeta.hostKey;
+    publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTQP1XL41AvmwxYaoFSAK6p8X9NPdMg8jppRspeV4cy";
   };
 }

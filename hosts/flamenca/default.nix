@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./networking.nix
-  ];
-
   hardware = {
     bluetooth.enable = true;
     sane.enable = true;
@@ -28,8 +23,10 @@
     };
     pipewire = {
       enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
       pulse.enable = true;
     };
 

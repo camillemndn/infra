@@ -1,57 +1,19 @@
 _:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./networking.nix
-    ./services
-  ];
-
   programs.nixvim.enable = true;
 
   services = {
-    buildbot-nix.master.enable = true;
-    code-server.enable = true;
     collabora-online.enable = true;
-    davmail.enable = true;
-    firefly-iii.enable = true;
     gramps-web = {
       enable = true;
       hostName = "genealogy.mndn.fr";
     };
-    immich.enable = true;
-    jellyfin.enable = true;
-    kanidm.server.enable = true;
-    knot.enable = true;
-    oauth2-proxy.enable = true;
-    minecraft-servers.enable = true;
-    navidrome.enable = true;
-    nextcloud.enable = true;
-    nginx = {
-      enable = true;
-      websites = {
-        "camillemondon.com".enable = true;
-        "ceciliaflamenca.com".enable = true;
-        "natachamondonericpierre.fr".enable = true;
-        "varanda.fr".enable = true;
-        "yali.es".enable = true;
-      };
-    };
-    photoprism.enable = true;
-    plausible.enable = true;
-    slskd.enable = true;
-    tandoor-recipes.enable = true;
-    vaultwarden.enable = true;
+    nginx.enable = true;
     webtrees = {
       enable = true;
       hostName = "family.mndn.fr";
     };
-    webhook.enable = true;
-  };
-
-  systemd.services.oauth2-proxy = {
-    after = [ "kanidm.service" ];
-    wants = [ "kanidm.service" ];
   };
 
   system.stateVersion = "21.11";

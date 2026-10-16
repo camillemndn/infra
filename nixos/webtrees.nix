@@ -22,93 +22,98 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.phpfpm.pools.webtrees = {
-      user = "webtrees";
-      settings = {
-        "listen.owner" = config.services.nginx.user;
-        "pm" = "dynamic";
-        "pm.max_children" = 32;
-        "pm.max_requests" = 500;
-        "pm.start_servers" = 2;
-        "pm.min_spare_servers" = 2;
-        "pm.max_spare_servers" = 5;
-        "php_admin_value[error_log]" = "stderr";
-        "php_admin_flag[log_errors]" = true;
-        "catch_workers_output" = true;
+    services = {
+      phpfpm.pools.webtrees = {
+        user = "webtrees";
+        settings = {
+          "listen.owner" = config.services.nginx.user;
+          "pm" = "dynamic";
+          "pm.max_children" = 32;
+          "pm.max_requests" = 500;
+          "pm.start_servers" = 2;
+          "pm.min_spare_servers" = 2;
+          "pm.max_spare_servers" = 5;
+          "php_admin_value[error_log]" = "stderr";
+          "php_admin_flag[log_errors]" = true;
+          "catch_workers_output" = true;
+        };
+        phpPackage = pkgs.php84;
+        phpOptions = ''
+          post_max_size = 5M
+          upload_max_filesize = 5M
+        '';
       };
-      phpPackage = pkgs.php84;
-      phpOptions = ''
-        post_max_size = 5M
-        upload_max_filesize = 5M
-      '';
+      nginx.virtualHosts.${cfg.hostName} = {
+        root = "${pkgs.webtrees}/share/php/webtrees";
+        locations = {
+          "/public/".extraConfig = ''
+            expires 365d;
+            access_log off;
+          '';
+          "/".extraConfig = ''
+            rewrite ^ /index.php last;
+          '';
+          "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
+            deny all;
+          '';
+          "/index.php" = {
+            fastcgiParams = {
+              HTTP_PROXY = "";
+              SCRIPT_FILENAME = "$request_filename";
+            };
+            extraConfig = ''
+              fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
+            '';
+          };
+        };
+      };
+      mysql = {
+        enable = true;
+        package = mkDefault pkgs.mariadb;
+        ensureUsers = [
+          {
+            name = "webtrees";
+            ensurePermissions = {
+              "webtrees.*" = "ALL PRIVILEGES";
+            };
+          }
+        ];
+        ensureDatabases = [ "webtrees" ];
+      };
     };
 
-    services.nginx.virtualHosts.${cfg.hostName} = {
-      root = "${pkgs.webtrees}/share/php/webtrees";
-      locations = {
-        "/public/".extraConfig = ''
-          expires 365d;
-          access_log off;
-        '';
-        "/".extraConfig = ''
-          rewrite ^ /index.php last;
-        '';
-        "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
-          deny all;
-        '';
-        "/index.php" = {
-          fastcgiParams = {
-            HTTP_PROXY = "";
-            SCRIPT_FILENAME = "$request_filename";
+    systemd = {
+      services = {
+        "phpfpm-webtrees".serviceConfig.BindPaths = [
+          "/var/lib/webtrees/:${pkgs.webtrees}/share/php/webtrees/data/"
+        ];
+        webtrees-config = {
+          wantedBy = [ "multi-user.target" ];
+          before = [ "phpfpm-webtrees.service" ];
+          serviceConfig = {
+            StateDirectory = "webtrees";
+            User = "webtrees";
+            Type = "oneshot";
           };
-          extraConfig = ''
-            fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
+          script = ''
+            if [ ! -f ${dataDir}/index.php ]; then
+            cp -r ${pkgs.webtrees}/share/php/webtrees/data/* ${dataDir}
+              chown -R webtrees ${dataDir}
+              chmod -R ugo=rX ${dataDir}
+              chmod -R ug+w ${dataDir}
+            fi
           '';
         };
       };
     };
 
-    services.mysql = {
-      enable = true;
-      package = mkDefault pkgs.mariadb;
-      ensureUsers = [
-        {
-          name = "webtrees";
-          ensurePermissions = {
-            "webtrees.*" = "ALL PRIVILEGES";
-          };
-        }
-      ];
-      ensureDatabases = [ "webtrees" ];
-    };
-
-    systemd.services."phpfpm-webtrees".serviceConfig.BindPaths = [
-      "/var/lib/webtrees/:${pkgs.webtrees}/share/php/webtrees/data/"
-    ];
-
-    systemd.services.webtrees-config = {
-      wantedBy = [ "multi-user.target" ];
-      before = [ "phpfpm-webtrees.service" ];
-      serviceConfig = {
-        StateDirectory = "webtrees";
-        User = "webtrees";
-        Type = "oneshot";
+    users = {
+      users.webtrees = {
+        isSystemUser = true;
+        group = "webtrees";
       };
-      script = ''
-        if [ ! -f ${dataDir}/index.php ]; then
-        cp -r ${pkgs.webtrees}/share/php/webtrees/data/* ${dataDir}
-          chown -R webtrees ${dataDir}
-          chmod -R ugo=rX ${dataDir}
-          chmod -R ug+w ${dataDir}
-        fi
-      '';
+      groups.webtrees = { };
     };
 
-    users.users.webtrees = {
-      isSystemUser = true;
-      group = "webtrees";
-    };
-
-    users.groups.webtrees = { };
   };
 }

@@ -3,95 +3,51 @@ let
 
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib);
 
-  machines = builtins.mapAttrs (
-    name: _:
-    lib.recursiveUpdate {
-      hostname = name;
-      system = "x86_64-linux";
-      nixpkgs_version = inputs.nixpkgs;
-      hm_version = inputs.home-manager;
-      tld = "kms";
-    } (import (./hosts + "/${name}/meta.nix"))
-  ) (lib.filterAttrs (_: v: v == "directory") (builtins.readDir ./hosts));
+  modulesIn =
+    dir:
+    lib.mapAttrsToList (entry: _: dir + "/${entry}") (
+      lib.filterAttrs (entry: type: type == "directory" || lib.hasSuffix ".nix" entry) (
+        builtins.readDir dir
+      )
+    );
 
-  machines_plats = lib.lists.unique (
-    lib.mapAttrsToList (_name: value: value.system) (
-      lib.filterAttrs (_n: v: builtins.hasAttr "system" v) machines
-    )
-  );
-
-  nixosSystem = import ./lib/nixos-system.nix inputs lib;
-
-  nixpkgs_plats = builtins.listToAttrs (
-    builtins.map (plat: {
-      name = plat;
-      value = import inputs.nixpkgs {
-        system = plat;
-        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "harmony-assistant" ];
-        overlays = [
-          (_: prev: {
-            nix-update-script =
-              args:
-              prev.nix-update-script (
-                args
-                // {
-                  extraArgs = [
-                    "-f"
-                    "release.nix"
-                  ]
-                  ++ args.extraArgs or [ ];
-                }
-              );
-          })
-        ];
-      };
-    }) machines_plats
-  );
-
-  nixosModules = builtins.mapAttrs (x: _: ./nixos + "/${x}") (builtins.readDir ./nixos);
-
-  nixosConfigurations = builtins.mapAttrs (
-    name: value:
-    (nixosSystem {
-      inherit name;
-      host-config = value;
-      modules = nixosModules;
-      nixpkgs = machines.${name}.nixpkgs_version;
-      extraPackages = packages;
-      inherit (machines.${name}) system;
-      home-manager = machines.${name}.hm_version;
-    })
-  ) (lib.importConfig ./hosts);
-
-  packages = lib.genAttrs machines_plats (
-    plat:
+  packages = lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
+    system:
     let
-      callPackage = nixpkgs_plats.${plat}.lib.customisation.callPackageWith (
-        nixpkgs_plats.${plat} // extraPackages
-      );
+      pkgs = import inputs.nixpkgs {
+        inherit system;
+        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "harmony-assistant" ];
+      };
 
-      extraPackages = builtins.mapAttrs (pname: _: callPackage (./pkgs + "/${pname}") { }) (
+      callPackage = pkgs.lib.customisation.callPackageWith (pkgs // ownPackages);
+
+      ownPackages = builtins.mapAttrs (pname: _: callPackage (./pkgs + "/${pname}") { }) (
         lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./pkgs)
       );
     in
     lib.filterAttrs (
-      _: drv: !(drv ? meta.platforms) || builtins.elem plat drv.meta.platforms
-    ) extraPackages
+      _: drv: !(drv ? meta.platforms) || builtins.elem system drv.meta.platforms
+    ) ownPackages
   );
 
-  checks = {
-    inherit packages;
-    machines = lib.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
-  };
+  nixosConfigurations = builtins.mapAttrs (
+    name: _:
+    import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
+      system = null;
+      inherit lib;
+      specialArgs = { inherit inputs packages; };
+      modules =
+        modulesIn ./nixos ++ modulesIn (./hosts + "/${name}") ++ [ { networking.hostName = name; } ];
+      extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
+    }
+  ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
 in
 
 {
-  inherit
-    packages
-    nixosModules
-    nixosConfigurations
-    checks
-    ;
+  inherit packages nixosConfigurations;
 
-  inherit machines;
+  checks = {
+    inherit packages;
+    machines = builtins.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
+  };
 }

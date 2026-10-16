@@ -94,61 +94,61 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    users.users = mkIf (cfg.user == "lidarr-youtube-downloader") {
-      lidarr-youtube-downloader = {
-        isSystemUser = true;
-        inherit (cfg) group;
+    users = {
+      users = mkIf (cfg.user == "lidarr-youtube-downloader") {
+        lidarr-youtube-downloader = {
+          isSystemUser = true;
+          inherit (cfg) group;
+        };
+      };
+      groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
+        lidarr-youtube-downloader = { };
       };
     };
 
-    users.groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
-      lidarr-youtube-downloader = { };
-    };
+    systemd = {
+      # The download directory must exist, group-writable.
+      tmpfiles.rules = optional (
+        cfg.downloadPath != null
+      ) "d ${cfg.downloadPath} 2775 ${cfg.user} ${cfg.group} - -";
+      services.lidarr-youtube-downloader = {
+        description = "Lidarr YouTube Downloader";
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network-online.target" ];
+        wants = [ "network-online.target" ];
 
-    # ReadWritePaths (and the app) require the download directory to exist;
-    # create it group-writable so the service can write there.
-    systemd.tmpfiles.rules = optional (
-      cfg.downloadPath != null
-    ) "d ${cfg.downloadPath} 2775 ${cfg.user} ${cfg.group} - -";
+        environment = {
+          FLASK_HOST = cfg.host;
+          FLASK_PORT = toString cfg.port;
+        }
+        // optionalAttrs (cfg.lidarrUrl != null) { LIDARR_URL = cfg.lidarrUrl; }
+        // optionalAttrs (cfg.downloadPath != null) { DOWNLOAD_PATH = toString cfg.downloadPath; }
+        // optionalAttrs (cfg.musicPath != null) { LIDARR_PATH = toString cfg.musicPath; }
+        // cfg.extraEnvironment;
 
-    systemd.services.lidarr-youtube-downloader = {
-      description = "Lidarr YouTube Downloader";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
+        serviceConfig = {
+          ExecStart = getExe cfg.package;
+          User = cfg.user;
+          Group = cfg.group;
+          Restart = "on-failure";
 
-      environment = {
-        FLASK_HOST = cfg.host;
-        FLASK_PORT = toString cfg.port;
-      }
-      // optionalAttrs (cfg.lidarrUrl != null) { LIDARR_URL = cfg.lidarrUrl; }
-      // optionalAttrs (cfg.downloadPath != null) { DOWNLOAD_PATH = toString cfg.downloadPath; }
-      // optionalAttrs (cfg.musicPath != null) { LIDARR_PATH = toString cfg.musicPath; }
-      // cfg.extraEnvironment;
+          # The app hardcodes /config: bind the state directory there.
+          StateDirectory = "lidarr-youtube-downloader";
+          StateDirectoryMode = "0750";
+          BindPaths = [ "/var/lib/lidarr-youtube-downloader:/config" ];
 
-      serviceConfig = {
-        ExecStart = getExe cfg.package;
-        User = cfg.user;
-        Group = cfg.group;
-        Restart = "on-failure";
+          EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
 
-        # The app hardcodes /config for its config.json and SQLite DB; map the
-        # persistent state directory onto it instead of patching the source.
-        StateDirectory = "lidarr-youtube-downloader";
-        StateDirectoryMode = "0750";
-        BindPaths = [ "/var/lib/lidarr-youtube-downloader:/config" ];
-
-        EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
-
-        # Hardening.
-        NoNewPrivileges = true;
-        PrivateTmp = true;
-        ProtectHome = true;
-        ProtectSystem = "strict";
-        ReadWritePaths =
-          optional (cfg.downloadPath != null) cfg.downloadPath
-          ++ optional (cfg.musicPath != null) cfg.musicPath;
+          NoNewPrivileges = true;
+          PrivateTmp = true;
+          ProtectHome = true;
+          ProtectSystem = "strict";
+          ReadWritePaths =
+            optional (cfg.downloadPath != null) cfg.downloadPath
+            ++ optional (cfg.musicPath != null) cfg.musicPath;
+        };
       };
     };
+
   };
 }

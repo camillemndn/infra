@@ -1,11 +1,5 @@
-# Wraps lon.nix with an optional patch overlay.
-#
-# Drop one or more .diff / .patch files into  patches/<input-name>/
-# and they'll be applied (via nixpkgs' applyPatches) to that input's
-# source. No `patches/<name>/` directory → input is passed through
-# unchanged. The unpatched nixpkgs from lon is used to provide the
-# applyPatches helper, so patches/nixpkgs/ works without bootstrapping
-# loops.
+# lon.nix inputs, with patches/<input>/*.{diff,patch} applied.
+# The unpatched nixpkgs applies them, so patches/nixpkgs works too.
 
 let
   raw = import ./lon.nix;

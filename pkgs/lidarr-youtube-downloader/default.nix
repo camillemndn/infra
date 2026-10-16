@@ -9,7 +9,7 @@
 }:
 
 let
-  # Not in nixpkgs; pure-Python, no dependencies. Used for cover-art fallback.
+  # Not in nixpkgs; cover-art fallback.
   bing-image-downloader = python3.pkgs.buildPythonPackage rec {
     pname = "bing-image-downloader";
     version = "1.1.3";
@@ -23,7 +23,7 @@ let
 
     build-system = [ python3.pkgs.setuptools ];
 
-    # No test suite; the package only reaches out to the network at runtime.
+    # No test suite.
     doCheck = false;
     pythonImportsCheck = [ "bing_image_downloader" ];
 
@@ -59,18 +59,14 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [ makeWrapper ];
 
-  # The album-download flow reads DOWNLOAD_DIR only from the DOWNLOAD_PATH env
-  # var, ignoring the download_path saved in config.json / the settings UI
-  # (unlike lidarr_path). Fall back to the configured value so the UI setting
-  # works as the app's own error message promises.
+  # The album flow reads DOWNLOAD_DIR only from DOWNLOAD_PATH; fall back to the configured download_path.
   postPatch = ''
     substituteInPlace app.py processing.py \
       --replace-fail 'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "")' \
         'DOWNLOAD_DIR = os.getenv("DOWNLOAD_PATH", "") or load_config().get("download_path", "")'
   '';
 
-  # Plain collection of Flask modules launched via `python app.py`; there is
-  # no build system, so just install the sources and wrap the entrypoint.
+  # No build system: install the sources and wrap app.py.
   dontConfigure = true;
   dontBuild = true;
 

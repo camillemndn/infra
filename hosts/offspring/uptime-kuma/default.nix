@@ -1,0 +1,329 @@
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
+
+let
+  inherit (config.networking) hostName;
+  inherit (import ../../..) nixosConfigurations;
+  machines = lib.mapAttrs (_: c: c.config.networking.addresses) nixosConfigurations;
+
+  inherit
+    (lib.dnsZones {
+      inherit
+        config
+        hostName
+        machines
+        nixosConfigurations
+        ;
+    })
+    publicMachines
+    nginxOf
+    ;
+
+  # Status page groups, in order; other monitors show only in the dashboard.
+  groups = [
+    "Hosts"
+    "Services"
+    "Websites"
+    "DNS"
+  ];
+
+  # Per public virtual host: name, group, page and expected text; other attributes
+  # go to the monitor. Unlisted hosts are still checked, under their domain.
+  vhostMonitors = {
+    "analytics.mndn.fr" = {
+      name = "📈 Analytics";
+      path = "/api/health";
+      keyword = ''"clickhouse":"ok"'';
+    };
+    "auth.mndn.fr" = {
+      name = "🔑 Accounts";
+      path = "/status";
+      keyword = "true";
+    };
+    # A worker that lost the master lists no connection.
+    "ci.mndn.fr" = {
+      name = "🏗 CI";
+      path = "/api/v2/workers";
+      keyword = ''"connected_to": []'';
+      invertKeyword = true;
+    };
+    "cloud.mndn.fr" = {
+      name = "☁️ Cloud";
+      path = "/status.php";
+      keyword = ''"maintenance":false'';
+    };
+    # Webtrees answers 406 to any User-Agent containing "Uptime".
+    "family.mndn.fr" = {
+      name = "🌳 Genealogy";
+      headers = builtins.toJSON { "User-Agent" = "mndn-status/1.0"; };
+    };
+    "genealogy.mndn.fr".name = "🌲 Family tree";
+    "meals.mndn.fr".name = "🍲 Recipes";
+    "media.mndn.fr" = {
+      name = "📽 Streaming";
+      path = "/health";
+      keyword = "Healthy";
+    };
+    "music.mndn.fr" = {
+      name = "🎵 Music";
+      path = "/ping";
+    };
+    "ntfy.mndn.fr" = {
+      name = "📣 Notifications";
+      path = "/v1/health";
+      keyword = ''"healthy":true'';
+    };
+    "requests.mndn.fr" = {
+      name = "🗳 Requests";
+      path = "/api/v1/status";
+    };
+    "sso.mndn.fr".name = "🛂 Sign-in";
+    "webhooks.mndn.fr" = {
+      name = "🪝 Webhooks";
+      group = null;
+      keyword = "OK";
+    };
+
+    "camillemondon.com" = {
+      name = "🌐 Camille Mondon";
+      group = "Websites";
+    };
+    "ceciliaflamenca.com" = {
+      name = "🌐 Cecilia flamenca";
+      group = "Websites";
+    };
+    "varanda.fr" = {
+      name = "🌐 Varanda";
+      group = "Websites";
+    };
+    "www.natachamondonericpierre.mndn.fr" = {
+      name = "🌐 Natacha Mondon & Éric Pierre";
+      group = "Websites";
+    };
+    "yali.es" = {
+      name = "🌐 Yali";
+      group = "Websites";
+    };
+  };
+
+  # Nothing to check: uptime/status die with their reporter, code.mndn.fr shows a
+  # sign-in page, hidimdaml has no root page, the bridge is checked on IMAP/SMTP.
+  unmonitored = [
+    "uptime.mndn.fr"
+    "status.mndn.fr"
+    "code.mndn.fr"
+    "hidimdaml.camillemondon.com"
+    "bridge.mndn.fr"
+  ];
+
+  machineTag = machine: [
+    {
+      name = "machine";
+      value = machine;
+    }
+  ];
+
+  # Every public virtual host over HTTPS; redirects and wildcards have no page.
+  vhostChecks = lib.concatLists (
+    lib.mapAttrsToList (
+      machine: _:
+      let
+        nginx = nginxOf machine;
+
+        isRedirect =
+          vhost:
+          vhost.globalRedirect != null || lib.hasPrefix "30" (toString (vhost.locations."/".return or null));
+
+        isMonitored =
+          name: vhost:
+          lib.hasSuffixIn nginx.publicDomains name
+          && !isRedirect vhost
+          && !lib.hasInfix "*" name
+          && !lib.elem name unmonitored;
+
+        check =
+          domain:
+          let
+            entry = {
+              name = domain;
+              group = "Services";
+              path = "/";
+            }
+            // vhostMonitors.${domain} or { };
+          in
+          {
+            inherit (entry) name group;
+            probe = {
+              type = if entry ? keyword then "keyword" else "http";
+              url = "https://${domain}${entry.path}";
+              expiryNotification = true;
+              tags = machineTag machine;
+            }
+            // removeAttrs entry [
+              "name"
+              "group"
+              "path"
+            ];
+          };
+      in
+      lib.optionals nginx.enable (
+        map check (lib.attrNames (lib.filterAttrs isMonitored nginx.virtualHosts))
+      )
+    ) publicMachines
+  );
+
+  # SSH over IPv6: offspring cannot reach its own public IPv4 through its NAT.
+  hostChecks = lib.mapAttrsToList (machine: m: {
+    name = machine;
+    group = "Hosts";
+    probe = {
+      type = "port";
+      hostname = m.ipv6.public or m.ipv4.public;
+      port = 22;
+      tags = machineTag machine;
+    };
+  }) publicMachines;
+
+  # Zones are checked through mndn.fr: ns1 is the SaumonNet router, ns2 offspring
+  # behind its NAT. A validating resolver answers SERVFAIL on broken signatures.
+  dnsCheck = name: server: {
+    inherit name;
+    group = "DNS";
+    probe = {
+      type = "dns";
+      hostname = "mndn.fr";
+      dns_resolve_type = "SOA";
+      dns_resolve_server = server;
+      port = 53;
+    };
+  };
+
+  otherChecks = [
+    (dnsCheck "📝 ns1" "77.42.114.11")
+    (dnsCheck "📝 ns2" machines.offspring.ipv4.local)
+    (dnsCheck "🔏 DNSSEC" "1.1.1.1")
+    {
+      name = "📬 Mail (IMAP)";
+      group = "Services";
+      probe = {
+        type = "port";
+        hostname = "bridge.mndn.fr";
+        port = 1143;
+      };
+    }
+    {
+      name = "📬 Mail (SMTP)";
+      group = "Services";
+      probe = {
+        type = "port";
+        hostname = "bridge.mndn.fr";
+        port = 1025;
+      };
+    }
+    # A status ping is answered by Velocity or lazymc and wakes no server.
+    {
+      name = "⛏ Minecraft";
+      group = "Services";
+      probe = {
+        type = "gamedig";
+        game = "minecraft";
+        hostname = "v1.mc.mndn.fr";
+        port = 25565;
+      };
+    }
+  ];
+
+  checks = hostChecks ++ vhostChecks ++ otherChecks;
+
+  monitorsIn = group: map (c: c.name) (lib.filter (c: c.group == group) checks);
+in
+
+{
+  services = {
+    uptime-kuma.enable = true;
+    ntfy-sh = {
+      enable = true;
+      settings = {
+        base-url = "https://ntfy.mndn.fr";
+        upstream-base-url = "https://ntfy.sh";
+        auth-file = "/var/lib/ntfy-sh/user.db";
+        auth-default-access = "deny-all";
+        listen-http = "127.0.0.1:3002";
+      };
+    };
+
+    nginx.virtualHosts = {
+      "uptime.mndn.fr" = {
+        port = 3001;
+        websockets = true;
+      };
+      "status.mndn.fr" = {
+        port = 3001;
+        websockets = true;
+      };
+      "ntfy.mndn.fr" = {
+        port = 3002;
+        websockets = true;
+      };
+    };
+  };
+  # Matched by name: same-named manual monitors are taken over, others left alone.
+  statelessUptimeKuma = {
+    enableService = true;
+    host = "http://127.0.0.1:3001";
+    username = "Camille";
+    passwordFile = config.age.secrets.uptime-kuma-password.path;
+
+    probesConfig = {
+      monitors = lib.listToAttrs (map (c: lib.nameValuePair c.name c.probe) checks);
+
+      # status.mndn.fr: names and states only, never addresses.
+      status_pages.public = {
+        title = "Public status";
+        domainNameList = [ "status.mndn.fr" ];
+        showTags = false;
+        publicGroupList = lib.filter (g: g.monitorList != [ ]) (
+          map (group: {
+            name = group;
+            monitorList = monitorsIn group;
+          }) groups
+        );
+      };
+    };
+  };
+
+  assertions = [
+    {
+      assertion = lib.allUnique (map (c: c.name) checks);
+      message = "Two Uptime Kuma monitors share a name.";
+    }
+  ];
+
+  age.secrets.uptime-kuma-password.file = ./password.age;
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      statelessUptimeKuma =
+        (final.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix" {
+          python3 = prev.python3.override {
+            packageOverrides = _: pyPrev: {
+              # Fork speaking the Uptime Kuma 2.x API.
+              uptime-kuma-api = pyPrev.uptime-kuma-api.overridePythonAttrs {
+                src = inputs.uptime-kuma-api;
+              };
+            };
+          };
+        }).overridePythonAttrs
+          {
+            # Upstream's lib.fileset.gitTracked needs a .git directory.
+            src = inputs.stateless-uptime-kuma;
+          };
+    })
+  ];
+
+  systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
+}

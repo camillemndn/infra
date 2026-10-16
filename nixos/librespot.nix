@@ -8,7 +8,6 @@
 let
   inherit (lib) types;
 
-  # Like lib.mapAttrsToList, but concatenate the results
   concatMapAttrsToList =
     f: attrs: builtins.concatMap (name: f name attrs.${name}) (builtins.attrNames attrs);
 

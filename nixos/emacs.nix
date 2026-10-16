@@ -94,7 +94,7 @@
         };
 
         config = lib.mkIf config.programs.emacs.orgMode.enable {
-          # Org is built in; envrc gives each buffer its project's direnv environment.
+          # envrc: per-buffer direnv environment.
           programs.emacs.extraPackages = epkgs: with epkgs; [ envrc ];
         };
       }

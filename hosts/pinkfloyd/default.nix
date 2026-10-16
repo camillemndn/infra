@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./networking.nix
-  ];
-
   hardware.sane.enable = true;
   programs.firefox.enable = true;
 

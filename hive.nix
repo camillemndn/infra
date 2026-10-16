@@ -1,15 +1,15 @@
 let
-  inherit ((import ./.)) nixosConfigurations machines;
+  inputs = import ./inputs.nix;
 
-  mkLibForMachine =
-    machine: (import "${machines.${machine}.nixpkgs_version}/lib").extend (import ./lib);
+  inherit (import ./.) nixosConfigurations;
 in
+
 {
   meta = {
-    nodeNixpkgs = builtins.mapAttrs (n: _: import machines.${n}.nixpkgs_version) nixosConfigurations;
+    nixpkgs = import inputs.nixpkgs { };
 
     nodeSpecialArgs = builtins.mapAttrs (
-      n: v: v._module.specialArgs // { lib = mkLibForMachine n; }
+      _: v: v._module.specialArgs // { lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib); }
     ) nixosConfigurations;
   };
 }

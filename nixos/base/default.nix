@@ -49,8 +49,10 @@ in
     git = {
       enable = true;
       config = {
-        user.name = "Camille M.";
-        user.email = "camillemondon@free.fr";
+        user = {
+          name = "Camille M.";
+          email = "camillemondon@free.fr";
+        };
         pull.rebase = true;
         fetch.prune = true;
         rebase.autoStash = true;
@@ -163,10 +165,7 @@ in
           language.base = "fr_FR.UTF-8";
           packages = [ pkgs.comma-with-db ];
           sessionVariables = {
-            # GDK_BACKEND must NOT be forced here: xdg-desktop-portal-gnome
-            # refuses to expose ScreenCast / Screenshot when GDK_BACKEND is
-            # set ("Non-compatible display server, exposing settings only").
-            # Modern GTK picks wayland automatically when XDG_SESSION_TYPE=wayland.
+            # GDK_BACKEND stays unset: xdg-desktop-portal-gnome refuses ScreenCast/Screenshot otherwise.
             QT_QPA_PLATFORM = "wayland";
           };
           stateVersion = lib.mkDefault "24.05";

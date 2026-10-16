@@ -49,10 +49,11 @@ lib.mkIf config.stylix.enable {
 
     polarity = "dark";
 
-    targets.fish.enable = false;
-    # The overlay patches gtksourceview, so everything above it (inkscape, …) misses the cache;
-    # the home-manager target installs the same scheme in ~/.local/share instead.
-    targets.gtksourceview.enable = false;
-    targets.qt.enable = false;
+    targets = {
+      fish.enable = false;
+      # The overlay rebuilds gtksourceview's dependents; the home-manager target installs the scheme instead.
+      gtksourceview.enable = false;
+      qt.enable = false;
+    };
   };
 }

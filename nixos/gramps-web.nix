@@ -14,8 +14,7 @@ let
   python = pkgs.python3.withPackages (ps: [ (ps.toPythonModule pkgs.gramps-webapi) ]);
   gramps-webapi = "${python}/bin/python -m gramps_webapi";
 
-  # Alembic reads alembic.ini from the working directory; the wheel ships neither it nor the
-  # migration scripts.
+  # Alembic needs alembic.ini and the migrations in its working directory; the wheel ships neither.
   migrations = pkgs.runCommand "gramps-webapi-migrations" { } ''
     mkdir $out
     cp -r ${pkgs.gramps-webapi.src}/{alembic.ini,alembic_users} $out
@@ -57,7 +56,7 @@ let
     GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis+unix://${redis.unixSocket}?db=1";
   };
 
-  # Both units run as the same dynamic user, so they share the data and the secret key.
+  # Same dynamic user for both units: shared data and secret key.
   serviceConfig = {
     DynamicUser = true;
     User = "gramps-web";
@@ -93,60 +92,65 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.redis.servers.gramps-web = {
-      enable = true;
-      port = 0;
+    services = {
+      redis.servers.gramps-web = {
+        enable = true;
+        port = 0;
+      };
+      nginx.virtualHosts.${cfg.hostName} = {
+        inherit (cfg) port;
+        locations."/".extraConfig = ''
+          client_max_body_size 500M;
+        '';
+      };
     };
 
-    systemd.services.gramps-web = {
-      description = "Gramps Web";
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "redis-gramps-web.service" ];
-      after = [
-        "network.target"
-        "redis-gramps-web.service"
-      ];
+    systemd = {
+      services = {
+        gramps-web = {
+          description = "Gramps Web";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "redis-gramps-web.service" ];
+          after = [
+            "network.target"
+            "redis-gramps-web.service"
+          ];
 
-      inherit environment serviceConfig;
+          inherit environment serviceConfig;
 
-      # The Flask secret key is generated once and kept with the data.
-      preStart = ''
-        if [ ! -s ${stateDir}/secret ]; then
-          (umask 077; head -c 32 /dev/urandom | base64 > ${stateDir}/secret)
-        fi
-        mkdir -p ${stateDir}/media ${stateDir}/grampsdb
-        (cd ${migrations} && GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret) ${gramps-webapi} user migrate)
-      '';
+          # The Flask secret key is generated once and kept with the data.
+          preStart = ''
+            if [ ! -s ${stateDir}/secret ]; then
+              (umask 077; head -c 32 /dev/urandom | base64 > ${stateDir}/secret)
+            fi
+            mkdir -p ${stateDir}/media ${stateDir}/grampsdb
+            (cd ${migrations} && GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret) ${gramps-webapi} user migrate)
+          '';
 
-      script = ''
-        export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
-        exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
-      '';
+          script = ''
+            export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
+            exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
+          '';
+        };
+        gramps-web-celery = {
+          description = "Gramps Web background tasks";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "redis-gramps-web.service" ];
+          # Creates the secret key and migrates the user database.
+          after = [
+            "gramps-web.service"
+            "redis-gramps-web.service"
+          ];
+
+          inherit environment serviceConfig;
+
+          script = ''
+            export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
+            exec ${python}/bin/celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2
+          '';
+        };
+      };
     };
 
-    systemd.services.gramps-web-celery = {
-      description = "Gramps Web background tasks";
-      wantedBy = [ "multi-user.target" ];
-      requires = [ "redis-gramps-web.service" ];
-      # gramps-web creates the secret key and migrates the user database.
-      after = [
-        "gramps-web.service"
-        "redis-gramps-web.service"
-      ];
-
-      inherit environment serviceConfig;
-
-      script = ''
-        export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
-        exec ${python}/bin/celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2
-      '';
-    };
-
-    services.nginx.virtualHosts.${cfg.hostName} = {
-      inherit (cfg) port;
-      locations."/".extraConfig = ''
-        client_max_body_size 500M;
-      '';
-    };
   };
 }

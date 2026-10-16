@@ -9,7 +9,7 @@ with lib;
   options.services.nginx = {
     enableDefault = mkEnableOption "Fallback to default page";
 
-    # Several profiles name the same domain, and list options concatenate.
+    # Several modules name the same domain; lists concatenate.
     publicDomains = mkOption {
       default = [ "mndn.fr" ];
       type = types.listOf types.str;
@@ -27,7 +27,7 @@ with lib;
       type = types.str;
     };
 
-    # Suffixes no certificate authority can validate, so they keep plain HTTP.
+    # Suffixes no CA can validate stay on plain HTTP.
     localDomains = mkOption {
       default = [ ];
       type = types.listOf types.str;
@@ -43,13 +43,15 @@ with lib;
             ...
           }:
           {
-            options.port = mkOption {
-              type = types.port;
-              default = 0;
-            };
-            options.websockets = mkOption {
-              type = types.bool;
-              default = false;
+            options = {
+              port = mkOption {
+                type = types.port;
+                default = 0;
+              };
+              websockets = mkOption {
+                type = types.bool;
+                default = false;
+              };
             };
 
             config = {
@@ -63,7 +65,6 @@ with lib;
                   mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
                 proxyWebsockets = mkDefault config.websockets;
               };
-              # Firewall VPN domains
               extraConfig =
                 if (hasSuffixIn cfg.publicDomains name) then
                   ''
@@ -90,7 +91,6 @@ with lib;
       recommendedGzipSettings = mkDefault true;
       recommendedTlsSettings = mkDefault true;
 
-      # VPN IPs
       appendHttpConfig = ''
         geo $bad_ip {
           default 1;
@@ -108,11 +108,10 @@ with lib;
 
       clientMaxBodySize = "20m";
 
-      # Do not fallback to default
       virtualHosts.default = mkIf (!cfg.enableDefault) {
         default = true;
         addSSL = true;
-        # To generate the certificates: nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem
+        # nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem
         sslCertificate = "/var/lib/acme/default/cert.pem";
         sslCertificateKey = "/var/lib/acme/default/key.pem";
         extraConfig = ''
@@ -121,7 +120,6 @@ with lib;
       };
     };
 
-    # Use VPN CA only on VPN domains
     security.acme.certs = mapAttrs (
       n: _:
       mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {
@@ -129,14 +127,17 @@ with lib;
       }
     ) cfg.virtualHosts;
 
-    # Open port 443 only if necessary
-    networking.firewall.allowedTCPPorts = mkIf cfg.enable [
-      80
-      443
-    ];
-    networking.firewall.allowedUDPPorts = mkIf cfg.enable [
-      80
-      443
-    ];
+    networking = {
+      firewall = {
+        allowedTCPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
+        allowedUDPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
+      };
+    };
   };
 }

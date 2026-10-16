@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./networking.nix
-  ];
-
   environment.systemPackages = with pkgs; [
     idevicerestore
     ifuse

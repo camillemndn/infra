@@ -1,6 +1,0 @@
-{
-  imports = [
-    ./nsd
-    ./uptime-kuma
-  ];
-}

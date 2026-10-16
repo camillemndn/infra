@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 let
-  # jupyter_client swaps a bare `python` in a kernelspec for its own interpreter
-  # (molten's host); going through `env` resolves `python` from the PATH nvim was
-  # started with, i.e. the current project's environment.
+  # Through `env`, kernels use the project's `python` rather than molten's interpreter.
   jupyterKernels = pkgs.writeTextDir "share/jupyter/kernels/python3/kernel.json" (
     builtins.toJSON {
       argv = [
@@ -23,7 +21,7 @@ in
   programs.nixvim = {
     autoCmd = [
       {
-        # Notebooks are edited as markdown, converted by the jupytext CLI.
+        # Notebooks edited as markdown through jupytext.
         event = "BufReadCmd";
         pattern = "*.ipynb";
         callback.__raw = builtins.readFile ./ipynb_read.lua;
@@ -34,7 +32,7 @@ in
         callback.__raw = builtins.readFile ./ipynb_write.lua;
       }
       {
-        # quarto runs the code cells of markdown buffers, notebooks included.
+        # quarto runs code cells, notebooks included.
         event = "FileType";
         pattern = "markdown";
         callback.__raw = ''function() require("quarto").activate() end'';
@@ -59,7 +57,7 @@ in
 
     defaultEditor = true;
 
-    # A project's own JUPYTER_PATH comes first and takes precedence.
+    # The project's JUPYTER_PATH takes precedence.
     extraConfigLuaPre = ''
       vim.env.JUPYTER_PATH = (vim.env.JUPYTER_PATH and vim.env.JUPYTER_PATH .. ":" or "")
         .. "${jupyterKernels}/share/jupyter"
@@ -229,7 +227,7 @@ in
 
       molten = {
         enable = true;
-        # wezterm.nvim, an optional image provider, is only a check input and is unfree.
+        # wezterm.nvim (unfree) is only a check input.
         package = pkgs.vimPlugins.molten-nvim.overrideAttrs {
           checkInputs = with pkgs.vimPlugins; [
             image-nvim

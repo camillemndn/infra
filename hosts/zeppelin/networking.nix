@@ -1,5 +1,15 @@
 let
-  meta = import ./meta.nix;
+  addresses = {
+    ipv4 = {
+      local = "192.168.0.137";
+      public = "77.42.114.11";
+      vpn = "100.100.45.7";
+    };
+    ipv6 = {
+      public = "2a01:4f9:3090:2b8c:be24:11ff:fe0b:49fd";
+      vpn = "fd7a:115c:a1e0::7";
+    };
+  };
 in
 {
   config,
@@ -9,9 +19,7 @@ in
 }:
 
 let
-  # Services confined to the Mullvad tunnel join this namespace. Its only
-  # routes are the tunnel and a veth link to the host, so traffic cannot
-  # leave by any other path, even when the tunnel is down.
+  # Mullvad namespace: only the tunnel and a veth to the host, so nothing leaks when the tunnel is down.
   vpnServices = [
     "deluged"
     "delugeweb"
@@ -19,8 +27,7 @@ let
     "slskd"
   ];
 
-  # Web ports relayed from the host loopback, so nginx and the *arr download
-  # clients keep reaching them on 127.0.0.1.
+  # Relayed to the host loopback for nginx and the *arr clients.
   vpnPorts = [
     3022 # flood
     5030 # slskd
@@ -43,12 +50,8 @@ let
   proxyName = port: "netns-vpn-proxy-${toString port}";
 in
 {
-  deployment = {
-    targetHost = "zeppelin.kms";
-    allowLocalDeployment = true;
-  };
-
   networking = {
+    inherit addresses;
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
     wireguard.interfaces.wg0 = {
@@ -57,8 +60,7 @@ in
         "10.66.154.125/32"
         "fc00:bbbb:bbbb:bb01::3:9a7c/128"
       ];
-      # The UDP socket stays on the host; the interface and its routes live
-      # in the namespace.
+      # Socket on the host, interface and routes in the namespace.
       interfaceNamespace = "vpn";
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
@@ -75,6 +77,11 @@ in
     };
   };
 
+  deployment = {
+    targetHost = "zeppelin.kms";
+    allowLocalDeployment = true;
+  };
+
   # Mullvad's resolver, reachable only through the tunnel.
   environment.etc."netns/vpn/resolv.conf".text = ''
     nameserver 10.64.0.1
@@ -87,97 +94,99 @@ in
     tailscale.enable = true;
   };
 
-  systemd.services = lib.mkMerge [
-    {
-      netns-vpn = {
-        description = "Network namespace for services confined to the Mullvad tunnel";
-        after = [ "network-pre.target" ];
-        before = [ "network.target" ];
-        path = with pkgs; [
-          iproute2
-          nftables
-        ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
+  systemd = {
+    services = lib.mkMerge [
+      {
+        netns-vpn = {
+          description = "Network namespace for services confined to the Mullvad tunnel";
+          after = [ "network-pre.target" ];
+          before = [ "network.target" ];
+          path = with pkgs; [
+            iproute2
+            nftables
+          ];
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+          script = ''
+            ip netns del vpn 2>/dev/null || true
+            ip netns add vpn
+            ip -n vpn link set lo up
+            ip link add veth-vpn type veth peer name vpn0 netns vpn
+            ip link set veth-vpn up
+            ip -n vpn address add ${vpnAddress}/30 dev vpn0
+            ip -n vpn link set vpn0 up
+            ip netns exec vpn nft -f ${vpnRules}
+          '';
+          postStop = ''
+            ip netns del vpn || true
+          '';
         };
-        script = ''
-          ip netns del vpn 2>/dev/null || true
-          ip netns add vpn
-          ip -n vpn link set lo up
-          ip link add veth-vpn type veth peer name vpn0 netns vpn
-          ip link set veth-vpn up
-          ip -n vpn address add ${vpnAddress}/30 dev vpn0
-          ip -n vpn link set vpn0 up
-          ip netns exec vpn nft -f ${vpnRules}
-        '';
-        postStop = ''
-          ip netns del vpn || true
-        '';
-      };
 
-      wireguard-wg0 = {
-        requires = [ "netns-vpn.service" ];
-        after = [ "netns-vpn.service" ];
+        wireguard-wg0 = {
+          requires = [ "netns-vpn.service" ];
+          after = [ "netns-vpn.service" ];
+          partOf = [ "netns-vpn.service" ];
+        };
+      }
+      (lib.genAttrs vpnServices (_: {
+        requires = [ "wireguard-wg0.service" ];
+        after = [ "wireguard-wg0.service" ];
         partOf = [ "netns-vpn.service" ];
-      };
-    }
-    (lib.genAttrs vpnServices (_: {
-      requires = [ "wireguard-wg0.service" ];
-      after = [ "wireguard-wg0.service" ];
-      partOf = [ "netns-vpn.service" ];
-      serviceConfig = {
-        NetworkNamespacePath = "/run/netns/vpn";
-        BindReadOnlyPaths = [ "/etc/netns/vpn/resolv.conf:/etc/resolv.conf" ];
-        # nscd answers from the host namespace, outside the tunnel.
-        InaccessiblePaths = [ "-/run/nscd" ];
-      };
-    }))
-    (lib.listToAttrs (
+        serviceConfig = {
+          NetworkNamespacePath = "/run/netns/vpn";
+          BindReadOnlyPaths = [ "/etc/netns/vpn/resolv.conf:/etc/resolv.conf" ];
+          # nscd answers from the host namespace, outside the tunnel.
+          InaccessiblePaths = [ "-/run/nscd" ];
+        };
+      }))
+      (lib.listToAttrs (
+        map (
+          port:
+          lib.nameValuePair (proxyName port) {
+            description = "Relay 127.0.0.1:${toString port} into the VPN namespace";
+            requires = [ "${proxyName port}.socket" ];
+            after = [ "${proxyName port}.socket" ];
+            serviceConfig = {
+              ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
+              DynamicUser = true;
+            };
+          }
+        ) vpnPorts
+      ))
+      {
+        # Without nscd glibc cannot resolve flood's dynamic user, and Node reads $HOME first.
+        flood.environment.HOME = "/var/lib/flood";
+      }
+    ];
+    sockets = lib.listToAttrs (
       map (
         port:
         lib.nameValuePair (proxyName port) {
-          description = "Relay 127.0.0.1:${toString port} into the VPN namespace";
-          requires = [ "${proxyName port}.socket" ];
-          after = [ "${proxyName port}.socket" ];
-          serviceConfig = {
-            ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
-            DynamicUser = true;
-          };
+          wantedBy = [ "sockets.target" ];
+          listenStreams = [ "127.0.0.1:${toString port}" ];
         }
       ) vpnPorts
-    ))
-    {
-      # Without nscd, glibc cannot resolve flood's dynamic user; Node reads
-      # $HOME before asking glibc for the home directory.
-      flood.environment.HOME = "/var/lib/flood";
-    }
-  ];
-
-  systemd.sockets = lib.listToAttrs (
-    map (
-      port:
-      lib.nameValuePair (proxyName port) {
-        wantedBy = [ "sockets.target" ];
-        listenStreams = [ "127.0.0.1:${toString port}" ];
-      }
-    ) vpnPorts
-  );
-
-  systemd.network = {
-    enable = true;
-    # Sorts before 10-wan, whose Type=ether match would otherwise claim the veth.
-    networks."05-veth-vpn" = {
-      matchConfig.Name = "veth-vpn";
-      address = [ "10.200.0.1/30" ];
-      networkConfig.LinkLocalAddressing = "no";
-      linkConfig.RequiredForOnline = "no";
-    };
-    networks."10-wan" = {
-      matchConfig.Type = "ether";
-      address = [ "${meta.ipv4.local}/21" ];
-      routes = [ { Gateway = "192.168.0.1"; } ];
-      linkConfig.RequiredForOnline = "routable";
+    );
+    network = {
+      enable = true;
+      networks = {
+        # Before 10-wan, whose Type=ether would claim the veth.
+        "05-veth-vpn" = {
+          matchConfig.Name = "veth-vpn";
+          address = [ "10.200.0.1/30" ];
+          networkConfig.LinkLocalAddressing = "no";
+          linkConfig.RequiredForOnline = "no";
+        };
+        "10-wan" = {
+          matchConfig.Type = "ether";
+          address = [ "${addresses.ipv4.local}/21" ];
+          routes = [ { Gateway = "192.168.0.1"; } ];
+          linkConfig.RequiredForOnline = "routable";
+        };
+      };
     };
   };
+
 }

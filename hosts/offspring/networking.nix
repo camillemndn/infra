@@ -1,7 +1,14 @@
 _: {
-  deployment.targetHost = "offspring.mndn.fr";
-
   networking = {
+    addresses = {
+      ipv4 = {
+        # The cloud provider's NAT address; the instance only sees `local`.
+        local = "10.0.0.163";
+        public = "158.178.204.106";
+      };
+      ipv6.public = "2603:c027:c002:702:a0c:c8e:cc5e:c723";
+    };
+    domain = "mndn.fr";
     firewall = {
       allowedUDPPorts = [ 51820 ];
     };
@@ -21,4 +28,7 @@ _: {
       ];
     };
   };
+
+  deployment.targetHost = "offspring.mndn.fr";
+
 }

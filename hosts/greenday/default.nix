@@ -1,11 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./networking.nix
-  ];
-
   users.users.georgette = {
     isNormalUser = true;
     description = "Georgette";
