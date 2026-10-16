@@ -11,7 +11,6 @@
   killall,
   mpv,
   nix-update-script,
-  pyalsaaudio,
   spotify-player,
   sqlite,
 }:
