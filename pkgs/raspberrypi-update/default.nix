@@ -18,13 +18,13 @@
 
 stdenv.mkDerivation {
   pname = "raspberrypi-update";
-  version = "0-unstable-2025-04-15";
+  version = "0-unstable-2026-08-26";
 
   src = fetchFromGitHub {
     owner = "raspberrypi";
     repo = "rpi-update";
-    rev = "5114bb59da5db8c3725966e8f7a2f7b8a158b15a";
-    hash = "sha256-DxmMUgMLoFVIvZ+1fE0H8wDLd0Y1Q5mc0lxg0uzjUrM=";
+    rev = "0fd4cffe552e9c323ca97d89ccdc25f63e112f8b";
+    hash = "sha256-W60Yvg5ibXkptHQ7Hmy1IKCd/Qkv0R5f6I4CJtRIEx8=";
   };
 
   postPatch = ''
