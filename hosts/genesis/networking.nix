@@ -5,14 +5,6 @@
     targetHost = null;
   };
 
-  networking = {
-
-    firewall = {
-      allowedTCPPorts = [ 53317 ]; # LocalSend
-      allowedUDPPorts = [ 53317 ]; # LocalSend
-    };
-  };
-
   services = {
     openssh.enable = false;
 

@@ -28,7 +28,6 @@
           # Sync
           bitwarden-cli
           joplin-desktop
-          localsend
           nextcloud-client
           qbittorrent
           tailscale-systray

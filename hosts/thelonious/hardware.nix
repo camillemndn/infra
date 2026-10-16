@@ -5,7 +5,6 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/etc/secureboot";
-      configurationLimit = 5;
     };
 
     initrd = {
@@ -54,17 +53,7 @@
     nvidia.open = true;
   };
 
-  security.rtkit.enable = true;
-
   services = {
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-    };
 
     xserver.videoDrivers = [ "nvidia" ];
   };

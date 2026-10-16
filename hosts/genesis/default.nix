@@ -36,6 +36,7 @@
   programs = {
     dms-shell.enable = true;
     firefox.enable = true;
+    localsend.enable = true;
     niri.enable = true;
     nixvim.enable = true;
     steam.enable = true;

@@ -7,11 +7,6 @@ in
 _: {
   networking = {
     inherit addresses;
-
-    firewall = {
-      allowedTCPPorts = [ 53317 ]; # LocalSend
-      allowedUDPPorts = [ 53317 ]; # LocalSend
-    };
   };
 
   deployment = {

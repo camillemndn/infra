@@ -11,11 +11,7 @@ with lib;
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-      configurationLimit = 5;
-    };
+    lanzaboote.enable = true;
 
     initrd = {
       availableKernelModules = [
@@ -101,7 +97,6 @@ with lib;
   };
 
   security = {
-    rtkit.enable = true;
     pam.loginLimits = [
       {
         domain = "@audio";
@@ -116,15 +111,7 @@ with lib;
     asusd.enable = true;
     fprintd.enable = true;
     fwupd.enable = true;
-    pipewire = {
-      enable = true;
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-      pulse.enable = true;
-      jack.enable = true;
-    };
+    pipewire.jack.enable = true;
 
     power-profiles-daemon.enable = true;
     supergfxd = {

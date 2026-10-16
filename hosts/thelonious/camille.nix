@@ -17,7 +17,6 @@
 
           # Sync
           bitwarden-cli
-          localsend
           tailscale-systray
 
           # Graphics

@@ -11,11 +11,7 @@
   ];
 
   boot = {
-    lanzaboote = {
-      enable = true;
-      pkiBundle = "/var/lib/sbctl";
-      configurationLimit = 5;
-    };
+    lanzaboote.enable = true;
 
     initrd = {
       availableKernelModules = [
