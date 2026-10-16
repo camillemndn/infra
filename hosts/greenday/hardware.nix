@@ -11,7 +11,6 @@
   boot = {
     loader = {
       systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
     };
 
     initrd.availableKernelModules = [
@@ -45,10 +44,6 @@
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     sane.enable = true;
   };
-
-  networking.useDHCP = lib.mkDefault true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   powerManagement.enable = false;
 

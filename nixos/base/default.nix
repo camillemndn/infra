@@ -43,7 +43,14 @@ in
     };
   };
 
-  deployment.buildOnTarget = lib.mkDefault true;
+  deployment = {
+    buildOnTarget = lib.mkDefault true;
+    allowLocalDeployment = lib.mkDefault true;
+  };
+
+  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   programs = {
     git = {
@@ -81,7 +88,12 @@ in
   };
 
   services = {
-    openssh.settings.PasswordAuthentication = lib.mkDefault false;
+    openssh = {
+      enable = lib.mkDefault true;
+      settings.PasswordAuthentication = lib.mkDefault false;
+    };
+
+    tailscale.enable = lib.mkDefault true;
 
     mysql = {
       package = lib.mkForce pkgs.mariadb;
@@ -101,6 +113,7 @@ in
   };
 
   networking = {
+    networkmanager.enable = lib.mkDefault true;
     firewall.checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };

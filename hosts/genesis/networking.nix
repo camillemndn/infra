@@ -2,12 +2,10 @@
 
 {
   deployment = {
-    allowLocalDeployment = true;
     targetHost = null;
   };
 
   networking = {
-    networkmanager.enable = true;
 
     firewall = {
       allowedTCPPorts = [ 53317 ]; # LocalSend
@@ -16,6 +14,8 @@
   };
 
   services = {
+    openssh.enable = false;
+
     dnscrypt-proxy = {
       enable = true;
       settings = {
@@ -34,6 +34,5 @@
       package = pkgs.mullvad-vpn;
     };
 
-    tailscale.enable = true;
   };
 }

@@ -6,8 +6,8 @@ _:
   ];
 
   services = {
-    openssh.enable = true;
     nginx.enable = true;
+    tailscale.enable = false;
   };
 
   system.stateVersion = "23.05";

@@ -7,7 +7,6 @@ in
 _: {
   networking = {
     inherit addresses;
-    networkmanager.enable = true;
 
     firewall = {
       allowedTCPPorts = [ 53317 ]; # LocalSend
@@ -16,12 +15,9 @@ _: {
   };
 
   deployment = {
-    allowLocalDeployment = true;
     targetHost = addresses.ipv4.vpn;
   };
 
   services = {
-    openssh.enable = true;
-    tailscale.enable = true;
   };
 }

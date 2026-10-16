@@ -8,8 +8,6 @@
       configurationLimit = 5;
     };
 
-    loader.efi.canTouchEfiVariables = true;
-
     initrd = {
       systemd.enable = true;
 
@@ -32,11 +30,9 @@
         "tpm_tis"
       ];
 
-      kernelModules = [ ];
     };
 
     kernelModules = [ "kvm-intel" ];
-    extraModulePackages = [ ];
     kernelParams = [ "tpm_tis.interrupts=0" ];
   };
 
@@ -52,9 +48,6 @@
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
-
-  networking.useDHCP = lib.mkDefault true;
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   hardware = {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

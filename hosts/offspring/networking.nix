@@ -1,5 +1,6 @@
 _: {
   networking = {
+    networkmanager.enable = false;
     addresses = {
       ipv4 = {
         # The cloud provider's NAT address; the instance only sees `local`.
@@ -29,6 +30,9 @@ _: {
     };
   };
 
-  deployment.targetHost = "offspring.mndn.fr";
+  deployment = {
+    targetHost = "offspring.mndn.fr";
+    allowLocalDeployment = false;
+  };
 
 }

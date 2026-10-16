@@ -6,13 +6,13 @@ in
 _: {
   networking = {
     inherit addresses;
-    networkmanager.enable = true;
   };
 
   deployment = {
     targetHost = addresses.ipv4.local;
     buildOnTarget = false;
+    allowLocalDeployment = false;
   };
 
-  services.openssh.enable = true;
+  services.tailscale.enable = false;
 }

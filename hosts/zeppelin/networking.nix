@@ -54,6 +54,7 @@ in
     inherit addresses;
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
+    networkmanager.enable = false;
     wireguard.interfaces.wg0 = {
       # Device: Pretty Ox
       ips = [
@@ -79,7 +80,6 @@ in
 
   deployment = {
     targetHost = "zeppelin.kms";
-    allowLocalDeployment = true;
   };
 
   # Mullvad's resolver, reachable only through the tunnel.
@@ -90,8 +90,6 @@ in
   services = {
     # Inside the namespace, localhost is not reachable from the relay.
     flood.host = "0.0.0.0";
-    openssh.enable = true;
-    tailscale.enable = true;
   };
 
   systemd = {

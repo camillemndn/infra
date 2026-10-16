@@ -37,6 +37,7 @@ in
 {
   boot = {
     loader = {
+      efi.canTouchEfiVariables = false;
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
     };

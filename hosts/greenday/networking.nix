@@ -7,21 +7,15 @@ in
 _: {
   networking = {
     inherit addresses;
-    networkmanager.enable = true;
     firewall.allowedTCPPorts = [ 3389 ];
   };
 
   deployment = {
     targetHost = addresses.ipv6.vpn;
-    allowLocalDeployment = true;
   };
 
   services = {
-    openssh = {
-      enable = true;
-      settings.PasswordAuthentication = true;
-    };
+    openssh.settings.PasswordAuthentication = true;
 
-    tailscale.enable = true;
   };
 }

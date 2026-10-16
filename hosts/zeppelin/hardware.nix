@@ -13,7 +13,6 @@
 
     loader = {
       systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
     };
 
     initrd.availableKernelModules = [
@@ -50,5 +49,4 @@
     }
   ];
 
-  nixpkgs.hostPlatform = "x86_64-linux";
 }

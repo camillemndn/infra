@@ -17,8 +17,6 @@ with lib;
       configurationLimit = 5;
     };
 
-    loader.efi.canTouchEfiVariables = true;
-
     initrd = {
       availableKernelModules = [
         "nvme"
@@ -164,5 +162,4 @@ with lib;
     };
   };
 
-  nixpkgs.hostPlatform = "x86_64-linux";
 }

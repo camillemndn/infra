@@ -9,7 +9,6 @@
         enable = true;
         configurationLimit = 2;
       };
-      efi.canTouchEfiVariables = true;
     };
 
     initrd.availableKernelModules = [
