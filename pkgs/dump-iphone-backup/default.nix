@@ -14,13 +14,13 @@ in
 
 stdenv.mkDerivation {
   pname = "dump-iphone-backup";
-  version = "0-unstable-2023-07-22";
+  version = "0-unstable-2026-09-13";
 
   src = fetchFromGitHub {
     owner = "PeterUpfold";
     repo = "dump-iphone-backup";
-    rev = "66833eab45b8a72260e0974dc904a23e47babf16";
-    hash = "sha256-1CBQ7cfoXEvKvQ/CE+Rj8OqVrP8Z8jFRDTXnu73+RUA=";
+    rev = "031f7c553a60bb6fe5943f1b997e755e30743e2c";
+    hash = "sha256-ZybbWiQMRDM3EswC9OpPBeQbm8KLPHmt3dKvoRnOVtw=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
