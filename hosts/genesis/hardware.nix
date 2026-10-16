@@ -25,15 +25,6 @@ with lib;
 
       clevisLuksAskpass.enable = true;
 
-      luks.devices = {
-        luks-d0de046c-c584-4761-a3cb-66fc7a1802b8.device = "/dev/disk/by-uuid/d0de046c-c584-4761-a3cb-66fc7a1802b8";
-
-        luks-dd5289a3-7499-4efe-8354-2bf713b672df = {
-          device = "/dev/disk/by-uuid/dd5289a3-7499-4efe-8354-2bf713b672df";
-          keyFile = "/crypto_keyfile.bin";
-        };
-      };
-
       secrets."/crypto_keyfile.bin" = null;
     };
 
@@ -56,18 +47,6 @@ with lib;
     nvtopPackages.full
     sbctl
   ];
-
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/7bb7a74c-66f3-4d32-8502-edf64f52e23e";
-      fsType = "ext4";
-    };
-
-    "/boot" = {
-      device = "/dev/disk/by-uuid/A48C-7D48";
-      fsType = "vfat";
-    };
-  };
 
   hardware = {
     bluetooth.enable = true;
@@ -132,8 +111,6 @@ with lib;
       "nvidia"
     ];
   };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/985173da-9c6d-46e0-a04b-bbba9966f315"; } ];
 
   systemd = {
     services = {
