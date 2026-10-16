@@ -1,5 +1,5 @@
 # Records no nginx virtual host implies, in dns.nix syntax.
-{ machines }:
+{ hosts }:
 
 {
   "camillemondon.com".TXT = [
@@ -12,8 +12,8 @@
 
   # Minecraft servers are routed by hostname.
   "mndn.fr".subdomains."*.mc" = {
-    A = [ machines.zeppelin.ipv4.public ];
-    AAAA = [ machines.zeppelin.ipv6.public ];
+    A = [ hosts.zeppelin.ipv4.public ];
+    AAAA = [ hosts.zeppelin.ipv6.public ];
   };
 
   # Mail is hosted on mail.luj.fr.

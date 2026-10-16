@@ -1,21 +1,19 @@
 {
   config,
+  hosts,
   inputs,
   lib,
+  nixosConfigurations,
   ...
 }:
 
 let
-  inherit (config.networking) hostName;
-  inherit (import ../../..) nixosConfigurations;
-  machines = lib.mapAttrs (_: c: c.config.networking.addresses) nixosConfigurations;
 
   inherit
     (lib.dnsZones {
       inherit
         config
-        hostName
-        machines
+        hosts
         nixosConfigurations
         ;
     })
@@ -204,7 +202,7 @@ let
 
   otherChecks = [
     (dnsCheck "📝 ns1" "77.42.114.11")
-    (dnsCheck "📝 ns2" machines.offspring.ipv4.local)
+    (dnsCheck "📝 ns2" hosts.offspring.ipv4.local)
     (dnsCheck "🔏 DNSSEC" "1.1.1.1")
     {
       name = "📬 Mail (IMAP)";

@@ -1,8 +1,6 @@
-let
-  offspring = (import ../.).nixosConfigurations.offspring.config.networking.addresses;
-in
 {
   config,
+  hosts,
   lib,
   pkgs,
   inputs,
@@ -22,7 +20,7 @@ in
 
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
-        hostName = offspring.ipv4.public;
+        hostName = hosts.offspring.ipv4.public;
         sshUser = "root";
         system = "aarch64-linux";
         maxJobs = 2;
@@ -62,8 +60,8 @@ in
   # Unattended builds can't accept unknown host keys, and offspring's sshd penalises dropped connections.
   programs.ssh.knownHosts.offspring = {
     hostNames = [
-      offspring.ipv4.public
-      offspring.ipv6.public
+      hosts.offspring.ipv4.public
+      hosts.offspring.ipv6.public
     ];
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTQP1XL41AvmwxYaoFSAK6p8X9NPdMg8jppRspeV4cy";
   };

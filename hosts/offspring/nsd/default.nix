@@ -1,15 +1,14 @@
 {
   config,
+  hosts,
   inputs,
   lib,
+  nixosConfigurations,
   pkgs,
   ...
 }:
 
 let
-  inherit (config.networking) hostName;
-  inherit (import ../../..) nixosConfigurations;
-  machines = lib.mapAttrs (_: c: c.config.networking.addresses) nixosConfigurations;
 
   dns = import inputs.dns { inherit pkgs; };
 
@@ -17,7 +16,7 @@ let
 
   # Secondary for zones signed elsewhere; transfers cross the internet under a TSIG key.
   primary = "zeppelin";
-  primaryAddress = machines.${primary}.ipv6.public;
+  primaryAddress = hosts.${primary}.ipv6.public;
   # Notifies may come from any address of the primary; the key authenticates them.
   primaryPrefix = "${lib.concatStringsSep ":" (lib.take 4 (lib.splitString ":" primaryAddress))}::/64";
   # Same key name on both ends.
@@ -27,8 +26,7 @@ let
     (lib.dnsZones {
       inherit
         config
-        hostName
-        machines
+        hosts
         nixosConfigurations
         ;
     }).names;

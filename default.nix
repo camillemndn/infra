@@ -3,15 +3,14 @@ let
 
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib);
 
-  modulesIn =
-    dir:
-    lib.mapAttrsToList (entry: _: dir + "/${entry}") (
-      lib.filterAttrs (entry: type: type == "directory" || lib.hasSuffix ".nix" entry) (
-        builtins.readDir dir
-      )
-    );
+  systems = [
+    "x86_64-linux"
+    "aarch64-linux"
+  ];
 
-  packages = lib.genAttrs [ "x86_64-linux" "aarch64-linux" ] (
+  unstable = lib.genAttrs systems (system: import inputs.nixpkgs-unstable { inherit system; });
+
+  packages = lib.genAttrs systems (
     system:
     let
       pkgs = import inputs.nixpkgs {
@@ -35,19 +34,86 @@ let
     import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
       system = null;
       inherit lib;
-      specialArgs = { inherit inputs packages; };
+      specialArgs = {
+        inherit
+          hosts
+          inputs
+          nixosConfigurations
+          packages
+          ;
+      };
       modules =
-        modulesIn ./nixos ++ modulesIn (./hosts + "/${name}") ++ [ { networking.hostName = name; } ];
+        lib.modulesIn ./nixos
+        ++ lib.modulesIn (./hosts + "/${name}")
+        ++ [ { networking.hostName = name; } ];
       extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
     }
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
+
+  hosts = builtins.mapAttrs (_: host: host.config.networking.addresses) nixosConfigurations;
 in
 
 {
   inherit packages nixosConfigurations;
 
-  checks = {
-    inherit packages;
-    machines = builtins.mapAttrs (_: v: v.config.system.build.toplevel) nixosConfigurations;
-  };
+  checks = lib.genAttrs systems (
+    system:
+    packages.${system}
+    // lib.mapAttrs' (name: host: lib.nameValuePair "nixos-${name}" host.config.system.build.toplevel) (
+      lib.filterAttrs (_: host: host.pkgs.stdenv.hostPlatform.system == system) nixosConfigurations
+    )
+  );
+
+  colmena = {
+    meta = {
+      nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+      nodeSpecialArgs = builtins.mapAttrs (
+        _: host: host._module.specialArgs // { inherit lib; }
+      ) nixosConfigurations;
+    };
+  }
+  // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
+
+  formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
+
+  devShells = lib.genAttrs systems (
+    system:
+    let
+      pkgs = unstable.${system};
+      gitHooks =
+        (import "${inputs.git-hooks}/nix" {
+          inherit system;
+          nixpkgs = inputs.nixpkgs-unstable;
+        }).run
+          {
+            src = ./.;
+            hooks = {
+              deadnix.enable = true;
+              statix.enable = true;
+              rfc101 = {
+                enable = true;
+                name = "RFC-101 formatting";
+                entry = lib.getExe pkgs.nixfmt;
+                files = "\\.nix$";
+              };
+              commitizen.enable = true;
+            };
+          };
+    in
+    {
+      default = pkgs.mkShell {
+        nativeBuildInputs = [
+          (pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { })
+          (import ./scripts/nixos-anywhere.nix { inherit inputs pkgs; })
+          pkgs.colmena
+          pkgs.lon
+          pkgs.statix
+        ];
+        shellHook = ''
+          ${gitHooks.shellHook}
+          statix fix
+        '';
+      };
+    }
+  );
 }

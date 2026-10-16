@@ -1,16 +1,15 @@
 {
   config,
+  hosts,
   inputs,
   lib,
+  nixosConfigurations,
   pkgs,
   ...
 }:
 
 let
   cfg = config.services.knot;
-  inherit (config.networking) hostName;
-  inherit (import ../../..) nixosConfigurations;
-  machines = lib.mapAttrs (_: c: c.config.networking.addresses) nixosConfigurations;
 
   dns = import inputs.dns { inherit pkgs; };
 
@@ -33,11 +32,11 @@ let
 
     # Off the tailnet: transfers use the TSIG key.
     ns2 = {
-      A = [ machines.offspring.ipv4.public ];
-      AAAA = [ machines.offspring.ipv6.public ];
+      A = [ hosts.offspring.ipv4.public ];
+      AAAA = [ hosts.offspring.ipv6.public ];
       transfer = {
         # Fixed source: privacy extensions would pick an address the secondary doesn't know.
-        address = machines.offspring.ipv6.public;
+        address = hosts.offspring.ipv6.public;
         key = tsigKey;
         via = meta.ipv6.public;
       };
@@ -51,13 +50,12 @@ let
   dnsZones = lib.dnsZones {
     inherit
       config
-      hostName
-      machines
+      hosts
       nixosConfigurations
       ;
   };
 
-  inherit (dnsZones) publicMachines nginxOf;
+  inherit (dnsZones) publicMachines nginxOf configOf;
 
   zoneNames = dnsZones.names;
 
@@ -73,7 +71,7 @@ let
     "fde7:d935:2cb6:f86c::/64"
   ];
 
-  vpnMachines = lib.filterAttrs (_: m: m ? ipv4.vpn || m ? ipv6.vpn) machines;
+  vpnMachines = lib.filterAttrs (_: m: m ? ipv4.vpn || m ? ipv6.vpn) hosts;
 
   vpnAddresses =
     m:
@@ -131,8 +129,7 @@ let
       AAAA = lib.optional (m ? ipv6.public) m.ipv6.public;
     };
 
-  domainOf =
-    name: (if name == hostName then config else nixosConfigurations.${name}.config).networking.domain;
+  domainOf = name: (configOf name).networking.domain;
 
   namesOf =
     name:
@@ -178,7 +175,7 @@ let
       }
       (
         map (r: r.${zone} or { }) hostRecords
-        ++ [ ((import ./records.nix { inherit machines; }).${zone} or { }) ]
+        ++ [ ((import ./records.nix { inherit hosts; }).${zone} or { }) ]
       )
   );
 

@@ -8,9 +8,6 @@
 let
   inherit (lib) types;
 
-  concatMapAttrsToList =
-    f: attrs: builtins.concatMap (name: f name attrs.${name}) (builtins.attrNames attrs);
-
   cfg = config.services.librespot;
 
 in
@@ -83,15 +80,17 @@ in
       createHome = true;
     };
 
-    services.librespot.args = concatMapAttrsToList (
-      k: v:
-      if builtins.isNull v || (builtins.isBool v && !v) then
-        [ ]
-      else if (builtins.isBool v && v) then
-        [ "--${k}" ]
-      else
-        [ "--${k}=${toString v}" ]
-    ) cfg.settings;
+    services.librespot.args = lib.concatLists (
+      lib.mapAttrsToList (
+        k: v:
+        if builtins.isNull v || (builtins.isBool v && !v) then
+          [ ]
+        else if (builtins.isBool v && v) then
+          [ "--${k}" ]
+        else
+          [ "--${k}=${toString v}" ]
+      ) cfg.settings
+    );
 
     systemd.services.librespot = {
       description = "Librespot (Spotify Connect receiver)";
