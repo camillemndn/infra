@@ -35,6 +35,7 @@ in
       enable = true;
       virtualHost = "finances.kms";
       enableNginx = true;
+
       settings = {
         APP_KEY_FILE = config.age.secrets.firefly-iii-app-key.path;
         DB_CONNECTION = "pgsql";
@@ -54,6 +55,7 @@ in
           ensureDBOwnership = true;
         }
       ];
+
       ensureDatabases = [ "firefly-iii" ];
     };
 
@@ -74,6 +76,7 @@ in
       '';
     };
   };
+
   environment.systemPackages = [ firefly-iii-manage ];
 
   age.secrets.firefly-iii-app-key = {

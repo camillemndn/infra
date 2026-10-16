@@ -1,10 +1,10 @@
 _: {
-
   services = {
     nginx = {
       enable = true;
       enableDefault = true;
     };
+
     radiogaga.enable = true;
 
     # Avahi comes from librespot/; AirPlay and the network sink reuse it.
@@ -49,6 +49,7 @@ _: {
       6680
       49494
     ];
+
     allowedUDPPorts = [ 1900 ];
   };
 

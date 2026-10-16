@@ -17,6 +17,7 @@ in
       permittedInsecurePackages = [
         "pnpm-9.15.9"
       ];
+
       allowUnfreePredicate =
         let
           cudaLicenseNames = [
@@ -47,12 +48,14 @@ in
           lib.toList pkg.meta.license
         );
     };
+
     overlays = lib.mkAfter [
       (import "${inputs.nix-minecraft}/overlay.nix")
       (
         final: prev:
         let
           generated = import "${inputs.nix-index-database}/generated.nix";
+
           nix-index-database =
             (prev.fetchurl {
               url = generated.url + prev.stdenv.system;
@@ -71,6 +74,7 @@ in
             inherit (config.nixpkgs.hostPlatform) system;
             inherit (prev) config;
           };
+
           inherit (final.unstable)
             feishin
             firefoxpwa
@@ -115,13 +119,14 @@ in
           );
 
           inherit nix-index-database;
+
           nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
             inherit nix-index-database;
           };
+
           comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
             inherit nix-index-database;
           };
-
         }
       )
     ];

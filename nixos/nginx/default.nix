@@ -48,6 +48,7 @@ with lib;
                 type = types.port;
                 default = 0;
               };
+
               websockets = mkOption {
                 type = types.bool;
                 default = false;
@@ -57,14 +58,17 @@ with lib;
             config = {
               forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
               enableACME = mkDefault config.forceSSL;
+
               locations."/" = {
                 proxyPass =
                   let
                     p = config.port;
                   in
                   mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
+
                 proxyWebsockets = mkDefault config.websockets;
               };
+
               extraConfig =
                 if (hasSuffixIn cfg.publicDomains name) then
                   ''
@@ -114,6 +118,7 @@ with lib;
         # nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem
         sslCertificate = "/var/lib/acme/default/cert.pem";
         sslCertificateKey = "/var/lib/acme/default/key.pem";
+
         extraConfig = ''
           return 444;
         '';
@@ -133,6 +138,7 @@ with lib;
           80
           443
         ];
+
         allowedUDPPorts = mkIf cfg.enable [
           80
           443

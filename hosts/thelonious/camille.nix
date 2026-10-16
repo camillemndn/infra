@@ -27,6 +27,7 @@
           mpv
           spotify
         ];
+
         stateVersion = "23.11";
       };
 
@@ -38,6 +39,5 @@
 
       stylix.targets.fish.enable = false;
       wayland.windowManager.sway.enable = true;
-
     };
 }

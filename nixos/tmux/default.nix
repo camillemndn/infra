@@ -7,6 +7,7 @@ with lib;
     enable = true;
     terminal = "xterm-kitty";
     extraConfig = builtins.readFile ./tmux.conf;
+
     plugins = with pkgs.tmuxPlugins; [
       catppuccin
       yank

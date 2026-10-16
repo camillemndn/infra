@@ -9,7 +9,6 @@
       }:
 
       lib.mkIf config.programs.fuzzel.enable {
-
         programs.fuzzel = {
           settings = {
             main = {

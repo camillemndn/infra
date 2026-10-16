@@ -11,6 +11,7 @@
       enable = true;
       user = "camille";
       group = "users";
+
       hooksTemplated = {
         redeploy-website =
           let
@@ -68,6 +69,7 @@
           '';
       };
     };
+
     nginx.virtualHosts."webhooks.mndn.fr".port = config.services.webhook.port;
   };
 

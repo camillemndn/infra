@@ -8,7 +8,6 @@
 
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-
     kernel.sysctl."vm.swappiness" = 1;
 
     loader = {
@@ -31,10 +30,12 @@
       fsType = "ext4";
       options = [ "noatime" ];
     };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/6C60-B17F";
       fsType = "vfat";
     };
+
     "/srv/media/Vidéos" = {
       device = "/dev/disk/by-uuid/aa257298-50dc-43b4-95d6-cc658c6777ad";
       fsType = "ext4";
@@ -48,5 +49,4 @@
       size = 4 * 1024;
     }
   ];
-
 }

@@ -1,6 +1,5 @@
 let
   inputs = import ./inputs.nix;
-
   lib = (import "${inputs.nixpkgs}/lib").extend (import ./lib);
 
   systems = [
@@ -34,6 +33,7 @@ let
     import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
       system = null;
       inherit lib;
+
       specialArgs = {
         inherit
           hosts
@@ -42,10 +42,12 @@ let
           packages
           ;
       };
+
       modules =
         lib.modulesIn ./nixos
         ++ lib.modulesIn (./hosts + "/${name}")
         ++ [ { networking.hostName = name; } ];
+
       extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
     }
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
@@ -67,6 +69,7 @@ in
   colmena = {
     meta = {
       nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+
       nodeSpecialArgs = builtins.mapAttrs (
         _: host: host._module.specialArgs // { inherit lib; }
       ) nixosConfigurations;
@@ -80,6 +83,7 @@ in
     system:
     let
       pkgs = unstable.${system};
+
       gitHooks =
         (import "${inputs.git-hooks}/nix" {
           inherit system;
@@ -87,15 +91,26 @@ in
         }).run
           {
             src = ./.;
+
             hooks = {
               deadnix.enable = true;
               statix.enable = true;
+
               rfc101 = {
                 enable = true;
                 name = "RFC-101 formatting";
                 entry = lib.getExe pkgs.nixfmt;
                 files = "\\.nix$";
               };
+
+              blank-lines = {
+                enable = true;
+                name = "Blank lines between bindings";
+                entry = "${pkgs.python3.interpreter} ${./scripts/blank-lines.py}";
+                files = "\\.nix$";
+                excludes = [ "^lon\\.nix$" ];
+              };
+
               commitizen.enable = true;
             };
           };
@@ -109,6 +124,7 @@ in
           pkgs.lon
           pkgs.statix
         ];
+
         shellHook = ''
           ${gitHooks.shellHook}
           statix fix

@@ -11,9 +11,7 @@
 let
 
   dns = import inputs.dns { inherit pkgs; };
-
   meta = config.networking.addresses;
-
   # Secondary for zones signed elsewhere; transfers cross the internet under a TSIG key.
   primary = "zeppelin";
   primaryAddress = hosts.${primary}.ipv6.public;
@@ -45,6 +43,7 @@ in
   services = {
     nsd = {
       enable = true;
+
       # The public IPv4 is NAT: bind the address behind it.
       interfaces = [
         meta.ipv4.local

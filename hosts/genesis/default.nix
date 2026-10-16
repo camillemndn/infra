@@ -45,22 +45,25 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager.dms-greeter = {
       enable = true;
       compositor.name = "niri";
     };
+
     printing = {
       enable = true;
+
       drivers = with pkgs; [
         cups-brother-hll2340dw
         samsung-unified-linux-driver
       ];
     };
+
     tzupdate.enable = true;
     usbmuxd.enable = true;
   };
 
   stylix.enable = true;
-
   system.stateVersion = "23.05";
 }

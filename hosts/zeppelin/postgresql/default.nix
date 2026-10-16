@@ -5,7 +5,6 @@
 }:
 
 {
-
   services.postgresql.package = pkgs.postgresql_17;
 
   environment.systemPackages =

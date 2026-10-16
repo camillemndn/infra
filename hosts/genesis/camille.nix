@@ -61,6 +61,7 @@
           zam-plugins
           zrythm
         ];
+
         stateVersion = "23.05";
       };
 
@@ -78,13 +79,14 @@
       };
 
       services.nextcloud-client.enable = true;
+
       stylix = {
         targets = {
           fish.enable = false;
           qt.enable = false;
         };
       };
-      wayland.windowManager.sway.enable = true;
 
+      wayland.windowManager.sway.enable = true;
     };
 }

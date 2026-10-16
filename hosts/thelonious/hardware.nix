@@ -14,6 +14,7 @@
         devices = {
           "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device =
             "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
+
           "luks-0a53c761-f5d4-4015-9d68-349251b71c85".device =
             "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
         };
@@ -28,7 +29,6 @@
         "sd_mod"
         "tpm_tis"
       ];
-
     };
 
     kernelModules = [ "kvm-intel" ];
@@ -40,6 +40,7 @@
       device = "/dev/disk/by-uuid/959a07ef-a27d-4186-87da-9ed23dc4aa33";
       fsType = "ext4";
     };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/6851-8BFB";
       fsType = "vfat";
@@ -54,7 +55,6 @@
   };
 
   services = {
-
     xserver.videoDrivers = [ "nvidia" ];
   };
 }

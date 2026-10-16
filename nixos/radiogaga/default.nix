@@ -48,7 +48,9 @@ in
           port = 4200;
         }
       ];
+
       root = "${pkgs.radiogaga}/share";
+
       locations = {
         "/".tryFiles = "$uri $uri/ /index.html =404";
         "/api".proxyPass = "http://127.0.0.1:8000";
@@ -57,14 +59,18 @@ in
 
     systemd = {
       tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
+
       services.radiogaga = {
         description = "radiogaga";
+
         after = [
           "network.target"
           "pipewire.service"
         ];
+
         wantedBy = [ "multi-user.target" ];
         environment.BASE_DIR = "${cfg.dataDir}";
+
         serviceConfig = {
           Type = "simple";
           User = cfg.user;
@@ -72,10 +78,12 @@ in
           ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
           CacheDirectory = "radiogaga";
           StateDirectory = "radiogaga";
+
           SupplementaryGroups = [
             "audio"
             "pipewire"
           ];
+
           WorkingDirectory = "${pkgs.radiogaga}/share";
           Restart = "on-failure";
         };
@@ -90,6 +98,7 @@ in
           isSystemUser = true;
         };
       };
+
       groups.radiogaga = { };
     };
   };

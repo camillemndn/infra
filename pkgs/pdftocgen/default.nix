@@ -32,10 +32,12 @@ python3.pkgs.buildPythonApplication rec {
   meta = {
     description = "Automatically generate table of contents for pdf files";
     homepage = "https://pypi.org/project/pdf.tocgen/";
+
     license = with lib.licenses; [
       agpl3Only
       gpl3Only
     ];
+
     maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "pdf-tocgen";
   };

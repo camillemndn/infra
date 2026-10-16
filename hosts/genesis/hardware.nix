@@ -10,7 +10,6 @@ with lib;
 {
   boot = {
     binfmt.emulatedSystems = [ "aarch64-linux" ];
-
     lanzaboote.enable = true;
 
     initrd = {
@@ -24,13 +23,11 @@ with lib;
       ];
 
       clevisLuksAskpass.enable = true;
-
       secrets."/crypto_keyfile.bin" = null;
     };
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-
     tmp.cleanOnBoot = true;
   };
 
@@ -62,11 +59,13 @@ with lib;
     nvidia = {
       modesetting.enable = true;
       open = true;
+
       prime = {
         offload = {
           enable = true;
           enableOffloadCmd = true;
         };
+
         amdgpuBusId = "PCI:8:0:0";
         nvidiaBusId = "PCI:1:0:0";
       };
@@ -91,10 +90,11 @@ with lib;
     fprintd.enable = true;
     fwupd.enable = true;
     pipewire.jack.enable = true;
-
     power-profiles-daemon.enable = true;
+
     supergfxd = {
       enable = true;
+
       settings = {
         mode = "Integrated";
         vfio_enable = false;
@@ -117,6 +117,7 @@ with lib;
       asusd.postStart = ''
         busctl set-property xyz.ljones.Asusd /xyz/ljones xyz.ljones.Platform PlatformProfileOnAc u 2
       '';
+
       supergfxd.serviceConfig.ExecStartPre = pkgs.writeShellScript "wait-igpu-panel" ''
         for _ in $(seq 100); do
           grep -qs connected /sys/class/drm/card*-eDP-1/status && exit 0
@@ -125,5 +126,4 @@ with lib;
       '';
     };
   };
-
 }

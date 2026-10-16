@@ -5,6 +5,7 @@ let
       public = "77.42.114.11";
       vpn = "100.100.45.7";
     };
+
     ipv6 = {
       public = "2a01:4f9:3090:2b8c:be24:11ff:fe0b:49fd";
       vpn = "fd7a:115c:a1e0::7";
@@ -55,23 +56,28 @@ in
     firewall.allowedUDPPorts = [ 51820 ];
     useDHCP = false;
     networkmanager.enable = false;
+
     wireguard.interfaces.wg0 = {
       # Device: Pretty Ox
       ips = [
         "10.66.154.125/32"
         "fc00:bbbb:bbbb:bb01::3:9a7c/128"
       ];
+
       # Socket on the host, interface and routes in the namespace.
       interfaceNamespace = "vpn";
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
+
       peers = [
         {
           publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
+
           allowedIPs = [
             "0.0.0.0/0"
             "::0/0"
           ];
+
           endpoint = "[2a03:1b20:9:f011::a01f]:51820";
         }
       ];
@@ -99,14 +105,17 @@ in
           description = "Network namespace for services confined to the Mullvad tunnel";
           after = [ "network-pre.target" ];
           before = [ "network.target" ];
+
           path = with pkgs; [
             iproute2
             nftables
           ];
+
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
           };
+
           script = ''
             ip netns del vpn 2>/dev/null || true
             ip netns add vpn
@@ -117,6 +126,7 @@ in
             ip -n vpn link set vpn0 up
             ip netns exec vpn nft -f ${vpnRules}
           '';
+
           postStop = ''
             ip netns del vpn || true
           '';
@@ -132,6 +142,7 @@ in
         requires = [ "wireguard-wg0.service" ];
         after = [ "wireguard-wg0.service" ];
         partOf = [ "netns-vpn.service" ];
+
         serviceConfig = {
           NetworkNamespacePath = "/run/netns/vpn";
           BindReadOnlyPaths = [ "/etc/netns/vpn/resolv.conf:/etc/resolv.conf" ];
@@ -146,6 +157,7 @@ in
             description = "Relay 127.0.0.1:${toString port} into the VPN namespace";
             requires = [ "${proxyName port}.socket" ];
             after = [ "${proxyName port}.socket" ];
+
             serviceConfig = {
               ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
               DynamicUser = true;
@@ -158,6 +170,7 @@ in
         flood.environment.HOME = "/var/lib/flood";
       }
     ];
+
     sockets = lib.listToAttrs (
       map (
         port:
@@ -167,8 +180,10 @@ in
         }
       ) vpnPorts
     );
+
     network = {
       enable = true;
+
       networks = {
         # Before 10-wan, whose Type=ether would claim the veth.
         "05-veth-vpn" = {
@@ -177,6 +192,7 @@ in
           networkConfig.LinkLocalAddressing = "no";
           linkConfig.RequiredForOnline = "no";
         };
+
         "10-wan" = {
           matchConfig.Type = "ether";
           address = [ "${addresses.ipv4.local}/21" ];
@@ -186,5 +202,4 @@ in
       };
     };
   };
-
 }

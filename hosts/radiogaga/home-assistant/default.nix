@@ -9,6 +9,7 @@
       enable = true;
       package = pkgs.unstable.home-assistant;
       customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
+
       extraComponents = [
         "ecovacs"
         "jellyfin"
@@ -24,13 +25,16 @@
         "wake_word"
         "zeroconf"
       ];
+
       extraPackages =
         p: with p; [
           aiohomekit
           py-sucks
           python-otbr-api
         ];
+
       openFirewall = true;
+
       config = {
         default_config = { };
         homeassistant.name = "Cama";

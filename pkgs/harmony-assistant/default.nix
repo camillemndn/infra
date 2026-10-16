@@ -51,9 +51,7 @@ in
 
 buildFHSEnv {
   name = "harmony-assistant";
-
   runScript = "harmony-assistant";
-
   targetPkgs = _: [ harmony-assistant-unwrapped ];
 
   multiPkgs = _: [

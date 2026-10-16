@@ -10,18 +10,19 @@
       enable = true;
       package = pkgs.nextcloud34;
       hostName = "cloud.mndn.fr";
-
       autoUpdateApps.enable = true;
       caching.redis = true;
       database.createLocally = true;
       https = true;
       maxUploadSize = "4G";
       phpOptions."opcache.interned_strings_buffer" = "23";
+
       config = {
         adminuser = "Camille";
         adminpassFile = config.age.secrets.nextcloud-adminpass.path;
         dbtype = "mysql";
       };
+
       settings = {
         mail_smtphost = "mail.luj.fr";
         mail_smtpport = 465;
@@ -31,6 +32,7 @@
         mail_from_address = "cloud";
         mail_domain = "mondon.me";
         overwriteprotocol = "https";
+
         enabledPreviewProviders = [
           "OC\\Preview\\BMP"
           "OC\\Preview\\GIF"
@@ -54,6 +56,7 @@
         ];
       };
     };
+
     redis.servers.nextcloud = {
       enable = true;
       user = "nextcloud";

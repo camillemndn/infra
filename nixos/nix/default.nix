@@ -17,7 +17,6 @@ let
 in
 {
   nix = {
-
     buildMachines = [
       (lib.mkIf (config.networking.hostName != "offspring") {
         hostName = hosts.offspring.ipv4.public;
@@ -28,7 +27,6 @@ in
     ];
 
     channel.enable = false;
-
     distributedBuilds = true;
 
     extraOptions = ''
@@ -49,10 +47,12 @@ in
     settings = {
       auto-optimise-store = true;
       builders-use-substitutes = true;
+
       experimental-features = [
         "nix-command"
         "flakes"
       ];
+
       trusted-users = [ "camille" ];
     };
   };
@@ -63,6 +63,7 @@ in
       hosts.offspring.ipv4.public
       hosts.offspring.ipv6.public
     ];
+
     publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDTQP1XL41AvmwxYaoFSAK6p8X9NPdMg8jppRspeV4cy";
   };
 }

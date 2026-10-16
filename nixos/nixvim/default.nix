@@ -12,6 +12,7 @@ let
         "-f"
         "{connection_file}"
       ];
+
       display_name = "Python 3 (from PATH)";
       language = "python";
     }
@@ -128,11 +129,13 @@ in
     lsp.servers.wikitext = {
       enable = true;
       package = pkgs.wikitext-lsp;
+
       config = {
         cmd = [
           "wikitext-lsp"
           "--stdio"
         ];
+
         filetypes = [ "mediawiki" ];
         settings.wikiparser.linter.severity = "errors and warnings";
       };
@@ -156,6 +159,7 @@ in
       cmp = {
         enable = true;
         autoEnableSources = true;
+
         settings = {
           mapping = {
             "<C-Space>" = "cmp.mapping.complete()";
@@ -166,6 +170,7 @@ in
             "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
+
           sources = [
             { name = "nvim_lsp"; }
             { name = "path"; }
@@ -178,16 +183,20 @@ in
 
       conform-nvim = {
         enable = true;
+
         settings = {
           format_on_save = builtins.readFile ./format_on_save.lua;
+
           formatters_by_ft = {
             bash = [ "shfmt" ];
             css = [ "stylelint" ];
             haskell = [ "ormolu" ];
+
             html = [
               "superhtml"
               "rustywind"
             ];
+
             nix = [ "nixfmt" ];
             python = [ "black" ];
             R = [ "air" ];
@@ -201,7 +210,6 @@ in
       };
 
       iron.enable = true;
-
       lilypond-suite.enable = true;
 
       lsp = {
@@ -209,16 +217,20 @@ in
 
         servers = {
           air.enable = true;
+
           hls = {
             enable = true;
             installGhc = false;
             package = null;
           };
+
           nil_ls.enable = true;
+
           panache = {
             enable = true;
             package = pkgs.panache;
           };
+
           pyright.enable = true;
           superhtml.enable = true;
           tailwindcss.enable = true;
@@ -227,14 +239,17 @@ in
 
       molten = {
         enable = true;
+
         # wezterm.nvim (unfree) is only a check input.
         package = pkgs.vimPlugins.molten-nvim.overrideAttrs {
           checkInputs = with pkgs.vimPlugins; [
             image-nvim
             snacks-nvim
           ];
+
           nvimSkipModules = [ "load_wezterm_nvim" ];
         };
+
         settings = {
           image_provider = "image.nvim";
           output_win_max_height = 20;
@@ -244,15 +259,18 @@ in
 
       quarto = {
         enable = true;
+
         settings.codeRunner = {
           enabled = true;
           default_method = "molten";
         };
       };
+
       otter.enable = true;
 
       telescope = {
         enable = true;
+
         keymaps = {
           "fb" = "buffers";
           "ff" = "find_files";
@@ -275,6 +293,7 @@ in
 
       which-key = {
         enable = true;
+
         settings.spec = [
           {
             __unkeyed-1 = "<localleader>m";
@@ -294,6 +313,7 @@ in
         command.__raw = builtins.readFile ./FormatDisable.lua;
         desc = "Disable autoformat-on-save";
       };
+
       FormatEnable = {
         bang = true;
         command.__raw = builtins.readFile ./FormatEnable.lua;

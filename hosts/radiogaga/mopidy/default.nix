@@ -15,6 +15,7 @@ in
     mopidy = {
       # Streams from zeppelin's Navidrome; controlled from Iris (:6680/iris) or MPD (:6600).
       enable = true;
+
       extensionPackages = [
         pkgs.mopidy-mpd # MPD server on :6600 (M.A.L.P. and other Android clients)
         pkgs.mopidy-iris # Web UI on :6680/iris (browse/queue/volume from any browser)

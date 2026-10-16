@@ -16,6 +16,5 @@ _: {
 
   services = {
     openssh.settings.PasswordAuthentication = true;
-
   };
 }

@@ -24,38 +24,49 @@ in
       enable = true;
       inherit group;
     };
+
     nginx = {
       publicDomains = [ "mndn.fr" ];
+
       virtualHosts = {
         "subtitles.kms" = {
           port = 6767;
           websockets = true;
         };
+
         "manage.library.kms".port = 8079;
+
         "deluge.kms" = {
           port = 8112;
           extraConfig = delugeCSSFilter;
         };
+
         "torrents.kms".port = 3022;
         "trackers.kms".port = 9117;
+
         "media.kms" = {
           port = 8096;
           websockets = true;
         };
+
         "media.mndn.fr" = {
           port = 8096;
           websockets = true;
         };
+
         "requests.kms".port = 5055;
         "requests.mndn.fr".port = 5055;
+
         "music.kms" = {
           port = 8686;
           websockets = true;
         };
+
         "movies.kms" = {
           port = 7878;
           websockets = true;
         };
+
         "series.kms" = {
           port = 8989;
           websockets = true;
@@ -71,6 +82,7 @@ in
     calibre-server = {
       enable = true;
       inherit group;
+
       libraries = [
         "/srv/media/Bibliotheque"
         "/srv/media/Bibliotheque-universitaire"
@@ -126,6 +138,7 @@ in
       inherit group;
     };
   };
+
   users.groups.${group}.name = group;
 
   environment.systemPackages = with pkgs; [

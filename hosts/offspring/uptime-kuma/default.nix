@@ -37,11 +37,13 @@ let
       path = "/api/health";
       keyword = ''"clickhouse":"ok"'';
     };
+
     "auth.mndn.fr" = {
       name = "🔑 Accounts";
       path = "/status";
       keyword = "true";
     };
+
     # A worker that lost the master lists no connection.
     "ci.mndn.fr" = {
       name = "🏗 CI";
@@ -49,37 +51,46 @@ let
       keyword = ''"connected_to": []'';
       invertKeyword = true;
     };
+
     "cloud.mndn.fr" = {
       name = "☁️ Cloud";
       path = "/status.php";
       keyword = ''"maintenance":false'';
     };
+
     # Webtrees answers 406 to any User-Agent containing "Uptime".
     "family.mndn.fr" = {
       name = "🌳 Genealogy";
       headers = builtins.toJSON { "User-Agent" = "mndn-status/1.0"; };
     };
+
     "genealogy.mndn.fr".name = "🌲 Family tree";
     "meals.mndn.fr".name = "🍲 Recipes";
+
     "media.mndn.fr" = {
       name = "📽 Streaming";
       path = "/health";
       keyword = "Healthy";
     };
+
     "music.mndn.fr" = {
       name = "🎵 Music";
       path = "/ping";
     };
+
     "ntfy.mndn.fr" = {
       name = "📣 Notifications";
       path = "/v1/health";
       keyword = ''"healthy":true'';
     };
+
     "requests.mndn.fr" = {
       name = "🗳 Requests";
       path = "/api/v1/status";
     };
+
     "sso.mndn.fr".name = "🛂 Sign-in";
+
     "webhooks.mndn.fr" = {
       name = "🪝 Webhooks";
       group = null;
@@ -90,18 +101,22 @@ let
       name = "🌐 Camille Mondon";
       group = "Websites";
     };
+
     "ceciliaflamenca.com" = {
       name = "🌐 Cecilia flamenca";
       group = "Websites";
     };
+
     "varanda.fr" = {
       name = "🌐 Varanda";
       group = "Websites";
     };
+
     "www.natachamondonericpierre.mndn.fr" = {
       name = "🌐 Natacha Mondon & Éric Pierre";
       group = "Websites";
     };
+
     "yali.es" = {
       name = "🌐 Yali";
       group = "Websites";
@@ -155,6 +170,7 @@ let
           in
           {
             inherit (entry) name group;
+
             probe = {
               type = if entry ? keyword then "keyword" else "http";
               url = "https://${domain}${entry.path}";
@@ -178,6 +194,7 @@ let
   hostChecks = lib.mapAttrsToList (machine: m: {
     name = machine;
     group = "Hosts";
+
     probe = {
       type = "port";
       hostname = m.ipv6.public or m.ipv4.public;
@@ -191,6 +208,7 @@ let
   dnsCheck = name: server: {
     inherit name;
     group = "DNS";
+
     probe = {
       type = "dns";
       hostname = "mndn.fr";
@@ -207,6 +225,7 @@ let
     {
       name = "📬 Mail (IMAP)";
       group = "Services";
+
       probe = {
         type = "port";
         hostname = "bridge.mndn.fr";
@@ -216,6 +235,7 @@ let
     {
       name = "📬 Mail (SMTP)";
       group = "Services";
+
       probe = {
         type = "port";
         hostname = "bridge.mndn.fr";
@@ -226,6 +246,7 @@ let
     {
       name = "⛏ Minecraft";
       group = "Services";
+
       probe = {
         type = "gamedig";
         game = "minecraft";
@@ -236,15 +257,16 @@ let
   ];
 
   checks = hostChecks ++ vhostChecks ++ otherChecks;
-
   monitorsIn = group: map (c: c.name) (lib.filter (c: c.group == group) checks);
 in
 
 {
   services = {
     uptime-kuma.enable = true;
+
     ntfy-sh = {
       enable = true;
+
       settings = {
         base-url = "https://ntfy.mndn.fr";
         upstream-base-url = "https://ntfy.sh";
@@ -259,16 +281,19 @@ in
         port = 3001;
         websockets = true;
       };
+
       "status.mndn.fr" = {
         port = 3001;
         websockets = true;
       };
+
       "ntfy.mndn.fr" = {
         port = 3002;
         websockets = true;
       };
     };
   };
+
   # Matched by name: same-named manual monitors are taken over, others left alone.
   statelessUptimeKuma = {
     enableService = true;
@@ -284,6 +309,7 @@ in
         title = "Public status";
         domainNameList = [ "status.mndn.fr" ];
         showTags = false;
+
         publicGroupList = lib.filter (g: g.monitorList != [ ]) (
           map (group: {
             name = group;

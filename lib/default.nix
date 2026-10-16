@@ -23,7 +23,6 @@ lib: _:
         name: if name == config.networking.hostName then config else nixosConfigurations.${name}.config;
 
       nginxOf = name: (configOf name).services.nginx;
-
       publicMachines = lib.filterAttrs (_: m: m ? ipv4.public || m ? ipv6.public) hosts;
 
       names = lib.unique (

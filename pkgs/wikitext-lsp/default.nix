@@ -19,7 +19,6 @@ buildNpmPackage rec {
   '';
 
   npmDepsHash = "sha256-71H92EJnysRNUrVLXCnyccT9morxRPmLWfCBvO5Xtnk=";
-
   dontNpmBuild = true;
 
   meta = {

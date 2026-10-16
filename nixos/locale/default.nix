@@ -8,6 +8,7 @@
 
   i18n = {
     defaultLocale = "fr_FR.UTF-8";
+
     extraLocaleSettings = {
       LANG = "fr_FR.UTF-8";
       LC_ADDRESS = "fr_FR.UTF-8";

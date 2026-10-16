@@ -21,6 +21,7 @@ in
       camille = {
         isNormalUser = true;
         description = "Camille";
+
         extraGroups = [
           "audio"
           "lp"
@@ -30,6 +31,7 @@ in
           "scanner"
           "wheel"
         ];
+
         openssh.authorizedKeys.keys = sshPubKeys;
       };
 
@@ -38,6 +40,7 @@ in
           "audio"
           "pulse-access"
         ];
+
         openssh.authorizedKeys.keys = sshPubKeys;
       };
     };
@@ -49,17 +52,18 @@ in
   };
 
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
-
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   programs = {
     git = {
       enable = true;
+
       config = {
         user = {
           name = "Camille M.";
           email = "camillemondon@free.fr";
         };
+
         pull.rebase = true;
         fetch.prune = true;
         rebase.autoStash = true;
@@ -70,15 +74,14 @@ in
 
     fish = {
       enable = true;
+
       promptInit = ''
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       '';
     };
 
     direnv.enable = true;
-
     neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
-
     command-not-found.enable = false;
 
     nix-index = lib.mkDefault {
@@ -97,6 +100,7 @@ in
 
     mysql = {
       package = lib.mkForce pkgs.mariadb;
+
       settings = {
         mysql.pager = "${pkgs.less}/bin/less -SFX";
         mysqld.init-connect = "'SET NAMES utf8mb4'";
@@ -105,6 +109,7 @@ in
 
     resolved = {
       enable = true;
+
       settings.Resolve = {
         DNSOverTLS = "opportunistic";
         DNSSEC = "allow-downgrade";
@@ -152,8 +157,10 @@ in
       defaults.email = "camillemondon@free.fr";
       acceptTerms = true;
     };
+
     pki.certificateFiles = [ ./saumonnet.crt ];
   };
+
   home-manager.sharedModules = [
     (
       { lib, pkgs, ... }:
@@ -167,6 +174,7 @@ in
       {
         gtk = {
           gtk3.extraConfig = gtkConfig;
+
           gtk4 = {
             theme = null;
             extraConfig = gtkConfig;
@@ -177,10 +185,12 @@ in
           keyboard.layout = "fr";
           language.base = "fr_FR.UTF-8";
           packages = [ pkgs.comma-with-db ];
+
           sessionVariables = {
             # GDK_BACKEND stays unset: xdg-desktop-portal-gnome refuses ScreenCast/Screenshot otherwise.
             QT_QPA_PLATFORM = "wayland";
           };
+
           stateVersion = lib.mkDefault "24.05";
         };
 
@@ -196,6 +206,7 @@ in
 
         services.random-background = {
           enable = true;
+
           imageDirectory =
             (builtins.fetchGit {
               url = "https://github.com/orangci/walls-catppuccin-mocha/";

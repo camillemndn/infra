@@ -1,17 +1,18 @@
 _:
 
 {
-
   services.nginx = {
     publicDomains = [ "varanda.fr" ];
 
     virtualHosts = {
       "varanda.fr" = {
         root = "/srv/sites/varanda.fr/www";
+
         locations."/static/".extraConfig = ''
           expires 1y;
           add_header Cache-Control "public";
         '';
+
         extraConfig = ''
           error_page 404 /404/;
         '';

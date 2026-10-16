@@ -15,19 +15,23 @@ in
     kanidm = {
       server = {
         enable = true;
+
         settings = {
           domain = hostName;
           origin = "https://${hostName}";
           bindaddress = "127.0.0.1:${toString kanidmPort}";
           tls_chain = "${cert.directory}/fullchain.pem";
           tls_key = "${cert.directory}/key.pem";
+
           http_client_address_info."x-forward-for" = [
             "127.0.0.1"
             "::1"
           ];
         };
       };
+
       package = pkgs.kanidmWithSecretProvisioning_1_11;
+
       client = {
         enable = true;
         settings.uri = "https://${hostName}";
@@ -43,10 +47,13 @@ in
         };
       };
     };
+
     nginx.virtualHosts.${hostName} = {
       websockets = true;
+
       locations."/" = {
         proxyPass = "https://127.0.0.1:${toString kanidmPort}";
+
         extraConfig = ''
           proxy_buffer_size       16k;
           proxy_buffers           8 16k;
@@ -62,6 +69,7 @@ in
       nginx.extraGroups = [ "acme" ];
     };
   };
+
   security.acme.certs.${hostName} = {
     group = "acme";
     reloadServices = [ "kanidm.service" ];

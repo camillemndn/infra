@@ -43,6 +43,7 @@ in
     };
 
     kernelModules = [ "snd-aloop" ];
+
     kernelParams = [
       "console=ttyS0,115200n8"
       "console=tty0"
@@ -56,7 +57,6 @@ in
   ];
 
   system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
-
   hardware.enableRedistributableFirmware = mkDefault true;
 
   services.pipewire = {
@@ -71,6 +71,7 @@ in
       device = "/dev/disk/by-label/NIXOS_SD";
       fsType = "ext4";
     };
+
     "/boot/firmware" = {
       device = "/dev/disk/by-label/FIRMWARE";
       fsType = "vfat";
@@ -86,6 +87,7 @@ in
 
   networking = {
     useDHCP = mkDefault false;
+
     interfaces = {
       eth0.useDHCP = mkDefault true;
       wlan0.useDHCP = mkDefault true;

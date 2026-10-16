@@ -16,6 +16,7 @@
     nginx.virtualHosts."gallery.kms" = {
       inherit (config.services.immich) port;
       websockets = true;
+
       extraConfig = ''
         client_max_body_size 0;
       '';

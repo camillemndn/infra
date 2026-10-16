@@ -25,6 +25,7 @@ with lib;
     services = {
       phpfpm.pools.webtrees = {
         user = "webtrees";
+
         settings = {
           "listen.owner" = config.services.nginx.user;
           "pm" = "dynamic";
@@ -37,47 +38,59 @@ with lib;
           "php_admin_flag[log_errors]" = true;
           "catch_workers_output" = true;
         };
+
         phpPackage = pkgs.php84;
+
         phpOptions = ''
           post_max_size = 5M
           upload_max_filesize = 5M
         '';
       };
+
       nginx.virtualHosts.${cfg.hostName} = {
         root = "${pkgs.webtrees}/share/php/webtrees";
+
         locations = {
           "/public/".extraConfig = ''
             expires 365d;
             access_log off;
           '';
+
           "/".extraConfig = ''
             rewrite ^ /index.php last;
           '';
+
           "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
             deny all;
           '';
+
           "/index.php" = {
             fastcgiParams = {
               HTTP_PROXY = "";
               SCRIPT_FILENAME = "$request_filename";
             };
+
             extraConfig = ''
               fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
             '';
           };
         };
       };
+
       mysql = {
         enable = true;
         package = mkDefault pkgs.mariadb;
+
         ensureUsers = [
           {
             name = "webtrees";
+
             ensurePermissions = {
               "webtrees.*" = "ALL PRIVILEGES";
             };
           }
         ];
+
         ensureDatabases = [ "webtrees" ];
       };
     };
@@ -87,14 +100,17 @@ with lib;
         "phpfpm-webtrees".serviceConfig.BindPaths = [
           "/var/lib/webtrees/:${pkgs.webtrees}/share/php/webtrees/data/"
         ];
+
         webtrees-config = {
           wantedBy = [ "multi-user.target" ];
           before = [ "phpfpm-webtrees.service" ];
+
           serviceConfig = {
             StateDirectory = "webtrees";
             User = "webtrees";
             Type = "oneshot";
           };
+
           script = ''
             if [ ! -f ${dataDir}/index.php ]; then
             cp -r ${pkgs.webtrees}/share/php/webtrees/data/* ${dataDir}
@@ -112,8 +128,8 @@ with lib;
         isSystemUser = true;
         group = "webtrees";
       };
+
       groups.webtrees = { };
     };
-
   };
 }

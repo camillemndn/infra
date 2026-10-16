@@ -10,11 +10,8 @@
 
 let
   cfg = config.services.knot;
-
   dns = import inputs.dns { inherit pkgs; };
-
   meta = config.networking.addresses;
-
   # Primary: signs the zones; the secondaries below transfer from here and
   # answer the public. Both ends name the TSIG key identically.
   tsigKey = "xfr.mndn.fr.";
@@ -24,6 +21,7 @@ let
     ns1 = {
       A = [ "77.42.114.11" ];
       AAAA = [ "2a01:4f9:3090:2b8c::2" ];
+
       transfer = {
         address = "fd7a:115c:a1e0::2";
         via = meta.ipv6.vpn;
@@ -34,6 +32,7 @@ let
     ns2 = {
       A = [ hosts.offspring.ipv4.public ];
       AAAA = [ hosts.offspring.ipv6.public ];
+
       transfer = {
         # Fixed source: privacy extensions would pick an address the secondary doesn't know.
         address = hosts.offspring.ipv6.public;
@@ -56,9 +55,7 @@ let
   };
 
   inherit (dnsZones) publicMachines nginxOf configOf;
-
   zoneNames = dnsZones.names;
-
   # ## Tailnet zone
 
   vpnTld = "kms";
@@ -92,6 +89,7 @@ let
 
   vpnZone = {
     TTL = 60 * 60;
+
     SOA = {
       nameServer = "ns1";
       adminEmail = "hostmaster@${vpnTld}";
@@ -101,7 +99,9 @@ let
       expire = 14 * 24 * 60 * 60;
       minimum = 60 * 60;
     };
+
     NS = [ "ns1" ];
+
     subdomains = {
       ns1 = vpnAddresses meta;
     }
@@ -160,6 +160,7 @@ let
     lib.foldl lib.recursiveUpdate
       {
         TTL = 60 * 60;
+
         SOA = {
           nameServer = "ns1";
           adminEmail = "hostmaster@${zone}";
@@ -170,6 +171,7 @@ let
           expire = 14 * 24 * 60 * 60;
           minimum = 60 * 60;
         };
+
         NS = lib.attrNames nameServers;
         subdomains = nameServers;
       }
@@ -198,6 +200,7 @@ in
   services = {
     knot = {
       enable = true;
+
       settings = {
         server = {
           listen = [
@@ -225,7 +228,6 @@ in
 
         # Plain queries ignore ACLs; this module answers outsiders NOTAUTH.
         mod-queryacl.internal.address = vpnRanges;
-
         # Submitted once the resolver sees the DS at the registry.
         submission.registry.parent = "resolver";
 
@@ -233,7 +235,6 @@ in
         policy.csk = {
           single-type-signing = true;
           ksk-submission = "registry";
-
           # NSEC3 against zone walking, 0 iterations (RFC 9276).
           nsec3 = true;
           nsec3-iterations = 0;
@@ -246,7 +247,6 @@ in
             dnssec-policy = "csk";
             notify = lib.attrNames secondaries;
             acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
-
             # Zone files live in the store; signatures and serial stay in the journal.
             zonefile-sync = -1;
             zonefile-load = "difference-no-serial";
@@ -272,6 +272,7 @@ in
           };
         };
       };
+
       # Read at runtime, keeping the TSIG secret out of the store.
       keyFiles = [ config.age.secrets.knot-tsig.path ];
     };

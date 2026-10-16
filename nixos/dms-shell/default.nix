@@ -23,6 +23,7 @@ lib.mkIf config.programs.dms-shell.enable {
       restartIfChanged = true;
       target = "niri.service";
     };
+
     enableSystemMonitoring = true;
     enableDynamicTheming = true;
     enableAudioWavelength = true;

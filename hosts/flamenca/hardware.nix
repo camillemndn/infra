@@ -9,6 +9,7 @@
     loader = {
       systemd-boot.enable = true;
     };
+
     initrd = {
       availableKernelModules = [
         "xhci_pci"
@@ -18,6 +19,7 @@
         "sr_mod"
       ];
     };
+
     kernelModules = [ "kvm-intel" ];
   };
 
@@ -26,9 +28,11 @@
       device = "/dev/disk/by-uuid/f89fec27-23d1-4899-92c7-91d77d666e6d";
       fsType = "ext4";
     };
+
     "/boot" = {
       device = "/dev/disk/by-uuid/8ADB-5D04";
       fsType = "vfat";
+
       options = [
         "fmask=0077"
         "dmask=0077"
@@ -44,5 +48,4 @@
     enableRedistributableFirmware = true;
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
-
 }

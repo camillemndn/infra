@@ -88,6 +88,7 @@ in
       host = "127.0.0.1";
       port = codePort;
       disableTelemetry = true;
+
       extraPackages = [
         pkgs.git
         pkgs.pandoc
@@ -97,18 +98,22 @@ in
         rKernelEnv
       ];
     };
+
     nginx.virtualHosts.${hostName} = {
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString codePort}";
         proxyWebsockets = true;
       };
     };
+
     oauth2-proxy.nginx.virtualHosts.${hostName} = {
       # Kanidm sends groups as name@domain.
       allowed_groups = [ "code_users@auth.mndn.fr" ];
     };
+
     kanidm.provision = {
       groups."code_users".members = [ "camille" ];
+
       persons.camille.groups = [
         "code_users"
         "sso_users"
@@ -119,5 +124,4 @@ in
   systemd.services.code-server.serviceConfig.ExecStartPre = map (
     vsix: "${lib.getExe config.services.code-server.package} --install-extension ${vsix}"
   ) extensionVsixs;
-
 }

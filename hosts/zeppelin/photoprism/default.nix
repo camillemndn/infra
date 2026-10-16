@@ -11,6 +11,7 @@
       originalsPath = "/var/lib/nextcloud/data/Camille/files/Images";
       importPath = "";
       passwordFile = config.age.secrets.photoprism-password.path;
+
       settings = {
         PHOTOPRISM_ADMIN_USER = "camille";
         PHOTOPRISM_DATABASE_DRIVER = "mysql";
@@ -29,6 +30,7 @@
       websockets = true;
     };
   };
+
   environment.systemPackages = [ pkgs.photoprism ];
 
   systemd = {
@@ -39,12 +41,14 @@
         description = "Photoprism automatic indexer";
         after = [ "multi-user.target" ];
         wantedBy = [ "multi-user.target" ];
+
         serviceConfig = config.systemd.services.photoprism.serviceConfig // {
           Type = "oneshot";
           ExecStartPre = null;
           ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
           KillMode = "process";
         };
+
         inherit (config.systemd.services.photoprism) environment;
       };
     };
@@ -52,6 +56,7 @@
     timers.photoprism-index = {
       description = "Photoprism automatic indexer";
       wantedBy = [ "timers.target" ];
+
       timerConfig = {
         OnCalendar = "hourly";
         Persistent = true;

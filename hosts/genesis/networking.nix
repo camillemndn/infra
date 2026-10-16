@@ -10,9 +10,11 @@
 
     dnscrypt-proxy = {
       enable = true;
+
       settings = {
         ipv6_servers = true;
         require_dnssec = true;
+
         sources.public-resolvers = {
           urls = [ "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md" ];
           cache_file = "/var/lib/dnscrypt-proxy/public-resolvers.md";
@@ -25,6 +27,5 @@
       enable = true;
       package = pkgs.mullvad-vpn;
     };
-
   };
 }

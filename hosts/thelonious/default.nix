@@ -19,10 +19,12 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager.dms-greeter = {
       enable = true;
       compositor.name = "niri";
     };
+
     logind.settings.Login.KillUserProcesses = true;
     power-profiles-daemon.enable = false;
     printing.enable = true;
@@ -30,6 +32,5 @@
   };
 
   stylix.enable = true;
-
   system.stateVersion = "23.11";
 }

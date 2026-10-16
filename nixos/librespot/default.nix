@@ -7,14 +7,12 @@
 
 let
   inherit (lib) types;
-
   cfg = config.services.librespot;
 
 in
 {
   options.services.librespot = {
     enable = lib.mkEnableOption "Librespot (Spotify Connect speaker daemon)";
-
     package = lib.mkPackageOption pkgs "librespot" { };
 
     settings = lib.mkOption {
@@ -25,6 +23,7 @@ in
         Null values are ignored.
         All other values are rendered as options with an argument.
       '';
+
       type = types.submodule {
         freeformType =
           let
@@ -55,6 +54,7 @@ in
           };
         };
       };
+
       default = { };
     };
 
@@ -94,10 +94,12 @@ in
 
     systemd.services.librespot = {
       description = "Librespot (Spotify Connect receiver)";
+
       after = [
         "network-online.target"
         "avahi-daemon.service"
       ];
+
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
 
@@ -105,6 +107,7 @@ in
         User = cfg.user;
         Group = "audio";
         SupplementaryGroups = [ "pipewire" ];
+
         ExecStart = pkgs.writeShellScript "librespot" ''
           exec '${cfg.package}/bin/librespot' ${lib.escapeShellArgs cfg.args}
         '';

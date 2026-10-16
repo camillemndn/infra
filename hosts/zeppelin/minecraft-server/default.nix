@@ -11,7 +11,6 @@ let
   #   "cobbleverse" Fabric 1.21.1 modpack, no proxy
   mode = "velocity";
   enableIf = m: mode == m;
-
   paperJvm = "-Xms4G -Xmx4G -XX:+AlwaysPreTouch -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
 
   whitelistFiles = {
@@ -46,24 +45,30 @@ let
       inherit enable package;
       openFirewall = public;
       jvmOpts = paperJvm;
+
       serverProperties = {
         motd = "Un nouveau monde";
         online-mode = false;
         server-port = 25580 + idx;
         white-list = true;
       };
+
       files = whitelistFiles;
+
       lazymc = {
         enable = true;
+
         config = {
           public = {
             address = if public then "0.0.0.0:25565" else "127.0.0.1:${toString (25570 + idx)}";
             version = lib.head (lib.splitString "-" package.version);
           };
+
           server = {
             wake_whitelist = true;
             freeze_process = false;
           };
+
           time.sleep_after = 180;
         };
       };
@@ -75,6 +80,7 @@ in
     minecraft-servers = {
       enable = true;
       eula = true;
+
       managementSystem = {
         tmux.enable = false;
         systemd-socket.enable = true;
@@ -110,33 +116,41 @@ in
           openFirewall = true;
           package = pkgs.fabricServers.fabric-1_21_1;
           jvmOpts = "-Xms4G -Xmx8G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+
           serverProperties = {
             motd = "Un monde Pokémon";
             online-mode = false;
             server-port = 25585;
             white-list = true;
           };
+
           # Fabric mods rewrite config/: copied into the data dir, reset on restart.
           files = whitelistFiles // {
             "config" = "${cobbleverse}/config";
           };
+
           symlinks = {
             "mods" = "${cobbleverse}/mods";
             "datapacks" = "${cobbleverse}/datapacks";
             "resourcepacks" = "${cobbleverse}/resourcepacks";
           };
+
           lazymc = {
             enable = true;
+
             config = {
               public = {
                 address = "0.0.0.0:25565";
                 version = lib.head (lib.splitString "-" package.version);
               };
+
               join.hold.timeout = 60;
+
               server = {
                 wake_whitelist = true;
                 freeze_process = false;
               };
+
               time.sleep_after = 300;
             };
           };
@@ -148,6 +162,7 @@ in
           package = pkgs.velocityServers.velocity;
           jvmOpts = "-Xms512M -Xmx1G -XX:+UseG1GC -XX:G1HeapRegionSize=4M -XX:MaxInlineLevel=15";
           serverProperties = { }; # Velocity ignores server.properties
+
           files."velocity.toml" = (pkgs.formats.toml { }).generate "velocity.toml" {
             config-version = "2.7";
             bind = "0.0.0.0:25565";
@@ -155,6 +170,7 @@ in
             show-max-players = 100;
             online-mode = false;
             player-info-forwarding-mode = "none";
+
             servers = {
               v1 = "127.0.0.1:25571";
               v2 = "127.0.0.1:25572";
@@ -162,12 +178,14 @@ in
               v4 = "127.0.0.1:25574";
               try = [ "v1" ];
             };
+
             forced-hosts = {
               "v1.mc.mndn.fr" = [ "v1" ];
               "v2.mc.mndn.fr" = [ "v2" ];
               "v3.mc.mndn.fr" = [ "v3" ];
               "v4.mc.mndn.fr" = [ "v4" ];
             };
+
             advanced = {
               compression-threshold = 256;
               compression-level = -1;
@@ -186,6 +204,7 @@ in
         group = "minecraft";
         mode = "0440";
       };
+
       minecraft-ops = {
         file = ./ops.json.age;
         owner = "minecraft";
@@ -194,5 +213,4 @@ in
       };
     };
   };
-
 }

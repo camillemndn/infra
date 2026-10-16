@@ -10,7 +10,6 @@ let
   stateDir = "/var/lib/gramps-web";
   cacheDir = "/var/cache/gramps-web";
   redis = config.services.redis.servers.gramps-web;
-
   python = pkgs.python3.withPackages (ps: [ (ps.toPythonModule pkgs.gramps-webapi) ]);
   gramps-webapi = "${python}/bin/python -m gramps_webapi";
 
@@ -36,6 +35,7 @@ let
         ]
       )
     );
+
     GRAMPSHOME = stateDir;
     GRAMPS_DATABASE_PATH = "${stateDir}/grampsdb";
     GRAMPSWEB_TREE = cfg.tree;
@@ -97,8 +97,10 @@ with lib;
         enable = true;
         port = 0;
       };
+
       nginx.virtualHosts.${cfg.hostName} = {
         inherit (cfg) port;
+
         locations."/".extraConfig = ''
           client_max_body_size 500M;
         '';
@@ -111,6 +113,7 @@ with lib;
           description = "Gramps Web";
           wantedBy = [ "multi-user.target" ];
           requires = [ "redis-gramps-web.service" ];
+
           after = [
             "network.target"
             "redis-gramps-web.service"
@@ -132,10 +135,12 @@ with lib;
             exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
           '';
         };
+
         gramps-web-celery = {
           description = "Gramps Web background tasks";
           wantedBy = [ "multi-user.target" ];
           requires = [ "redis-gramps-web.service" ];
+
           # Creates the secret key and migrates the user database.
           after = [
             "gramps-web.service"
@@ -151,6 +156,5 @@ with lib;
         };
       };
     };
-
   };
 }

@@ -20,12 +20,13 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [ cmake ];
+
   buildInputs = [
     dtc
     ncurses
   ];
-  env.NIX_CFLAGS_COMPILE = "-Wno-error=maybe-uninitialized";
 
+  env.NIX_CFLAGS_COMPILE = "-Wno-error=maybe-uninitialized";
   passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
 
   meta = {

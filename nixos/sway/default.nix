@@ -7,6 +7,7 @@
 lib.mkIf config.programs.sway.enable {
   programs.sway.extraPackages = [ ];
   services.gnome.gnome-keyring.enable = true;
+
   home-manager.sharedModules = [
     (
       {
@@ -27,6 +28,7 @@ lib.mkIf config.programs.sway.enable {
             "/etc/profiles/per-user/$USER/lib"
           ])
           + ":$HOME/.${format}";
+
         envVars = lib.replaceStrings [ "\n" ] [ " " ] (
           lib.toShellVars {
             _JAVA_OPTIONS = "-Dsun.java2d.uiScale=3.0";
@@ -76,7 +78,9 @@ lib.mkIf config.programs.sway.enable {
               natural_scroll = "enabled";
               tap = "enabled";
             };
+
             "type:touchpad".dwt = "disabled";
+
             "1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
               drag = "enable";
               drag_lock = "enable";
@@ -116,11 +120,15 @@ lib.mkIf config.programs.sway.enable {
             "${cfg.modifier}+Shift+t" = "move scratchpad";
             "${cfg.modifier}+t" = "scratchpad show";
             "${cfg.modifier}+Shift+c" = "reload";
+
             "${cfg.modifier}+Shift+e" =
               "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+
             "${cfg.modifier}+r" = "mode resize";
+
             "${cfg.modifier}+Shift+s" =
               "exec slurp | grim -g - \"$(xdg-user-dir PICTURES)/Captures d’écran/$(date +%Y%m%d_%H%M%S.png)\"";
+
             "${cfg.modifier}+Escape" = "exec swaylock";
             "XF86AudioMute" = "exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
             "XF86AudioLowerVolume" = "exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 1%-";

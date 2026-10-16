@@ -80,6 +80,7 @@
 
                 backlight = {
                   format = "{icon} {percent}%";
+
                   format-icons = [
                     ""
                     ""
@@ -90,17 +91,20 @@
                   format = "{icon} {volume}%";
                   format-bluetooth = "{icon} {volume}%";
                   format-muted = "󰝟";
+
                   format-icons = {
                     headphone = "";
                     phone = "";
                     portable = "";
                     car = "";
+
                     default = [
                       ""
                       ""
                       ""
                     ];
                   };
+
                   scroll-step = 1;
                   on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
                   on-click-right = "pavucontrol";
@@ -123,6 +127,7 @@
                   format = " {status}";
                   format-connected = " {device_alias}";
                   format-connected-battery = " {device_alias} {device_battery_percentage}%";
+
                   on-click = ''
                     STATE=$(bluetoothctl show | grep "Powered" | awk '{print $2}')
                     if [ "$STATE" = "yes" ]; then
@@ -131,6 +136,7 @@
                       bluetoothctl power on
                     fi
                   '';
+
                   on-click-right = "kitty -e bluetuith";
                   tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
                   tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
@@ -141,12 +147,15 @@
                 battery = {
                   bat = "BAT0";
                   interval = 60;
+
                   states = {
                     warning = 30;
                     critical = 15;
                   };
+
                   format = "{icon} {capacity}%";
                   format-alt = "{icon} {capacity}% ({power} W)";
+
                   format-icons = [
                     ""
                     ""
@@ -160,12 +169,14 @@
                   format = " {:%H:%M}";
                   format-alt = " {:L%A %d %B %Y (%R)}";
                   tooltip-format = "<tt><small>{calendar}</small></tt>";
+
                   calendar = {
                     mode = "year";
                     mode-mon-col = 3;
                     weeks-pos = "right";
                     on-scroll = 1;
                     on-click-right = "mode";
+
                     format = {
                       months = "<span color='#ffead3'><b>{}</b></span>";
                       days = "<span color='#ecc6d9'><b>{}</b></span>";
@@ -174,6 +185,7 @@
                       today = "<span color='#ff6699'><b><u>{}</u></b></span>";
                     };
                   };
+
                   actions = {
                     on-click-right = "mode";
                     on-click-forward = "tz_up";

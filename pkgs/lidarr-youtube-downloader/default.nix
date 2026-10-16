@@ -22,7 +22,6 @@ let
     };
 
     build-system = [ python3.pkgs.setuptools ];
-
     # No test suite.
     doCheck = false;
     pythonImportsCheck = [ "bing_image_downloader" ];

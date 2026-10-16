@@ -10,23 +10,28 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager = {
       autoLogin = {
         enable = true;
         user = "cecilia";
       };
+
       sddm = {
         enable = true;
         autoLogin.relogin = true;
         wayland.enable = true;
       };
     };
+
     pipewire = {
       enable = true;
+
       alsa = {
         enable = true;
         support32Bit = true;
       };
+
       pulse.enable = true;
     };
 
@@ -40,12 +45,14 @@
   users.users.cecilia = {
     isNormalUser = true;
     description = "Cecilia";
+
     extraGroups = [
       "networkmanager"
       "wheel"
       "lp"
       "scanner"
     ];
+
     packages = with pkgs; [
       kdePackages.kate
       kdePackages.kpat

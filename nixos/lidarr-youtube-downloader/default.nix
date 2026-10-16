@@ -13,7 +13,6 @@ with lib;
 {
   options.services.lidarr-youtube-downloader = {
     enable = mkEnableOption "Lidarr YouTube Downloader";
-
     package = mkPackageOption pkgs "lidarr-youtube-downloader" { };
 
     host = mkOption {
@@ -39,6 +38,7 @@ with lib;
       type = types.nullOr types.path;
       default = null;
       example = "/data/downloads";
+
       description = ''
         Directory downloads are written to. Must be writable by the service
         user (see {option}`services.lidarr-youtube-downloader.group`).
@@ -49,6 +49,7 @@ with lib;
       type = types.nullOr types.path;
       default = null;
       example = "/data/music";
+
       description = ''
         Final music library location (Lidarr's root folder). Must be writable
         by the service user.
@@ -64,6 +65,7 @@ with lib;
     group = mkOption {
       type = types.str;
       default = "lidarr-youtube-downloader";
+
       description = ''
         Group the service runs as. Set this to a shared media group so the
         service can write to the download and music directories.
@@ -74,6 +76,7 @@ with lib;
       type = types.nullOr types.path;
       default = null;
       example = "/run/secrets/lidarr-youtube-downloader.env";
+
       description = ''
         Path to an EnvironmentFile holding secrets such as `LIDARR_API_KEY`
         and `ACOUSTID_API_KEY`. Keeps them out of the world-readable Nix store.
@@ -85,10 +88,12 @@ with lib;
     extraEnvironment = mkOption {
       type = types.attrsOf types.str;
       default = { };
+
       example = {
         SCHEDULER_ENABLED = "true";
         SCHEDULER_INTERVAL = "120";
       };
+
       description = "Extra environment variables passed to the service.";
     };
   };
@@ -101,6 +106,7 @@ with lib;
           inherit (cfg) group;
         };
       };
+
       groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
         lidarr-youtube-downloader = { };
       };
@@ -111,6 +117,7 @@ with lib;
       tmpfiles.rules = optional (
         cfg.downloadPath != null
       ) "d ${cfg.downloadPath} 2775 ${cfg.user} ${cfg.group} - -";
+
       services.lidarr-youtube-downloader = {
         description = "Lidarr YouTube Downloader";
         wantedBy = [ "multi-user.target" ];
@@ -131,24 +138,21 @@ with lib;
           User = cfg.user;
           Group = cfg.group;
           Restart = "on-failure";
-
           # The app hardcodes /config: bind the state directory there.
           StateDirectory = "lidarr-youtube-downloader";
           StateDirectoryMode = "0750";
           BindPaths = [ "/var/lib/lidarr-youtube-downloader:/config" ];
-
           EnvironmentFile = optional (cfg.environmentFile != null) cfg.environmentFile;
-
           NoNewPrivileges = true;
           PrivateTmp = true;
           ProtectHome = true;
           ProtectSystem = "strict";
+
           ReadWritePaths =
             optional (cfg.downloadPath != null) cfg.downloadPath
             ++ optional (cfg.musicPath != null) cfg.musicPath;
         };
       };
     };
-
   };
 }
