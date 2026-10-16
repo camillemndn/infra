@@ -4,6 +4,7 @@
   fetchFromGitHub,
   cmake,
   dtc,
+  ncurses,
   nix-update-script,
 }:
 
@@ -19,7 +20,10 @@ stdenv.mkDerivation {
   };
 
   nativeBuildInputs = [ cmake ];
-  buildInputs = [ dtc ];
+  buildInputs = [
+    dtc
+    ncurses
+  ];
   env.NIX_CFLAGS_COMPILE = "-Wno-error=maybe-uninitialized";
 
   passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
