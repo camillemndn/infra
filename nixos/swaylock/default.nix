@@ -11,6 +11,7 @@
       lib.mkIf config.programs.swaylock.enable {
         programs.swaylock = {
           package = pkgs.swaylock-effects;
+
           settings = {
             ignore-empty-password = true;
             clock = true;

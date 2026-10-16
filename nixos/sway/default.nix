@@ -7,7 +7,6 @@
 lib.mkIf config.programs.sway.enable {
   programs.sway.extraPackages = [ ];
   services.gnome.gnome-keyring.enable = true;
-
   home-manager.sharedModules = [
     (
       {
@@ -46,6 +45,7 @@ lib.mkIf config.programs.sway.enable {
           grim
           slurp
         ];
+
         programs = {
           fuzzel.enable = true;
           kitty.enable = true;
@@ -61,25 +61,29 @@ lib.mkIf config.programs.sway.enable {
               position = "top";
             }
           ];
-
           bindkeysToCode = true;
+
           gaps = {
             inner = 8;
             smartBorders = "on";
           };
+
           input = {
             "*" = {
               xkb_layout = "fr";
               natural_scroll = "enabled";
               tap = "enabled";
             };
+
             "type:touchpad".dwt = "disabled";
+
             "1267:11394:ELAN9008:00_04F3:2C82_Stylus" = {
               drag = "enable";
               drag_lock = "enable";
               map_to_output = "eDP-1";
             };
           };
+
           keybindings = {
             "${cfg.modifier}+Return" = "exec ${cfg.terminal}";
             "${cfg.modifier}+q" = "kill";
@@ -126,6 +130,7 @@ lib.mkIf config.programs.sway.enable {
             "XF86MonBrightnessDown" = "exec brightnessctl s '1%-'";
             "XF86MonBrightnessUp" = "exec brightnessctl s '+1%'";
           };
+
           keycodebindings = builtins.listToAttrs (
             builtins.concatLists (
               builtins.genList (
@@ -147,11 +152,9 @@ lib.mkIf config.programs.sway.enable {
               ) 10
             )
           );
-
           menu = "${envVars} fuzzel";
           modifier = "Mod4";
           output."Sharp Corporation LQ134R1JW51 Unknown".scale = "2.5";
-
           startup = [
             { command = "${pkgs.writeShellScript "sway-autorotate" ./autorotate.sh}"; }
             { command = "tailscale-systray"; }
@@ -160,7 +163,6 @@ lib.mkIf config.programs.sway.enable {
               always = true;
             }
           ];
-
           terminal = "kitty";
           window.titlebar = false;
         };

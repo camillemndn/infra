@@ -5,6 +5,7 @@ let
       public = "77.42.114.11";
       vpn = "100.100.45.7";
     };
+
     ipv6 = {
       public = "2a01:4f9:3090:2b8c:be24:11ff:fe0b:49fd";
       vpn = "fd7a:115c:a1e0::7";
@@ -62,7 +63,6 @@ in
       interfaceNamespace = "vpn";
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
-
       peers = [
         {
           publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
@@ -79,10 +79,12 @@ in
   deployment = {
     targetHost = "zeppelin.kms";
   };
+
   # Mullvad's resolver, reachable only through the tunnel.
   environment.etc."netns/vpn/resolv.conf".text = ''
     nameserver 10.64.0.1
   '';
+
   services = {
     # Inside the namespace, localhost is not reachable from the relay.
     flood.host = "0.0.0.0";
@@ -99,10 +101,12 @@ in
             iproute2
             nftables
           ];
+
           serviceConfig = {
             Type = "oneshot";
             RemainAfterExit = true;
           };
+
           script = ''
             ip netns del vpn 2>/dev/null || true
             ip netns add vpn
@@ -117,6 +121,7 @@ in
             ip netns del vpn || true
           '';
         };
+
         wireguard-wg0 = {
           requires = [ "netns-vpn.service" ];
           after = [ "netns-vpn.service" ];
@@ -127,6 +132,7 @@ in
         requires = [ "wireguard-wg0.service" ];
         after = [ "wireguard-wg0.service" ];
         partOf = [ "netns-vpn.service" ];
+
         serviceConfig = {
           NetworkNamespacePath = "/run/netns/vpn";
           BindReadOnlyPaths = [ "/etc/netns/vpn/resolv.conf:/etc/resolv.conf" ];
@@ -141,6 +147,7 @@ in
             description = "Relay 127.0.0.1:${toString port} into the VPN namespace";
             requires = [ "${proxyName port}.socket" ];
             after = [ "${proxyName port}.socket" ];
+
             serviceConfig = {
               ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
               DynamicUser = true;
@@ -153,7 +160,6 @@ in
         flood.environment.HOME = "/var/lib/flood";
       }
     ];
-
     sockets = lib.listToAttrs (
       map (
         port:
@@ -175,11 +181,11 @@ in
           networkConfig.LinkLocalAddressing = "no";
           linkConfig.RequiredForOnline = "no";
         };
+
         "10-wan" = {
           matchConfig.Type = "ether";
           address = [ "${addresses.ipv4.local}/21" ];
           routes = [ { Gateway = "192.168.0.1"; } ];
-
           linkConfig.RequiredForOnline = "routable";
         };
       };

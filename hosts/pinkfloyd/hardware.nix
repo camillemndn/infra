@@ -16,12 +16,15 @@
         "usb_storage"
         "sd_mod"
       ];
+
       clevis = {
         enable = true;
         devices.crypted.secretFile = "${./luks.jwe}";
       };
+
       systemd.enable = true;
     };
+
     kernelModules = [ "kvm-amd" ];
   };
 

@@ -17,11 +17,13 @@
           "x86_64-linux"
           "aarch64-linux"
         ];
+
         github = {
           authType.app = {
             id = 934127;
             secretKeyFile = config.age.secrets.github-app-secret.path;
           };
+
           oauthId = "Iv23lihsrM97J1A7Wv58";
           oauthSecretFile = config.age.secrets.github-oauth-secret.path;
           webhookSecretFile = config.age.secrets.github-webhook-secret.path;
@@ -42,6 +44,7 @@
       forceSSL = true;
       enableACME = true;
     };
+
     buildbot-master = {
       pythonPackages = _: [
         pkgs.buildbot-plugins.badges
@@ -83,11 +86,13 @@
     pkgs.nix-eval-jobs
     pkgs.coreutils
   ];
+
   age.secrets = {
     buildbot-nix-worker-password = {
       file = ./buildbot-nix-worker-password.age;
       owner = "buildbot-worker";
     };
+
     buildbot-nix-workers.file = ./buildbot-nix-workers.age;
     github-app-secret.file = ./github-app-secret.age;
     github-oauth-secret.file = ./github-oauth-secret.age;

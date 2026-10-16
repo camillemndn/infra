@@ -32,6 +32,7 @@ in
         ];
         openssh.authorizedKeys.keys = sshPubKeys;
       };
+
       root = {
         extraGroups = [
           "audio"
@@ -46,6 +47,7 @@ in
     buildOnTarget = lib.mkDefault true;
     allowLocalDeployment = lib.mkDefault true;
   };
+
   boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
@@ -58,6 +60,7 @@ in
           name = "Camille M.";
           email = "camillemondon@free.fr";
         };
+
         pull.rebase = true;
         fetch.prune = true;
         rebase.autoStash = true;
@@ -72,30 +75,37 @@ in
         ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       '';
     };
+
     direnv.enable = true;
     neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
     command-not-found.enable = false;
+
     nix-index = lib.mkDefault {
       enable = true;
       package = pkgs.nix-index-with-db;
     };
   };
+
   services = {
     openssh = {
       enable = lib.mkDefault true;
       settings.PasswordAuthentication = lib.mkDefault false;
     };
+
     tailscale.enable = lib.mkDefault true;
 
     mysql = {
       package = lib.mkForce pkgs.mariadb;
+
       settings = {
         mysql.pager = "${pkgs.less}/bin/less -SFX";
         mysqld.init-connect = "'SET NAMES utf8mb4'";
       };
     };
+
     resolved = {
       enable = true;
+
       settings.Resolve = {
         DNSOverTLS = "opportunistic";
         DNSSEC = "allow-downgrade";
@@ -108,6 +118,7 @@ in
     firewall.checkReversePath = lib.mkIf config.services.tailscale.enable "loose";
     nftables.enable = true;
   };
+
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
     systemPackages = with pkgs; [
@@ -135,11 +146,13 @@ in
       zip
     ];
   };
+
   security = {
     acme = {
       defaults.email = "camillemondon@free.fr";
       acceptTerms = true;
     };
+
     pki.certificateFiles = [ ./saumonnet.crt ];
   };
 
@@ -156,29 +169,36 @@ in
       {
         gtk = {
           gtk3.extraConfig = gtkConfig;
+
           gtk4 = {
             theme = null;
             extraConfig = gtkConfig;
           };
         };
+
         home = {
           keyboard.layout = "fr";
           language.base = "fr_FR.UTF-8";
           packages = [ pkgs.comma-with-db ];
+
           sessionVariables = {
             # GDK_BACKEND stays unset: xdg-desktop-portal-gnome refuses ScreenCast/Screenshot otherwise.
             QT_QPA_PLATFORM = "wayland";
           };
+
           stateVersion = lib.mkDefault "24.05";
         };
+
         programs = {
           fish.enable = true;
           home-manager.enable = true;
+
           nix-index = {
             enable = lib.mkDefault true;
             package = lib.mkDefault pkgs.nix-index-with-db;
           };
         };
+
         services.random-background = {
           enable = true;
           imageDirectory =

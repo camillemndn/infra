@@ -6,6 +6,7 @@ lib.mkIf config.services.pipewire.enable {
       enable = lib.mkDefault true;
       support32Bit = lib.mkDefault true;
     };
+
     pulse.enable = lib.mkDefault true;
   };
 

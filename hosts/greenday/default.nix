@@ -19,6 +19,7 @@
       libreoffice-qt-fresh
     ];
   };
+
   services = {
     xserver.enable = true;
     desktopManager.plasma6.enable = true;
@@ -29,6 +30,7 @@
         autoLogin.relogin = true;
         wayland.enable = true;
       };
+
       autoLogin = {
         enable = true;
         user = "georgette";

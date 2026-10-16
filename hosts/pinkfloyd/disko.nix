@@ -19,6 +19,7 @@
               mountOptions = [ "umask=0077" ];
             };
           };
+
           luks = {
             size = "100%";
 
@@ -27,6 +28,7 @@
               name = "crypted";
               passwordFile = "/tmp/secret.key";
               settings.allowDiscards = true;
+
               content = {
                 type = "lvm_pv";
                 vg = "pool";
@@ -36,6 +38,7 @@
         };
       };
     };
+
     lvm_vg.pool = {
       type = "lvm_vg";
 

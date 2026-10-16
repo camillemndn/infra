@@ -20,6 +20,7 @@ in
         pkgs.mopidy-iris # Web UI on :6680/iris (browse/queue/volume from any browser)
         mopidy-subidy # Subsonic backend -> Navidrome (patched for cover art)
       ];
+
       # Rendered into the store: no credentials here.
       settings = {
         audio.output = "pulsesink";
@@ -27,6 +28,7 @@ in
         http.hostname = "::";
         subidy.url = "https://music.mndn.fr";
       };
+
       # Subsonic credentials, outside the data dir Iris can read; merged into [subidy].
       extraConfigFiles = [ config.age.secrets.mopidy-subidy.path ];
     };
@@ -34,6 +36,7 @@ in
 
   # System-wide PipeWire: audio clients need the pipewire group.
   users.users.mopidy.extraGroups = [ "pipewire" ];
+
   age.secrets.mopidy-subidy = {
     file = ./subidy.age;
     owner = "mopidy";

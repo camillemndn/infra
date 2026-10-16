@@ -13,6 +13,7 @@
         autoLogin.relogin = true;
         wayland.enable = true;
       };
+
       autoLogin = {
         enable = true;
         user = "michel";
@@ -28,6 +29,7 @@
 
     xserver.enable = true;
   };
+
   users.users.michel = {
     description = "Michel";
     extraGroups = [

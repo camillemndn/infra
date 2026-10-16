@@ -14,6 +14,7 @@
           fd
           ripgrep
         ];
+
         programs.emacs = {
           package = pkgs.emacs-pgtk;
           extraPackages =
@@ -42,6 +43,7 @@
           default = true;
           description = "Enable Git support in Emacs via Magit and diff-hl";
         };
+
         config = lib.mkIf config.programs.emacs.magit.enable {
           programs.emacs.extraPackages =
             epkgs: with epkgs; [
@@ -65,6 +67,7 @@
           default = true;
           description = "Enable Nix support in Emacs";
         };
+
         config = lib.mkIf config.programs.emacs.nixMode.enable {
           home.packages = with pkgs; [
             nil
@@ -87,6 +90,7 @@
           default = true;
           description = "Enable Org notebooks with Python in Emacs";
         };
+
         config = lib.mkIf config.programs.emacs.orgMode.enable {
           # envrc: per-buffer direnv environment.
           programs.emacs.extraPackages = epkgs: with epkgs; [ envrc ];
@@ -106,6 +110,7 @@
           default = true;
           description = "Enable Quarto support in Emacs";
         };
+
         config = lib.mkIf config.programs.emacs.quartoMode.enable {
           programs.emacs.extraPackages = epkgs: with epkgs; [ quarto-mode ];
         };
@@ -124,6 +129,7 @@
           default = true;
           description = "Enable R support in Emacs via ESS";
         };
+
         config = lib.mkIf config.programs.emacs.RMode.enable {
           programs.emacs.extraPackages = epkgs: with epkgs; [ ess ];
         };

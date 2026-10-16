@@ -3,6 +3,7 @@ _:
 {
   services.nginx = {
     publicDomains = [ "varanda.fr" ];
+
     virtualHosts = {
       "varanda.fr" = {
         root = "/srv/sites/varanda.fr/www";
@@ -14,6 +15,7 @@ _:
           error_page 404 /404/;
         '';
       };
+
       "www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
     };
   };

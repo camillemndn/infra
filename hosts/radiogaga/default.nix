@@ -4,6 +4,7 @@ _: {
       enable = true;
       enableDefault = true;
     };
+
     radiogaga.enable = true;
 
     # Avahi comes from librespot/; AirPlay and the network sink reuse it.
@@ -14,6 +15,7 @@ _: {
       openFirewall = true;
       settings.general.name = "radiogaga";
     };
+
     # DLNA/UPnP renderer. Its DynamicUser is only in `audio`; system-wide PipeWire
     # may also require the pipewire group.
     gmediarender = {

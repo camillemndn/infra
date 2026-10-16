@@ -32,11 +32,13 @@ in
       enable = true;
       virtualHost = "finances.kms";
       enableNginx = true;
+
       settings = {
         APP_KEY_FILE = config.age.secrets.firefly-iii-app-key.path;
         DB_CONNECTION = "pgsql";
       };
     };
+
     firefly-iii-data-importer = {
       enable = true;
       virtualHost = "import.finances.kms";
@@ -56,6 +58,7 @@ in
     nginx.virtualHosts."finances.kms".locations."~ \\.php$".extraConfig = lib.mkAfter ''
       fastcgi_read_timeout 3600;
     '';
+
     phpfpm.pools = {
       firefly-iii.phpOptions = ''
         log_errors = on
@@ -70,6 +73,7 @@ in
   };
 
   environment.systemPackages = [ firefly-iii-manage ];
+
   age.secrets.firefly-iii-app-key = {
     owner = cfg.user;
     file = ./app-key.age;

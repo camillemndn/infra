@@ -14,22 +14,26 @@ with lib;
   options.services.lidarr-youtube-downloader = {
     enable = mkEnableOption "Lidarr YouTube Downloader";
     package = mkPackageOption pkgs "lidarr-youtube-downloader" { };
+
     host = mkOption {
       type = types.str;
       default = "127.0.0.1";
       description = "Address the web UI binds to.";
     };
+
     port = mkOption {
       type = types.port;
       default = 5005;
       description = "Port the web UI listens on.";
     };
+
     lidarrUrl = mkOption {
       type = types.nullOr types.str;
       default = "http://127.0.0.1:8686";
       example = "http://127.0.0.1:8686";
       description = "Base URL of the Lidarr instance to sync with.";
     };
+
     downloadPath = mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -39,6 +43,7 @@ with lib;
         user (see {option}`services.lidarr-youtube-downloader.group`).
       '';
     };
+
     musicPath = mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -48,11 +53,13 @@ with lib;
         by the service user.
       '';
     };
+
     user = mkOption {
       type = types.str;
       default = "lidarr-youtube-downloader";
       description = "User the service runs as.";
     };
+
     group = mkOption {
       type = types.str;
       default = "lidarr-youtube-downloader";
@@ -61,6 +68,7 @@ with lib;
         service can write to the download and music directories.
       '';
     };
+
     environmentFile = mkOption {
       type = types.nullOr types.path;
       default = null;
@@ -72,13 +80,16 @@ with lib;
         persists them to `/config/config.json` in the state directory.
       '';
     };
+
     extraEnvironment = mkOption {
       type = types.attrsOf types.str;
       default = { };
+
       example = {
         SCHEDULER_ENABLED = "true";
         SCHEDULER_INTERVAL = "120";
       };
+
       description = "Extra environment variables passed to the service.";
     };
   };
@@ -91,10 +102,12 @@ with lib;
           inherit (cfg) group;
         };
       };
+
       groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
         lidarr-youtube-downloader = { };
       };
     };
+
     systemd = {
       # The download directory must exist, group-writable.
       tmpfiles.rules = optional (
@@ -106,6 +119,7 @@ with lib;
         wantedBy = [ "multi-user.target" ];
         after = [ "network-online.target" ];
         wants = [ "network-online.target" ];
+
         environment = {
           FLASK_HOST = cfg.host;
           FLASK_PORT = toString cfg.port;

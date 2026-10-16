@@ -25,21 +25,23 @@ in
         maxJobs = 2;
       })
     ];
-
     channel.enable = false;
     distributedBuilds = true;
     extraOptions = ''
       keep-outputs = true
       keep-derivations = true
     '';
+
     gc = {
       automatic = lib.mkIf config.services.openssh.enable true;
       dates = "weekly";
     };
+
     nixPath = [
       "nixpkgs=${nixpkgs}"
       "nixos=${nixpkgs}"
     ];
+
     settings = {
       auto-optimise-store = true;
       builders-use-substitutes = true;
@@ -50,6 +52,7 @@ in
       trusted-users = [ "camille" ];
     };
   };
+
   # Unattended builds can't accept unknown host keys, and offspring's sshd penalises dropped connections.
   programs.ssh.knownHosts.offspring = {
     hostNames = [

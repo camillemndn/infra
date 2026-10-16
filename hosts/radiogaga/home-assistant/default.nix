@@ -8,7 +8,6 @@
     home-assistant = rec {
       enable = true;
       package = pkgs.unstable.home-assistant;
-
       customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
       extraComponents = [
         "ecovacs"

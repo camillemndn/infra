@@ -8,11 +8,13 @@ python3.pkgs.buildPythonApplication rec {
   pname = "pdftocgen";
   version = "1.3.4";
   pyproject = true;
+
   src = fetchPypi {
     pname = "pdf_tocgen";
     inherit version;
     hash = "sha256-CQdYgyYUcn6vH9C6AHXVoQ648mjR1TT6vXExFwqKx54=";
   };
+
   build-system = [
     python3.pkgs.poetry-core
   ];
@@ -24,6 +26,7 @@ python3.pkgs.buildPythonApplication rec {
   pythonImportsCheck = [
     "pdftocgen"
   ];
+
   meta = {
     description = "Automatically generate table of contents for pdf files";
     homepage = "https://pypi.org/project/pdf.tocgen/";

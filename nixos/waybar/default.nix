@@ -43,32 +43,39 @@
                   "tray"
                   "custom/powermenu"
                 ];
+
                 "custom/launcher" = {
                   format = "";
                   on-click = "pkill ${launcher} || ${launcher}";
                   tooltip = false;
                 };
+
                 "sway/workspaces" = {
                   disable-scroll = true;
                   all-outputs = true;
                 };
+
                 temperature = {
                   format = " {temperatureC}°C";
                 };
+
                 cpu = {
                   interval = 1;
                   format = "󰍛 {usage}%";
                 };
+
                 memory = {
                   interval = 1;
                   format = "󰻠 {percentage}%";
                   states.warning = 85;
                 };
+
                 disk = {
                   path = "/";
                   interval = 180;
                   format = "󰨣 {percentage_used}%";
                 };
+
                 backlight = {
                   format = "{icon} {percent}%";
                   format-icons = [
@@ -76,6 +83,7 @@
                     ""
                   ];
                 };
+
                 pulseaudio = {
                   format = "{icon} {volume}%";
                   format-bluetooth = "{icon} {volume}%";
@@ -110,6 +118,7 @@
                   tooltip-format-disconnected = "Disconnected";
                   on-click-right = "kitty -e nmtui";
                 };
+
                 bluetooth = {
                   format = " {status}";
                   format-connected = " {device_alias}";
@@ -128,13 +137,16 @@
                   tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
                   tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
                 };
+
                 battery = {
                   bat = "BAT0";
                   interval = 60;
+
                   states = {
                     warning = 30;
                     critical = 15;
                   };
+
                   format = "{icon} {capacity}%";
                   format-alt = "{icon} {capacity}% ({power} W)";
                   format-icons = [
@@ -145,6 +157,7 @@
                     ""
                   ];
                 };
+
                 clock = {
                   format = " {:%H:%M}";
                   format-alt = " {:L%A %d %B %Y (%R)}";
@@ -156,6 +169,7 @@
                     weeks-pos = "right";
                     on-scroll = 1;
                     on-click-right = "mode";
+
                     format = {
                       months = "<span color='#ffead3'><b>{}</b></span>";
                       days = "<span color='#ecc6d9'><b>{}</b></span>";
@@ -164,6 +178,7 @@
                       today = "<span color='#ff6699'><b><u>{}</u></b></span>";
                     };
                   };
+
                   actions = {
                     on-click-right = "mode";
                     on-click-forward = "tz_up";
@@ -178,13 +193,13 @@
                   on-click = "wlogout -p layer-shell";
                   tooltip = false;
                 };
+
                 tray = {
                   icon-size = 15;
                   spacing = 5;
                 };
               }
             ];
-
             style = builtins.readFile ./style.css;
           };
         };

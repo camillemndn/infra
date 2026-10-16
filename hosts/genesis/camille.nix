@@ -63,11 +63,13 @@
         ];
         stateVersion = "23.05";
       };
+
       programs = {
         chromium = {
           enable = true;
           package = pkgs.ungoogled-chromium;
         };
+
         emacs.enable = true;
         kitty.enable = true;
         thunderbird.enable = true;

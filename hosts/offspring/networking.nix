@@ -8,6 +8,7 @@ _: {
         local = "10.0.0.163";
         public = "158.178.204.106";
       };
+
       ipv6.public = "2603:c027:c002:702:a0c:c8e:cc5e:c723";
     };
 
@@ -22,7 +23,6 @@ _: {
       allowedIPsAsRoutes = false;
       privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
-
       peers = [
         {
           # quilapayun

@@ -5,6 +5,7 @@
     bluetooth.enable = true;
     sane.enable = true;
   };
+
   programs.firefox.enable = true;
 
   services = {
@@ -15,18 +16,22 @@
         enable = true;
         user = "cecilia";
       };
+
       sddm = {
         enable = true;
         autoLogin.relogin = true;
         wayland.enable = true;
       };
     };
+
     pipewire = {
       enable = true;
+
       alsa = {
         enable = true;
         support32Bit = true;
       };
+
       pulse.enable = true;
     };
 

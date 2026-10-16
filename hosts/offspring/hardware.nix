@@ -10,6 +10,7 @@
         configurationLimit = 2;
       };
     };
+
     initrd.availableKernelModules = [
       "xhci_pci"
       "virtio_pci"

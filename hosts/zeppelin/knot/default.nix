@@ -21,15 +21,18 @@ let
     ns1 = {
       A = [ "77.42.114.11" ];
       AAAA = [ "2a01:4f9:3090:2b8c::2" ];
+
       transfer = {
         address = "fd7a:115c:a1e0::2";
         via = meta.ipv6.vpn;
       };
     };
+
     # Off the tailnet: transfers use the TSIG key.
     ns2 = {
       A = [ hosts.offspring.ipv4.public ];
       AAAA = [ hosts.offspring.ipv6.public ];
+
       transfer = {
         # Fixed source: privacy extensions would pick an address the secondary doesn't know.
         address = hosts.offspring.ipv6.public;
@@ -50,9 +53,9 @@ let
       nixosConfigurations
       ;
   };
+
   inherit (dnsZones) publicMachines nginxOf configOf;
   zoneNames = dnsZones.names;
-
   # ## Tailnet zone
 
   vpnTld = "kms";
@@ -79,8 +82,10 @@ let
         lib.filter (lib.hasSuffix ".${vpnTld}") (lib.attrNames (nginxOf name).virtualHosts)
       )
     );
+
   vpnZone = {
     TTL = 60 * 60;
+
     SOA = {
       nameServer = "ns1";
       adminEmail = "hostmaster@${vpnTld}";
@@ -90,7 +95,9 @@ let
       expire = 14 * 24 * 60 * 60;
       minimum = 60 * 60;
     };
+
     NS = [ "ns1" ];
+
     subdomains = {
       ns1 = vpnAddresses meta;
     }
@@ -100,6 +107,7 @@ let
       )
     );
   };
+
   zoneOf =
     name:
     let
@@ -120,7 +128,6 @@ let
     name:
     lib.optionals (nginxOf name).enable (lib.attrNames (nginxOf name).virtualHosts)
     ++ lib.optional (domainOf name != null) "${name}.${domainOf name}";
-
   hostRecords = lib.concatLists (
     lib.mapAttrsToList (
       machine: m:
@@ -144,6 +151,7 @@ let
     lib.foldl lib.recursiveUpdate
       {
         TTL = 60 * 60;
+
         SOA = {
           nameServer = "ns1";
           adminEmail = "hostmaster@${zone}";
@@ -154,6 +162,7 @@ let
           expire = 14 * 24 * 60 * 60;
           minimum = 60 * 60;
         };
+
         NS = lib.attrNames nameServers;
         subdomains = nameServers;
       }
@@ -191,12 +200,14 @@ in
           # Hidden from scanners.
           version = "none";
         };
+
         remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
           resolver.address = [
             "2606:4700:4700::1111"
             "1.1.1.1"
           ];
         };
+
         acl = lib.mapAttrs' (
           name: ns:
           lib.nameValuePair "${name}-transfer" (
@@ -207,6 +218,7 @@ in
         mod-queryacl.internal.address = vpnRanges;
         # Submitted once the resolver sees the DS at the registry.
         submission.registry.parent = "resolver";
+
         # One CSK per zone, never rolled, so registrar DS records stay valid (keymgr <zone> ds).
         policy.csk = {
           single-type-signing = true;
@@ -215,6 +227,7 @@ in
           nsec3 = true;
           nsec3-iterations = 0;
         };
+
         template = {
           default = {
             semantic-checks = true;
@@ -228,6 +241,7 @@ in
             journal-content = "all";
             serial-policy = "unixtime";
           };
+
           # No parent DS and no secondary: the gateway's resolver forwards here.
           internal = {
             semantic-checks = true;
@@ -238,6 +252,7 @@ in
             serial-policy = "unixtime";
           };
         };
+
         zone = lib.mapAttrs (name: zone: { file = zoneFile name zone; }) zones // {
           ${vpnTld} = {
             file = zoneFile vpnTld vpnZone;
@@ -255,9 +270,11 @@ in
     file = ./tsig.age;
     owner = "knot";
   };
+
   # The tailnet address appears after boot.
   boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
   systemd.services.knot.after = [ "tailscaled.service" ];
+
   networking.firewall = {
     allowedTCPPorts = [ 53 ];
     allowedUDPPorts = [ 53 ];

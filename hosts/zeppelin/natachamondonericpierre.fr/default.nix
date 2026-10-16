@@ -7,6 +7,7 @@ _:
     virtualHosts = {
       "www.natachamondonericpierre.mndn.fr" = {
         root = "/srv/sites/natachamondonericpierre.fr/www";
+
         locations = {
           "/static/".extraConfig = ''
             expires 1y;
@@ -16,6 +17,7 @@ _:
             error_page 404 /en/404/;
           '';
         };
+
         extraConfig = ''
           error_page 404 /404/;
           include /srv/sites/natachamondonericpierre.fr/redirect.conf;

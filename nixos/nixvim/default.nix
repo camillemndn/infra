@@ -49,17 +49,18 @@ in
         callback.__raw = builtins.readFile ./molten_export_on_save.lua;
       }
     ];
+
     clipboard = {
       register = "unnamedplus";
       providers.wl-copy.enable = true;
     };
+
     defaultEditor = true;
     # The project's JUPYTER_PATH takes precedence.
     extraConfigLuaPre = ''
       vim.env.JUPYTER_PATH = (vim.env.JUPYTER_PATH and vim.env.JUPYTER_PATH .. ":" or "")
         .. "${jupyterKernels}/share/jupyter"
     '';
-
     extraPackages = with pkgs; [
       black
       nil
@@ -73,7 +74,6 @@ in
       superhtml
       python3Packages.jupytext
     ];
-
     # Highlights code inside <syntaxhighlight> blocks and detects .mediawiki files.
     extraPlugins = [ pkgs.vimPlugins.mediawiki-vim ];
     keymaps = [
@@ -120,6 +120,7 @@ in
         options.desc = "Run selection";
       }
     ];
+
     lsp.servers.wikitext = {
       enable = true;
       package = pkgs.wikitext-lsp;
@@ -146,6 +147,7 @@ in
         enable = true;
         settings.on_attach.__raw = builtins.readFile ./aerial_on_attach.lua;
       };
+
       bufferline.enable = true;
 
       cmp = {
@@ -162,6 +164,7 @@ in
             "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
             "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           };
+
           sources = [
             { name = "nvim_lsp"; }
             { name = "path"; }
@@ -197,6 +200,7 @@ in
         enable = true;
         settings.backend = "kitty";
       };
+
       iron.enable = true;
       lilypond-suite.enable = true;
 
@@ -205,21 +209,26 @@ in
 
         servers = {
           air.enable = true;
+
           hls = {
             enable = true;
             installGhc = false;
             package = null;
           };
+
           nil_ls.enable = true;
+
           panache = {
             enable = true;
             package = pkgs.panache;
           };
+
           pyright.enable = true;
           superhtml.enable = true;
           tailwindcss.enable = true;
         };
       };
+
       molten = {
         enable = true;
 
@@ -231,14 +240,17 @@ in
           ];
           nvimSkipModules = [ "load_wezterm_nvim" ];
         };
+
         settings = {
           image_provider = "image.nvim";
           output_win_max_height = 20;
           virt_text_output = true;
         };
       };
+
       quarto = {
         enable = true;
+
         settings.codeRunner = {
           enabled = true;
           default_method = "molten";
@@ -249,6 +261,7 @@ in
 
       telescope = {
         enable = true;
+
         keymaps = {
           "fb" = "buffers";
           "ff" = "find_files";
@@ -256,19 +269,21 @@ in
           "fh" = "help_tags";
         };
       };
+
       treesitter = {
         enable = true;
         settings.highlight.enable = true;
       };
+
       vim-slime = {
         enable = true;
         settings.target = "neovim";
       };
+
       web-devicons.enable = true;
 
       which-key = {
         enable = true;
-
         settings.spec = [
           {
             __unkeyed-1 = "<localleader>m";
@@ -288,6 +303,7 @@ in
         command.__raw = builtins.readFile ./FormatDisable.lua;
         desc = "Disable autoformat-on-save";
       };
+
       FormatEnable = {
         bang = true;
         command.__raw = builtins.readFile ./FormatEnable.lua;

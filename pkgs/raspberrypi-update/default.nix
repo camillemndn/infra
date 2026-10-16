@@ -19,12 +19,14 @@
 stdenv.mkDerivation {
   pname = "raspberrypi-update";
   version = "0-unstable-2026-08-26";
+
   src = fetchFromGitHub {
     owner = "raspberrypi";
     repo = "rpi-update";
     rev = "0fd4cffe552e9c323ca97d89ccdc25f63e112f8b";
     hash = "sha256-W60Yvg5ibXkptHQ7Hmy1IKCd/Qkv0R5f6I4CJtRIEx8=";
   };
+
   postPatch = ''
     sed -i rpi-update -e "/ldconfig -r/d"
   '';
@@ -49,8 +51,8 @@ stdenv.mkDerivation {
         ]
       }
   '';
-
   passthru.updateScript = nix-update-script { extraArgs = [ "--version=branch" ]; };
+
   meta = {
     description = "An easier way to update the firmware of your Raspberry Pi";
     homepage = "https://github.com/raspberrypi/rpi-update";

@@ -28,6 +28,7 @@
         config = lib.mkIf config.programs.thunderbird.enable {
           programs.thunderbird.profiles."camille" = {
             isDefault = true;
+
             settings = {
               "intl.locale.requested" = "fr,en-US";
               "mail.identity.id3.organization" = "TSE-R";

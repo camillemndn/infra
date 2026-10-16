@@ -8,12 +8,15 @@
 lib.mkIf config.programs.firefox.enable {
   programs.firefox = {
     nativeMessagingHosts.packages = [ pkgs.firefoxpwa ];
+
     preferences = {
       "browser.fixup.domainsuffixwhitelist.kms" = true;
       "browser.fixup.domainsuffixwhitelist.luj" = true;
       "browser.fixup.domainsuffixwhitelist.saumon" = true;
     };
+
     preferencesStatus = "default";
+
     wrapperConfig.firefox = {
       alsaSupport = true;
       ffmpegSupport = true;
@@ -21,5 +24,6 @@ lib.mkIf config.programs.firefox.enable {
       pipewireSupport = true;
     };
   };
+
   environment.systemPackages = [ pkgs.firefoxpwa ];
 }

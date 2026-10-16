@@ -7,6 +7,7 @@
 
 {
   imports = [ "${inputs.home-manager}/nixos" ];
+
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "hm-bak";

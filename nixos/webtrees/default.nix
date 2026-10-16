@@ -14,6 +14,7 @@ with lib;
 {
   options.services.webtrees = {
     enable = mkEnableOption "Webtrees";
+
     hostName = mkOption {
       type = types.str;
       description = "FQDN for the Webtrees instance.";
@@ -24,6 +25,7 @@ with lib;
     services = {
       phpfpm.pools.webtrees = {
         user = "webtrees";
+
         settings = {
           "listen.owner" = config.services.nginx.user;
           "pm" = "dynamic";
@@ -36,6 +38,7 @@ with lib;
           "php_admin_flag[log_errors]" = true;
           "catch_workers_output" = true;
         };
+
         phpPackage = pkgs.php84;
         phpOptions = ''
           post_max_size = 5M
@@ -63,41 +66,46 @@ with lib;
               HTTP_PROXY = "";
               SCRIPT_FILENAME = "$request_filename";
             };
+
             extraConfig = ''
               fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
             '';
           };
         };
       };
+
       mysql = {
         enable = true;
         package = mkDefault pkgs.mariadb;
-
         ensureUsers = [
           {
             name = "webtrees";
+
             ensurePermissions = {
               "webtrees.*" = "ALL PRIVILEGES";
             };
           }
         ];
-
         ensureDatabases = [ "webtrees" ];
       };
     };
+
     systemd = {
       services = {
         "phpfpm-webtrees".serviceConfig.BindPaths = [
           "/var/lib/webtrees/:${pkgs.webtrees}/share/php/webtrees/data/"
         ];
+
         webtrees-config = {
           wantedBy = [ "multi-user.target" ];
           before = [ "phpfpm-webtrees.service" ];
+
           serviceConfig = {
             StateDirectory = "webtrees";
             User = "webtrees";
             Type = "oneshot";
           };
+
           script = ''
             if [ ! -f ${dataDir}/index.php ]; then
             cp -r ${pkgs.webtrees}/share/php/webtrees/data/* ${dataDir}
@@ -115,6 +123,7 @@ with lib;
         isSystemUser = true;
         group = "webtrees";
       };
+
       groups.webtrees = { };
     };
   };

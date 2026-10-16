@@ -17,6 +17,7 @@ let
     mkdir $out
     cp -r ${pkgs.gramps-webapi.src}/{alembic.ini,alembic_users} $out
   '';
+
   environment = {
     GI_TYPELIB_PATH = lib.makeSearchPath "lib/girepository-1.0" (
       map lib.getLib (
@@ -52,6 +53,7 @@ let
     GRAMPSWEB_CELERY_CONFIG__result_backend = "redis+socket://${redis.unixSocket}";
     GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis+unix://${redis.unixSocket}?db=1";
   };
+
   # Same dynamic user for both units: shared data and secret key.
   serviceConfig = {
     DynamicUser = true;
@@ -68,15 +70,18 @@ with lib;
 {
   options.services.gramps-web = {
     enable = mkEnableOption "Gramps Web";
+
     hostName = mkOption {
       type = types.str;
       description = "FQDN for the Gramps Web instance.";
     };
+
     port = mkOption {
       type = types.port;
       default = 5056;
       description = "Local port the API server listens on.";
     };
+
     tree = mkOption {
       type = types.str;
       default = "Family";
@@ -90,6 +95,7 @@ with lib;
         enable = true;
         port = 0;
       };
+
       nginx.virtualHosts.${cfg.hostName} = {
         inherit (cfg) port;
         locations."/".extraConfig = ''
@@ -122,6 +128,7 @@ with lib;
             exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
           '';
         };
+
         gramps-web-celery = {
           description = "Gramps Web background tasks";
           wantedBy = [ "multi-user.target" ];

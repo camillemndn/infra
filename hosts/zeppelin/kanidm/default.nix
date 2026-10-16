@@ -30,6 +30,7 @@ in
       };
 
       package = pkgs.kanidmWithSecretProvisioning_1_11;
+
       client = {
         enable = true;
         settings.uri = "https://${hostName}";
@@ -48,6 +49,7 @@ in
 
     nginx.virtualHosts.${hostName} = {
       websockets = true;
+
       locations."/" = {
         proxyPass = "https://127.0.0.1:${toString kanidmPort}";
         extraConfig = ''
@@ -65,10 +67,12 @@ in
       nginx.extraGroups = [ "acme" ];
     };
   };
+
   security.acme.certs.${hostName} = {
     group = "acme";
     reloadServices = [ "kanidm.service" ];
   };
+
   age.secrets.kanidm-idm-admin-password = {
     file = ./idm-admin-password.age;
     owner = "kanidm";

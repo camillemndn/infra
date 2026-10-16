@@ -28,6 +28,7 @@ let
     import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
       system = null;
       inherit lib;
+
       specialArgs = {
         inherit
           hosts
@@ -36,6 +37,7 @@ let
           packages
           ;
       };
+
       modules =
         lib.modulesIn ./nixos
         ++ lib.modulesIn (./hosts + "/${name}")
@@ -43,7 +45,6 @@ let
       extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
     }
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
-
   hosts = builtins.mapAttrs (_: host: host.config.networking.addresses) nixosConfigurations;
 in
 
@@ -68,12 +69,10 @@ in
   // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
 
   formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
-
   devShells = lib.genAttrs systems (
     system:
     let
       pkgs = unstable.${system};
-
       gitHooks =
         (import "${inputs.git-hooks}/nix" {
           inherit system;
@@ -85,12 +84,14 @@ in
             hooks = {
               deadnix.enable = true;
               statix.enable = true;
+
               rfc101 = {
                 enable = true;
                 name = "RFC-101 formatting";
                 entry = lib.getExe pkgs.nixfmt;
                 files = "\\.nix$";
               };
+
               blank-lines = {
                 enable = true;
                 name = "Blank lines between bindings";
@@ -112,7 +113,6 @@ in
           pkgs.lon
           pkgs.statix
         ];
-
         shellHook = ''
           ${gitHooks.shellHook}
           statix fix

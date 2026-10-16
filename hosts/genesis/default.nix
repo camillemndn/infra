@@ -12,6 +12,7 @@
       signalbackup-tools
     ];
   };
+
   fonts.packages = with pkgs; [
     caladea
     carlito
@@ -26,10 +27,12 @@
     source-sans
     source-serif
   ];
+
   hardware.sane = {
     enable = true;
     dsseries.enable = true;
   };
+
   programs = {
     dms-shell.enable = true;
     firefox.enable = true;
@@ -42,10 +45,12 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+
     displayManager.dms-greeter = {
       enable = true;
       compositor.name = "niri";
     };
+
     printing = {
       enable = true;
       drivers = with pkgs; [

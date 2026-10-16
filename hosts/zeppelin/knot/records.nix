@@ -8,11 +8,13 @@
   "ceciliaflamenca.com".TXT = [
     "google-site-verification=CDech686xA5kFgUs_Ndh-QJY-HtkoJLjOvegsh5VHH0"
   ];
+
   # Minecraft servers are routed by hostname.
   "mndn.fr".subdomains."*.mc" = {
     A = [ hosts.zeppelin.ipv4.public ];
     AAAA = [ hosts.zeppelin.ipv6.public ];
   };
+
   # Mail is hosted on mail.luj.fr.
   "varanda.fr" = {
     MX = [
@@ -54,6 +56,7 @@
       }
     ];
     TXT = [ "v=spf1 mx ra=postmaster -all" ];
+
     subdomains = {
       "mail".CNAME = [ "mail.luj.fr." ];
       "autoconfig".CNAME = [ "mail.luj.fr." ];

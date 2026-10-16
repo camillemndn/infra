@@ -16,13 +16,16 @@ in
       config = {
         davmail = {
           allowRemote = true;
+
           oauth = {
             clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
             redirectUri = "urn:ietf:wg:oauth:2.0:oob";
             persistToken = true;
             tokenFilePath = "/var/lib/davmail/token";
           };
+
           mode = "O365DeviceCode";
+
           ssl = {
             keystoreType = "PKCS12";
             keystoreFile = "/var/lib/davmail/davmail.p12";
@@ -43,6 +46,7 @@ in
     1143
     1025
   ];
+
   systemd.services.davmail.serviceConfig = {
     ExecStartPre =
       let

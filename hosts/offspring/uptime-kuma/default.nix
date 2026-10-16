@@ -36,11 +36,13 @@ let
       path = "/api/health";
       keyword = ''"clickhouse":"ok"'';
     };
+
     "auth.mndn.fr" = {
       name = "🔑 Accounts";
       path = "/status";
       keyword = "true";
     };
+
     # A worker that lost the master lists no connection.
     "ci.mndn.fr" = {
       name = "🏗 CI";
@@ -48,11 +50,13 @@ let
       keyword = ''"connected_to": []'';
       invertKeyword = true;
     };
+
     "cloud.mndn.fr" = {
       name = "☁️ Cloud";
       path = "/status.php";
       keyword = ''"maintenance":false'';
     };
+
     # Webtrees answers 406 to any User-Agent containing "Uptime".
     "family.mndn.fr" = {
       name = "🌳 Genealogy";
@@ -61,46 +65,57 @@ let
 
     "genealogy.mndn.fr".name = "🌲 Family tree";
     "meals.mndn.fr".name = "🍲 Recipes";
+
     "media.mndn.fr" = {
       name = "📽 Streaming";
       path = "/health";
       keyword = "Healthy";
     };
+
     "music.mndn.fr" = {
       name = "🎵 Music";
       path = "/ping";
     };
+
     "ntfy.mndn.fr" = {
       name = "📣 Notifications";
       path = "/v1/health";
       keyword = ''"healthy":true'';
     };
+
     "requests.mndn.fr" = {
       name = "🗳 Requests";
       path = "/api/v1/status";
     };
+
     "sso.mndn.fr".name = "🛂 Sign-in";
+
     "webhooks.mndn.fr" = {
       name = "🪝 Webhooks";
       group = null;
       keyword = "OK";
     };
+
     "camillemondon.com" = {
       name = "🌐 Camille Mondon";
       group = "Websites";
     };
+
     "ceciliaflamenca.com" = {
       name = "🌐 Cecilia flamenca";
       group = "Websites";
     };
+
     "varanda.fr" = {
       name = "🌐 Varanda";
       group = "Websites";
     };
+
     "www.natachamondonericpierre.mndn.fr" = {
       name = "🌐 Natacha Mondon & Éric Pierre";
       group = "Websites";
     };
+
     "yali.es" = {
       name = "🌐 Yali";
       group = "Websites";
@@ -137,7 +152,6 @@ let
           && !isRedirect vhost
           && !lib.hasInfix "*" name
           && !lib.elem name unmonitored;
-
         check =
           domain:
           let
@@ -150,6 +164,7 @@ let
           in
           {
             inherit (entry) name group;
+
             probe = {
               type = if entry ? keyword then "keyword" else "http";
               url = "https://${domain}${entry.path}";
@@ -168,10 +183,12 @@ let
       )
     ) publicMachines
   );
+
   # SSH over IPv6: offspring cannot reach its own public IPv4 through its NAT.
   hostChecks = lib.mapAttrsToList (machine: m: {
     name = machine;
     group = "Hosts";
+
     probe = {
       type = "port";
       hostname = m.ipv6.public or m.ipv4.public;
@@ -179,11 +196,13 @@ let
       tags = machineTag machine;
     };
   }) publicMachines;
+
   # Zones are checked through mndn.fr: ns1 is the SaumonNet router, ns2 offspring
   # behind its NAT. A validating resolver answers SERVFAIL on broken signatures.
   dnsCheck = name: server: {
     inherit name;
     group = "DNS";
+
     probe = {
       type = "dns";
       hostname = "mndn.fr";
@@ -192,6 +211,7 @@ let
       port = 53;
     };
   };
+
   otherChecks = [
     (dnsCheck "📝 ns1" "77.42.114.11")
     (dnsCheck "📝 ns2" hosts.offspring.ipv4.local)
@@ -199,6 +219,7 @@ let
     {
       name = "📬 Mail (IMAP)";
       group = "Services";
+
       probe = {
         type = "port";
         hostname = "bridge.mndn.fr";
@@ -208,6 +229,7 @@ let
     {
       name = "📬 Mail (SMTP)";
       group = "Services";
+
       probe = {
         type = "port";
         hostname = "bridge.mndn.fr";
@@ -218,6 +240,7 @@ let
     {
       name = "⛏ Minecraft";
       group = "Services";
+
       probe = {
         type = "gamedig";
         game = "minecraft";
@@ -226,7 +249,6 @@ let
       };
     }
   ];
-
   checks = hostChecks ++ vhostChecks ++ otherChecks;
   monitorsIn = group: map (c: c.name) (lib.filter (c: c.group == group) checks);
 in
@@ -237,6 +259,7 @@ in
 
     ntfy-sh = {
       enable = true;
+
       settings = {
         base-url = "https://ntfy.mndn.fr";
         upstream-base-url = "https://ntfy.sh";
@@ -245,21 +268,25 @@ in
         listen-http = "127.0.0.1:3002";
       };
     };
+
     nginx.virtualHosts = {
       "uptime.mndn.fr" = {
         port = 3001;
         websockets = true;
       };
+
       "status.mndn.fr" = {
         port = 3001;
         websockets = true;
       };
+
       "ntfy.mndn.fr" = {
         port = 3002;
         websockets = true;
       };
     };
   };
+
   # Matched by name: same-named manual monitors are taken over, others left alone.
   statelessUptimeKuma = {
     enableService = true;
@@ -291,9 +318,7 @@ in
       message = "Two Uptime Kuma monitors share a name.";
     }
   ];
-
   age.secrets.uptime-kuma-password.file = ./password.age;
-
   nixpkgs.overlays = [
     (final: prev: {
       statelessUptimeKuma =
@@ -313,6 +338,5 @@ in
           };
     })
   ];
-
   systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
 }

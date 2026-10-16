@@ -12,6 +12,7 @@ lib.mkIf config.services.printing.enable {
       nssmdns4 = true;
       openFirewall = true;
     };
+
     printing.drivers = with pkgs; [
       cups-browsed
       cups-filters

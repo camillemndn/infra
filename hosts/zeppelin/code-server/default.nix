@@ -66,6 +66,7 @@ let
       pandas
     ]
   );
+
   rKernelEnv = pkgs.rWrapper.override {
     packages = with pkgs.rPackages; [
       IRkernel
@@ -93,16 +94,19 @@ in
         rKernelEnv
       ];
     };
+
     nginx.virtualHosts.${hostName} = {
       locations."/" = {
         proxyPass = "http://127.0.0.1:${toString codePort}";
         proxyWebsockets = true;
       };
     };
+
     oauth2-proxy.nginx.virtualHosts.${hostName} = {
       # Kanidm sends groups as name@domain.
       allowed_groups = [ "code_users@auth.mndn.fr" ];
     };
+
     kanidm.provision = {
       groups."code_users".members = [ "camille" ];
       persons.camille.groups = [

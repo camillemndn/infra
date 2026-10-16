@@ -15,12 +15,14 @@ lib.mkIf config.programs.dms-shell.enable {
     inter
     material-symbols
   ];
+
   programs.dms-shell = {
     systemd = {
       enable = true;
       restartIfChanged = true;
       target = "niri.service";
     };
+
     enableSystemMonitoring = true;
     enableDynamicTheming = true;
     enableAudioWavelength = true;

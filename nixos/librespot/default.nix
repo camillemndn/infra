@@ -39,12 +39,14 @@ in
               ]
             )
           );
+
         options = {
           cache = lib.mkOption {
             default = "/var/cache/librespot";
             type = types.nullOr types.path;
             description = "Directory where audio files are cached.";
           };
+
           system-cache = lib.mkOption {
             default = "/var/lib/librespot";
             type = types.nullOr types.path;
@@ -61,12 +63,14 @@ in
       internal = true;
       description = "CLI arguments generated from services.librespot.settings";
     };
+
     user = lib.mkOption {
       type = types.str;
       default = "librespot";
       description = "User under which librespot runs.";
     };
   };
+
   config = lib.mkIf cfg.enable {
     users.users.${cfg.user} = {
       isSystemUser = true;
@@ -75,6 +79,7 @@ in
       home = "/var/lib/librespot";
       createHome = true;
     };
+
     services.librespot.args = lib.concatLists (
       lib.mapAttrsToList (
         k: v:
@@ -95,6 +100,7 @@ in
       ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
+
       serviceConfig = {
         User = cfg.user;
         Group = "audio";

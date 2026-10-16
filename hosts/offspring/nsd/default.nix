@@ -27,6 +27,7 @@ let
         nixosConfigurations
         ;
     }).names;
+
   # Placeholder until the first transfer.
   emptyZone = name: {
     SOA = {
@@ -46,10 +47,12 @@ in
         meta.ipv4.local
         meta.ipv6.public
       ];
+
       keys.${tsigKey} = {
         algorithm = "hmac-sha256";
         keyFile = config.age.secrets.nsd-tsig.path;
       };
+
       zones = lib.genAttrs zoneNames (name: {
         data = dns.lib.toString name (emptyZone name);
         requestXFR = [ "AXFR ${primaryAddress} ${tsigKey}" ];

@@ -38,18 +38,22 @@ in
 stdenv.mkDerivation rec {
   pname = "radiogaga";
   version = "1.0.0";
+
   src = fetchFromGitHub {
     owner = "camillemndn";
     repo = "radiogaga";
     rev = "v${version}";
     hash = "sha256-0Q4aFcJR8w25Ah5TRCekXYbWBIoaVXNKQFYSzYVqzJI=";
   };
+
   npmRoot = "front";
+
   npmDeps = fetchNpmDeps {
     name = "${pname}-npm-deps-${version}";
     src = "${src}/${npmRoot}";
     hash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
   };
+
   postPatch = ''
     sed -i "s/\(BASE_DIR\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
       back/radiogaga/settings.py
@@ -101,6 +105,7 @@ stdenv.mkDerivation rec {
       }
   '';
   passthru.updateScript = nix-update-script { };
+
   meta = {
     description = "Raspberry Pi Clock Radio";
     homepage = "https://github.com/camillemndn/radiogaga";

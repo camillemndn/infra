@@ -22,7 +22,6 @@
             profiles.default = {
               enableUpdateCheck = false;
               enableExtensionUpdateCheck = false;
-
               extensions =
                 with pkgs.vscode-extensions;
                 [
@@ -64,6 +63,7 @@
                     sha256 = "07wrx4hqwd98r1ckybc71n5bnwf20rj8rjskxvj8k0d1r3dsq2n7";
                   }
                 ];
+
               userSettings = {
                 "direnv.restart.automatic" = true;
                 "nix.enableLanguageServer" = true;

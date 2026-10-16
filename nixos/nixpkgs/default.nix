@@ -67,10 +67,12 @@ in
         packages.${config.nixpkgs.hostPlatform.system}
         // {
           inherit lib;
+
           unstable = import inputs.nixpkgs-unstable {
             inherit (config.nixpkgs.hostPlatform) system;
             inherit (prev) config;
           };
+
           inherit (final.unstable)
             feishin
             firefoxpwa
@@ -96,12 +98,14 @@ in
           panache = prev.panache.overrideAttrs (
             finalAttrs: _: {
               version = "3.10.0";
+
               src = prev.fetchFromGitHub {
                 owner = "jolars";
                 repo = "panache";
                 tag = "v${finalAttrs.version}";
                 hash = "sha256-13v2J7qRgkX55vjFt0daU26J/IhmECCr1H0fVEW72rk=";
               };
+
               cargoDeps = prev.rustPlatform.fetchCargoVendor {
                 inherit (finalAttrs) src;
                 name = "panache-${finalAttrs.version}";
@@ -109,11 +113,12 @@ in
               };
             }
           );
-
           inherit nix-index-database;
+
           nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
             inherit nix-index-database;
           };
+
           comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
             inherit nix-index-database;
           };

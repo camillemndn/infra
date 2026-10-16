@@ -24,15 +24,18 @@ with lib;
       clevisLuksAskpass.enable = true;
       secrets."/crypto_keyfile.bin" = null;
     };
+
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
     tmp.cleanOnBoot = true;
   };
+
   console = {
     earlySetup = true;
     font = "${pkgs.terminus_font}/share/consolefonts/ter-v32n.psf.gz";
     packages = with pkgs; [ terminus_font ];
   };
+
   environment.systemPackages = with pkgs; [
     amdctl
     asusctl
@@ -51,6 +54,7 @@ with lib;
       enable32Bit = true;
       extraPackages = with pkgs; [ libva-vdpau-driver ];
     };
+
     nvidia = {
       modesetting.enable = true;
       open = true;
@@ -60,6 +64,7 @@ with lib;
           enable = true;
           enableOffloadCmd = true;
         };
+
         amdgpuBusId = "PCI:8:0:0";
         nvidiaBusId = "PCI:1:0:0";
       };
@@ -67,6 +72,7 @@ with lib;
 
     sensor.iio.enable = true;
   };
+
   security = {
     pam.loginLimits = [
       {
@@ -77,6 +83,7 @@ with lib;
       }
     ];
   };
+
   services = {
     asusd.enable = true;
     fprintd.enable = true;
@@ -86,6 +93,7 @@ with lib;
 
     supergfxd = {
       enable = true;
+
       settings = {
         mode = "Integrated";
         vfio_enable = false;
@@ -96,11 +104,13 @@ with lib;
         hotplug_type = "Asus";
       };
     };
+
     xserver.videoDrivers = [
       "amdgpu"
       "nvidia"
     ];
   };
+
   systemd = {
     services = {
       asusd.postStart = ''

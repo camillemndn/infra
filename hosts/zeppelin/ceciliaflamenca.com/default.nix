@@ -3,8 +3,10 @@ _:
 {
   services.nginx = {
     publicDomains = [ "ceciliaflamenca.com" ];
+
     virtualHosts."ceciliaflamenca.com" = {
       root = "/srv/sites/ceciliaflamenca.com/www";
+
       locations = {
         "/static/".extraConfig = ''
           expires 1y;
@@ -14,6 +16,7 @@ _:
           error_page 404 /es/404/;
         '';
       };
+
       extraConfig = ''
         error_page 404 /fr/404/;
       '';

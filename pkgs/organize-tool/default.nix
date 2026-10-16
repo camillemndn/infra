@@ -11,11 +11,13 @@ python3.pkgs.buildPythonApplication rec {
   pname = "organize-tool";
   version = "3.3.0";
   pyproject = true;
+
   src = fetchPypi {
     pname = "organize_tool";
     inherit version;
     hash = "sha256-A0/c+f/rI9IbSV4DhmUnjlifoE3HwMCgGko7MKBsU58=";
   };
+
   postPatch = ''
     sed -i pyproject.toml -e 's/ExifRead = .*/ExifRead = "^3.0.0"/'
   '';
@@ -38,6 +40,7 @@ python3.pkgs.buildPythonApplication rec {
     send2trash
     simplematch
   ];
+
   optional-dependencies = with python3.pkgs; {
     docs = [
       markupsafe
@@ -47,6 +50,7 @@ python3.pkgs.buildPythonApplication rec {
       mkdocstrings
     ];
   };
+
   pythonImportsCheck = [
     "organize"
   ];
