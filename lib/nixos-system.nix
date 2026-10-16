@@ -4,7 +4,6 @@ inputs: lib:
   name,
   host-config,
   modules,
-  hmModules,
   nixpkgs ? inputs.nixpkgs,
   extraPackages,
   system ? "x86_64-linux",
@@ -49,7 +48,6 @@ import "${nixpkgs}/nixos/lib/eval-config.nix" {
         home-manager = {
           useGlobalPkgs = true;
           backupFileExtension = "hm-bak";
-          sharedModules = builtins.attrValues hmModules;
           users = lib.genAttrs (listUsers config) (
             user: lib.importIfExists ../hosts/${name}/home-manager/${user}.nix
           );

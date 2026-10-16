@@ -48,21 +48,7 @@ let
     }) machines_plats
   );
 
-  nixosModules =
-    import ./modules
-    // (builtins.listToAttrs (
-      map (x: {
-        name = "profile-${x}";
-        value = import (./profiles + "/${x}");
-      }) (builtins.attrNames (builtins.readDir ./profiles))
-    ));
-
-  homeManagerModules = builtins.listToAttrs (
-    map (x: {
-      name = "profile-${x}";
-      value = import (./profiles/home-manager + "/${x}");
-    }) (builtins.attrNames (builtins.readDir ./profiles/home-manager))
-  );
+  nixosModules = builtins.mapAttrs (x: _: ./nixos + "/${x}") (builtins.readDir ./nixos);
 
   nixosConfigurations = builtins.mapAttrs (
     name: value:
@@ -70,7 +56,6 @@ let
       inherit name;
       host-config = value;
       modules = nixosModules;
-      hmModules = homeManagerModules;
       nixpkgs = machines.${name}.nixpkgs_version;
       extraPackages = packages;
       inherit (machines.${name}) system;
@@ -104,7 +89,6 @@ in
   inherit
     packages
     nixosModules
-    homeManagerModules
     nixosConfigurations
     checks
     ;
