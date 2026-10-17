@@ -6,11 +6,8 @@
   ...
 }:
 
-let
-  nixpkgsRevision = (builtins.fromJSON (builtins.readFile ../../lon.lock)).sources.nixpkgs.revision;
-in
 {
-  system.nixos.version = "${config.system.nixos.release}.${builtins.substring 0 7 nixpkgsRevision}";
+  system.nixos.version = "${config.system.nixos.release}.${inputs.nixpkgs.shortRev}";
 
   nixpkgs = {
     config = {

@@ -1,0 +1,298 @@
+{
+  "nodes": {
+    "agenix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790734419,
+        "narHash": "sha256-n7wew722m1OTBT9DOIMxNX/NF4zfsSUABAO5eW3wikE=",
+        "owner": "ryantm",
+        "repo": "agenix",
+        "rev": "3daa710894355fa2fad8243380af373a2b4046ef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ryantm",
+        "ref": "main",
+        "repo": "agenix",
+        "type": "github"
+      }
+    },
+    "buildbot-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1764243770,
+        "narHash": "sha256-Zwh/ywSfcieeyV1mB0f+7u12cy1Xjzi+04SfoRp/a2Y=",
+        "owner": "camillemndn",
+        "repo": "buildbot-nix",
+        "rev": "63521927cd4ff09a7403c90288a71cb875e0cc9d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "camillemndn",
+        "ref": "main",
+        "repo": "buildbot-nix",
+        "type": "github"
+      }
+    },
+    "colmena": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790716853,
+        "narHash": "sha256-IT0OZW81jngocoxi9Gg2CTSGOC1O6qLioW17nevqIUk=",
+        "owner": "zhaofengli",
+        "repo": "colmena",
+        "rev": "524ddd89f62721a92e8629063d347e7a1ed390de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zhaofengli",
+        "ref": "main",
+        "repo": "colmena",
+        "type": "github"
+      }
+    },
+    "disko": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789770686,
+        "narHash": "sha256-uZkBR7yHdIKUFB5SZdfgh1qkGfI3XmYmI/lTiquxbck=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "725ea35e410ad83be4931d1bff7e090eacaf3563",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "disko",
+        "type": "github"
+      }
+    },
+    "dns": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788076475,
+        "narHash": "sha256-sD4UyILWAhk7aexE3YpDOdb71ZEeL+1/+LV05XIWCBo=",
+        "owner": "kirelagin",
+        "repo": "dns.nix",
+        "rev": "4710a34f2c36e7a0d634d7ba8fe2499d75f012a2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kirelagin",
+        "ref": "master",
+        "repo": "dns.nix",
+        "type": "github"
+      }
+    },
+    "git-hooks": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790500375,
+        "narHash": "sha256-XN3sDtn8TU9hAc9xqZ+SqRB/HHm2wjxM6aSWYLJU+oo=",
+        "owner": "cachix",
+        "repo": "git-hooks.nix",
+        "rev": "a0e4241b51206fbcbf52fd322eb5f0cd80f153c4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cachix",
+        "ref": "master",
+        "repo": "git-hooks.nix",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790996401,
+        "narHash": "sha256-f+kOxEmOUnQazVAmGg0i8hzwgd1kX/geY+k/Dpheye8=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "db7d5e2332710f5abb088f6b5de927d7f9511b35",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-26.05",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "lanzaboote": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790853984,
+        "narHash": "sha256-v5+DBEGnMC6phAf+/Rt7EtxjIDzy+NMKdHJIFJGh5qc=",
+        "owner": "nix-community",
+        "repo": "lanzaboote",
+        "rev": "ba33415d747d8dedd2931af107521634f1f2e8a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "lanzaboote",
+        "type": "github"
+      }
+    },
+    "nix-index-database": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791105314,
+        "narHash": "sha256-oTM7QFgRQ+vxBpMBMc7hEYpqBtpXAzXu2xuB/tru84U=",
+        "owner": "mic92",
+        "repo": "nix-index-database",
+        "rev": "e740bc4e9d8918d7819a51486d5099930c65c72e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mic92",
+        "ref": "main",
+        "repo": "nix-index-database",
+        "type": "github"
+      }
+    },
+    "nix-minecraft": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790829038,
+        "narHash": "sha256-sOdEwMpFjO1kXafDdqq5bSRUiyTsutk2bPOkzGAid+4=",
+        "owner": "Yeshey",
+        "repo": "nix-minecraft",
+        "rev": "855d63e88f373f9511f682074e8d8cd2ab8c1227",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Yeshey",
+        "ref": "master",
+        "repo": "nix-minecraft",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791143449,
+        "narHash": "sha256-9+n3ReS2y9xS199LoJjKUWHwZrISGHWgkD/LUZTDZyA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0d9e9b832d03ac387417e16ce1febf73b2e631e1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-26.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791048980,
+        "narHash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixvim": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789959143,
+        "narHash": "sha256-9oBHyJtUyunZL+6v0Ub8Y759cXcejQiTHpXtGcx5RLs=",
+        "owner": "nix-community",
+        "repo": "nixvim",
+        "rev": "4836e77b1798cd42e2de28593bec4c1788da08f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "nixos-26.05",
+        "repo": "nixvim",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "agenix": "agenix",
+        "buildbot-nix": "buildbot-nix",
+        "colmena": "colmena",
+        "disko": "disko",
+        "dns": "dns",
+        "git-hooks": "git-hooks",
+        "home-manager": "home-manager",
+        "lanzaboote": "lanzaboote",
+        "nix-index-database": "nix-index-database",
+        "nix-minecraft": "nix-minecraft",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "nixvim": "nixvim",
+        "stateless-uptime-kuma": "stateless-uptime-kuma",
+        "stylix": "stylix",
+        "uptime-kuma-api": "uptime-kuma-api"
+      }
+    },
+    "stateless-uptime-kuma": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1765019238,
+        "narHash": "sha256-WrszmZdb3TJPqCva0mLo3TlrMU3QHFgDAlF48jF6TJc=",
+        "ref": "master",
+        "rev": "720c506b7128c9a24e1e05fff37f5ee3162f9c95",
+        "revCount": 33,
+        "type": "git",
+        "url": "https://git.dgnum.eu/DGNum/stateless-uptime-kuma.git"
+      },
+      "original": {
+        "ref": "master",
+        "type": "git",
+        "url": "https://git.dgnum.eu/DGNum/stateless-uptime-kuma.git"
+      }
+    },
+    "stylix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790453683,
+        "narHash": "sha256-ODfnSwAhOl727PhoZu5N3CwTAK8ykDX1Sm5+VD8d3Fk=",
+        "owner": "nix-community",
+        "repo": "stylix",
+        "rev": "078d8f7f514bbe4987a754eb4a2d9e7088e9867a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "release-26.05",
+        "repo": "stylix",
+        "type": "github"
+      }
+    },
+    "uptime-kuma-api": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790762750,
+        "narHash": "sha256-YX/deLO98JyWlBGRvIaxUCiaoxHX9GRqG4F4TqUqFvM=",
+        "ref": "master",
+        "rev": "63c01d206d34856dc6aecabc84611986b5d40b56",
+        "revCount": 157,
+        "type": "git",
+        "url": "https://git.dgnum.eu/Luj/uptime-kuma-api.git"
+      },
+      "original": {
+        "ref": "master",
+        "type": "git",
+        "url": "https://git.dgnum.eu/Luj/uptime-kuma-api.git"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

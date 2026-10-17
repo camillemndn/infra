@@ -11,10 +11,10 @@ if ! git diff --quiet || ! git diff --cached --quiet; then
   exit 1
 fi
 
-scripts=$(nix-instantiate --eval --strict --json -E '
-  let
-    packages = (import ./.).packages.${builtins.currentSystem};
-  in
+system=$(nix eval --raw --impure --expr builtins.currentSystem)
+
+scripts=$(nix eval --json ".#packages.$system" --apply '
+  packages:
   builtins.listToAttrs (
     map (name: {
       inherit name;

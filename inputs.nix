@@ -1,9 +1,9 @@
-# lon.nix inputs, with patches/<input>/*.{diff,patch} applied.
+# The flake's inputs, with patches/<input>/*.{diff,patch} applied.
 # The unpatched nixpkgs applies them, so patches/nixpkgs works too.
 
-let
-  raw = import ./lon.nix;
+raw:
 
+let
   bootstrapPkgs = import raw.nixpkgs {
     system = builtins.currentSystem or "x86_64-linux";
     config = { };
@@ -34,6 +34,9 @@ let
       bootstrapPkgs.applyPatches {
         name = "${name}-patched";
         inherit src patches;
+      }
+      // {
+        inherit (src) shortRev;
       };
 in
 

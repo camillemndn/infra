@@ -1,1 +1,1 @@
-(import ./.).devShells.${builtins.currentSystem}.default
+(builtins.getFlake (toString ./.)).devShells.${builtins.currentSystem}.default
