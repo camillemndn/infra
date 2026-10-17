@@ -2,12 +2,12 @@
   inputs = {
     agenix = {
       url = "github:ryantm/agenix/main";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     buildbot-nix = {
       url = "github:camillemndn/buildbot-nix/main";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     colmena = {
@@ -17,7 +17,7 @@
 
     disko = {
       url = "github:nix-community/disko/master";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     dns = {
@@ -27,22 +27,21 @@
 
     git-hooks = {
       url = "github:cachix/git-hooks.nix/master";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
-      flake = false;
     };
 
     nix-index-database = {
       url = "github:mic92/nix-index-database/main";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-minecraft = {
@@ -52,17 +51,15 @@
 
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-26.05";
-      flake = false;
     };
 
     nixpkgs-unstable = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
-      flake = false;
     };
 
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
-      flake = false;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     stateless-uptime-kuma = {

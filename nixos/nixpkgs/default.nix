@@ -7,7 +7,12 @@
 }:
 
 {
-  system.nixos.version = "${config.system.nixos.release}.${inputs.nixpkgs.shortRev}";
+  system.nixos = {
+    versionSuffix = ".${
+      builtins.substring 0 8 inputs.nixpkgs.lastModifiedDate
+    }.${inputs.nixpkgs.shortRev}";
+    revision = inputs.nixpkgs.rev;
+  };
 
   nixpkgs = {
     config = {
@@ -50,19 +55,6 @@
       (import "${inputs.nix-minecraft}/overlay.nix")
       (
         final: prev:
-        let
-          generated = import "${inputs.nix-index-database}/generated.nix";
-
-          nix-index-database =
-            (prev.fetchurl {
-              url = generated.url + prev.stdenv.system;
-              hash = generated.hashes.${prev.stdenv.system};
-            }).overrideAttrs
-              {
-                __structuredAttrs = true;
-                unsafeDiscardReferences.out = true;
-              };
-        in
         packages.${config.nixpkgs.hostPlatform.system}
         // {
           inherit lib;
@@ -115,15 +107,11 @@
             }
           );
 
-          inherit nix-index-database;
-
-          nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
-            inherit nix-index-database;
-          };
-
-          comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
-            inherit nix-index-database;
-          };
+          inherit (inputs.nix-index-database.packages.${config.nixpkgs.hostPlatform.system})
+            nix-index-database
+            nix-index-with-db
+            comma-with-db
+            ;
         }
       )
     ];
