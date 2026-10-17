@@ -9,7 +9,6 @@
     immich = {
       enable = true;
       package = pkgs.unstable.immich;
-      database.enable = true;
       host = "127.0.0.1";
     };
 

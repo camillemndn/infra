@@ -18,16 +18,6 @@ lib.mkIf config.programs.dms-shell.enable {
   ];
 
   programs.dms-shell = {
-    systemd = {
-      enable = true;
-      restartIfChanged = true;
-      target = "niri.service";
-    };
-
-    enableSystemMonitoring = true;
-    enableDynamicTheming = true;
-    enableAudioWavelength = true;
-    enableCalendarEvents = true;
-    enableClipboardPaste = true;
+    systemd.target = "niri.service";
   };
 }

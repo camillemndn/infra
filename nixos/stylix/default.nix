@@ -31,10 +31,7 @@ lib.mkIf config.stylix.enable {
         package = pkgs.nerd-fonts.fira-code;
       };
 
-      emoji = {
-        name = "Noto Color Emoji";
-        package = pkgs.noto-fonts-color-emoji;
-      };
+      emoji.package = pkgs.noto-fonts-color-emoji;
     };
 
     image = pkgs.fetchurl {

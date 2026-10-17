@@ -90,7 +90,6 @@ in
     };
 
     calibre-web = {
-      enable = false;
       package = pkgs.unstable.calibre-web;
       inherit group;
       listen.ip = "127.0.0.1";

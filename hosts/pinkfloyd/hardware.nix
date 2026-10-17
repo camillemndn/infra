@@ -21,8 +21,6 @@
         enable = true;
         devices.crypted.secretFile = "${./luks.jwe}";
       };
-
-      systemd.enable = true;
     };
 
     kernelModules = [ "kvm-amd" ];

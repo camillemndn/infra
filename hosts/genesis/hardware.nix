@@ -57,7 +57,6 @@ with lib;
     };
 
     nvidia = {
-      modesetting.enable = true;
       open = true;
 
       prime = {

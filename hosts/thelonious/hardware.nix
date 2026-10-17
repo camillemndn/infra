@@ -8,8 +8,6 @@
     };
 
     initrd = {
-      systemd.enable = true;
-
       luks = {
         devices = {
           "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device =

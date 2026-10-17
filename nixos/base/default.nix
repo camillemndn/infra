@@ -82,7 +82,6 @@ in
 
     direnv.enable = true;
     neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
-    command-not-found.enable = false;
 
     nix-index = lib.mkDefault {
       enable = true;

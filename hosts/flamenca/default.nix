@@ -36,7 +36,6 @@
     };
 
     printing.enable = true;
-    pulseaudio.enable = false;
     xserver.enable = true;
   };
 

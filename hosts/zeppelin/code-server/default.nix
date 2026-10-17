@@ -7,7 +7,6 @@
 
 let
   hostName = "code.mndn.fr";
-  codePort = 4444;
 
   vsixFromOpenVsx =
     {
@@ -86,7 +85,6 @@ in
       # oauth2-proxy and Kanidm authenticate; listen on loopback only.
       auth = "none";
       host = "127.0.0.1";
-      port = codePort;
       disableTelemetry = true;
 
       extraPackages = [
@@ -101,7 +99,7 @@ in
 
     nginx.virtualHosts.${hostName} = {
       locations."/" = {
-        proxyPass = "http://127.0.0.1:${toString codePort}";
+        proxyPass = "http://127.0.0.1:${toString config.services.code-server.port}";
         proxyWebsockets = true;
       };
     };

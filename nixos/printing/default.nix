@@ -10,7 +10,6 @@ lib.mkIf config.services.printing.enable {
     avahi = {
       enable = true;
       nssmdns4 = true;
-      openFirewall = true;
     };
 
     printing.drivers = with pkgs; [
