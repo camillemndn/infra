@@ -2,7 +2,7 @@
 #!nix-shell -i bash -p nix-update jq
 # Usage: scripts/update.sh [package...]
 # Updates every package of pkgs/ that has an updateScript, or only the ones
-# given, with one commit per updated package.
+# given, with one commit per updated package that builds.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -31,7 +31,7 @@ trap 'rm -f "$message"' EXIT
 for name in "${names[@]}"; do
   mapfile -t args < <(jq -r --arg n "$name" '.[$n][]' <<<"$scripts")
   : >"$message"
-  if ! nix-update --flake --write-commit-message "$message" "${args[@]}" "$name"; then
+  if ! nix-update --flake --build --write-commit-message "$message" "${args[@]}" "$name"; then
     echo "failed: $name" >&2
     git checkout -- "pkgs/$name"
     continue
