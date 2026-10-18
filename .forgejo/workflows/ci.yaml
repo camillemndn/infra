@@ -45,10 +45,8 @@ env:
     git checkout -q --detach "$SHA"
 
 jobs:
-  eval:
+  checks:
     runs-on: native
-    outputs:
-      matrix: ${{ steps.eval.outputs.matrix }}
     steps:
       - name: Report pending on GitHub
         env:
@@ -63,27 +61,6 @@ jobs:
           REF: ${{ github.ref }}
         run: bash -c "$CHECKOUT"
 
-      - name: Evaluate checks
-        id: eval
-        run: |
-          # Keeps the derivations alive until the build jobs realise them.
-          roots=$HOME/gcroots
-          rm -rf "$roots"
-          nix-eval-jobs --flake .#checks --force-recurse \
-            --workers 4 --max-memory-size 4096 --gc-roots-dir "$roots" \
-            > "$RUNNER_TEMP/jobs.json"
-          jq -r '"\(.attr) \(.drvPath // "EVALUATION FAILED")"' "$RUNNER_TEMP/jobs.json"
-          # Only failed evaluations carry an error, only successful ones a derivation.
-          echo "matrix=$(jq -sc '{include: map({attr, drv: .drvPath, error} | with_entries(select(.value != null)))}' "$RUNNER_TEMP/jobs.json")" >> "$GITHUB_OUTPUT"
-
-  build:
-    needs: eval
-    runs-on: native
-    name: ${{ matrix.attr }}
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.eval.outputs.matrix) }}
-    steps:
       - name: Log in to attic
         env:
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
@@ -92,34 +69,23 @@ jobs:
           echo "XDG_CONFIG_HOME=$RUNNER_TEMP/config" >> "$GITHUB_ENV"
           XDG_CONFIG_HOME=$RUNNER_TEMP/config attic login saumon https://cache.saumon.network "$ATTIC_TOKEN"
 
-      - name: Build
-        env:
-          DRV: ${{ matrix.drv }}
-          ERROR: ${{ matrix.error }}
+      # Each check builds as soon as it is evaluated, folds its log under its verdict
+      # and goes to attic; a failure leaves the others running.
+      - name: Build checks
+        id: build
         run: |
-          if [ -n "$ERROR" ]; then
-            echo "$ERROR" >&2
-            exit 1
-          fi
-          nix build -L --no-link --print-out-paths "$DRV^*" > "$RUNNER_TEMP/out"
-          cat "$RUNNER_TEMP/out"
+          nix shell --impure --expr '(import (import ./inputs.nix).nixpkgs-unstable { }).nix-fast-build' -c \
+            nix-fast-build --flake .#checks --no-nom \
+              --systems "x86_64-linux aarch64-linux" \
+              --eval-workers 4 --eval-max-memory-size 4096 \
+              --attic-cache saumon:camille
 
-      - name: Push to attic
-        run: xargs attic push saumon:camille < "$RUNNER_TEMP/out"
-
-  report:
-    needs: [eval, build]
-    if: always()
-    runs-on: native
-    steps:
       - name: Report result on GitHub
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           STATE: >-
-            ${{ needs.eval.result == 'success' && needs.build.result == 'success' && 'success'
-            || (needs.eval.result == 'failure' || needs.build.result == 'failure') && 'failure'
+            ${{ steps.build.outcome == 'success' && 'success'
+            || steps.build.outcome == 'failure' && 'failure'
             || 'error' }}
-        # Fails unless every check passed: the one status branch protection requires.
-        run: |
-          bash -c "$REPORT_STATUS"
-          [ "$STATE" = success ]
+        run: bash -c "$REPORT_STATUS"
