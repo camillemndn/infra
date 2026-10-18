@@ -55,23 +55,6 @@ in
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   programs = {
-    git = {
-      enable = true;
-
-      config = {
-        user = {
-          name = "Camille M.";
-          email = "camillemondon@free.fr";
-        };
-
-        pull.rebase = true;
-        fetch.prune = true;
-        rebase.autoStash = true;
-        push.autoSetupRemote = true;
-        diff.colorMoved = true;
-      };
-    };
-
     fish = {
       enable = true;
 
