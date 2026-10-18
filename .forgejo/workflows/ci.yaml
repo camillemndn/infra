@@ -74,11 +74,14 @@ jobs:
       - name: Build checks
         id: build
         run: |
+          set -o pipefail
           nix shell --impure --expr '(import (import ./inputs.nix).nixpkgs-unstable { }).nix-fast-build' -c \
             nix-fast-build --flake .#checks --no-nom \
               --systems "x86_64-linux aarch64-linux" \
-              --eval-workers 4 --eval-max-memory-size 4096 \
-              --attic-cache saumon:camille
+              --eval-workers 4 --eval-max-memory-size 5120 \
+              --attic-cache saumon:camille 2>&1 |
+            # Drops the queue counters and the warning of nix-fast-build's own `nix path-info --json`.
+            { grep --line-buffered -vxE "INFO:nix_fast_build\.workers:builds: [0-9]+, attic: [0-9]+|warning: '--json' without '--json-format' is deprecated; .*" || true; }
 
       - name: Report result on GitHub
         if: always()
