@@ -65,6 +65,14 @@ let
     };
 
     "genealogy.mndn.fr".name = "🌲 Family tree";
+
+    # Passes only while the database and cache answer.
+    "git.mndn.fr" = {
+      name = "🗃 Git";
+      path = "/api/healthz";
+      keyword = ''"status":"pass"'';
+    };
+
     "meals.mndn.fr".name = "🍲 Recipes";
 
     "media.mndn.fr" = {
