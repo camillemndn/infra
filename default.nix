@@ -53,6 +53,17 @@ let
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
 
   hosts = builtins.mapAttrs (_: host: host.config.networking.addresses) nixosConfigurations;
+
+  hive = {
+    meta = {
+      nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+
+      nodeSpecialArgs = builtins.mapAttrs (
+        _: host: host._module.specialArgs // { inherit lib; }
+      ) nixosConfigurations;
+    };
+  }
+  // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
 in
 
 {
@@ -66,17 +77,8 @@ in
     )
   );
 
-  colmena = {
-    meta = {
-      nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
-
-      nodeSpecialArgs = builtins.mapAttrs (
-        _: host: host._module.specialArgs // { inherit lib; }
-      ) nixosConfigurations;
-    };
-  }
-  // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
-
+  colmena = hive;
+  colmenaHive = import "${inputs.colmena}/src/nix/hive/eval.nix" { rawHive = hive; };
   formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 
   devShells = lib.genAttrs systems (
