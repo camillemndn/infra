@@ -55,5 +55,7 @@ _: {
 
   # System-wide PipeWire: audio clients need the pipewire group.
   users.users.shairport.extraGroups = [ "pipewire" ];
+  # Its evaluation needs over 1 GB, more than the Pi has.
+  services.comin.enable = false;
   system.stateVersion = "22.11";
 }

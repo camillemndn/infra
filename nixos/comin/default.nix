@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   inputs,
   pkgs,
   ...
@@ -17,7 +18,7 @@ in
 
 {
   services.comin = {
-    enable = true;
+    enable = lib.mkDefault true;
     package = pkgs.callPackage "${inputs.comin}/nix/package.nix" { };
     # Impure evaluation, so inputs.nix patches the sources for this machine's own
     # system; a flake has no builtins.currentSystem. comin reads `toplevel` and
