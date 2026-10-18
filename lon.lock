@@ -117,9 +117,9 @@
       "owner": "nix-community",
       "repo": "nixos-anywhere",
       "branch": "main",
-      "revision": "3c6e0cc24fbc69b97a22cf09bb6ca361354e0490",
-      "url": "https://github.com/nix-community/nixos-anywhere/archive/3c6e0cc24fbc69b97a22cf09bb6ca361354e0490.tar.gz",
-      "hash": "sha256-8qbcLsWajUJ316g6H1lLKnjxO/Ni+hnjbnw4fqTB4SE="
+      "revision": "bc36798d8fcad7ee85ac139c8473e999afbf4a1d",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/bc36798d8fcad7ee85ac139c8473e999afbf4a1d.tar.gz",
+      "hash": "sha256-kZvMi1NCIh748Gfg5d9FLkSYnwvBrxoT51w+H1PBoRo="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "0d9e9b832d03ac387417e16ce1febf73b2e631e1",
-      "url": "https://github.com/NixOS/nixpkgs/archive/0d9e9b832d03ac387417e16ce1febf73b2e631e1.tar.gz",
-      "hash": "sha256-9+n3ReS2y9xS199LoJjKUWHwZrISGHWgkD/LUZTDZyA="
+      "revision": "26f4107e47e3ad0ffd0db220469ba83b6f6d96e8",
+      "url": "https://github.com/NixOS/nixpkgs/archive/26f4107e47e3ad0ffd0db220469ba83b6f6d96e8.tar.gz",
+      "hash": "sha256-OaQwAtPMTjQiY2sT/2/62UbSPhzP/0aDnWzMm/NCiUw="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "a7868a727837f3c09cee2ce0ca671c76b1589fed",
-      "url": "https://github.com/NixOS/nixpkgs/archive/a7868a727837f3c09cee2ce0ca671c76b1589fed.tar.gz",
-      "hash": "sha256-KgItSKML8Xvte0B7/uGnBDsYzSnnKHcOaiUbgWBXLXw="
+      "revision": "fe13242281a67641c0102cdb1087f0ebe586c7df",
+      "url": "https://github.com/NixOS/nixpkgs/archive/fe13242281a67641c0102cdb1087f0ebe586c7df.tar.gz",
+      "hash": "sha256-zp8ToDMnqZcu4o4IH9pdwXFXGp7yLm/M0dEnNWnyd7I="
     },
     "nixvim": {
       "type": "GitHub",
@@ -167,9 +167,9 @@
       "owner": "nix-community",
       "repo": "stylix",
       "branch": "release-26.05",
-      "revision": "078d8f7f514bbe4987a754eb4a2d9e7088e9867a",
-      "url": "https://github.com/nix-community/stylix/archive/078d8f7f514bbe4987a754eb4a2d9e7088e9867a.tar.gz",
-      "hash": "sha256-ODfnSwAhOl727PhoZu5N3CwTAK8ykDX1Sm5+VD8d3Fk="
+      "revision": "dfb8f93ee16d817811363b26c64d9e59bec03c5b",
+      "url": "https://github.com/nix-community/stylix/archive/dfb8f93ee16d817811363b26c64d9e59bec03c5b.tar.gz",
+      "hash": "sha256-/odhJRZ0iueFk7Ik25/KTZJlgjtNPdzZPdG7KO2FWhM="
     },
     "uptime-kuma-api": {
       "type": "Git",
