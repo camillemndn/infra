@@ -122,6 +122,8 @@ in
     "gitea-runner-${runner}" = {
       after = [ "forgejo-runner-token.service" ];
       requires = [ "forgejo-runner-token.service" ];
+      # Jobs run scripts from their checkout, which systemd mounts noexec otherwise.
+      serviceConfig.ExecPaths = [ "/var/lib/private/gitea-runner" ];
     };
   };
 }
