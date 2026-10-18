@@ -67,18 +67,16 @@ in
     )
   );
 
-  colmenaHive = import "${inputs.colmena}/src/nix/hive/eval.nix" {
-    rawHive = {
-      meta = {
-        nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+  colmena = {
+    meta = {
+      nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
 
-        nodeSpecialArgs = builtins.mapAttrs (
-          _: host: host._module.specialArgs // { inherit lib; }
-        ) nixosConfigurations;
-      };
-    }
-    // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
-  };
+      nodeSpecialArgs = builtins.mapAttrs (
+        _: host: host._module.specialArgs // { inherit lib; }
+      ) nixosConfigurations;
+    };
+  }
+  // builtins.mapAttrs (_: host: { imports = host._module.args.modules; }) nixosConfigurations;
 
   formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 
@@ -87,35 +85,40 @@ in
     let
       pkgs = unstable.${system};
 
-      gitHooks = inputs.git-hooks.lib.${system}.run {
-        src = ./.;
+      gitHooks =
+        (import "${inputs.git-hooks}/nix" {
+          inherit system;
+          nixpkgs = inputs.nixpkgs-unstable;
+        }).run
+          {
+            src = ./.;
 
-        hooks = {
-          deadnix.enable = true;
-          statix.enable = true;
+            hooks = {
+              deadnix.enable = true;
+              statix.enable = true;
 
-          rfc101 = {
-            enable = true;
-            name = "RFC-101 formatting";
-            entry = lib.getExe pkgs.nixfmt;
-            files = "\\.nix$";
+              rfc101 = {
+                enable = true;
+                name = "RFC-101 formatting";
+                entry = lib.getExe pkgs.nixfmt;
+                files = "\\.nix$";
+              };
+
+              blank-lines = {
+                enable = true;
+                name = "Blank lines between bindings";
+                entry = "${pkgs.python3.interpreter} ${./scripts/blank-lines.py}";
+                files = "\\.nix$";
+              };
+
+              commitizen.enable = true;
+            };
           };
-
-          blank-lines = {
-            enable = true;
-            name = "Blank lines between bindings";
-            entry = "${pkgs.python3.interpreter} ${./scripts/blank-lines.py}";
-            files = "\\.nix$";
-          };
-
-          commitizen.enable = true;
-        };
-      };
     in
     {
       default = pkgs.mkShell {
         nativeBuildInputs = [
-          inputs.agenix.packages.${system}.default
+          (pkgs.callPackage "${inputs.agenix}/pkgs/agenix.nix" { })
           pkgs.colmena
           pkgs.nixos-anywhere
           pkgs.statix

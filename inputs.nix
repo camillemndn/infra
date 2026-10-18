@@ -36,7 +36,7 @@ let
         inherit src patches;
       }
       // {
-        inherit (src) rev shortRev lastModifiedDate;
+        inherit (src) shortRev;
       };
 in
 
