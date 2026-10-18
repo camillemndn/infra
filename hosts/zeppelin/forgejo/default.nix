@@ -68,6 +68,8 @@ in
           nix-eval-jobs
           nix-fast-build
           nodejs
+          # ssh-keygen signs the update bot's commits.
+          openssh
           wget
         ];
       };

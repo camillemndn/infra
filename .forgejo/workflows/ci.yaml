@@ -70,7 +70,7 @@ jobs:
           roots=$HOME/gcroots
           rm -rf "$roots"
           nix-eval-jobs --flake .#checks --force-recurse \
-            --workers 3 --max-memory-size 4096 --gc-roots-dir "$roots" \
+            --workers 4 --max-memory-size 4096 --gc-roots-dir "$roots" \
             > "$RUNNER_TEMP/jobs.json"
           jq -r '"\(.attr) \(.drvPath // "EVALUATION FAILED")"' "$RUNNER_TEMP/jobs.json"
           # Only failed evaluations carry an error, only successful ones a derivation.
@@ -119,4 +119,7 @@ jobs:
             ${{ needs.eval.result == 'success' && needs.build.result == 'success' && 'success'
             || (needs.eval.result == 'failure' || needs.build.result == 'failure') && 'failure'
             || 'error' }}
-        run: bash -c "$REPORT_STATUS"
+        # Fails unless every check passed: the one status branch protection requires.
+        run: |
+          bash -c "$REPORT_STATUS"
+          [ "$STATE" = success ]

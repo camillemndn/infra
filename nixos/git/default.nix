@@ -1,24 +1,29 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   email = "camillemondon@free.fr";
   keys = config.users.users.camille.openssh.authorizedKeys.keys;
 
-  # Commits signed by any of camille's keys are camille's, for git and for comin.
-  allowedSigners = pkgs.writeText "allowed_signers" (
-    lib.concatMapStrings (
-      key:
-      "${email} namespaces=\"git\" ${lib.concatStringsSep " " (lib.take 2 (lib.splitString " " key))}\n"
-    ) keys
-  );
+  # Trusted commit signers, for git and for comin: camille from any of their
+  # machines, and the bot that opens the daily lon update.
+  signers =
+    map (key: {
+      inherit email;
+      key = lib.concatStringsSep " " (lib.take 2 (lib.splitString " " key));
+    }) keys
+    ++ [
+      {
+        email = "lon-bot@git.mndn.fr";
+        key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPJma0AITkBgjbrIdrG8YGkB01Q/gtBqXxh/OMneofOy";
+      }
+    ];
 in
 
 {
+  environment.etc."ssh/allowed_signers".text = lib.concatMapStrings (
+    s: "${s.email} namespaces=\"git\" ${s.key}\n"
+  ) signers;
+
   programs.git = {
     enable = true;
 
@@ -30,7 +35,7 @@ in
 
       gpg = {
         format = "ssh";
-        ssh.allowedSignersFile = "${allowedSigners}";
+        ssh.allowedSignersFile = "/etc/ssh/allowed_signers";
       };
 
       pull.rebase = true;
