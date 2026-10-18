@@ -1,0 +1,122 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  # Each run evaluates a new commit, so the cache never hits; parallel evaluators only fight over its lock.
+  NIX_CONFIG: eval-cache = false
+
+  GITHUB_REPO: camillemndn/${{ github.event.repository.name }}
+  SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_number }}
+
+  # Mirrors the run's state onto the same commit on GitHub.
+  REPORT_STATUS: |
+    body=$(mktemp)
+    for _ in $(seq 30); do
+      code=$(curl -s -o "$body" -w '%{http_code}' -X POST \
+        -H "Authorization: Bearer $GH_TOKEN" \
+        -H "Accept: application/vnd.github+json" \
+        "https://api.github.com/repos/$GITHUB_REPO/statuses/$SHA" \
+        -d "{\"state\":\"$STATE\",\"context\":\"forgejo/ci\",\"target_url\":\"$TARGET_URL\"}")
+      case $code in
+        201) exit 0 ;;
+        # GitHub knows no such commit until the push mirror delivers it.
+        422) sleep 10 ;;
+        *)
+          echo "GitHub refused the $STATE status for $SHA on $GITHUB_REPO (HTTP $code):" >&2
+          cat "$body" >&2
+          exit 0
+          ;;
+      esac
+    done
+    echo "GitHub never received $SHA on $GITHUB_REPO" >&2
+
+  CHECKOUT: |
+    auth="Authorization: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
+    git init -q .
+    # Fetching a bare commit needs the server's consent; the ref always works.
+    git -c http.extraHeader="$auth" fetch -q --depth 1 "$URL" "$SHA" \
+      || git -c http.extraHeader="$auth" fetch -q "$URL" "$REF"
+    git checkout -q --detach "$SHA"
+
+jobs:
+  eval:
+    runs-on: native
+    outputs:
+      matrix: ${{ steps.eval.outputs.matrix }}
+    steps:
+      - name: Report pending on GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          STATE: pending
+        run: bash -c "$REPORT_STATUS"
+
+      - name: Checkout
+        env:
+          TOKEN: ${{ github.token }}
+          URL: ${{ github.server_url }}/${{ github.repository }}
+          REF: ${{ github.ref }}
+        run: bash -c "$CHECKOUT"
+
+      - name: Evaluate checks
+        id: eval
+        run: |
+          # Keeps the derivations alive until the build jobs realise them.
+          roots=$HOME/gcroots
+          rm -rf "$roots"
+          nix-eval-jobs --flake .#checks --force-recurse \
+            --workers 3 --max-memory-size 4096 --gc-roots-dir "$roots" \
+            > "$RUNNER_TEMP/jobs.json"
+          jq -r '"\(.attr) \(.drvPath // "EVALUATION FAILED")"' "$RUNNER_TEMP/jobs.json"
+          # Only failed evaluations carry an error, only successful ones a derivation.
+          echo "matrix=$(jq -sc '{include: map({attr, drv: .drvPath, error} | with_entries(select(.value != null)))}' "$RUNNER_TEMP/jobs.json")" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: eval
+    runs-on: native
+    name: ${{ matrix.attr }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.eval.outputs.matrix) }}
+    steps:
+      - name: Log in to attic
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+        run: |
+          # The token lives only for this job, not in the runner's home.
+          echo "XDG_CONFIG_HOME=$RUNNER_TEMP/config" >> "$GITHUB_ENV"
+          XDG_CONFIG_HOME=$RUNNER_TEMP/config attic login saumon https://cache.saumon.network "$ATTIC_TOKEN"
+
+      - name: Build
+        env:
+          DRV: ${{ matrix.drv }}
+          ERROR: ${{ matrix.error }}
+        run: |
+          if [ -n "$ERROR" ]; then
+            echo "$ERROR" >&2
+            exit 1
+          fi
+          nix build -L --no-link --print-out-paths "$DRV^*" > "$RUNNER_TEMP/out"
+          cat "$RUNNER_TEMP/out"
+
+      - name: Push to attic
+        run: xargs attic push saumon:camille < "$RUNNER_TEMP/out"
+
+  report:
+    needs: [eval, build]
+    if: always()
+    runs-on: native
+    steps:
+      - name: Report result on GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          STATE: >-
+            ${{ needs.eval.result == 'success' && needs.build.result == 'success' && 'success'
+            || (needs.eval.result == 'failure' || needs.build.result == 'failure') && 'failure'
+            || 'error' }}
+        run: bash -c "$REPORT_STATUS"
