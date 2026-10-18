@@ -63,22 +63,6 @@ jobs:
           REF: ${{ github.ref }}
         run: bash -c "$CHECKOUT"
 
-      - name: Log in to attic
-        env:
-          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
-        run: |
-          # The token lives only for this job, not in the runner's home.
-          echo "XDG_CONFIG_HOME=$RUNNER_TEMP/config" >> "$GITHUB_ENV"
-          XDG_CONFIG_HOME=$RUNNER_TEMP/config attic login saumon https://cache.saumon.network "$ATTIC_TOKEN"
-
-      # Pure evaluation has no currentSystem, so every host evaluates with sources
-      # patched for x86_64-linux; aarch64 hosts can only download them.
-      - name: Push patched sources
-        run: |
-          nix build --impure --no-link --print-out-paths \
-            --expr 'builtins.filter (source: source ? drvPath) (builtins.attrValues (import ./inputs.nix))' \
-            | xargs attic push saumon:camille
-
       - name: Evaluate checks
         id: eval
         run: |
