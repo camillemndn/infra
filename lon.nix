@@ -22,17 +22,17 @@ let
     args@{ fetchType, ... }:
     if fetchType == "git" then
       fetchGit {
-        inherit (args) url;
+        url = args.url;
         ref = args.branch;
         rev = args.revision;
         narHash = args.hash;
-        inherit (args) submodules;
-        inherit (args) lastModified;
+        submodules = args.submodules;
+        lastModified = args.lastModified;
         shallow = true;
       }
     else if fetchType == "tarball" then
       fetchTarball {
-        inherit (args) url;
+        url = args.url;
         sha256 = args.hash;
       }
     else

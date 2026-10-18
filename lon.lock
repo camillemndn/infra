@@ -27,9 +27,9 @@
       "owner": "zhaofengli",
       "repo": "colmena",
       "branch": "main",
-      "revision": "524ddd89f62721a92e8629063d347e7a1ed390de",
-      "url": "https://github.com/zhaofengli/colmena/archive/524ddd89f62721a92e8629063d347e7a1ed390de.tar.gz",
-      "hash": "sha256-IT0OZW81jngocoxi9Gg2CTSGOC1O6qLioW17nevqIUk="
+      "revision": "e269669b798a361a521029d5d15e289124a15038",
+      "url": "https://github.com/zhaofengli/colmena/archive/e269669b798a361a521029d5d15e289124a15038.tar.gz",
+      "hash": "sha256-jp+gxgnCdMhpBxxBnOoHW5fRVc+C5rKCFHsP/afoh3w="
     },
     "comin": {
       "type": "GitHub",
