@@ -31,6 +31,16 @@
       "url": "https://github.com/zhaofengli/colmena/archive/524ddd89f62721a92e8629063d347e7a1ed390de.tar.gz",
       "hash": "sha256-IT0OZW81jngocoxi9Gg2CTSGOC1O6qLioW17nevqIUk="
     },
+    "comin": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "nlewo",
+      "repo": "comin",
+      "branch": "main",
+      "revision": "1399adecc682e557bc3ee914d929f8e20391a148",
+      "url": "https://github.com/nlewo/comin/archive/1399adecc682e557bc3ee914d929f8e20391a148.tar.gz",
+      "hash": "sha256-4gaALWPUrc+coBvu02PB5WAuwSGdDgfJkkVX65buXX0="
+    },
     "disko": {
       "type": "GitHub",
       "fetchType": "tarball",

@@ -10,6 +10,8 @@
     "${inputs.agenix}/modules/age.nix"
     "${inputs.buildbot-nix}/nix/master.nix"
     "${inputs.buildbot-nix}/nix/worker.nix"
+    # Written for flakes; the package is set in nixos/comin instead of from `self`.
+    (import "${inputs.comin}/nix/module.nix" { self.packages = { }; })
     "${inputs.disko}/module.nix"
     "${inputs.lanzaboote}/nix/modules/lanzaboote.nix"
     "${inputs.nix-minecraft}/modules/minecraft-servers.nix"
