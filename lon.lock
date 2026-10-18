@@ -87,9 +87,9 @@
       "owner": "nix-community",
       "repo": "lanzaboote",
       "branch": "master",
-      "revision": "ba33415d747d8dedd2931af107521634f1f2e8a8",
-      "url": "https://github.com/nix-community/lanzaboote/archive/ba33415d747d8dedd2931af107521634f1f2e8a8.tar.gz",
-      "hash": "sha256-v5+DBEGnMC6phAf+/Rt7EtxjIDzy+NMKdHJIFJGh5qc="
+      "revision": "4b98333073bdaf9b1b5dd7d87c2dab96883b234e",
+      "url": "https://github.com/nix-community/lanzaboote/archive/4b98333073bdaf9b1b5dd7d87c2dab96883b234e.tar.gz",
+      "hash": "sha256-aefPlhND0AelMxBw8g1R0JZKpm/Wkamhj49sbR60pHw="
     },
     "nix-index-database": {
       "type": "GitHub",
