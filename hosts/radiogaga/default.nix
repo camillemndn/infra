@@ -53,5 +53,7 @@ _: {
     allowedUDPPorts = [ 1900 ];
   };
 
+  # System-wide PipeWire: audio clients need the pipewire group.
+  users.users.shairport.extraGroups = [ "pipewire" ];
   system.stateVersion = "22.11";
 }
