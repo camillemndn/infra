@@ -116,8 +116,11 @@ in
             RemainAfterExit = true;
           };
 
+          # A namespace still held open outlives `ip netns del` and keeps its veth
+          # peer alive on the host side.
           script = ''
             ip netns del vpn 2>/dev/null || true
+            ip link del veth-vpn 2>/dev/null || true
             ip netns add vpn
             ip -n vpn link set lo up
             ip link add veth-vpn type veth peer name vpn0 netns vpn
