@@ -1,11 +1,14 @@
 #!/usr/bin/env nix-shell
 #!nix-shell -i bash -p bash git nix cacert
 #
-# update-minecraft.sh — regenerate patches/nix-minecraft/update.diff for the
-#                       nix-minecraft revision pinned in lon.lock.
+# update.sh — regenerate update.diff, next to this script, for the
+#             nix-minecraft revision pinned in lon.lock.
 #
 #   lon update nix-minecraft
-#   ./scripts/update-minecraft.sh
+#   ./patches/nix-minecraft/update.sh
+#
+# The daily update workflow runs it after lon update, like every
+# patches/*/update.sh.
 #
 # The pinned source is copied to a scratch git tree and every
 # pkgs/*/update.py of nix-minecraft is run in it, the way its own CI does.
@@ -15,12 +18,12 @@
 #
 # The updaters run against the nixpkgs pinned by lon, not the channel.
 #
-#   ./scripts/update-minecraft.sh /tmp/update.diff   # write somewhere else
+#   ./patches/nix-minecraft/update.sh /tmp/update.diff   # write somewhere else
 
 set -euo pipefail
 
-root=$(cd "$(dirname "$0")/.." && pwd)
-patches=$root/patches/nix-minecraft
+patches=$(cd "$(dirname "$0")" && pwd)
+root=$(cd "$patches/../.." && pwd)
 out=${1:-$patches/update.diff}
 
 pinned() {

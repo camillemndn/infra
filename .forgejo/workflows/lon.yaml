@@ -6,14 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  lon:
+  update:
     runs-on: native
     env:
       LON_TOKEN: ${{ secrets.LON_TOKEN }}
-      LON_USER_NAME: lon-bot
-      LON_USER_EMAIL: lon-bot@git.mndn.fr
-      LON_LABELS: lon
-      LON_LIST_COMMITS: "10"
+      BRANCH: lon/update
       URL: ${{ github.server_url }}/${{ github.repository }}
       API: ${{ github.server_url }}/api/v1/repos/${{ github.repository }}
     steps:
@@ -21,11 +18,12 @@ jobs:
         run: |
           git init -q .
           git remote add origin "$URL"
-          # The token pushes the update branches. Scoped to Forgejo: lon also queries
+          # The token pushes the update branch. Scoped to Forgejo: lon also queries
           # every upstream over HTTPS, and they must not receive it.
           git config "http.${{ github.server_url }}/.extraHeader" "Authorization: basic $(printf 'x-access-token:%s' "$LON_TOKEN" | base64 -w0)"
           git fetch -q origin main
           git checkout -q -B main FETCH_HEAD
+          git checkout -q -B "$BRANCH"
 
       - name: Set up signing
         env:
@@ -36,23 +34,61 @@ jobs:
           # A per-job global config: the runner's home is shared between jobs.
           echo "GIT_CONFIG_GLOBAL=$RUNNER_TEMP/gitconfig" >> "$GITHUB_ENV"
           export GIT_CONFIG_GLOBAL=$RUNNER_TEMP/gitconfig
-          git config --global user.name "$LON_USER_NAME"
-          git config --global user.email "$LON_USER_EMAIL"
+          git config --global user.name lon-bot
+          git config --global user.email lon-bot@git.mndn.fr
           git config --global gpg.format ssh
           git config --global user.signingKey "$key"
           git config --global commit.gpgSign true
 
-      - name: Open update PRs
+      - name: Update sources
         # The lon of the repo's own nixpkgs-unstable pin, the one that wrote lon.nix.
-        run: nix shell --impure --expr '(import (import ./inputs.nix).nixpkgs-unstable { }).lon' -c lon bot forgejo
-
-      - name: Merge them once CI passes
         run: |
-          prs=$(curl -sf -H "Authorization: token $LON_TOKEN" "$API/pulls?state=open&limit=50" \
-            | jq -r '.[] | select(any(.labels[]; .name == "lon")) | .number')
-          for pr in $prs; do
-            echo "PR #$pr: merging fast-forward when checks succeed"
-            curl -sf -X POST -H "Authorization: token $LON_TOKEN" -H "Content-Type: application/json" \
-              "$API/pulls/$pr/merge" \
-              -d '{"Do":"fast-forward-only","merge_when_checks_succeed":true,"delete_branch_after_merge":true}'
+          if ! out=$(nix shell --impure --expr '(import (import ./inputs.nix).nixpkgs-unstable { }).lon' \
+            -c lon update --continue --commit 2>&1); then
+            echo "$out"
+            grep -q 'No updates available' <<< "$out" || exit 1
+          fi
+          echo "$out"
+
+      # A source whose patches are generated rather than written by hand keeps the
+      # script that regenerates them in patches/<source>/update.sh.
+      - name: Run update hooks
+        run: |
+          # Their nix-shell resolves <nixpkgs>, which the runner does not set.
+          NIX_PATH=nixpkgs=$(nix build --impure --no-link --print-out-paths --expr '(import ./inputs.nix).nixpkgs')
+          export NIX_PATH
+          for hook in patches/*/update.sh; do
+            [ -e "$hook" ] || continue
+            source=$(basename "$(dirname "$hook")")
+            echo ">>> $hook"
+            "./$hook"
+            git add -A "patches/$source"
+            git diff --cached --quiet || git commit -q -m "chore($source): run update hook"
           done
+
+      - name: Open the PR and merge it once CI passes
+        run: |
+          if [ "$(git rev-parse HEAD)" = "$(git rev-parse main)" ]; then
+            echo "Everything is up to date"
+            exit 0
+          fi
+          git log --format='%h %G? %s' main..HEAD
+          git push -q --force origin "$BRANCH"
+
+          auth="Authorization: token $LON_TOKEN"
+          pr=$(curl -sf -H "$auth" "$API/pulls?state=open&limit=50" | jq -r --arg b "$BRANCH" '.[] | select(.head.ref == $b) | .number')
+          if [ -z "$pr" ]; then
+            label=$(curl -sf -H "$auth" "$API/labels?limit=50" | jq '[.[] | select(.name == "lon") | .id]')
+            pr=$(curl -sf -X POST -H "$auth" -H "Content-Type: application/json" "$API/pulls" \
+              -d "$(jq -n --arg head "$BRANCH" --argjson labels "$label" --arg body "$(git log --reverse --format='%B' main..HEAD)" \
+                '{head: $head, base: "main", title: "Update sources", body: $body, labels: $labels}')" \
+              | jq -r .number)
+            echo "Opened PR #$pr"
+          else
+            echo "Refreshed PR #$pr"
+          fi
+
+          # Scheduling an already scheduled merge may be refused; that is not a failure.
+          curl -s -X POST -H "$auth" -H "Content-Type: application/json" "$API/pulls/$pr/merge" \
+            -d '{"Do":"fast-forward-only","merge_when_checks_succeed":true,"delete_branch_after_merge":true}' \
+            -w '\nmerge scheduling: HTTP %{http_code}\n'
