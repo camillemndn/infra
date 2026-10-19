@@ -77,9 +77,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "release-26.05",
-      "revision": "ab3823b4b24c0c3ca984c1f3ee577fd6d667424c",
-      "url": "https://github.com/nix-community/home-manager/archive/ab3823b4b24c0c3ca984c1f3ee577fd6d667424c.tar.gz",
-      "hash": "sha256-AM1HmBeDnB2B3dSiXuCYeu7Me+lHNpz/P39lVxGJBuQ="
+      "revision": "24f8f8e786f87d6a818e1746cb2389bf922afdab",
+      "url": "https://github.com/nix-community/home-manager/archive/24f8f8e786f87d6a818e1746cb2389bf922afdab.tar.gz",
+      "hash": "sha256-5mQQOcggBRBXB7NlzUxO0dbvQN4euJOISjNybrtfxPk="
     },
     "lanzaboote": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "8ce73368d1efd4d657e9064d29b144a52046b4e8",
-      "url": "https://github.com/NixOS/nixpkgs/archive/8ce73368d1efd4d657e9064d29b144a52046b4e8.tar.gz",
-      "hash": "sha256-F7meJtbqGttmUoMmYjRRgkVs42sn7bh7vvRvLPlUN98="
+      "revision": "f3a73bcf5d1c5b75a66cf35a48957e30d41d647a",
+      "url": "https://github.com/NixOS/nixpkgs/archive/f3a73bcf5d1c5b75a66cf35a48957e30d41d647a.tar.gz",
+      "hash": "sha256-qVt97ILUu2DorFGGEi+mqVuzOF8R18fQLgFkHiLrNfE="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
