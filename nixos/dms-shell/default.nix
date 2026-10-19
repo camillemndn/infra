@@ -10,17 +10,29 @@ let
 in
 
 lib.mkIf cfg.enable {
-  environment.systemPackages = with pkgs; [
-    bitwarden-cli
-    feishin
-    mattermost-desktop
-    nemo
-    signal-desktop
-    spotify
-    xournalpp
-    yazi
-    zotero
-  ];
+  environment = {
+    # Included by the greeter's own niri config, which has no input section: the touchpad as in the session.
+    etc."greetd/niri_overrides.kdl".text = ''
+      input {
+          touchpad {
+              tap
+              natural-scroll
+          }
+      }
+    '';
+
+    systemPackages = with pkgs; [
+      bitwarden-cli
+      feishin
+      mattermost-desktop
+      nemo
+      signal-desktop
+      spotify
+      xournalpp
+      yazi
+      zotero
+    ];
+  };
 
   fonts.packages = with pkgs; [
     caladea
@@ -62,9 +74,13 @@ lib.mkIf cfg.enable {
 
       xdg.configFile = {
         # The config.kdl that `dms setup` writes, followed by custom.kdl; the dms/*.kdl it includes stay DankMaterialShell's to write, and are optional until DMS first writes them.
+        # The backdrop shows through DMS's transparent workspace background until the wallpaper is drawn.
         "niri/config.kdl".source = pkgs.runCommand "niri-config.kdl" { } ''
           sed 's|^include "dms/|include optional=true "dms/|' \
             ${cfg.package.src}/core/internal/config/embedded/niri.kdl > $out
+          printf '\noverview {\n    backdrop-color "#%s"\n}\n' ${
+            if config.stylix.enable then config.lib.stylix.colors.base00 else "000000"
+          } >> $out
           printf '\ninclude "custom.kdl"\n' >> $out
         '';
 
