@@ -237,7 +237,7 @@ in
 
           panache = {
             enable = true;
-            package = pkgs.panache;
+            package = pkgs.unstable.panache;
           };
 
           pyright.enable = true;
