@@ -182,7 +182,7 @@ in
       ];
 
       settings = {
-        auto-optimise-store = true;
+        auto-optimise-store = lib.mkDefault true;
         builders-use-substitutes = true;
 
         experimental-features = [

@@ -20,6 +20,8 @@
     allowedUDPPorts = [ 1900 ];
   };
 
+  nix.settings.auto-optimise-store = false;
+
   services = {
     nginx = {
       enable = true;
