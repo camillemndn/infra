@@ -6,10 +6,13 @@
 }:
 
 {
+  age.secrets.webhook-secret.file = ./secret.age;
+
   services = {
+    nginx.virtualHosts."webhooks.mndn.fr".port = config.services.webhook.port;
+
     webhook = {
       enable = true;
-      user = "camille";
       group = "users";
 
       hooksTemplated = {
@@ -68,11 +71,10 @@
             }
           '';
       };
-    };
 
-    nginx.virtualHosts."webhooks.mndn.fr".port = config.services.webhook.port;
+      user = "camille";
+    };
   };
 
-  age.secrets.webhook-secret.file = ./secret.age;
   systemd.services.webhook.serviceConfig.EnvironmentFile = config.age.secrets.webhook-secret.path;
 }

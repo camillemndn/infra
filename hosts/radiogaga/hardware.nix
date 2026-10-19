@@ -36,18 +36,18 @@ in
 
 {
   boot = {
-    loader = {
-      efi.canTouchEfiVariables = false;
-      grub.enable = false;
-      generic-extlinux-compatible.enable = true;
-    };
-
     kernelModules = [ "snd-aloop" ];
 
     kernelParams = [
       "console=ttyS0,115200n8"
       "console=tty0"
     ];
+
+    loader = {
+      efi.canTouchEfiVariables = false;
+      generic-extlinux-compatible.enable = true;
+      grub.enable = false;
+    };
   };
 
   environment.systemPackages = [
@@ -55,9 +55,6 @@ in
     pkgs.raspberrypi-utils
     raspberrypi-update-3b
   ];
-
-  system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
-  powerManagement.cpuFreqGovernor = mkDefault "ondemand";
 
   fileSystems = {
     "/" = {
@@ -71,6 +68,18 @@ in
     };
   };
 
+  networking = {
+    interfaces = {
+      eth0.useDHCP = mkDefault true;
+      wlan0.useDHCP = mkDefault true;
+    };
+
+    useDHCP = mkDefault false;
+  };
+
+  nixpkgs.hostPlatform = "aarch64-linux";
+  powerManagement.cpuFreqGovernor = mkDefault "ondemand";
+
   swapDevices = [
     {
       device = "/swapfile";
@@ -78,14 +87,5 @@ in
     }
   ];
 
-  networking = {
-    useDHCP = mkDefault false;
-
-    interfaces = {
-      eth0.useDHCP = mkDefault true;
-      wlan0.useDHCP = mkDefault true;
-    };
-  };
-
-  nixpkgs.hostPlatform = "aarch64-linux";
+  system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
 }

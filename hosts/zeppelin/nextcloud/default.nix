@@ -5,34 +5,32 @@
 }:
 
 {
+  age.secrets.nextcloud-adminpass = {
+    file = ./adminpass.age;
+    owner = "nextcloud";
+  };
+
   services = {
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud34;
-      hostName = "cloud.mndn.fr";
       autoUpdateApps.enable = true;
       caching.redis = true;
-      database.createLocally = true;
-      https = true;
-      maxUploadSize = "4G";
-      phpOptions."opcache.interned_strings_buffer" = "23";
 
       config = {
-        adminuser = "Camille";
         adminpassFile = config.age.secrets.nextcloud-adminpass.path;
+        adminuser = "Camille";
         dbtype = "mysql";
       };
 
+      database.createLocally = true;
+      hostName = "cloud.mndn.fr";
+      https = true;
+      maxUploadSize = "4G";
+      package = pkgs.nextcloud34;
+      phpOptions."opcache.interned_strings_buffer" = "23";
+
       settings = {
         default_phone_region = "FR";
-        mail_smtphost = "mail.luj.fr";
-        mail_smtpport = 465;
-        mail_smtpsecure = "ssl";
-        mail_smtpauth = true;
-        mail_smtpname = "camille";
-        mail_from_address = "cloud";
-        mail_domain = "mondon.me";
-        overwriteprotocol = "https";
 
         enabledPreviewProviders = [
           "OC\\Preview\\BMP"
@@ -55,18 +53,22 @@
           "OC\\Preview\\SVG"
           "OC\\Preview\\TIFF"
         ];
+
+        mail_domain = "mondon.me";
+        mail_from_address = "cloud";
+        mail_smtpauth = true;
+        mail_smtphost = "mail.luj.fr";
+        mail_smtpname = "camille";
+        mail_smtpport = 465;
+        mail_smtpsecure = "ssl";
+        overwriteprotocol = "https";
       };
     };
 
     redis.servers.nextcloud = {
       enable = true;
-      user = "nextcloud";
       port = 0;
+      user = "nextcloud";
     };
-  };
-
-  age.secrets.nextcloud-adminpass = {
-    file = ./adminpass.age;
-    owner = "nextcloud";
   };
 }

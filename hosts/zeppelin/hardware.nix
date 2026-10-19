@@ -4,12 +4,6 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
-    kernel.sysctl."vm.swappiness" = 1;
-
-    loader = {
-      systemd-boot.enable = true;
-    };
-
     initrd.availableKernelModules = [
       "ata_piix"
       "uhci_hcd"
@@ -18,13 +12,19 @@
       "sd_mod"
       "sr_mod"
     ];
+
+    kernel.sysctl."vm.swappiness" = 1;
+
+    loader = {
+      systemd-boot.enable = true;
+    };
   };
 
   fileSystems = {
     "/" = {
+      options = [ "noatime" ];
       device = "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07";
       fsType = "ext4";
-      options = [ "noatime" ];
     };
 
     "/boot" = {
@@ -33,28 +33,17 @@
     };
 
     "/srv/media/Vidéos" = {
+      depends = [ "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07" ];
       device = "/dev/disk/by-uuid/aa257298-50dc-43b4-95d6-cc658c6777ad";
       fsType = "ext4";
-      depends = [ "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07" ];
     };
   };
 
   hardware.enableRedistributableFirmware = false;
 
   networking = {
-    useDHCP = false;
     networkmanager.enable = false;
-  };
-
-  systemd.network = {
-    enable = true;
-
-    networks."10-wan" = {
-      matchConfig.Type = "ether";
-      address = [ "192.168.0.137/21" ];
-      routes = [ { Gateway = "192.168.0.1"; } ];
-      linkConfig.RequiredForOnline = "routable";
-    };
+    useDHCP = false;
   };
 
   swapDevices = [
@@ -63,4 +52,15 @@
       size = 4 * 1024;
     }
   ];
+
+  systemd.network = {
+    enable = true;
+
+    networks."10-wan" = {
+      address = [ "192.168.0.137/21" ];
+      linkConfig.RequiredForOnline = "routable";
+      matchConfig.Type = "ether";
+      routes = [ { Gateway = "192.168.0.1"; } ];
+    };
+  };
 }

@@ -5,21 +5,8 @@
 }:
 
 python3.pkgs.buildPythonPackage rec {
-  pname = "simplematch";
-  version = "1.4";
-  pyproject = true;
-
-  src = fetchPypi {
-    inherit pname version;
-    hash = "sha256-VadyeLPQaGyzjj/+WjJqX1nCmV8bofoaT2iHLBfK9Ms=";
-  };
-
   build-system = with python3.pkgs; [
     poetry-core
-  ];
-
-  pythonImportsCheck = [
-    "simplematch"
   ];
 
   meta = {
@@ -28,4 +15,18 @@ python3.pkgs.buildPythonPackage rec {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ camillemndn ];
   };
+
+  pname = "simplematch";
+  pyproject = true;
+
+  pythonImportsCheck = [
+    "simplematch"
+  ];
+
+  src = fetchPypi {
+    inherit pname version;
+    hash = "sha256-VadyeLPQaGyzjj/+WjJqX1nCmV8bofoaT2iHLBfK9Ms=";
+  };
+
+  version = "1.4";
 }

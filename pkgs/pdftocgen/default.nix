@@ -5,16 +5,6 @@
 }:
 
 python3.pkgs.buildPythonApplication rec {
-  pname = "pdftocgen";
-  version = "1.3.4";
-  pyproject = true;
-
-  src = fetchPypi {
-    pname = "pdf_tocgen";
-    inherit version;
-    hash = "sha256-CQdYgyYUcn6vH9C6AHXVoQ648mjR1TT6vXExFwqKx54=";
-  };
-
   build-system = [
     python3.pkgs.poetry-core
   ];
@@ -23,10 +13,6 @@ python3.pkgs.buildPythonApplication rec {
     chardet
     pymupdf
     toml
-  ];
-
-  pythonImportsCheck = [
-    "pdftocgen"
   ];
 
   meta = {
@@ -38,7 +24,22 @@ python3.pkgs.buildPythonApplication rec {
       gpl3Only
     ];
 
-    maintainers = with lib.maintainers; [ camillemndn ];
     mainProgram = "pdf-tocgen";
+    maintainers = with lib.maintainers; [ camillemndn ];
   };
+
+  pname = "pdftocgen";
+  pyproject = true;
+
+  pythonImportsCheck = [
+    "pdftocgen"
+  ];
+
+  src = fetchPypi {
+    inherit version;
+    hash = "sha256-CQdYgyYUcn6vH9C6AHXVoQ648mjR1TT6vXExFwqKx54=";
+    pname = "pdf_tocgen";
+  };
+
+  version = "1.3.4";
 }

@@ -16,9 +16,11 @@ lib.mkIf config.stylix.enable {
     };
 
     fonts = {
-      serif = {
-        name = "DejaVu Serif Condensed";
-        package = pkgs.dejavu_fonts;
+      emoji.package = pkgs.noto-fonts-color-emoji;
+
+      monospace = {
+        name = "FiraCode Nerd Font Mono";
+        package = pkgs.nerd-fonts.fira-code;
       };
 
       sansSerif = {
@@ -26,22 +28,20 @@ lib.mkIf config.stylix.enable {
         package = pkgs.noto-fonts;
       };
 
-      monospace = {
-        name = "FiraCode Nerd Font Mono";
-        package = pkgs.nerd-fonts.fira-code;
+      serif = {
+        name = "DejaVu Serif Condensed";
+        package = pkgs.dejavu_fonts;
       };
-
-      emoji.package = pkgs.noto-fonts-color-emoji;
     };
 
     image = pkgs.fetchurl {
-      url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/waves.png";
       hash = "sha256-7yVwLqDaVGrHcICB5nTVn4Wjj/KdwgSGWdeTJZau+X4=";
+      url = "https://raw.githubusercontent.com/orangci/walls-catppuccin-mocha/master/waves.png";
     };
 
     opacity = {
-      terminal = 0.95;
       popups = 0.85;
+      terminal = 0.95;
     };
 
     polarity = "dark";

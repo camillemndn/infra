@@ -37,40 +37,41 @@ let
   proxyName = port: "netns-vpn-proxy-${toString port}";
 in
 {
+  # Mullvad's resolver, reachable only through the tunnel.
+  environment.etc."netns/vpn/resolv.conf".text = ''
+    nameserver 10.64.0.1
+  '';
+
   networking = {
     firewall.allowedUDPPorts = [ 51820 ];
 
     wireguard.interfaces.wg0 = {
+      # Socket on the host, interface and routes in the namespace.
+      interfaceNamespace = "vpn";
+
       # Device: Pretty Ox
       ips = [
         "10.66.154.125/32"
         "fc00:bbbb:bbbb:bb01::3:9a7c/128"
       ];
 
-      # Socket on the host, interface and routes in the namespace.
-      interfaceNamespace = "vpn";
-      privateKeyFile = "/etc/wireguard/privatekey";
       listenPort = 51820;
 
       peers = [
         {
-          publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
-
           allowedIPs = [
             "0.0.0.0/0"
             "::0/0"
           ];
 
           endpoint = "[2a03:1b20:9:f011::a01f]:51820";
+          publicKey = "ov323GyDOEHLT0sNRUUPYiE3BkvFDjpmi1a4fzv49hE=";
         }
       ];
+
+      privateKeyFile = "/etc/wireguard/privatekey";
     };
   };
-
-  # Mullvad's resolver, reachable only through the tunnel.
-  environment.etc."netns/vpn/resolv.conf".text = ''
-    nameserver 10.64.0.1
-  '';
 
   services = {
     # Inside the namespace, localhost is not reachable from the relay.
@@ -78,22 +79,31 @@ in
   };
 
   systemd = {
+    network.networks = {
+      # Before 10-wan, whose Type=ether would claim the veth.
+      "05-veth-vpn" = {
+        address = [ "10.200.0.1/30" ];
+        linkConfig.RequiredForOnline = "no";
+        matchConfig.Name = "veth-vpn";
+        networkConfig.LinkLocalAddressing = "no";
+      };
+    };
+
     services = lib.mkMerge [
       {
         netns-vpn = {
-          description = "Network namespace for services confined to the Mullvad tunnel";
           after = [ "network-pre.target" ];
           before = [ "network.target" ];
+          description = "Network namespace for services confined to the Mullvad tunnel";
 
           path = with pkgs; [
             iproute2
             nftables
           ];
 
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-          };
+          postStop = ''
+            ip netns del vpn || true
+          '';
 
           # A namespace still held open outlives `ip netns del` and keeps its veth
           # peer alive on the host side.
@@ -109,40 +119,41 @@ in
             ip netns exec vpn nft -f ${vpnRules}
           '';
 
-          postStop = ''
-            ip netns del vpn || true
-          '';
+          serviceConfig = {
+            RemainAfterExit = true;
+            Type = "oneshot";
+          };
         };
 
         wireguard-wg0 = {
-          requires = [ "netns-vpn.service" ];
           after = [ "netns-vpn.service" ];
           partOf = [ "netns-vpn.service" ];
+          requires = [ "netns-vpn.service" ];
         };
       }
       (lib.genAttrs vpnServices (_: {
-        requires = [ "wireguard-wg0.service" ];
         after = [ "wireguard-wg0.service" ];
         partOf = [ "netns-vpn.service" ];
+        requires = [ "wireguard-wg0.service" ];
 
         serviceConfig = {
-          NetworkNamespacePath = "/run/netns/vpn";
           BindReadOnlyPaths = [ "/etc/netns/vpn/resolv.conf:/etc/resolv.conf" ];
           # nscd answers from the host namespace, outside the tunnel.
           InaccessiblePaths = [ "-/run/nscd" ];
+          NetworkNamespacePath = "/run/netns/vpn";
         };
       }))
       (lib.listToAttrs (
         map (
           port:
           lib.nameValuePair (proxyName port) {
+            after = [ "${proxyName port}.socket" ];
             description = "Relay 127.0.0.1:${toString port} into the VPN namespace";
             requires = [ "${proxyName port}.socket" ];
-            after = [ "${proxyName port}.socket" ];
 
             serviceConfig = {
-              ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
               DynamicUser = true;
+              ExecStart = "${config.systemd.package}/lib/systemd/systemd-socket-proxyd ${vpnAddress}:${toString port}";
             };
           }
         ) vpnPorts
@@ -157,20 +168,10 @@ in
       map (
         port:
         lib.nameValuePair (proxyName port) {
-          wantedBy = [ "sockets.target" ];
           listenStreams = [ "127.0.0.1:${toString port}" ];
+          wantedBy = [ "sockets.target" ];
         }
       ) vpnPorts
     );
-
-    network.networks = {
-      # Before 10-wan, whose Type=ether would claim the veth.
-      "05-veth-vpn" = {
-        matchConfig.Name = "veth-vpn";
-        address = [ "10.200.0.1/30" ];
-        networkConfig.LinkLocalAddressing = "no";
-        linkConfig.RequiredForOnline = "no";
-      };
-    };
   };
 }

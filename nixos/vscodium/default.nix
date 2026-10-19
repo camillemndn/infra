@@ -20,8 +20,8 @@
             mutableExtensionsDir = false;
 
             profiles.default = {
-              enableUpdateCheck = false;
               enableExtensionUpdateCheck = false;
+              enableUpdateCheck = false;
 
               extensions =
                 with pkgs.vscode-extensions;
@@ -52,33 +52,33 @@
                 ]
                 ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
                   {
-                    publisher = "Bhsd";
                     name = "vscode-extension-wikiparser";
-                    version = "1.8.0";
+                    publisher = "Bhsd";
                     sha256 = "1f9a7fypzzjiqgi80icdx33gzhsks0p4gccyc1j4wl89pvjzy0v3";
+                    version = "1.8.0";
                   }
                   {
-                    publisher = "quarto";
                     name = "quarto";
-                    version = "1.138.0";
+                    publisher = "quarto";
                     sha256 = "07wrx4hqwd98r1ckybc71n5bnwf20rj8rjskxvj8k0d1r3dsq2n7";
+                    version = "1.138.0";
                   }
                 ];
 
               userSettings = {
+                "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
                 "direnv.restart.automatic" = true;
                 "nix.enableLanguageServer" = true;
                 "nix.serverPath" = lib.getExe pkgs.nixd;
                 "nix.serverSettings".nixd.formatting.command = [ (lib.getExe pkgs.nixfmt) ];
                 # basedpyright provides completion and type checking.
                 "python.languageServer" = "None";
-                "[python]"."editor.defaultFormatter" = "charliermarsh.ruff";
                 "r.plot.useHttpgd" = true;
-                # The Wikitext extension starts the WikiParser language server.
-                "wikitext.wikiparser.enable" = true;
                 "wikiparser.linter.severity" = "errors and warnings";
                 # Previews work anonymously; logging in is only needed to save pages.
                 "wikitext.autoLogin" = "Never";
+                # The Wikitext extension starts the WikiParser language server.
+                "wikitext.wikiparser.enable" = true;
                 # Redrawing animations while a cell runs takes CPU from the kernel.
                 "workbench.reduceMotion" = "on";
               };

@@ -25,6 +25,15 @@ lib.mkIf cfg.enable {
       { pkgs, ... }:
 
       {
+        home.packages = with pkgs; [
+          brightnessctl
+          # Spawned by custom.kdl.
+          xwayland-satellite
+        ];
+
+        # Tailscale's own tray, run with the graphical session.
+        services.tailscale-systray.enable = true;
+
         xdg.configFile = {
           # The config.kdl that `dms setup` writes, followed by custom.kdl; the dms/*.kdl it includes stay DankMaterialShell's to write, and are optional until DMS first writes them.
           "niri/config.kdl".source = pkgs.runCommand "niri-config.kdl" { } ''
@@ -35,15 +44,6 @@ lib.mkIf cfg.enable {
 
           "niri/custom.kdl".source = ./custom.kdl;
         };
-
-        home.packages = with pkgs; [
-          brightnessctl
-          # Spawned by custom.kdl.
-          xwayland-satellite
-        ];
-
-        # Tailscale's own tray, run with the graphical session.
-        services.tailscale-systray.enable = true;
       }
     )
   ];

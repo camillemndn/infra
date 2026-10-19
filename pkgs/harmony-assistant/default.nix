@@ -12,17 +12,7 @@
 
 let
   harmony-assistant-unwrapped = stdenv.mkDerivation rec {
-    pname = "harmony-assistant";
-    version = "9.9.9e";
-
-    src = fetchurl {
-      url = "https://myriad-online.com/linux/harmony-assistant-${version}.0.run";
-      hash = "sha256-TQGENwLYoCY9THqUBKa+gz1ssOaOEm44OaX7m2gWPB0=";
-    };
-
-    unpackPhase = ''
-      bash $src || true
-    '';
+    dontFixup = true;
 
     installPhase = ''
       mkdir -p $out/{bin,share/icons/hicolor/256x256/apps}
@@ -37,8 +27,6 @@ let
         --replace-fail "/usr/bin/Harmony Assistant" "harmony-assistant"
     '';
 
-    dontFixup = true;
-
     meta = {
       description = "Un logiciel indispensable pour l'écriture et la composition musicale assistée par ordinateur";
       homepage = "https://www.myriad-online.com/fr/products/harmony.htm";
@@ -46,13 +34,28 @@ let
       maintainers = with lib.maintainers; [ camillemndn ];
       platforms = lib.platforms.linux;
     };
+
+    pname = "harmony-assistant";
+
+    src = fetchurl {
+      hash = "sha256-TQGENwLYoCY9THqUBKa+gz1ssOaOEm44OaX7m2gWPB0=";
+      url = "https://myriad-online.com/linux/harmony-assistant-${version}.0.run";
+    };
+
+    unpackPhase = ''
+      bash $src || true
+    '';
+
+    version = "9.9.9e";
   };
 in
 
 buildFHSEnv {
-  name = "harmony-assistant";
-  runScript = "harmony-assistant";
-  targetPkgs = _: [ harmony-assistant-unwrapped ];
+  inherit (harmony-assistant-unwrapped) meta;
+
+  extraInstallCommands = ''
+    cp -Lr ${harmony-assistant-unwrapped}/share $out
+  '';
 
   multiPkgs = _: [
     alsa-lib
@@ -62,9 +65,7 @@ buildFHSEnv {
     expat
   ];
 
-  extraInstallCommands = ''
-    cp -Lr ${harmony-assistant-unwrapped}/share $out
-  '';
-
-  inherit (harmony-assistant-unwrapped) meta;
+  name = "harmony-assistant";
+  runScript = "harmony-assistant";
+  targetPkgs = _: [ harmony-assistant-unwrapped ];
 }

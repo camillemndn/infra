@@ -11,6 +11,11 @@ let
   });
 in
 {
+  age.secrets.mopidy-subidy = {
+    file = ./subidy.age;
+    owner = "mopidy";
+  };
+
   services = {
     mopidy = {
       # Streams from zeppelin's Navidrome; controlled from Iris (:6680/iris) or MPD (:6600).
@@ -22,24 +27,19 @@ in
         mopidy-subidy # Subsonic backend -> Navidrome (patched for cover art)
       ];
 
+      # Subsonic credentials, outside the data dir Iris can read; merged into [subidy].
+      extraConfigFiles = [ config.age.secrets.mopidy-subidy.path ];
+
       # Rendered into the store: no credentials here.
       settings = {
         audio.output = "pulsesink";
-        mpd.hostname = "::";
         http.hostname = "::";
+        mpd.hostname = "::";
         subidy.url = "https://music.mndn.fr";
       };
-
-      # Subsonic credentials, outside the data dir Iris can read; merged into [subidy].
-      extraConfigFiles = [ config.age.secrets.mopidy-subidy.path ];
     };
   };
 
   # System-wide PipeWire: audio clients need the pipewire group.
   users.users.mopidy.extraGroups = [ "pipewire" ];
-
-  age.secrets.mopidy-subidy = {
-    file = ./subidy.age;
-    owner = "mopidy";
-  };
 }

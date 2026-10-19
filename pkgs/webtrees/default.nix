@@ -9,36 +9,34 @@
 }:
 
 php84.buildComposerProject rec {
-  pname = "webtrees";
-  version = "2.2.6";
+  composerStrictValidation = false;
 
-  src = fetchFromGitHub {
-    owner = "fisharebest";
-    repo = "webtrees";
-    rev = version;
-    hash = "sha256-1AWn2c1RDSek2c5nZ6/obJjDx5eENGdRw3q2IyV1qkg=";
-    fetchSubmodules = true;
+  meta = {
+    description = "Online genealogy";
+    homepage = "https://webtrees.net/";
+    license = lib.licenses.gpl3Only;
+    maintainers = with lib.maintainers; [ camillemndn ];
+    platforms = lib.platforms.all;
   };
-
-  npmDeps = fetchNpmDeps {
-    name = "${pname}-npm-deps-${version}";
-    inherit src;
-    hash = "sha256-l9OguC59KFZFbDCMhJFocuepLMurC3b/DPvEqZhFNhs=";
-  };
-
-  vendorHash = "sha256-/StT0p/uieWjtiS8TxucDeS8fkNUs2zCDj+tlL/AkN0=";
 
   nativeBuildInputs = [
     nodejs
     npmHooks.npmConfigHook
   ];
 
+  npmDeps = fetchNpmDeps {
+    inherit src;
+    hash = "sha256-l9OguC59KFZFbDCMhJFocuepLMurC3b/DPvEqZhFNhs=";
+    name = "${pname}-npm-deps-${version}";
+  };
+
+  passthru.updateScript = nix-update-script { };
+  pname = "webtrees";
+
   postBuild = ''
     rm -r public/css/*.css public/js
     npm run production
   '';
-
-  composerStrictValidation = false;
 
   postInstall = ''
     php index.php compile-po-files
@@ -48,13 +46,14 @@ php84.buildComposerProject rec {
     rm -r $out/share/php/webtrees/resources/{css,js}
   '';
 
-  passthru.updateScript = nix-update-script { };
-
-  meta = {
-    description = "Online genealogy";
-    homepage = "https://webtrees.net/";
-    license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ camillemndn ];
-    platforms = lib.platforms.all;
+  src = fetchFromGitHub {
+    fetchSubmodules = true;
+    hash = "sha256-1AWn2c1RDSek2c5nZ6/obJjDx5eENGdRw3q2IyV1qkg=";
+    owner = "fisharebest";
+    repo = "webtrees";
+    rev = version;
   };
+
+  vendorHash = "sha256-/StT0p/uieWjtiS8TxucDeS8fkNUs2zCDj+tlL/AkN0=";
+  version = "2.2.6";
 }

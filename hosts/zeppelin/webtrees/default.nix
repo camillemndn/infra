@@ -16,82 +16,82 @@ with lib;
     enable = mkEnableOption "Webtrees";
 
     hostName = mkOption {
-      type = types.str;
       description = "FQDN for the Webtrees instance.";
+      type = types.str;
     };
   };
 
   config = mkIf cfg.enable {
     services = {
-      phpfpm.pools.webtrees = {
-        user = "webtrees";
+      mysql = {
+        enable = true;
+        ensureDatabases = [ "webtrees" ];
 
-        settings = {
-          "listen.owner" = config.services.nginx.user;
-          "pm" = "dynamic";
-          "pm.max_children" = 32;
-          "pm.max_requests" = 500;
-          "pm.start_servers" = 2;
-          "pm.min_spare_servers" = 2;
-          "pm.max_spare_servers" = 5;
-          "php_admin_value[error_log]" = "stderr";
-          "php_admin_flag[log_errors]" = true;
-          "catch_workers_output" = true;
-        };
+        ensureUsers = [
+          {
+            ensurePermissions = {
+              "webtrees.*" = "ALL PRIVILEGES";
+            };
 
-        phpPackage = pkgs.php84;
+            name = "webtrees";
+          }
+        ];
 
-        phpOptions = ''
-          post_max_size = 5M
-          upload_max_filesize = 5M
-        '';
+        package = mkDefault pkgs.mariadb;
       };
 
       nginx.virtualHosts.${cfg.hostName} = {
-        root = "${pkgs.webtrees}/share/php/webtrees";
-
         locations = {
+          "/".extraConfig = ''
+            rewrite ^ /index.php last;
+          '';
+
+          "/index.php" = {
+            extraConfig = ''
+              fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
+            '';
+
+            fastcgiParams = {
+              HTTP_PROXY = "";
+              SCRIPT_FILENAME = "$request_filename";
+            };
+          };
+
           "/public/".extraConfig = ''
             expires 365d;
             access_log off;
           '';
 
-          "/".extraConfig = ''
-            rewrite ^ /index.php last;
-          '';
-
           "~ ^/(data|webtrees|modules|resources|vendor)/".extraConfig = ''
             deny all;
           '';
-
-          "/index.php" = {
-            fastcgiParams = {
-              HTTP_PROXY = "";
-              SCRIPT_FILENAME = "$request_filename";
-            };
-
-            extraConfig = ''
-              fastcgi_pass unix:${config.services.phpfpm.pools.webtrees.socket};
-            '';
-          };
         };
+
+        root = "${pkgs.webtrees}/share/php/webtrees";
       };
 
-      mysql = {
-        enable = true;
-        package = mkDefault pkgs.mariadb;
+      phpfpm.pools.webtrees = {
+        phpOptions = ''
+          post_max_size = 5M
+          upload_max_filesize = 5M
+        '';
 
-        ensureUsers = [
-          {
-            name = "webtrees";
+        phpPackage = pkgs.php84;
 
-            ensurePermissions = {
-              "webtrees.*" = "ALL PRIVILEGES";
-            };
-          }
-        ];
+        settings = {
+          "catch_workers_output" = true;
+          "listen.owner" = config.services.nginx.user;
+          "php_admin_flag[log_errors]" = true;
+          "php_admin_value[error_log]" = "stderr";
+          "pm" = "dynamic";
+          "pm.max_children" = 32;
+          "pm.max_requests" = 500;
+          "pm.max_spare_servers" = 5;
+          "pm.min_spare_servers" = 2;
+          "pm.start_servers" = 2;
+        };
 
-        ensureDatabases = [ "webtrees" ];
+        user = "webtrees";
       };
     };
 
@@ -102,14 +102,7 @@ with lib;
         ];
 
         webtrees-config = {
-          wantedBy = [ "multi-user.target" ];
           before = [ "phpfpm-webtrees.service" ];
-
-          serviceConfig = {
-            StateDirectory = "webtrees";
-            User = "webtrees";
-            Type = "oneshot";
-          };
 
           script = ''
             if [ ! -f ${dataDir}/index.php ]; then
@@ -119,17 +112,25 @@ with lib;
               chmod -R ug+w ${dataDir}
             fi
           '';
+
+          serviceConfig = {
+            StateDirectory = "webtrees";
+            Type = "oneshot";
+            User = "webtrees";
+          };
+
+          wantedBy = [ "multi-user.target" ];
         };
       };
     };
 
     users = {
-      users.webtrees = {
-        isSystemUser = true;
-        group = "webtrees";
-      };
-
       groups.webtrees = { };
+
+      users.webtrees = {
+        group = "webtrees";
+        isSystemUser = true;
+      };
     };
   };
 }

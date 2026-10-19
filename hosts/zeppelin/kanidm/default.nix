@@ -11,31 +11,24 @@ let
 in
 
 {
+  age.secrets.kanidm-idm-admin-password = {
+    file = ./idm-admin-password.age;
+    owner = "kanidm";
+  };
+
+  security.acme.certs.${hostName} = {
+    group = "acme";
+    reloadServices = [ "kanidm.service" ];
+  };
+
   services = {
     kanidm = {
-      server = {
-        enable = true;
-
-        settings = {
-          domain = hostName;
-          origin = "https://${hostName}";
-          bindaddress = "127.0.0.1:${toString kanidmPort}";
-          tls_chain = "${cert.directory}/fullchain.pem";
-          tls_key = "${cert.directory}/key.pem";
-
-          http_client_address_info."x-forward-for" = [
-            "127.0.0.1"
-            "::1"
-          ];
-        };
-      };
-
-      package = pkgs.kanidmWithSecretProvisioning_1_11;
-
       client = {
         enable = true;
         settings.uri = "https://${hostName}";
       };
+
+      package = pkgs.kanidmWithSecretProvisioning_1_11;
 
       provision = {
         enable = true;
@@ -46,20 +39,38 @@ in
           mailAddresses = [ "camillemondon@free.fr" ];
         };
       };
+
+      server = {
+        enable = true;
+
+        settings = {
+          bindaddress = "127.0.0.1:${toString kanidmPort}";
+          domain = hostName;
+
+          http_client_address_info."x-forward-for" = [
+            "127.0.0.1"
+            "::1"
+          ];
+
+          origin = "https://${hostName}";
+          tls_chain = "${cert.directory}/fullchain.pem";
+          tls_key = "${cert.directory}/key.pem";
+        };
+      };
     };
 
     nginx.virtualHosts.${hostName} = {
-      websockets = true;
-
       locations."/" = {
-        proxyPass = "https://127.0.0.1:${toString kanidmPort}";
-
         extraConfig = ''
           proxy_buffer_size       16k;
           proxy_buffers           8 16k;
           proxy_busy_buffers_size 32k;
         '';
+
+        proxyPass = "https://127.0.0.1:${toString kanidmPort}";
       };
+
+      websockets = true;
     };
   };
 
@@ -68,15 +79,5 @@ in
       kanidm.extraGroups = [ "acme" ];
       nginx.extraGroups = [ "acme" ];
     };
-  };
-
-  security.acme.certs.${hostName} = {
-    group = "acme";
-    reloadServices = [ "kanidm.service" ];
-  };
-
-  age.secrets.kanidm-idm-admin-password = {
-    file = ./idm-admin-password.age;
-    owner = "kanidm";
   };
 }

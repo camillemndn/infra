@@ -9,29 +9,18 @@ with lib;
   options.services.nginx = {
     enableDefault = mkEnableOption "Fallback to default page";
 
-    # Several modules name the same domain; lists concatenate.
-    publicDomains = mkOption {
-      default = [ "mndn.fr" ];
-      type = types.listOf types.str;
-      apply = unique;
-    };
-
-    vpnDomains = mkOption {
-      default = [ ".kms" ];
-      type = types.listOf types.str;
-      apply = unique;
-    };
-
-    vpnAcmeServer = mkOption {
-      default = "https://ca.luj/acme/acme/directory";
-      type = types.str;
-    };
-
     # Suffixes no CA can validate stay on plain HTTP.
     localDomains = mkOption {
+      apply = unique;
       default = [ ];
       type = types.listOf types.str;
+    };
+
+    # Several modules name the same domain; lists concatenate.
+    publicDomains = mkOption {
       apply = unique;
+      default = [ "mndn.fr" ];
+      type = types.listOf types.str;
     };
 
     virtualHosts = mkOption {
@@ -45,29 +34,18 @@ with lib;
           {
             options = {
               port = mkOption {
-                type = types.port;
                 default = 0;
+                type = types.port;
               };
 
               websockets = mkOption {
-                type = types.bool;
                 default = false;
+                type = types.bool;
               };
             };
 
             config = {
-              forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
               enableACME = mkDefault config.forceSSL;
-
-              locations."/" = {
-                proxyPass =
-                  let
-                    p = config.port;
-                  in
-                  mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
-
-                proxyWebsockets = mkDefault config.websockets;
-              };
 
               extraConfig =
                 if (hasSuffixIn cfg.publicDomains name) then
@@ -81,20 +59,64 @@ with lib;
                     }
                     ssl_stapling off;
                   '';
+
+              forceSSL = mkDefault (hasInfix "." name && !hasSuffixIn cfg.localDomains name);
+
+              locations."/" = {
+                proxyPass =
+                  let
+                    p = config.port;
+                  in
+                  mkIf (p != 0) (mkDefault "http://127.0.0.1:${toString p}");
+
+                proxyWebsockets = mkDefault config.websockets;
+              };
             };
           }
         )
       );
     };
+
+    vpnAcmeServer = mkOption {
+      default = "https://ca.luj/acme/acme/directory";
+      type = types.str;
+    };
+
+    vpnDomains = mkOption {
+      apply = unique;
+      default = [ ".kms" ];
+      type = types.listOf types.str;
+    };
   };
 
   config = {
-    services.nginx = mkIf cfg.enable {
-      recommendedOptimisation = mkDefault true;
-      recommendedProxySettings = mkDefault true;
-      recommendedGzipSettings = mkDefault true;
-      recommendedTlsSettings = mkDefault true;
+    networking = {
+      firewall = {
+        allowedTCPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
 
+        allowedUDPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
+      };
+    };
+
+    security.acme = {
+      acceptTerms = true;
+      defaults.email = "camillemondon@free.fr";
+    };
+
+    security.acme.certs = mapAttrs (
+      n: _:
+      mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {
+        server = mkDefault cfg.vpnAcmeServer;
+      }
+    ) cfg.virtualHosts;
+
+    services.nginx = mkIf cfg.enable {
       appendHttpConfig = ''
         geo $bad_ip {
           default 1;
@@ -111,43 +133,22 @@ with lib;
       '';
 
       clientMaxBodySize = "20m";
+      recommendedGzipSettings = mkDefault true;
+      recommendedOptimisation = mkDefault true;
+      recommendedProxySettings = mkDefault true;
+      recommendedTlsSettings = mkDefault true;
 
       virtualHosts.default = mkIf (!cfg.enableDefault) {
-        default = true;
         addSSL = true;
-        # nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem
-        sslCertificate = "/var/lib/acme/default/cert.pem";
-        sslCertificateKey = "/var/lib/acme/default/key.pem";
+        default = true;
 
         extraConfig = ''
           return 444;
         '';
-      };
-    };
 
-    security.acme = {
-      defaults.email = "camillemondon@free.fr";
-      acceptTerms = true;
-    };
-
-    security.acme.certs = mapAttrs (
-      n: _:
-      mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {
-        server = mkDefault cfg.vpnAcmeServer;
-      }
-    ) cfg.virtualHosts;
-
-    networking = {
-      firewall = {
-        allowedTCPPorts = mkIf cfg.enable [
-          80
-          443
-        ];
-
-        allowedUDPPorts = mkIf cfg.enable [
-          80
-          443
-        ];
+        # nix run nixpkgs#openssl -- req -newkey rsa:4096 -x509 -sha256 -nodes -out cert.pem -keyout key.pem
+        sslCertificate = "/var/lib/acme/default/cert.pem";
+        sslCertificateKey = "/var/lib/acme/default/key.pem";
       };
     };
   };

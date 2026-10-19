@@ -12,8 +12,9 @@
     };
   };
 
+  system.stateVersion = "24.05";
+
   users.users.cecilia = {
-    isNormalUser = true;
     description = "Cecilia";
 
     extraGroups = [
@@ -22,6 +23,8 @@
       "lp"
       "scanner"
     ];
+
+    isNormalUser = true;
 
     packages = with pkgs; [
       kdePackages.kpat
@@ -33,6 +36,4 @@
       unstable.signal-desktop
     ];
   };
-
-  system.stateVersion = "24.05";
 }

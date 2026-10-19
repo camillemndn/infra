@@ -5,11 +5,19 @@
 }:
 
 {
+  age.secrets.photoprism-password.file = ./password.age;
+  environment.systemPackages = [ pkgs.photoprism ];
+
   services = {
+    nginx.virtualHosts."photos.kms" = {
+      port = 2342;
+      websockets = true;
+    };
+
     photoprism = {
       enable = true;
-      originalsPath = "/var/lib/nextcloud/data/Camille/files/Images";
       importPath = "";
+      originalsPath = "/var/lib/nextcloud/data/Camille/files/Images";
       passwordFile = config.age.secrets.photoprism-password.path;
 
       settings = {
@@ -24,45 +32,37 @@
         PHOTOPRISM_WORKERS = "12";
       };
     };
-
-    nginx.virtualHosts."photos.kms" = {
-      port = 2342;
-      websockets = true;
-    };
   };
-
-  environment.systemPackages = [ pkgs.photoprism ];
 
   systemd = {
     services = {
-      photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
-
       photoprism-index = {
-        description = "Photoprism automatic indexer";
+        inherit (config.systemd.services.photoprism) environment;
         after = [ "multi-user.target" ];
-        wantedBy = [ "multi-user.target" ];
+        description = "Photoprism automatic indexer";
 
         serviceConfig = config.systemd.services.photoprism.serviceConfig // {
-          Type = "oneshot";
-          ExecStartPre = null;
           ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
+          ExecStartPre = null;
           KillMode = "process";
+          Type = "oneshot";
         };
 
-        inherit (config.systemd.services.photoprism) environment;
+        wantedBy = [ "multi-user.target" ];
       };
+
+      photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
     };
 
     timers.photoprism-index = {
       description = "Photoprism automatic indexer";
-      wantedBy = [ "timers.target" ];
 
       timerConfig = {
         OnCalendar = "hourly";
         Persistent = true;
       };
+
+      wantedBy = [ "timers.target" ];
     };
   };
-
-  age.secrets.photoprism-password.file = ./password.age;
 }

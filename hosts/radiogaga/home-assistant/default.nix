@@ -7,7 +7,14 @@
   services = {
     home-assistant = rec {
       enable = true;
-      package = pkgs.unstable.home-assistant;
+
+      config = {
+        automation = "!include automations.yaml";
+        default_config = { };
+        homeassistant.name = "Cama";
+        scene = "!include scenes.yaml";
+      };
+
       customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
 
       extraComponents = [
@@ -34,13 +41,7 @@
         ];
 
       openFirewall = true;
-
-      config = {
-        default_config = { };
-        homeassistant.name = "Cama";
-        scene = "!include scenes.yaml";
-        automation = "!include automations.yaml";
-      };
+      package = pkgs.unstable.home-assistant;
     };
   };
 }

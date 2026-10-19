@@ -2,6 +2,8 @@ _:
 
 {
   services = {
+    nginx.virtualHosts."passwords.kms".port = 8223;
+
     vaultwarden = {
       enable = true;
 
@@ -12,7 +14,5 @@ _:
 
       environmentFile = "/var/lib/bitwarden_rs/.env";
     };
-
-    nginx.virtualHosts."passwords.kms".port = 8223;
   };
 }
