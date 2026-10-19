@@ -62,18 +62,26 @@ jobs:
 
       # A source whose patches are generated rather than written by hand keeps the
       # script that regenerates them in patches/<source>/update.sh.
-      - name: Run update hooks
+      - name: Regenerate patches
         run: |
           # Their nix-shell resolves <nixpkgs>, which the runner does not set.
           NIX_PATH=nixpkgs=$(nix build --impure --no-link --print-out-paths --expr '(import ./inputs.nix).nixpkgs')
           export NIX_PATH
-          for hook in patches/*/update.sh; do
-            [ -e "$hook" ] || continue
-            source=$(basename "$(dirname "$hook")")
-            echo ">>> $hook"
-            "./$hook"
+          for script in patches/*/update.sh; do
+            [ -e "$script" ] || continue
+            source=$(basename "$(dirname "$script")")
+            echo "::group::$script"
+            # The first paragraph of the script's header says what it regenerates.
+            awk '/^#!/ {next} /^#/ { line=$0; sub(/^# ?/, "", line); if (line ~ /^[[:space:]]*$/) { if (started) exit; next } started=1; print line; next } { exit }' "$script"
+            "./$script"
             git add -A "patches/$source"
-            git diff --cached --quiet || git commit -q -m "chore($source): run update hook"
+            if git diff --cached --quiet; then
+              echo "patches/$source: unchanged"
+            else
+              git diff --cached --stat
+              git commit -q -m "chore($source): regenerate patches"
+            fi
+            echo "::endgroup::"
           done
 
       - name: Open the PR and merge it once CI passes
