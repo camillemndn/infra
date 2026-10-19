@@ -6,7 +6,6 @@ on:
     inputs:
       challenge:
         description: Token from the Verify page
-        type: string
         required: true
 
 jobs:
