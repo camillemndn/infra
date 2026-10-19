@@ -7,9 +7,9 @@
       "owner": "ryantm",
       "repo": "agenix",
       "branch": "main",
-      "revision": "3daa710894355fa2fad8243380af373a2b4046ef",
-      "url": "https://github.com/ryantm/agenix/archive/3daa710894355fa2fad8243380af373a2b4046ef.tar.gz",
-      "hash": "sha256-n7wew722m1OTBT9DOIMxNX/NF4zfsSUABAO5eW3wikE="
+      "revision": "847720f0e73a77ce6503b63fba6c357c742c28a7",
+      "url": "https://github.com/ryantm/agenix/archive/847720f0e73a77ce6503b63fba6c357c742c28a7.tar.gz",
+      "hash": "sha256-Ptf4Drj8JYQDpNGEo9o+Tc7+hyjYxe+zrYO3J4jrYT4="
     },
     "buildbot-nix": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "26f4107e47e3ad0ffd0db220469ba83b6f6d96e8",
-      "url": "https://github.com/NixOS/nixpkgs/archive/26f4107e47e3ad0ffd0db220469ba83b6f6d96e8.tar.gz",
-      "hash": "sha256-OaQwAtPMTjQiY2sT/2/62UbSPhzP/0aDnWzMm/NCiUw="
+      "revision": "8ce73368d1efd4d657e9064d29b144a52046b4e8",
+      "url": "https://github.com/NixOS/nixpkgs/archive/8ce73368d1efd4d657e9064d29b144a52046b4e8.tar.gz",
+      "hash": "sha256-F7meJtbqGttmUoMmYjRRgkVs42sn7bh7vvRvLPlUN98="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
