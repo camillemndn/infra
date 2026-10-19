@@ -87,6 +87,7 @@ in
         tldr
         unzip
         wget
+        yazi
         zip
       ];
     };

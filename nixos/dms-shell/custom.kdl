@@ -1,9 +1,5 @@
 // Included at the end of config.kdl, so it overrides it.
 
-// Rebuilds the KDE service cache that Dolphin and other KDE apps use for "Open with".
-spawn-at-startup "kbuildsycoca6" "--noincremental"
-spawn-at-startup "xwayland-satellite"
-
 screenshot-path "~/Images/Copies d'écran/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 window-rule {

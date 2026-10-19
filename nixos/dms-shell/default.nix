@@ -10,29 +10,15 @@ let
 in
 
 lib.mkIf cfg.enable {
-  environment = {
-    # Included by the greeter's own niri config, which has no input section: the touchpad as in the session.
-    etc."greetd/niri_overrides.kdl".text = ''
-      input {
-          touchpad {
-              tap
-              natural-scroll
-          }
-      }
-    '';
-
-    systemPackages = with pkgs; [
-      bitwarden-cli
-      feishin
-      mattermost-desktop
-      nemo
-      signal-desktop
-      spotify
-      xournalpp
-      yazi
-      zotero
-    ];
-  };
+  # Included by the greeter's own niri config, which has no input section: the touchpad as in the session.
+  environment.etc."greetd/niri_overrides.kdl".text = ''
+    input {
+        touchpad {
+            tap
+            natural-scroll
+        }
+    }
+  '';
 
   fonts.packages = with pkgs; [
     caladea
@@ -56,8 +42,15 @@ lib.mkIf cfg.enable {
       home = {
         packages = with pkgs; [
           brightnessctl
-          # Spawned by custom.kdl.
-          xwayland-satellite
+          xwayland-satellite # Started by niri when an X11 client connects.
+          bitwarden-cli
+          feishin
+          kdePackages.dolphin
+          mattermost-desktop
+          signal-desktop
+          spotify
+          xournalpp
+          zotero
         ];
 
         # KDE apps outside Plasma: the KDE platform theme, and the menu Plasma names that "Open with" is built from.
