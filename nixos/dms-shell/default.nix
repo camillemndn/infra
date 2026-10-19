@@ -41,11 +41,19 @@ lib.mkIf cfg.enable {
 
   home-manager.sharedModules = [
     {
-      home.packages = with pkgs; [
-        brightnessctl
-        # Spawned by custom.kdl.
-        xwayland-satellite
-      ];
+      home = {
+        packages = with pkgs; [
+          brightnessctl
+          # Spawned by custom.kdl.
+          xwayland-satellite
+        ];
+
+        # KDE apps outside Plasma: the KDE platform theme, and the menu Plasma names that "Open with" is built from.
+        sessionVariables = {
+          QT_QPA_PLATFORMTHEME = "kde";
+          XDG_MENU_PREFIX = "plasma-";
+        };
+      };
 
       # Tailscale's own tray, run with the graphical session.
       services.tailscale-systray.enable = true;
