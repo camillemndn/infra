@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -76,6 +77,9 @@ let
 in
 
 {
+  imports = [ "${inputs.nix-minecraft}/modules/minecraft-servers.nix" ];
+  nixpkgs.overlays = [ (import "${inputs.nix-minecraft}/overlay.nix") ];
+
   services = {
     minecraft-servers = {
       enable = true;

@@ -1,13 +1,9 @@
-{
-  modulesPath,
-  ...
-}:
+{ modulesPath, ... }:
 
 {
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
     kernel.sysctl."vm.swappiness" = 1;
 
     loader = {
@@ -40,6 +36,24 @@
       device = "/dev/disk/by-uuid/aa257298-50dc-43b4-95d6-cc658c6777ad";
       fsType = "ext4";
       depends = [ "/dev/disk/by-uuid/e430dd5d-b2b0-475a-9a64-409032cf6e07" ];
+    };
+  };
+
+  hardware.enableRedistributableFirmware = false;
+
+  networking = {
+    useDHCP = false;
+    networkmanager.enable = false;
+  };
+
+  systemd.network = {
+    enable = true;
+
+    networks."10-wan" = {
+      matchConfig.Type = "ether";
+      address = [ "192.168.0.137/21" ];
+      routes = [ { Gateway = "192.168.0.1"; } ];
+      linkConfig.RequiredForOnline = "routable";
     };
   };
 

@@ -57,13 +57,6 @@ in
   ];
 
   system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
-  hardware.enableRedistributableFirmware = mkDefault true;
-
-  services.pipewire = {
-    enable = true;
-    systemWide = true;
-  };
-
   powerManagement.cpuFreqGovernor = mkDefault "ondemand";
 
   fileSystems = {

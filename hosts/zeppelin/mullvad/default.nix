@@ -1,17 +1,3 @@
-let
-  addresses = {
-    ipv4 = {
-      local = "192.168.0.137";
-      public = "77.42.114.11";
-      vpn = "100.100.45.7";
-    };
-
-    ipv6 = {
-      public = "2a01:4f9:3090:2b8c:be24:11ff:fe0b:49fd";
-      vpn = "fd7a:115c:a1e0::7";
-    };
-  };
-in
 {
   config,
   lib,
@@ -52,10 +38,7 @@ let
 in
 {
   networking = {
-    inherit addresses;
     firewall.allowedUDPPorts = [ 51820 ];
-    useDHCP = false;
-    networkmanager.enable = false;
 
     wireguard.interfaces.wg0 = {
       # Device: Pretty Ox
@@ -82,10 +65,6 @@ in
         }
       ];
     };
-  };
-
-  deployment = {
-    targetHost = "zeppelin.kms";
   };
 
   # Mullvad's resolver, reachable only through the tunnel.
@@ -184,24 +163,13 @@ in
       ) vpnPorts
     );
 
-    network = {
-      enable = true;
-
-      networks = {
-        # Before 10-wan, whose Type=ether would claim the veth.
-        "05-veth-vpn" = {
-          matchConfig.Name = "veth-vpn";
-          address = [ "10.200.0.1/30" ];
-          networkConfig.LinkLocalAddressing = "no";
-          linkConfig.RequiredForOnline = "no";
-        };
-
-        "10-wan" = {
-          matchConfig.Type = "ether";
-          address = [ "${addresses.ipv4.local}/21" ];
-          routes = [ { Gateway = "192.168.0.1"; } ];
-          linkConfig.RequiredForOnline = "routable";
-        };
+    network.networks = {
+      # Before 10-wan, whose Type=ether would claim the veth.
+      "05-veth-vpn" = {
+        matchConfig.Name = "veth-vpn";
+        address = [ "10.200.0.1/30" ];
+        networkConfig.LinkLocalAddressing = "no";
+        linkConfig.RequiredForOnline = "no";
       };
     };
   };

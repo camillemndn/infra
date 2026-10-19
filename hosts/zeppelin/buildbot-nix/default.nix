@@ -1,11 +1,17 @@
 {
-  lib,
   config,
+  inputs,
+  lib,
   pkgs,
   ...
 }:
 
 {
+  imports = [
+    "${inputs.buildbot-nix}/nix/master.nix"
+    "${inputs.buildbot-nix}/nix/worker.nix"
+  ];
+
   services = {
     buildbot-nix = {
       master = {

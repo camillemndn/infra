@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+_:
 
 {
   boot = {
@@ -44,8 +40,5 @@
     { device = "/dev/disk/by-uuid/5596fcb1-18b2-4313-a698-47bd996945e1"; }
   ];
 
-  hardware = {
-    enableRedistributableFirmware = true;
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
+  hardware.bluetooth.enable = true;
 }

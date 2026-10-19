@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+_:
 
 {
   boot = {
@@ -36,12 +32,6 @@
         "dmask=0022"
       ];
     };
-  };
-
-  hardware = {
-    enableRedistributableFirmware = lib.mkDefault true;
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    sane.enable = true;
   };
 
   powerManagement.enable = false;

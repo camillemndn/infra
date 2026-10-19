@@ -1,45 +1,16 @@
 { pkgs, ... }:
 
 {
-  hardware = {
-    bluetooth.enable = true;
-    sane.enable = true;
-  };
-
-  programs.firefox.enable = true;
+  hardware.sane.enable = true;
 
   services = {
     desktopManager.plasma6.enable = true;
 
-    displayManager = {
-      autoLogin = {
-        enable = true;
-        user = "cecilia";
-      };
-
-      sddm = {
-        enable = true;
-        autoLogin.relogin = true;
-        wayland.enable = true;
-      };
-    };
-
-    pipewire = {
+    displayManager.autoLogin = {
       enable = true;
-
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-
-      pulse.enable = true;
+      user = "cecilia";
     };
-
-    printing.enable = true;
-    xserver.enable = true;
   };
-
-  security.rtkit.enable = true;
 
   users.users.cecilia = {
     isNormalUser = true;
@@ -53,11 +24,7 @@
     ];
 
     packages = with pkgs; [
-      kdePackages.kate
       kdePackages.kpat
-      kdePackages.skanlite
-      thunderbird
-      libreoffice-qt-fresh
       gimp-with-plugins
       audacity
       mpv

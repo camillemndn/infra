@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  boot = {
+    binfmt.emulatedSystems = [ "aarch64-linux" ];
+    tmp.cleanOnBoot = true;
+  };
+
   environment = {
     systemPackages = with pkgs; [
       android-tools
@@ -33,32 +38,132 @@
     dsseries.enable = true;
   };
 
+  home-manager.users.camille =
+    { pkgs, ... }:
+
+    {
+      home = {
+        packages = with pkgs; [
+          # Games
+          prismlauncher
+
+          # Social
+          mattermost-desktop
+          signal-desktop
+
+          # Desk
+          tocpdf
+          xournalpp
+          zotero
+          unstable.gramps
+
+          # Tools
+          ocrmypdf
+          organize-tool
+          pdfarranger
+
+          # Sync
+          bitwarden-cli
+          joplin-desktop
+          qbittorrent
+
+          # Graphics
+          darktable
+          gimp-with-plugins
+          inkscape-with-extensions
+
+          # Music & Video
+          feishin
+          ffmpeg
+          harmony-assistant
+          jellyfin-media-player
+          kdePackages.kdenlive
+          lilypond-with-fonts
+          mmt
+          mpv
+          musescore
+          spotify
+
+          # Studio
+          ardour
+          audacity
+          drumgizmo
+          gxplugins-lv2
+          lenmus
+          lmms
+          lsp-plugins
+          luppp
+          zam-plugins
+          zrythm
+        ];
+
+        stateVersion = "23.05";
+      };
+
+      programs = {
+        chromium = {
+          enable = true;
+          package = pkgs.ungoogled-chromium;
+        };
+
+        kitty.enable = true;
+        vscodium.enable = true;
+      };
+
+      stylix = {
+        targets = {
+          fish.enable = false;
+          qt.enable = false;
+        };
+      };
+    };
+
   programs = {
     dms-shell.enable = true;
-    firefox.enable = true;
     localsend.enable = true;
-    niri.enable = true;
     nixvim.enable = true;
-    steam.enable = true;
-    sway.enable = true;
   };
+
+  # Real-time audio for the studio software.
+  security.pam.loginLimits = [
+    {
+      domain = "@audio";
+      item = "memlock";
+      type = "-";
+      value = "unlimited";
+    }
+  ];
 
   services = {
     desktopManager.plasma6.enable = true;
 
-    displayManager.dms-greeter = {
-      enable = true;
-      compositor.name = "niri";
-    };
-
-    printing = {
+    dnscrypt-proxy = {
       enable = true;
 
-      drivers = with pkgs; [
-        cups-brother-hll2340dw
-        samsung-unified-linux-driver
-      ];
+      settings = {
+        ipv6_servers = true;
+        require_dnssec = true;
+
+        sources.public-resolvers = {
+          urls = [ "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md" ];
+          cache_file = "/var/lib/dnscrypt-proxy/public-resolvers.md";
+          minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
+        };
+      };
     };
+
+    mullvad-vpn = {
+      enable = true;
+      package = pkgs.mullvad-vpn;
+    };
+
+    openssh.enable = false;
+    pipewire.jack.enable = true;
+
+    printing.drivers = with pkgs; [
+      cups-brother-hll2340dw
+      samsung-unified-linux-driver
+    ];
 
     tzupdate.enable = true;
     usbmuxd.enable = true;

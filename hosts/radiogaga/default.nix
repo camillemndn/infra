@@ -1,4 +1,13 @@
-_: {
+_:
+
+{
+  deployment = {
+    # Off the tailnet: its mDNS name, from the LAN.
+    targetHost = "radiogaga.local";
+    buildOnTarget = false;
+    allowLocalDeployment = false;
+  };
+
   services = {
     nginx = {
       enable = true;
@@ -6,6 +15,7 @@ _: {
     };
 
     radiogaga.enable = true;
+    tailscale.enable = false;
 
     # Avahi comes from librespot/; AirPlay and the network sink reuse it.
 
@@ -25,19 +35,24 @@ _: {
       audioSink = "pipewiresink";
     };
 
-    # PulseAudio network sink, announced over Avahi, for other PipeWire machines.
-    pipewire.extraConfig.pipewire-pulse."10-network-sink" = {
-      "pulse.cmd" = [
-        # No cookie on the trusted LAN; auth-ip-acl=<subnet> would restrict it.
-        {
-          cmd = "load-module";
-          args = "module-native-protocol-tcp auth-anonymous=1";
-        }
-        {
-          cmd = "load-module";
-          args = "module-zeroconf-publish";
-        }
-      ];
+    pipewire = {
+      enable = true;
+      systemWide = true;
+
+      # PulseAudio network sink, announced over Avahi, for other PipeWire machines.
+      extraConfig.pipewire-pulse."10-network-sink" = {
+        "pulse.cmd" = [
+          # No cookie on the trusted LAN; auth-ip-acl=<subnet> would restrict it.
+          {
+            cmd = "load-module";
+            args = "module-native-protocol-tcp auth-anonymous=1";
+          }
+          {
+            cmd = "load-module";
+            args = "module-zeroconf-publish";
+          }
+        ];
+      };
     };
   };
 

@@ -1,16 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ inputs, pkgs, ... }:
 
 {
+  imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
+
   boot = {
-    binfmt.emulatedSystems = [ "aarch64-linux" ];
-    lanzaboote.enable = true;
+    lanzaboote = {
+      enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
+      pkiBundle = "/var/lib/sbctl";
+    };
 
     initrd = {
       availableKernelModules = [
@@ -28,7 +27,6 @@ with lib;
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-    tmp.cleanOnBoot = true;
   };
 
   console = {
@@ -39,7 +37,6 @@ with lib;
 
   environment.systemPackages = with pkgs; [
     amdctl
-    asusctl
     bluetuith
     nvtopPackages.full
     sbctl
@@ -47,8 +44,6 @@ with lib;
 
   hardware = {
     bluetooth.enable = true;
-    enableRedistributableFirmware = true;
-    cpu.amd.updateMicrocode = config.hardware.enableRedistributableFirmware;
 
     graphics = {
       enable = true;
@@ -73,22 +68,10 @@ with lib;
     sensor.iio.enable = true;
   };
 
-  security = {
-    pam.loginLimits = [
-      {
-        domain = "@audio";
-        item = "memlock";
-        type = "-";
-        value = "unlimited";
-      }
-    ];
-  };
-
   services = {
     asusd.enable = true;
     fprintd.enable = true;
     fwupd.enable = true;
-    pipewire.jack.enable = true;
     power-profiles-daemon.enable = true;
 
     supergfxd = {

@@ -11,6 +11,8 @@ let
 in
 
 {
+  imports = [ ./module.nix ];
+
   services = {
     librespot = {
       enable = true;

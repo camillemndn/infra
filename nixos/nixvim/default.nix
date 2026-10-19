@@ -1,4 +1,10 @@
-{ pkgs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   # Through `env`, kernels use the project's `python` rather than molten's interpreter.
@@ -19,6 +25,8 @@ let
   );
 in
 {
+  imports = [ (import inputs.nixvim).nixosModules.nixvim ];
+
   programs.nixvim = {
     autoCmd = [
       {
@@ -325,4 +333,6 @@ in
     vimAlias = true;
     withRuby = false;
   };
+
+  programs.neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 }

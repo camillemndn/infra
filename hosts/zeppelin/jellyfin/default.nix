@@ -138,7 +138,10 @@ in
     };
   };
 
-  users.groups.${group}.name = group;
+  users = {
+    groups.${group}.name = group;
+    users.camille.extraGroups = [ group ];
+  };
 
   environment.systemPackages = with pkgs; [
     shntool

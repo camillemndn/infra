@@ -8,26 +8,54 @@
     libirecovery
   ];
 
+  home-manager.users.camille =
+    { pkgs, ... }:
+
+    {
+      home = {
+        packages = with pkgs; [
+          # Social
+          mattermost-desktop
+          signal-desktop
+
+          # Desk
+          pdftocgen
+          xournalpp
+          zotero
+
+          # Sync
+          bitwarden-cli
+
+          # Graphics
+          inkscape-with-extensions
+
+          # Music & Video
+          feishin
+          mpv
+          spotify
+        ];
+
+        stateVersion = "23.11";
+      };
+
+      programs = {
+        kitty.enable = true;
+        vscodium.enable = true;
+      };
+
+      stylix.targets.fish.enable = false;
+    };
+
   programs = {
     dms-shell.enable = true;
-    firefox.enable = true;
     localsend.enable = true;
-    niri.enable = true;
     nixvim.enable = true;
-    sway.enable = true;
   };
 
   services = {
     desktopManager.plasma6.enable = true;
-
-    displayManager.dms-greeter = {
-      enable = true;
-      compositor.name = "niri";
-    };
-
     logind.settings.Login.KillUserProcesses = true;
     power-profiles-daemon.enable = false;
-    printing.enable = true;
     usbmuxd.enable = true;
   };
 

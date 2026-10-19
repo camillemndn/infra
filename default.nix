@@ -52,7 +52,21 @@ let
     }
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
 
-  hosts = builtins.mapAttrs (_: host: host.config.networking.addresses) nixosConfigurations;
+  # Read from each host's default.nix with placeholder arguments, so no host's
+  # NixOS configuration is evaluated to know another host's addresses.
+  hosts = builtins.mapAttrs (
+    name: _:
+    let
+      module = import (./hosts + "/${name}/default.nix");
+
+      attrs =
+        if builtins.isFunction module then
+          module (builtins.mapAttrs (_: _: null) (builtins.functionArgs module))
+        else
+          module;
+    in
+    attrs.networking.addresses or { }
+  ) nixosConfigurations;
 
   hive = {
     meta = {

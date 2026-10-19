@@ -1,4 +1,8 @@
+{ inputs, ... }:
+
 {
+  imports = [ "${inputs.disko}/module.nix" ];
+
   disko.devices.disk.main = {
     type = "disk";
     device = "/dev/disk/by-id/nvme-WDC_PC_SN530_SDBPTPZ-1T00-1002_211142450407";

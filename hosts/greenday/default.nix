@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  hardware.sane.enable = true;
+  # Remote desktop.
+  networking.firewall.allowedTCPPorts = [ 3389 ];
+
   users.users.georgette = {
     isNormalUser = true;
     description = "Georgette";
@@ -11,43 +15,25 @@
     ];
 
     packages = with pkgs; [
-      kdePackages.kate
-      kdePackages.filelight
-      kdePackages.skanlite
-      thunderbird
       inkscape-with-extensions
       kitty
       gimp
-      libreoffice-qt-fresh
     ];
   };
 
   services = {
-    xserver.enable = true;
     desktopManager.plasma6.enable = true;
+    openssh.settings.PasswordAuthentication = true;
 
-    displayManager = {
-      sddm = {
-        enable = true;
-        autoLogin.relogin = true;
-        wayland.enable = true;
-      };
-
-      autoLogin = {
-        enable = true;
-        user = "georgette";
-      };
+    displayManager.autoLogin = {
+      enable = true;
+      user = "georgette";
     };
 
     ipp-usb.enable = true;
-
-    printing = {
-      enable = true;
-      drivers = with pkgs; [ samsung-unified-linux-driver ];
-    };
+    printing.drivers = with pkgs; [ samsung-unified-linux-driver ];
   };
 
-  programs.firefox.enable = true;
   environment.systemPackages = with pkgs; [ waypipe ];
   system.stateVersion = "24.05";
 }

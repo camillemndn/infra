@@ -1,12 +1,15 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ inputs, pkgs, ... }:
 
 {
+  imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
+
   boot = {
-    lanzaboote.enable = true;
+    lanzaboote = {
+      enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
+      pkiBundle = "/var/lib/sbctl";
+    };
 
     initrd = {
       availableKernelModules = [
@@ -26,9 +29,5 @@
     kernelModules = [ "kvm-amd" ];
   };
 
-  hardware = {
-    bluetooth.enable = true;
-    enableRedistributableFirmware = lib.mkDefault true;
-    cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
+  hardware.bluetooth.enable = true;
 }

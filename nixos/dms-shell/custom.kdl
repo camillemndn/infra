@@ -1,0 +1,23 @@
+// Included at the end of config.kdl, so it overrides it.
+
+// Rebuilds the KDE service cache that Dolphin and other KDE apps use for "Open with".
+spawn-at-startup "kbuildsycoca6" "--noincremental"
+spawn-at-startup "xwayland-satellite"
+
+screenshot-path "~/Images/Copies d'écran/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+window-rule {
+    open-maximized true
+}
+
+// ROG Flow X13 keys, as wev reports them.
+binds {
+    XF86KbdBrightnessUp allow-when-locked=true { spawn "asusctl" "leds" "next"; }
+    XF86KbdBrightnessDown allow-when-locked=true { spawn "asusctl" "leds" "prev"; }
+    // Fn+F5: next power profile.
+    XF86Launch4 { spawn "asusctl" "profile" "next"; }
+    // Fn+F6 sends Super+Shift+S.
+    Mod+Shift+S { screenshot; }
+    // ROG key, bound by DMS to a screenshot.
+    XF86Launch1 { spawn "dms" "ipc" "call" "control-center" "toggle"; }
+}

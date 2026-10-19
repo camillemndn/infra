@@ -66,11 +66,10 @@ let
 
     "genealogy.mndn.fr".name = "🌲 Family tree";
 
-    # Passes only while the database and cache answer.
+    # Answers 424 unless the database and cache answer.
     "git.mndn.fr" = {
       name = "🗃 Git";
       path = "/api/healthz";
-      keyword = ''"status":"pass"'';
     };
 
     "meals.mndn.fr".name = "🍲 Recipes";
@@ -228,7 +227,7 @@ let
 
   otherChecks = [
     (dnsCheck "📝 ns1" "77.42.114.11")
-    (dnsCheck "📝 ns2" hosts.offspring.ipv4.local)
+    (dnsCheck "📝 ns2" config.networking.addresses.ipv4.local)
     (dnsCheck "🔏 DNSSEC" "1.1.1.1")
     {
       name = "📬 Mail (IMAP)";
@@ -269,6 +268,8 @@ let
 in
 
 {
+  imports = [ "${inputs.stateless-uptime-kuma}/nixos/module.nix" ];
+
   services = {
     uptime-kuma.enable = true;
 

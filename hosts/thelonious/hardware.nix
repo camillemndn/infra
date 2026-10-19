@@ -1,9 +1,13 @@
-{ config, lib, ... }:
+{ inputs, pkgs, ... }:
 
 {
+  imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
+
   boot = {
     lanzaboote = {
       enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
       pkiBundle = "/etc/secureboot";
     };
 
@@ -46,12 +50,7 @@
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
-
-  hardware = {
-    enableRedistributableFirmware = true;
-    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    nvidia.open = true;
-  };
+  hardware.nvidia.open = true;
 
   services = {
     xserver.videoDrivers = [ "nvidia" ];

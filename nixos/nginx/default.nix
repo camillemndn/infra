@@ -125,6 +125,11 @@ with lib;
       };
     };
 
+    security.acme = {
+      defaults.email = "camillemondon@free.fr";
+      acceptTerms = true;
+    };
+
     security.acme.certs = mapAttrs (
       n: _:
       mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {

@@ -24,6 +24,7 @@
       };
 
       settings = {
+        default_phone_region = "FR";
         mail_smtphost = "mail.luj.fr";
         mail_smtpport = 465;
         mail_smtpsecure = "ssl";

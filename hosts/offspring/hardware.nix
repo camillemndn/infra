@@ -18,5 +18,6 @@
     ];
   };
 
+  hardware.enableRedistributableFirmware = false;
   nixpkgs.hostPlatform = "aarch64-linux";
 }

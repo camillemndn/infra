@@ -1,4 +1,8 @@
+{ inputs, ... }:
+
 {
+  imports = [ "${inputs.disko}/module.nix" ];
+
   disko.devices = {
     disk.main = {
       type = "disk";

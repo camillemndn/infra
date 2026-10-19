@@ -2,32 +2,20 @@
 
 {
   hardware.sane.enable = true;
-  programs.firefox.enable = true;
+  # Remote desktop.
+  networking.firewall.allowedTCPPorts = [ 3389 ];
 
   services = {
     desktopManager.plasma6.enable = true;
+    openssh.settings.PasswordAuthentication = true;
 
-    displayManager = {
-      sddm = {
-        enable = true;
-        autoLogin.relogin = true;
-        wayland.enable = true;
-      };
-
-      autoLogin = {
-        enable = true;
-        user = "michel";
-      };
+    displayManager.autoLogin = {
+      enable = true;
+      user = "michel";
     };
 
     ipp-usb.enable = true;
-
-    printing = {
-      enable = true;
-      drivers = with pkgs; [ samsung-unified-linux-driver ];
-    };
-
-    xserver.enable = true;
+    printing.drivers = with pkgs; [ samsung-unified-linux-driver ];
   };
 
   users.users.michel = {
@@ -44,13 +32,8 @@
       freecad
       gimp
       inkscape-with-extensions
-      kdePackages.filelight
-      kdePackages.kate
-      kdePackages.skanlite
-      libreoffice-qt-fresh
       metronome
       qgis
-      thunderbird
     ];
   };
 
