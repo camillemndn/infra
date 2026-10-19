@@ -26,6 +26,7 @@ let
     export PATH=${
       lib.makeBinPath [
         pkgs.coreutils
+        pkgs.diffutils
         pkgs.util-linux
       ]
     }
@@ -47,9 +48,21 @@ let
     trap 'if [[ -n "$staging_dir" ]]; then rm -rf -- "$staging_dir"; fi' EXIT
 
     stage_if_changed() {
-      local source=$1 name=$2
-      if cmp -s "$source" "$firmware_dir/$name"; then
-        return
+      local source=$1 name=$2 status
+      if [[ ! -f "$source" || ! -r "$source" ]]; then
+        echo "Missing or unreadable firmware source: $source" >&2
+        exit 1
+      fi
+      if [[ -e "$firmware_dir/$name" ]]; then
+        if cmp -s "$source" "$firmware_dir/$name"; then
+          return
+        else
+          status=$?
+          if [[ "$status" -ne 1 ]]; then
+            echo "Cannot compare firmware file: $name" >&2
+            exit "$status"
+          fi
+        fi
       fi
       if [[ -z "$staging_dir" ]]; then
         staging_dir=$(mktemp -d "$firmware_dir/.rpi-update-3b.XXXXXX")
@@ -57,7 +70,9 @@ let
       cp -- "$source" "$staging_dir/$name"
     }
 
-    for source in ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup*.dat,start*.elf}; do
+    # This Pi 3 configuration uses the standard firmware pair. Staging every
+    # Pi model/camera/debug variant exceeds the small firmware partition.
+    for source in ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup.dat,start.elf}; do
       stage_if_changed "$source" "$(basename "$source")"
     done
     stage_if_changed ${configTxt} config.txt
