@@ -7,7 +7,22 @@
   services = {
     home-assistant = rec {
       enable = true;
-      package = pkgs.unstable.home-assistant;
+
+      # Backport the verification-loop fix until the pinned packages include it:
+      # https://github.com/home-assistant/core/pull/186796
+      # https://github.com/DeebotUniverse/client.py/pull/1743
+      package =
+        (pkgs.unstable.home-assistant.override {
+          packageOverrides = _: prev: {
+            deebot-client = prev.deebot-client.overrideAttrs (old: {
+              patches = (old.patches or [ ]) ++ [ ./deebot-account-credentials.patch ];
+            });
+          };
+        }).overrideAttrs
+          (old: {
+            patches = old.patches ++ [ ./ecovacs-persist-credentials.patch ];
+          });
+
       customComponents = [ (package.python3Packages.callPackage ./greeclimate.nix { }) ];
 
       extraComponents = [
