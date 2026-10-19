@@ -25,11 +25,8 @@
 
     packages = with pkgs; [
       kdePackages.kpat
-      gimp-with-plugins
       audacity
-      mpv
       vlc
-      inkscape
       unstable.signal-desktop
     ];
   };

@@ -8,7 +8,13 @@
 lib.mkIf config.services.graphical-desktop.enable {
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
-    systemPackages = [ pkgs.firefoxpwa ];
+
+    systemPackages = with pkgs; [
+      firefoxpwa
+      gimp-with-plugins
+      inkscape-with-extensions
+      mpv
+    ];
   };
 
   home-manager.sharedModules = [
@@ -34,6 +40,8 @@ lib.mkIf config.services.graphical-desktop.enable {
           # GDK_BACKEND stays unset: xdg-desktop-portal-gnome refuses ScreenCast/Screenshot otherwise.
           sessionVariables.QT_QPA_PLATFORM = "wayland";
         };
+
+        programs.kitty.enable = true;
 
         services.random-background = {
           enable = true;

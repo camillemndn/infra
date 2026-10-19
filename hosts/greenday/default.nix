@@ -27,12 +27,6 @@
       "networkmanager"
       "wheel"
     ];
-
-    packages = with pkgs; [
-      inkscape-with-extensions
-      kitty
-      gimp
-    ];
   };
 
   system.stateVersion = "24.05";

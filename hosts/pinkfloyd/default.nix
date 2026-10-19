@@ -30,9 +30,8 @@
 
     packages = with pkgs; [
       freecad
-      gimp
-      inkscape-with-extensions
       metronome
+      musescore
       qgis
     ];
   };

@@ -104,6 +104,7 @@ in
 
     home-manager = {
       useGlobalPkgs = true;
+      useUserPackages = true;
       backupFileExtension = "hm-bak";
 
       sharedModules = [
@@ -111,15 +112,14 @@ in
           { lib, ... }:
 
           {
-            home = {
-              language.base = "fr_FR.UTF-8";
-              stateVersion = lib.mkDefault "24.05";
-            };
+            home.language.base = "fr_FR.UTF-8";
 
             programs = {
               fish.enable = true;
               home-manager.enable = true;
             };
+
+            home.stateVersion = lib.mkDefault "24.05";
           }
         )
       ];

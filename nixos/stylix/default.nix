@@ -6,6 +6,8 @@
 }:
 
 lib.mkIf config.stylix.enable {
+  home-manager.sharedModules = [ { stylix.targets.fish.enable = false; } ];
+
   stylix = {
     base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
 

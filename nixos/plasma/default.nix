@@ -14,6 +14,7 @@ lib.mkIf config.services.desktopManager.plasma6.enable {
       kdePackages.kate
       kdePackages.kclock
       kdePackages.skanlite
+      kdePackages.skanpage
       libreoffice-qt-fresh
     ];
   };
@@ -24,6 +25,5 @@ lib.mkIf config.services.desktopManager.plasma6.enable {
   services.displayManager.sddm = lib.mkIf (!config.services.displayManager.dms-greeter.enable) {
     enable = lib.mkDefault true;
     autoLogin.relogin = lib.mkDefault true;
-    wayland.enable = lib.mkDefault true;
   };
 }

@@ -46,7 +46,6 @@
     bluetooth.enable = true;
 
     graphics = {
-      enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [ libva-vdpau-driver ];
     };
@@ -71,8 +70,6 @@
   services = {
     asusd.enable = true;
     fprintd.enable = true;
-    fwupd.enable = true;
-    power-profiles-daemon.enable = true;
 
     supergfxd = {
       enable = true;
