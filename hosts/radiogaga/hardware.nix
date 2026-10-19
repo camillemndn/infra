@@ -21,12 +21,18 @@
     raspberry-pi.firmware = {
       enable = true;
 
-      # Keep all Pi 3 variants and overlays, but omit Pi 4-only boot firmware
-      # so the upstream installer's temporary copies fit the 30 MiB partition.
+      # Keep the 3B/3B+ device trees and overlays; omit other boards' DTBs
+      # and Pi 4 boot firmware to fit the 30 MiB partition during updates.
       package = pkgs.runCommand "raspberrypi3-firmware" { } ''
         mkdir -p "$out/share/raspberrypi/boot"
         ln -s ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/* "$out/share/raspberrypi/boot/"
         rm "$out"/share/raspberrypi/boot/{start4*.elf,fixup4*.dat}
+        for dtb in "$out"/share/raspberrypi/boot/*.dtb; do
+          case "$(basename "$dtb")" in
+            bcm2710-rpi-3-b.dtb|bcm2710-rpi-3-b-plus.dtb) ;;
+            *) rm "$dtb" ;;
+          esac
+        done
       '';
 
       uboot = {
