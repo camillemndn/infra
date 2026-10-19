@@ -19,6 +19,8 @@ lib.mkIf config.services.desktopManager.plasma6.enable {
     ];
   };
 
+  # Plasma's GTK settings sync rewrites ~/.gtkrc-2.0 at login; Home Manager's link replaces it without a backup that would clobber the previous one.
+  home-manager.sharedModules = [ { gtk.gtk2.force = true; } ];
   programs.partition-manager.enable = true;
 
   # The DMS greeter replaces SDDM where it is enabled.
