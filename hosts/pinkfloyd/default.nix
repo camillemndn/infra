@@ -7,6 +7,7 @@
 
   services = {
     desktopManager.plasma6.enable = true;
+    openssh.settings.PasswordAuthentication = true;
 
     displayManager.autoLogin = {
       enable = true;
@@ -14,11 +15,8 @@
     };
 
     ipp-usb.enable = true;
-    openssh.settings.PasswordAuthentication = true;
     printing.drivers = with pkgs; [ samsung-unified-linux-driver ];
   };
-
-  system.stateVersion = "25.05";
 
   users.users.michel = {
     description = "Michel";
@@ -38,4 +36,6 @@
       qgis
     ];
   };
+
+  system.stateVersion = "25.05";
 }

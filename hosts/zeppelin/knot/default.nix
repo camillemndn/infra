@@ -88,19 +88,19 @@ let
     );
 
   vpnZone = {
-    NS = [ "ns1" ];
+    TTL = 60 * 60;
 
     SOA = {
-      adminEmail = "hostmaster@${vpnTld}";
-      expire = 14 * 24 * 60 * 60;
-      minimum = 60 * 60;
       nameServer = "ns1";
+      adminEmail = "hostmaster@${vpnTld}";
+      serial = 1;
       refresh = 4 * 60 * 60;
       retry = 60 * 60;
-      serial = 1;
+      expire = 14 * 24 * 60 * 60;
+      minimum = 60 * 60;
     };
 
-    TTL = 60 * 60;
+    NS = [ "ns1" ];
 
     subdomains = {
       ns1 = vpnAddresses meta;
@@ -159,20 +159,20 @@ let
     zone:
     lib.foldl lib.recursiveUpdate
       {
-        NS = lib.attrNames nameServers;
+        TTL = 60 * 60;
 
         SOA = {
-          adminEmail = "hostmaster@${zone}";
-          expire = 14 * 24 * 60 * 60;
-          minimum = 60 * 60;
           nameServer = "ns1";
-          refresh = 4 * 60 * 60;
-          retry = 60 * 60;
+          adminEmail = "hostmaster@${zone}";
           # Knot keeps the real serial and ignores this one.
           serial = 1;
+          refresh = 4 * 60 * 60;
+          retry = 60 * 60;
+          expire = 14 * 24 * 60 * 60;
+          minimum = 60 * 60;
         };
 
-        TTL = 60 * 60;
+        NS = lib.attrNames nameServers;
         subdomains = nameServers;
       }
       (
@@ -187,8 +187,8 @@ let
     pkgs.runCommand "${name}.zone"
       {
         nativeBuildInputs = [ cfg.package ];
-        passAsFile = [ "text" ];
         text = dns.lib.toString name zone;
+        passAsFile = [ "text" ];
       }
       ''
         kzonecheck -o ${name} "$textPath"
@@ -197,52 +197,11 @@ let
 in
 
 {
-  age.secrets.knot-tsig = {
-    file = ./tsig.age;
-    owner = "knot";
-  };
-
-  # The tailnet address appears after boot.
-  boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
-
-  networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
-  };
-
   services = {
     knot = {
       enable = true;
-      # Read at runtime, keeping the TSIG secret out of the store.
-      keyFiles = [ config.age.secrets.knot-tsig.path ];
 
       settings = {
-        acl = lib.mapAttrs' (
-          name: ns:
-          lib.nameValuePair "${name}-transfer" (
-            builtins.removeAttrs ns.transfer [ "via" ] // { action = "transfer"; }
-          )
-        ) secondaries;
-
-        # Plain queries ignore ACLs; this module answers outsiders NOTAUTH.
-        mod-queryacl.internal.address = vpnRanges;
-
-        # One CSK per zone, never rolled, so registrar DS records stay valid (keymgr <zone> ds).
-        policy.csk = {
-          ksk-submission = "registry";
-          # NSEC3 against zone walking, 0 iterations (RFC 9276).
-          nsec3 = true;
-          nsec3-iterations = 0;
-          single-type-signing = true;
-        };
-
-        remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
-          resolver.address = [
-            "2606:4700:4700::1111"
-            "1.1.1.1"
-          ];
-        };
-
         server = {
           listen = [
             "${meta.ipv6.vpn}@53"
@@ -253,31 +212,56 @@ in
           version = "none";
         };
 
+        remote = lib.mapAttrs (_: ns: ns.transfer) secondaries // {
+          resolver.address = [
+            "2606:4700:4700::1111"
+            "1.1.1.1"
+          ];
+        };
+
+        acl = lib.mapAttrs' (
+          name: ns:
+          lib.nameValuePair "${name}-transfer" (
+            builtins.removeAttrs ns.transfer [ "via" ] // { action = "transfer"; }
+          )
+        ) secondaries;
+
+        # Plain queries ignore ACLs; this module answers outsiders NOTAUTH.
+        mod-queryacl.internal.address = vpnRanges;
         # Submitted once the resolver sees the DS at the registry.
         submission.registry.parent = "resolver";
 
+        # One CSK per zone, never rolled, so registrar DS records stay valid (keymgr <zone> ds).
+        policy.csk = {
+          single-type-signing = true;
+          ksk-submission = "registry";
+          # NSEC3 against zone walking, 0 iterations (RFC 9276).
+          nsec3 = true;
+          nsec3-iterations = 0;
+        };
+
         template = {
           default = {
-            acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
-            dnssec-policy = "csk";
-            dnssec-signing = true;
-            journal-content = "all";
-            notify = lib.attrNames secondaries;
             semantic-checks = true;
-            serial-policy = "unixtime";
-            zonefile-load = "difference-no-serial";
+            dnssec-signing = true;
+            dnssec-policy = "csk";
+            notify = lib.attrNames secondaries;
+            acl = map (name: "${name}-transfer") (lib.attrNames secondaries);
             # Zone files live in the store; signatures and serial stay in the journal.
             zonefile-sync = -1;
+            zonefile-load = "difference-no-serial";
+            journal-content = "all";
+            serial-policy = "unixtime";
           };
 
           # No parent DS and no secondary: the gateway's resolver forwards here.
           internal = {
-            journal-content = "all";
-            module = "mod-queryacl/internal";
             semantic-checks = true;
-            serial-policy = "unixtime";
-            zonefile-load = "difference-no-serial";
+            module = "mod-queryacl/internal";
             zonefile-sync = -1;
+            zonefile-load = "difference-no-serial";
+            journal-content = "all";
+            serial-policy = "unixtime";
           };
         };
 
@@ -288,8 +272,23 @@ in
           };
         };
       };
+
+      # Read at runtime, keeping the TSIG secret out of the store.
+      keyFiles = [ config.age.secrets.knot-tsig.path ];
     };
   };
 
+  age.secrets.knot-tsig = {
+    file = ./tsig.age;
+    owner = "knot";
+  };
+
+  # The tailnet address appears after boot.
+  boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
   systemd.services.knot.after = [ "tailscaled.service" ];
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
+  };
 }

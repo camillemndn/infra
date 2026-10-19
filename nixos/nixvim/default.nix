@@ -26,43 +26,42 @@ let
 in
 {
   imports = [ (import inputs.nixvim).nixosModules.nixvim ];
-  programs.neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 
   programs.nixvim = {
     autoCmd = [
       {
-        callback.__raw = builtins.readFile ./ipynb_read.lua;
         # Notebooks edited as markdown through jupytext.
         event = "BufReadCmd";
         pattern = "*.ipynb";
+        callback.__raw = builtins.readFile ./ipynb_read.lua;
       }
       {
-        callback.__raw = builtins.readFile ./ipynb_write.lua;
         event = "BufWriteCmd";
         pattern = "*.ipynb";
+        callback.__raw = builtins.readFile ./ipynb_write.lua;
       }
       {
-        callback.__raw = ''function() require("quarto").activate() end'';
         # quarto runs code cells, notebooks included.
         event = "FileType";
         pattern = "markdown";
+        callback.__raw = ''function() require("quarto").activate() end'';
       }
       {
-        callback.__raw = builtins.readFile ./molten_init_notebook.lua;
         # Start the notebook's kernel and load its stored outputs.
         event = "FileType";
         pattern = "markdown";
+        callback.__raw = builtins.readFile ./molten_init_notebook.lua;
       }
       {
-        callback.__raw = builtins.readFile ./molten_export_on_save.lua;
         event = "BufWritePost";
         pattern = "*.ipynb";
+        callback.__raw = builtins.readFile ./molten_export_on_save.lua;
       }
     ];
 
     clipboard = {
-      providers.wl-copy.enable = true;
       register = "unnamedplus";
+      providers.wl-copy.enable = true;
     };
 
     defaultEditor = true;
@@ -92,51 +91,52 @@ in
 
     keymaps = [
       {
-        options.desc = "Molten: start kernel";
-        action = "<cmd>MoltenInit<CR>";
+        mode = "n";
         key = "<localleader>mi";
-        mode = "n";
+        action = "<cmd>MoltenInit<CR>";
+        options.desc = "Molten: start kernel";
       }
       {
-        options.desc = "Molten: enter output window";
-        action = "<cmd>noautocmd MoltenEnterOutput<CR>";
+        mode = "n";
         key = "<localleader>mo";
-        mode = "n";
+        action = "<cmd>noautocmd MoltenEnterOutput<CR>";
+        options.desc = "Molten: enter output window";
       }
       {
-        options.desc = "Run cell";
-        action.__raw = ''function() require("quarto.runner").run_cell() end'';
+        mode = "n";
         key = "<localleader>rc";
-        mode = "n";
+        action.__raw = ''function() require("quarto.runner").run_cell() end'';
+        options.desc = "Run cell";
       }
       {
-        options.desc = "Run cell and all above";
-        action.__raw = ''function() require("quarto.runner").run_above() end'';
+        mode = "n";
         key = "<localleader>ra";
-        mode = "n";
+        action.__raw = ''function() require("quarto.runner").run_above() end'';
+        options.desc = "Run cell and all above";
       }
       {
-        options.desc = "Run all cells";
-        action.__raw = ''function() require("quarto.runner").run_all() end'';
+        mode = "n";
         key = "<localleader>rA";
-        mode = "n";
+        action.__raw = ''function() require("quarto.runner").run_all() end'';
+        options.desc = "Run all cells";
       }
       {
-        options.desc = "Run line";
-        action.__raw = ''function() require("quarto.runner").run_line() end'';
+        mode = "n";
         key = "<localleader>rl";
-        mode = "n";
+        action.__raw = ''function() require("quarto.runner").run_line() end'';
+        options.desc = "Run line";
       }
       {
-        options.desc = "Run selection";
-        action.__raw = ''function() require("quarto.runner").run_range() end'';
-        key = "<localleader>r";
         mode = "v";
+        key = "<localleader>r";
+        action.__raw = ''function() require("quarto.runner").run_range() end'';
+        options.desc = "Run selection";
       }
     ];
 
     lsp.servers.wikitext = {
       enable = true;
+      package = pkgs.wikitext-lsp;
 
       config = {
         cmd = [
@@ -147,8 +147,6 @@ in
         filetypes = [ "mediawiki" ];
         settings.wikiparser.linter.severity = "errors and warnings";
       };
-
-      package = pkgs.wikitext-lsp;
     };
 
     opts = {
@@ -198,7 +196,6 @@ in
           format_on_save = builtins.readFile ./format_on_save.lua;
 
           formatters_by_ft = {
-            R = [ "air" ];
             bash = [ "shfmt" ];
             css = [ "stylelint" ];
             haskell = [ "ormolu" ];
@@ -210,6 +207,7 @@ in
 
             nix = [ "nixfmt" ];
             python = [ "black" ];
+            R = [ "air" ];
           };
         };
       };
@@ -267,16 +265,16 @@ in
         };
       };
 
-      otter.enable = true;
-
       quarto = {
         enable = true;
 
         settings.codeRunner = {
-          default_method = "molten";
           enabled = true;
+          default_method = "molten";
         };
       };
+
+      otter.enable = true;
 
       telescope = {
         enable = true;
@@ -335,4 +333,6 @@ in
     vimAlias = true;
     withRuby = false;
   };
+
+  programs.neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 }

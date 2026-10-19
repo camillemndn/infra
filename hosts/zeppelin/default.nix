@@ -1,8 +1,6 @@
 _:
 
 {
-  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-
   networking.addresses = {
     ipv4 = {
       public = "77.42.114.11";
@@ -15,6 +13,7 @@ _:
     };
   };
 
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   programs.nixvim.enable = true;
 
   services = {

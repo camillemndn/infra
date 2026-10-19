@@ -4,7 +4,24 @@
   imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
 
   boot = {
+    lanzaboote = {
+      enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
+      pkiBundle = "/etc/secureboot";
+    };
+
     initrd = {
+      luks = {
+        devices = {
+          "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device =
+            "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
+
+          "luks-0a53c761-f5d4-4015-9d68-349251b71c85".device =
+            "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
+        };
+      };
+
       availableKernelModules = [
         "xhci_pci"
         "ahci"
@@ -14,27 +31,10 @@
         "sd_mod"
         "tpm_tis"
       ];
-
-      luks = {
-        devices = {
-          "luks-0a53c761-f5d4-4015-9d68-349251b71c85".device =
-            "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
-
-          "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device =
-            "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
-        };
-      };
     };
 
     kernelModules = [ "kvm-intel" ];
     kernelParams = [ "tpm_tis.interrupts=0" ];
-
-    lanzaboote = {
-      enable = true;
-      configurationLimit = 5;
-      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
-      pkiBundle = "/etc/secureboot";
-    };
   };
 
   fileSystems = {
@@ -49,11 +49,10 @@
     };
   };
 
+  swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
   hardware.nvidia.open = true;
 
   services = {
     xserver.videoDrivers = [ "nvidia" ];
   };
-
-  swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
 }

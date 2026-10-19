@@ -32,21 +32,14 @@ let
   # Placeholder until the first transfer.
   emptyZone = name: {
     SOA = {
-      adminEmail = "hostmaster@${name}";
       nameServer = "ns1";
+      adminEmail = "hostmaster@${name}";
       serial = 0;
     };
   };
 in
 
 {
-  age.secrets.nsd-tsig.file = ./tsig.age;
-
-  networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
-  };
-
   services = {
     nsd = {
       enable = true;
@@ -63,10 +56,17 @@ in
       };
 
       zones = lib.genAttrs zoneNames (name: {
-        allowNotify = [ "${primaryPrefix} ${tsigKey}" ];
         data = dns.lib.toString name (emptyZone name);
         requestXFR = [ "AXFR ${primaryAddress} ${tsigKey}" ];
+        allowNotify = [ "${primaryPrefix} ${tsigKey}" ];
       });
     };
+  };
+
+  age.secrets.nsd-tsig.file = ./tsig.age;
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
   };
 }

@@ -5,9 +5,9 @@ let
   raw = import ./lon.nix;
 
   bootstrapPkgs = import raw.nixpkgs {
+    system = builtins.currentSystem or "x86_64-linux";
     config = { };
     overlays = [ ];
-    system = builtins.currentSystem or "x86_64-linux";
   };
 
   patchesDir = ./patches;
@@ -32,8 +32,8 @@ let
       src
     else
       bootstrapPkgs.applyPatches {
-        inherit src patches;
         name = "${name}-patched";
+        inherit src patches;
       };
 in
 

@@ -52,8 +52,8 @@ in
   ];
 
   options.networking.addresses = lib.mkOption {
-    default = { };
     type = lib.types.attrsOf lib.types.anything;
+    default = { };
   };
 
   config = {
@@ -92,17 +92,18 @@ in
     };
 
     hardware = {
+      enableRedistributableFirmware = lib.mkDefault true;
+
       # Both images go in the initrd; each CPU loads only its vendor's.
       cpu = lib.genAttrs [ "amd" "intel" ] (_: {
         updateMicrocode = lib.mkDefault (
           config.hardware.enableRedistributableFirmware && pkgs.stdenv.hostPlatform.isx86
         );
       });
-
-      enableRedistributableFirmware = lib.mkDefault true;
     };
 
     home-manager = {
+      useGlobalPkgs = true;
       backupFileExtension = "hm-bak";
 
       sharedModules = [
@@ -122,8 +123,6 @@ in
           }
         )
       ];
-
-      useGlobalPkgs = true;
 
       users = lib.genAttrs (builtins.attrNames (
         lib.filterAttrs (_: u: u.isNormalUser) config.users.users
@@ -159,9 +158,9 @@ in
       buildMachines = [
         {
           hostName = hosts.offspring.ipv4.public;
-          maxJobs = 2;
           sshUser = "root";
           system = "aarch64-linux";
+          maxJobs = 2;
         }
       ];
 
@@ -197,7 +196,13 @@ in
     };
 
     nixpkgs = {
+      hostPlatform = lib.mkDefault "x86_64-linux";
+
       config = {
+        permittedInsecurePackages = [
+          "pnpm-9.15.9"
+        ];
+
         allowUnfreePredicate =
           let
             cudaLicenseNames = [
@@ -227,13 +232,7 @@ in
           || lib.all (license: license.free || lib.elem (license.shortName or null) cudaLicenseNames) (
             lib.toList pkg.meta.license
           );
-
-        permittedInsecurePackages = [
-          "pnpm-9.15.9"
-        ];
       };
-
-      hostPlatform = lib.mkDefault "x86_64-linux";
 
       overlays = lib.mkAfter [
         (
@@ -243,8 +242,8 @@ in
 
             nix-index-database =
               (prev.fetchurl {
-                hash = generated.hashes.${prev.stdenv.system};
                 url = generated.url + prev.stdenv.system;
+                hash = generated.hashes.${prev.stdenv.system};
               }).overrideAttrs
                 {
                   __structuredAttrs = true;
@@ -254,6 +253,11 @@ in
           packages.${config.nixpkgs.hostPlatform.system}
           // {
             inherit lib;
+
+            unstable = import inputs.nixpkgs-unstable {
+              inherit (config.nixpkgs.hostPlatform) system;
+              inherit (prev) config;
+            };
 
             inherit (final.unstable)
               feishin
@@ -268,8 +272,8 @@ in
             inherit
               (import
                 (fetchTarball {
-                  sha256 = "081f0i3lav0gmwad7vmmpxlrjs4aa7gwz4sm0anrxcclgpnyfkga";
                   url = "https://github.com/NixOS/nixpkgs/archive/f45c6f04c2f013f004bf94e284e95d72898d9393.tar.gz";
+                  sha256 = "081f0i3lav0gmwad7vmmpxlrjs4aa7gwz4sm0anrxcclgpnyfkga";
                 })
                 {
                   inherit (config.nixpkgs.hostPlatform) system;
@@ -279,38 +283,33 @@ in
               zotero
               ;
 
-            inherit nix-index-database;
+            panache = prev.panache.overrideAttrs (
+              finalAttrs: _: {
+                version = "3.10.0";
 
-            comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
-              inherit nix-index-database;
-            };
+                src = prev.fetchFromGitHub {
+                  owner = "jolars";
+                  repo = "panache";
+                  tag = "v${finalAttrs.version}";
+                  hash = "sha256-13v2J7qRgkX55vjFt0daU26J/IhmECCr1H0fVEW72rk=";
+                };
+
+                cargoDeps = prev.rustPlatform.fetchCargoVendor {
+                  inherit (finalAttrs) src;
+                  name = "panache-${finalAttrs.version}";
+                  hash = "sha256-D8SfoPjfIHnrvjYG6lJbqAHL1jkAI5st2105OP9md6s=";
+                };
+              }
+            );
+
+            inherit nix-index-database;
 
             nix-index-with-db = prev.callPackage "${inputs.nix-index-database}/nix-index-wrapper.nix" {
               inherit nix-index-database;
             };
 
-            panache = prev.panache.overrideAttrs (
-              finalAttrs: _: {
-                cargoDeps = prev.rustPlatform.fetchCargoVendor {
-                  inherit (finalAttrs) src;
-                  hash = "sha256-D8SfoPjfIHnrvjYG6lJbqAHL1jkAI5st2105OP9md6s=";
-                  name = "panache-${finalAttrs.version}";
-                };
-
-                src = prev.fetchFromGitHub {
-                  hash = "sha256-13v2J7qRgkX55vjFt0daU26J/IhmECCr1H0fVEW72rk=";
-                  owner = "jolars";
-                  repo = "panache";
-                  tag = "v${finalAttrs.version}";
-                };
-
-                version = "3.10.0";
-              }
-            );
-
-            unstable = import inputs.nixpkgs-unstable {
-              inherit (config.nixpkgs.hostPlatform) system;
-              inherit (prev) config;
+            comma-with-db = prev.callPackage "${inputs.nix-index-database}/comma-wrapper.nix" {
+              inherit nix-index-database;
             };
           }
         )
@@ -332,8 +331,10 @@ in
         enable = true;
 
         config = {
-          diff.colorMoved = true;
-          fetch.prune = true;
+          user = {
+            name = "Camille M.";
+            inherit email;
+          };
 
           gpg = {
             format = "ssh";
@@ -341,13 +342,10 @@ in
           };
 
           pull.rebase = true;
-          push.autoSetupRemote = true;
+          fetch.prune = true;
           rebase.autoStash = true;
-
-          user = {
-            inherit email;
-            name = "Camille M.";
-          };
+          push.autoSetupRemote = true;
+          diff.colorMoved = true;
         };
       };
 
@@ -368,6 +366,7 @@ in
 
       tmux = {
         enable = true;
+        terminal = "xterm-kitty";
         extraConfig = builtins.readFile ./tmux.conf;
 
         plugins = with pkgs.tmuxPlugins; [
@@ -378,8 +377,6 @@ in
           resurrect
           prefix-highlight
         ];
-
-        terminal = "xterm-kitty";
       };
     };
 
@@ -415,6 +412,7 @@ in
 
       users = {
         camille = {
+          isNormalUser = true;
           description = "Camille";
 
           extraGroups = [
@@ -426,7 +424,6 @@ in
             "wheel"
           ];
 
-          isNormalUser = true;
           openssh.authorizedKeys.keys = sshPubKeys;
         };
 

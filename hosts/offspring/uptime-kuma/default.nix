@@ -33,45 +33,35 @@ let
   # go to the monitor. Unlisted hosts are still checked, under their domain.
   vhostMonitors = {
     "analytics.mndn.fr" = {
-      keyword = ''"clickhouse":"ok"'';
       name = "📈 Analytics";
       path = "/api/health";
+      keyword = ''"clickhouse":"ok"'';
     };
 
     "auth.mndn.fr" = {
-      keyword = "true";
       name = "🔑 Accounts";
       path = "/status";
-    };
-
-    "camillemondon.com" = {
-      group = "Websites";
-      name = "🌐 Camille Mondon";
-    };
-
-    "ceciliaflamenca.com" = {
-      group = "Websites";
-      name = "🌐 Cecilia flamenca";
+      keyword = "true";
     };
 
     # A worker that lost the master lists no connection.
     "ci.mndn.fr" = {
-      invertKeyword = true;
-      keyword = ''"connected_to": []'';
       name = "🏗 CI";
       path = "/api/v2/workers";
+      keyword = ''"connected_to": []'';
+      invertKeyword = true;
     };
 
     "cloud.mndn.fr" = {
-      keyword = ''"maintenance":false'';
       name = "☁️ Cloud";
       path = "/status.php";
+      keyword = ''"maintenance":false'';
     };
 
     # Webtrees answers 406 to any User-Agent containing "Uptime".
     "family.mndn.fr" = {
-      headers = builtins.toJSON { "User-Agent" = "mndn-status/1.0"; };
       name = "🌳 Genealogy";
+      headers = builtins.toJSON { "User-Agent" = "mndn-status/1.0"; };
     };
 
     "genealogy.mndn.fr".name = "🌲 Family tree";
@@ -85,9 +75,9 @@ let
     "meals.mndn.fr".name = "🍲 Recipes";
 
     "media.mndn.fr" = {
-      keyword = "Healthy";
       name = "📽 Streaming";
       path = "/health";
+      keyword = "Healthy";
     };
 
     "music.mndn.fr" = {
@@ -96,9 +86,9 @@ let
     };
 
     "ntfy.mndn.fr" = {
-      keyword = ''"healthy":true'';
       name = "📣 Notifications";
       path = "/v1/health";
+      keyword = ''"healthy":true'';
     };
 
     "requests.mndn.fr" = {
@@ -108,25 +98,35 @@ let
 
     "sso.mndn.fr".name = "🛂 Sign-in";
 
-    "varanda.fr" = {
-      group = "Websites";
-      name = "🌐 Varanda";
-    };
-
     "webhooks.mndn.fr" = {
+      name = "🪝 Webhooks";
       group = null;
       keyword = "OK";
-      name = "🪝 Webhooks";
+    };
+
+    "camillemondon.com" = {
+      name = "🌐 Camille Mondon";
+      group = "Websites";
+    };
+
+    "ceciliaflamenca.com" = {
+      name = "🌐 Cecilia flamenca";
+      group = "Websites";
+    };
+
+    "varanda.fr" = {
+      name = "🌐 Varanda";
+      group = "Websites";
     };
 
     "www.natachamondonericpierre.mndn.fr" = {
-      group = "Websites";
       name = "🌐 Natacha Mondon & Éric Pierre";
+      group = "Websites";
     };
 
     "yali.es" = {
-      group = "Websites";
       name = "🌐 Yali";
+      group = "Websites";
     };
   };
 
@@ -169,8 +169,8 @@ let
           domain:
           let
             entry = {
-              group = "Services";
               name = domain;
+              group = "Services";
               path = "/";
             }
             // vhostMonitors.${domain} or { };
@@ -179,10 +179,10 @@ let
             inherit (entry) name group;
 
             probe = {
-              expiryNotification = true;
-              tags = machineTag machine;
               type = if entry ? keyword then "keyword" else "http";
               url = "https://${domain}${entry.path}";
+              expiryNotification = true;
+              tags = machineTag machine;
             }
             // removeAttrs entry [
               "name"
@@ -199,14 +199,14 @@ let
 
   # SSH over IPv6: offspring cannot reach its own public IPv4 through its NAT.
   hostChecks = lib.mapAttrsToList (machine: m: {
-    group = "Hosts";
     name = machine;
+    group = "Hosts";
 
     probe = {
+      type = "port";
       hostname = m.ipv6.public or m.ipv4.public;
       port = 22;
       tags = machineTag machine;
-      type = "port";
     };
   }) publicMachines;
 
@@ -217,11 +217,11 @@ let
     group = "DNS";
 
     probe = {
-      dns_resolve_server = server;
-      dns_resolve_type = "SOA";
-      hostname = "mndn.fr";
-      port = 53;
       type = "dns";
+      hostname = "mndn.fr";
+      dns_resolve_type = "SOA";
+      dns_resolve_server = server;
+      port = 53;
     };
   };
 
@@ -230,35 +230,35 @@ let
     (dnsCheck "📝 ns2" config.networking.addresses.ipv4.local)
     (dnsCheck "🔏 DNSSEC" "1.1.1.1")
     {
-      group = "Services";
       name = "📬 Mail (IMAP)";
+      group = "Services";
 
       probe = {
+        type = "port";
         hostname = "bridge.mndn.fr";
         port = 1143;
-        type = "port";
       };
     }
     {
-      group = "Services";
       name = "📬 Mail (SMTP)";
+      group = "Services";
 
       probe = {
+        type = "port";
         hostname = "bridge.mndn.fr";
         port = 1025;
-        type = "port";
       };
     }
     # A status ping is answered by Velocity or lazymc and wakes no server.
     {
-      group = "Services";
       name = "⛏ Minecraft";
+      group = "Services";
 
       probe = {
+        type = "gamedig";
         game = "minecraft";
         hostname = "v1.mc.mndn.fr";
         port = 25565;
-        type = "gamedig";
       };
     }
   ];
@@ -269,7 +269,65 @@ in
 
 {
   imports = [ "${inputs.stateless-uptime-kuma}/nixos/module.nix" ];
-  age.secrets.uptime-kuma-password.file = ./password.age;
+
+  services = {
+    uptime-kuma.enable = true;
+
+    ntfy-sh = {
+      enable = true;
+
+      settings = {
+        base-url = "https://ntfy.mndn.fr";
+        upstream-base-url = "https://ntfy.sh";
+        auth-file = "/var/lib/ntfy-sh/user.db";
+        auth-default-access = "deny-all";
+        listen-http = "127.0.0.1:3002";
+      };
+    };
+
+    nginx.virtualHosts = {
+      "uptime.mndn.fr" = {
+        port = 3001;
+        websockets = true;
+      };
+
+      "status.mndn.fr" = {
+        port = 3001;
+        websockets = true;
+      };
+
+      "ntfy.mndn.fr" = {
+        port = 3002;
+        websockets = true;
+      };
+    };
+  };
+
+  # Matched by name: same-named manual monitors are taken over, others left alone.
+  statelessUptimeKuma = {
+    enableService = true;
+    host = "http://127.0.0.1:3001";
+    username = "Camille";
+    passwordFile = config.age.secrets.uptime-kuma-password.path;
+
+    probesConfig = {
+      monitors = lib.listToAttrs (map (c: lib.nameValuePair c.name c.probe) checks);
+
+      # status.mndn.fr: names and states only, never addresses.
+      status_pages.public = {
+        title = "Public status";
+        domainNameList = [ "status.mndn.fr" ];
+        showTags = false;
+
+        publicGroupList = lib.filter (g: g.monitorList != [ ]) (
+          map (group: {
+            name = group;
+            monitorList = monitorsIn group;
+          }) groups
+        );
+      };
+    };
+  };
 
   assertions = [
     {
@@ -277,6 +335,8 @@ in
       message = "Two Uptime Kuma monitors share a name.";
     }
   ];
+
+  age.secrets.uptime-kuma-password.file = ./password.age;
 
   nixpkgs.overlays = [
     (final: prev: {
@@ -297,67 +357,6 @@ in
           };
     })
   ];
-
-  services = {
-    nginx.virtualHosts = {
-      "ntfy.mndn.fr" = {
-        port = 3002;
-        websockets = true;
-      };
-
-      "status.mndn.fr" = {
-        port = 3001;
-        websockets = true;
-      };
-
-      "uptime.mndn.fr" = {
-        port = 3001;
-        websockets = true;
-      };
-    };
-
-    ntfy-sh = {
-      enable = true;
-
-      settings = {
-        auth-default-access = "deny-all";
-        auth-file = "/var/lib/ntfy-sh/user.db";
-        base-url = "https://ntfy.mndn.fr";
-        listen-http = "127.0.0.1:3002";
-        upstream-base-url = "https://ntfy.sh";
-      };
-    };
-
-    uptime-kuma.enable = true;
-  };
-
-  # Matched by name: same-named manual monitors are taken over, others left alone.
-  statelessUptimeKuma = {
-    enableService = true;
-    host = "http://127.0.0.1:3001";
-    passwordFile = config.age.secrets.uptime-kuma-password.path;
-
-    probesConfig = {
-      monitors = lib.listToAttrs (map (c: lib.nameValuePair c.name c.probe) checks);
-
-      # status.mndn.fr: names and states only, never addresses.
-      status_pages.public = {
-        domainNameList = [ "status.mndn.fr" ];
-
-        publicGroupList = lib.filter (g: g.monitorList != [ ]) (
-          map (group: {
-            monitorList = monitorsIn group;
-            name = group;
-          }) groups
-        );
-
-        showTags = false;
-        title = "Public status";
-      };
-    };
-
-    username = "Camille";
-  };
 
   systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
 }

@@ -5,19 +5,11 @@
 }:
 
 {
-  age.secrets.photoprism-password.file = ./password.age;
-  environment.systemPackages = [ pkgs.photoprism ];
-
   services = {
-    nginx.virtualHosts."photos.kms" = {
-      port = 2342;
-      websockets = true;
-    };
-
     photoprism = {
       enable = true;
-      importPath = "";
       originalsPath = "/var/lib/nextcloud/data/Camille/files/Images";
+      importPath = "";
       passwordFile = config.age.secrets.photoprism-password.path;
 
       settings = {
@@ -32,37 +24,45 @@
         PHOTOPRISM_WORKERS = "12";
       };
     };
+
+    nginx.virtualHosts."photos.kms" = {
+      port = 2342;
+      websockets = true;
+    };
   };
+
+  environment.systemPackages = [ pkgs.photoprism ];
 
   systemd = {
     services = {
+      photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
+
       photoprism-index = {
-        inherit (config.systemd.services.photoprism) environment;
-        after = [ "multi-user.target" ];
         description = "Photoprism automatic indexer";
+        after = [ "multi-user.target" ];
+        wantedBy = [ "multi-user.target" ];
 
         serviceConfig = config.systemd.services.photoprism.serviceConfig // {
-          ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
-          ExecStartPre = null;
-          KillMode = "process";
           Type = "oneshot";
+          ExecStartPre = null;
+          ExecStart = "${pkgs.photoprism}/bin/photoprism index --cleanup";
+          KillMode = "process";
         };
 
-        wantedBy = [ "multi-user.target" ];
+        inherit (config.systemd.services.photoprism) environment;
       };
-
-      photoprism.serviceConfig.SupplementaryGroups = [ "nextcloud" ];
     };
 
     timers.photoprism-index = {
       description = "Photoprism automatic indexer";
+      wantedBy = [ "timers.target" ];
 
       timerConfig = {
         OnCalendar = "hourly";
         Persistent = true;
       };
-
-      wantedBy = [ "timers.target" ];
     };
   };
+
+  age.secrets.photoprism-password.file = ./password.age;
 }

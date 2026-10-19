@@ -4,7 +4,12 @@
   imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
 
   boot = {
-    blacklistedKernelModules = [ "nouveau" ];
+    lanzaboote = {
+      enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
+      pkiBundle = "/var/lib/sbctl";
+    };
 
     initrd = {
       availableKernelModules = [
@@ -20,14 +25,8 @@
       secrets."/crypto_keyfile.bin" = null;
     };
 
+    blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-
-    lanzaboote = {
-      enable = true;
-      configurationLimit = 5;
-      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
-      pkiBundle = "/var/lib/sbctl";
-    };
   };
 
   console = {
@@ -56,13 +55,13 @@
       open = true;
 
       prime = {
-        amdgpuBusId = "PCI:8:0:0";
-        nvidiaBusId = "PCI:1:0:0";
-
         offload = {
           enable = true;
           enableOffloadCmd = true;
         };
+
+        amdgpuBusId = "PCI:8:0:0";
+        nvidiaBusId = "PCI:1:0:0";
       };
     };
 
@@ -79,13 +78,13 @@
       enable = true;
 
       settings = {
-        always_reboot = false;
-        hotplug_type = "Asus";
-        logout_timeout_s = 180;
         mode = "Integrated";
-        no_logind = true;
         vfio_enable = false;
         vfio_save = false;
+        always_reboot = false;
+        no_logind = true;
+        logout_timeout_s = 180;
+        hotplug_type = "Asus";
       };
     };
 

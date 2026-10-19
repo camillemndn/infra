@@ -36,6 +36,38 @@ let
 in
 
 stdenv.mkDerivation rec {
+  pname = "radiogaga";
+  version = "1.0.0";
+
+  src = fetchFromGitHub {
+    owner = "camillemndn";
+    repo = "radiogaga";
+    rev = "v${version}";
+    hash = "sha256-0Q4aFcJR8w25Ah5TRCekXYbWBIoaVXNKQFYSzYVqzJI=";
+  };
+
+  npmRoot = "front";
+
+  npmDeps = fetchNpmDeps {
+    name = "${pname}-npm-deps-${version}";
+    src = "${src}/${npmRoot}";
+    hash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
+  };
+
+  postPatch = ''
+    sed -i "s/\(BASE_DIR\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
+      back/radiogaga/settings.py
+
+    sed -i "s/RadioGaGa/RadioGaGa | Hi my love!/g" \
+      front/src/app/top-bar/top-bar.component.html 
+  '';
+
+  nativeBuildInputs = [
+    python3
+    npmHooks.npmConfigHook
+    nodejs
+  ];
+
   buildInputs = [ makeWrapper ];
 
   buildPhase = ''
@@ -49,31 +81,6 @@ stdenv.mkDerivation rec {
     cp -r back $out/lib
     cp -r front/dist/radiogaga-front $out/share
   '';
-
-  meta = {
-    description = "Raspberry Pi Clock Radio";
-    homepage = "https://github.com/camillemndn/radiogaga";
-    license = lib.licenses.mit;
-    mainProgram = "radiogaga";
-    maintainers = with lib.maintainers; [ camillemndn ];
-    platforms = lib.platforms.linux;
-  };
-
-  nativeBuildInputs = [
-    python3
-    npmHooks.npmConfigHook
-    nodejs
-  ];
-
-  npmDeps = fetchNpmDeps {
-    hash = "sha256-o0/aOc0kRpXEtYo3m2zs9ViGgXtiFLfnQGQ2z7CxGbc=";
-    name = "${pname}-npm-deps-${version}";
-    src = "${src}/${npmRoot}";
-  };
-
-  npmRoot = "front";
-  passthru.updateScript = nix-update-script { };
-  pname = "radiogaga";
 
   postFixup = ''
     makeWrapper $out/lib/entrypoint.sh $out/bin/radiogaga-init \
@@ -103,20 +110,14 @@ stdenv.mkDerivation rec {
       }
   '';
 
-  postPatch = ''
-    sed -i "s/\(BASE_DIR\) = \(.*\)/\1_DEFAULT = \2\n\1 = os.getenv('\1', default=\1_DEFAULT)/" \
-      back/radiogaga/settings.py
+  passthru.updateScript = nix-update-script { };
 
-    sed -i "s/RadioGaGa/RadioGaGa | Hi my love!/g" \
-      front/src/app/top-bar/top-bar.component.html 
-  '';
-
-  src = fetchFromGitHub {
-    hash = "sha256-0Q4aFcJR8w25Ah5TRCekXYbWBIoaVXNKQFYSzYVqzJI=";
-    owner = "camillemndn";
-    repo = "radiogaga";
-    rev = "v${version}";
+  meta = {
+    description = "Raspberry Pi Clock Radio";
+    homepage = "https://github.com/camillemndn/radiogaga";
+    license = lib.licenses.mit;
+    maintainers = with lib.maintainers; [ camillemndn ];
+    platforms = lib.platforms.linux;
+    mainProgram = "radiogaga";
   };
-
-  version = "1.0.0";
 }

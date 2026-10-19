@@ -24,8 +24,8 @@ lib.mkIf config.services.graphical-desktop.enable {
           gtk3.extraConfig = gtkConfig;
 
           gtk4 = {
-            extraConfig = gtkConfig;
             theme = null;
+            extraConfig = gtkConfig;
           };
         };
 
@@ -40,8 +40,8 @@ lib.mkIf config.services.graphical-desktop.enable {
 
           imageDirectory =
             (builtins.fetchGit {
-              rev = "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8";
               url = "https://github.com/orangci/walls-catppuccin-mocha/";
+              rev = "7bfdf10d16ad3a689f9f0cf3a0930da3d1a245a8";
             }).outPath;
         };
       }
@@ -75,12 +75,12 @@ lib.mkIf config.services.graphical-desktop.enable {
 
       # The nixpkgs build is English only; French comes from Mozilla's language pack for that release.
       policies = {
-        ExtensionSettings."langpack-fr@thunderbird.mozilla.org" = {
-          install_url = "https://releases.mozilla.org/pub/thunderbird/releases/${config.programs.thunderbird.package.version}/linux-x86_64/xpi/fr.xpi";
-          installation_mode = "normal_installed";
-        };
-
         RequestedLocales = "fr";
+
+        ExtensionSettings."langpack-fr@thunderbird.mozilla.org" = {
+          installation_mode = "normal_installed";
+          install_url = "https://releases.mozilla.org/pub/thunderbird/releases/${config.programs.thunderbird.package.version}/linux-x86_64/xpi/fr.xpi";
+        };
       };
     };
   };

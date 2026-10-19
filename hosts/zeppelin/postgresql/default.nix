@@ -5,6 +5,8 @@
 }:
 
 {
+  services.postgresql.package = pkgs.postgresql_17;
+
   environment.systemPackages =
     let
       newPostgres = pkgs.postgresql_17.withPackages (_pp: [ ]);
@@ -32,6 +34,4 @@
       '';
     in
     [ upgrade-pg-cluster ];
-
-  services.postgresql.package = pkgs.postgresql_17;
 }

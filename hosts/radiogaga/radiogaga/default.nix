@@ -15,27 +15,27 @@ in
     services.radiogaga = {
       enable = mkEnableOption "radiogaga";
 
-      authFile = mkOption {
-        description = "The directory where radiogaga stores its data files.";
-        type = types.str;
-      };
-
       dataDir = mkOption {
+        type = types.str;
         default = "/var/lib/radiogaga";
         description = "The directory where radiogaga stores its data files.";
-        type = types.str;
       };
 
-      group = mkOption {
-        default = "radiogaga";
-        description = "Group under which radiogaga runs.";
+      authFile = mkOption {
         type = types.str;
+        description = "The directory where radiogaga stores its data files.";
       };
 
       user = mkOption {
+        type = types.str;
         default = "radiogaga";
         description = "User account under which radiogaga runs.";
+      };
+
+      group = mkOption {
         type = types.str;
+        default = "radiogaga";
+        description = "Group under which radiogaga runs.";
       };
     };
   };
@@ -49,29 +49,34 @@ in
         }
       ];
 
+      root = "${pkgs.radiogaga}/share";
+
       locations = {
         "/".tryFiles = "$uri $uri/ /index.html =404";
         "/api".proxyPass = "http://127.0.0.1:8000";
       };
-
-      root = "${pkgs.radiogaga}/share";
     };
 
     systemd = {
+      tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
+
       services.radiogaga = {
+        description = "radiogaga";
+
         after = [
           "network.target"
           "pipewire.service"
         ];
 
-        description = "radiogaga";
+        wantedBy = [ "multi-user.target" ];
         environment.BASE_DIR = "${cfg.dataDir}";
 
         serviceConfig = {
-          CacheDirectory = "radiogaga";
-          ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
+          Type = "simple";
+          User = cfg.user;
           Group = cfg.group;
-          Restart = "on-failure";
+          ExecStart = "${pkgs.radiogaga}/bin/radiogaga";
+          CacheDirectory = "radiogaga";
           StateDirectory = "radiogaga";
 
           SupplementaryGroups = [
@@ -79,20 +84,13 @@ in
             "pipewire"
           ];
 
-          Type = "simple";
-          User = cfg.user;
           WorkingDirectory = "${pkgs.radiogaga}/share";
+          Restart = "on-failure";
         };
-
-        wantedBy = [ "multi-user.target" ];
       };
-
-      tmpfiles.rules = [ "d '${cfg.dataDir}' 0700 ${cfg.user} ${cfg.group} - -" ];
     };
 
     users = {
-      groups.radiogaga = { };
-
       users = mkIf (cfg.user == "radiogaga") {
         radiogaga = {
           inherit (cfg) group;
@@ -100,6 +98,8 @@ in
           isSystemUser = true;
         };
       };
+
+      groups.radiogaga = { };
     };
   };
 }

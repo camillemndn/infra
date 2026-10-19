@@ -29,23 +29,31 @@ in
       lfs.enable = true;
 
       settings = {
-        actions.ENABLED = true;
-
         server = {
           DOMAIN = domain;
+          ROOT_URL = "https://${domain}/";
           HTTP_ADDR = "127.0.0.1";
           HTTP_PORT = port;
-          ROOT_URL = "https://${domain}/";
         };
 
+        actions.ENABLED = true;
         service.DISABLE_REGISTRATION = true;
         session.COOKIE_SECURE = true;
       };
     };
 
     gitea-actions-runner = {
+      package = pkgs.forgejo-runner;
+
       instances.${runner} = {
         enable = true;
+        name = runner;
+        url = cfg.settings.server.ROOT_URL;
+        tokenFile = runnerTokenFile;
+        # Jobs run on zeppelin itself, building through its nix-daemon.
+        labels = [ "native:host" ];
+        # One job per check: a host evaluation alone takes up to 3.5 GB.
+        settings.runner.capacity = 3;
 
         hostPackages = with pkgs; [
           attic-client
@@ -64,17 +72,7 @@ in
           openssh
           wget
         ];
-
-        # Jobs run on zeppelin itself, building through its nix-daemon.
-        labels = [ "native:host" ];
-        name = runner;
-        # One job per check: a host evaluation alone takes up to 3.5 GB.
-        settings.runner.capacity = 3;
-        tokenFile = runnerTokenFile;
-        url = cfg.settings.server.ROOT_URL;
       };
-
-      package = pkgs.forgejo-runner;
     };
 
     nginx.virtualHosts.${domain} = {
@@ -89,8 +87,9 @@ in
   systemd.services = {
     # Forgejo hands out the runner's registration token, so no secret has to be kept.
     forgejo-runner-token = {
-      after = [ "forgejo.service" ];
       description = "Forgejo Actions runner registration token";
+      after = [ "forgejo.service" ];
+      requires = [ "forgejo.service" ];
 
       environment = {
         inherit (config.systemd.services.forgejo.environment)
@@ -101,7 +100,16 @@ in
           ;
       };
 
-      requires = [ "forgejo.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        User = cfg.user;
+        Group = cfg.group;
+        UMask = "0077";
+        # The server may still be starting when the token is asked for.
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
 
       script = ''
         if [ ! -s ${runnerTokenFile} ]; then
@@ -109,17 +117,6 @@ in
           echo "TOKEN=$token" > ${runnerTokenFile}
         fi
       '';
-
-      serviceConfig = {
-        Group = cfg.group;
-        RemainAfterExit = true;
-        # The server may still be starting when the token is asked for.
-        Restart = "on-failure";
-        RestartSec = 5;
-        Type = "oneshot";
-        UMask = "0077";
-        User = cfg.user;
-      };
     };
 
     "gitea-runner-${runner}" = {

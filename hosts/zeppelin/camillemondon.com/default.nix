@@ -14,8 +14,6 @@ let
 in
 
 {
-  security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
-
   services.nginx = {
     publicDomains = [
       "camillemondon.com"
@@ -24,6 +22,8 @@ in
 
     virtualHosts = {
       "camillemondon.com" = {
+        root = "/srv/sites/camillemondon.com/www";
+
         extraConfig = ''
           rewrite ^([^.]*[^/])$ $1/ permanent;
           error_page 404 /404.html;
@@ -40,13 +40,13 @@ in
             extraConfig = quartoCache;
           };
 
-          "/projects/icscoda/" = {
-            alias = "/srv/sites/icscoda/www/";
+          "/projects/ot/" = {
+            alias = "/srv/sites/optimal-transport/www/";
             extraConfig = quartoCache;
           };
 
-          "/projects/ot/" = {
-            alias = "/srv/sites/optimal-transport/www/";
+          "/projects/icscoda/" = {
+            alias = "/srv/sites/icscoda/www/";
             extraConfig = quartoCache;
           };
 
@@ -57,7 +57,14 @@ in
 
           "/projects/random-densities/" = {
             alias = "/srv/sites/thesis/www/";
+            extraConfig = quartoCache;
             basicAuthFile = "/srv/sites/thesis_auth";
+          };
+
+          "/random-densities/".return = "301 https://$server_name/projects$request_uri";
+
+          "/publications/2025/icscomplex/" = {
+            alias = "/srv/sites/icscomplex/www/";
             extraConfig = quartoCache;
           };
 
@@ -66,20 +73,13 @@ in
             extraConfig = quartoCache;
           };
 
-          "/publications/2025/icscomplex/" = {
-            alias = "/srv/sites/icscomplex/www/";
-            extraConfig = quartoCache;
-          };
-
           "/publications/2026/icsfobi/" = {
             alias = "/srv/sites/icsfobi/www/";
             extraConfig = quartoCache;
           };
 
-          "/random-densities/".return = "301 https://$server_name/projects$request_uri";
-
-          "/talks/codawork2024/" = {
-            alias = "/srv/sites/thesis/www/slides/codawork2024/";
+          "/talks/fosdem24-clevis/" = {
+            alias = "/srv/sites/fosdem24-clevis/www/";
             extraConfig = quartoCache;
           };
 
@@ -88,8 +88,13 @@ in
             extraConfig = quartoCache;
           };
 
-          "/talks/fosdem24-clevis/" = {
-            alias = "/srv/sites/fosdem24-clevis/www/";
+          "/talks/jds2024/" = {
+            alias = "/srv/sites/thesis/www/slides/jds2024/";
+            extraConfig = quartoCache;
+          };
+
+          "/talks/codawork2024/" = {
+            alias = "/srv/sites/thesis/www/slides/codawork2024/";
             extraConfig = quartoCache;
           };
 
@@ -100,11 +105,6 @@ in
 
           "/talks/helsinki2026/" = {
             alias = "/srv/sites/icsfobi/www/slides/";
-            extraConfig = quartoCache;
-          };
-
-          "/talks/jds2024/" = {
-            alias = "/srv/sites/thesis/www/slides/jds2024/";
             extraConfig = quartoCache;
           };
 
@@ -122,10 +122,9 @@ in
             extraConfig = quartoCache;
           };
         };
-
-        root = "/srv/sites/camillemondon.com/www";
       };
 
+      "www.camillemondon.com".locations."/".return = "301 https://camillemondon.com$request_uri";
       "camillemondon.fr".locations."/".return = "301 https://camillemondon.com$request_uri";
 
       "hidimdaml.camillemondon.com" = {
@@ -133,11 +132,11 @@ in
           error_page 404 https://camillemondon.com/404.html;
         ''
         + quartoCache;
-        locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
         root = "/srv/sites/hidimdaml/www";
+        locations."~ solution\\.(html|pdf)".basicAuthFile = "/srv/sites/camillemondon.com_auth";
       };
-
-      "www.camillemondon.com".locations."/".return = "301 https://camillemondon.com$request_uri";
     };
   };
+
+  security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
 }

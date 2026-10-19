@@ -12,9 +12,23 @@ in
 
 {
   imports = [ ./module.nix ];
-  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 
   services = {
+    librespot = {
+      enable = true;
+
+      settings = {
+        name = "radiogaga";
+        bitrate = 320;
+        zeroconf-backend = "avahi";
+        zeroconf-port = 35729;
+      };
+
+      package = pkgs.unstable.librespot.override (_: {
+        withAvahi = true;
+      });
+    };
+
     avahi = {
       enable = true;
 
@@ -23,20 +37,7 @@ in
         userServices = true;
       };
     };
-
-    librespot = {
-      enable = true;
-
-      package = pkgs.unstable.librespot.override (_: {
-        withAvahi = true;
-      });
-
-      settings = {
-        bitrate = 320;
-        name = "radiogaga";
-        zeroconf-backend = "avahi";
-        zeroconf-port = 35729;
-      };
-    };
   };
+
+  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 }

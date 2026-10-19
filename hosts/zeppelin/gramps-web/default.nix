@@ -37,34 +37,34 @@ let
     );
 
     GRAMPSHOME = stateDir;
+    GRAMPS_DATABASE_PATH = "${stateDir}/grampsdb";
+    GRAMPSWEB_TREE = cfg.tree;
     GRAMPSWEB_BASE_URL = "https://${cfg.hostName}";
+    GRAMPSWEB_STATIC_PATH = "${pkgs.gramps-web}";
+    GRAMPSWEB_REGISTRATION_DISABLED = "True";
+    GRAMPSWEB_DISABLE_TELEMETRY = "True";
+    GRAMPSWEB_USER_DB_URI = "sqlite:///${stateDir}/users.sqlite";
+    GRAMPSWEB_SEARCH_INDEX_DB_URI = "sqlite:///${stateDir}/search_index.db";
+    GRAMPSWEB_MEDIA_BASE_DIR = "${stateDir}/media";
+    GRAMPSWEB_THUMBNAIL_CACHE_CONFIG__CACHE_DIR = "${cacheDir}/thumbnail_cache";
+    GRAMPSWEB_REQUEST_CACHE_CONFIG__CACHE_DIR = "${cacheDir}/request_cache";
+    GRAMPSWEB_PERSISTENT_CACHE_CONFIG__CACHE_DIR = "${stateDir}/persistent_cache";
+    GRAMPSWEB_REPORT_DIR = "${cacheDir}/reports";
+    GRAMPSWEB_EXPORT_DIR = "${cacheDir}/export";
     GRAMPSWEB_CELERY_CONFIG__broker_url = "redis+socket://${redis.unixSocket}";
     GRAMPSWEB_CELERY_CONFIG__result_backend = "redis+socket://${redis.unixSocket}";
-    GRAMPSWEB_DISABLE_TELEMETRY = "True";
-    GRAMPSWEB_EXPORT_DIR = "${cacheDir}/export";
-    GRAMPSWEB_MEDIA_BASE_DIR = "${stateDir}/media";
-    GRAMPSWEB_PERSISTENT_CACHE_CONFIG__CACHE_DIR = "${stateDir}/persistent_cache";
     GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis+unix://${redis.unixSocket}?db=1";
-    GRAMPSWEB_REGISTRATION_DISABLED = "True";
-    GRAMPSWEB_REPORT_DIR = "${cacheDir}/reports";
-    GRAMPSWEB_REQUEST_CACHE_CONFIG__CACHE_DIR = "${cacheDir}/request_cache";
-    GRAMPSWEB_SEARCH_INDEX_DB_URI = "sqlite:///${stateDir}/search_index.db";
-    GRAMPSWEB_STATIC_PATH = "${pkgs.gramps-web}";
-    GRAMPSWEB_THUMBNAIL_CACHE_CONFIG__CACHE_DIR = "${cacheDir}/thumbnail_cache";
-    GRAMPSWEB_TREE = cfg.tree;
-    GRAMPSWEB_USER_DB_URI = "sqlite:///${stateDir}/users.sqlite";
-    GRAMPS_DATABASE_PATH = "${stateDir}/grampsdb";
   };
 
   # Same dynamic user for both units: shared data and secret key.
   serviceConfig = {
-    CacheDirectory = "gramps-web";
     DynamicUser = true;
-    Restart = "on-failure";
-    StateDirectory = "gramps-web";
-    SupplementaryGroups = [ redis.group ];
     User = "gramps-web";
+    SupplementaryGroups = [ redis.group ];
+    StateDirectory = "gramps-web";
+    CacheDirectory = "gramps-web";
     WorkingDirectory = stateDir;
+    Restart = "on-failure";
   };
 in
 with lib;
@@ -74,25 +74,30 @@ with lib;
     enable = mkEnableOption "Gramps Web";
 
     hostName = mkOption {
-      description = "FQDN for the Gramps Web instance.";
       type = types.str;
+      description = "FQDN for the Gramps Web instance.";
     };
 
     port = mkOption {
+      type = types.port;
       default = 5056;
       description = "Local port the API server listens on.";
-      type = types.port;
     };
 
     tree = mkOption {
+      type = types.str;
       default = "Family";
       description = "Name of the Gramps family tree, created empty on first start.";
-      type = types.str;
     };
   };
 
   config = mkIf cfg.enable {
     services = {
+      redis.servers.gramps-web = {
+        enable = true;
+        port = 0;
+      };
+
       nginx.virtualHosts.${cfg.hostName} = {
         inherit (cfg) port;
 
@@ -100,24 +105,21 @@ with lib;
           client_max_body_size 500M;
         '';
       };
-
-      redis.servers.gramps-web = {
-        enable = true;
-        port = 0;
-      };
     };
 
     systemd = {
       services = {
         gramps-web = {
-          inherit environment serviceConfig;
+          description = "Gramps Web";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "redis-gramps-web.service" ];
 
           after = [
             "network.target"
             "redis-gramps-web.service"
           ];
 
-          description = "Gramps Web";
+          inherit environment serviceConfig;
 
           # The Flask secret key is generated once and kept with the data.
           preStart = ''
@@ -128,18 +130,16 @@ with lib;
             (cd ${migrations} && GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret) ${gramps-webapi} user migrate)
           '';
 
-          requires = [ "redis-gramps-web.service" ];
-
           script = ''
             export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
             exec ${gramps-webapi} run --use-wsgi --host 127.0.0.1 --port ${toString cfg.port}
           '';
-
-          wantedBy = [ "multi-user.target" ];
         };
 
         gramps-web-celery = {
-          inherit environment serviceConfig;
+          description = "Gramps Web background tasks";
+          wantedBy = [ "multi-user.target" ];
+          requires = [ "redis-gramps-web.service" ];
 
           # Creates the secret key and migrates the user database.
           after = [
@@ -147,15 +147,12 @@ with lib;
             "redis-gramps-web.service"
           ];
 
-          description = "Gramps Web background tasks";
-          requires = [ "redis-gramps-web.service" ];
+          inherit environment serviceConfig;
 
           script = ''
             export GRAMPSWEB_SECRET_KEY=$(cat ${stateDir}/secret)
             exec ${python}/bin/celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2
           '';
-
-          wantedBy = [ "multi-user.target" ];
         };
       };
     };

@@ -12,20 +12,52 @@
     "${inputs.buildbot-nix}/nix/worker.nix"
   ];
 
-  age.secrets = {
-    buildbot-nix-worker-password = {
-      file = ./buildbot-nix-worker-password.age;
-      owner = "buildbot-worker";
+  services = {
+    buildbot-nix = {
+      master = {
+        enable = true;
+        domain = "ci.mndn.fr";
+        workersFile = config.age.secrets.buildbot-nix-workers.path;
+        admins = [ "camillemndn" ];
+
+        buildSystems = [
+          "x86_64-linux"
+          "aarch64-linux"
+        ];
+
+        github = {
+          authType.app = {
+            id = 934127;
+            secretKeyFile = config.age.secrets.github-app-secret.path;
+          };
+
+          oauthId = "Iv23lihsrM97J1A7Wv58";
+          oauthSecretFile = config.age.secrets.github-oauth-secret.path;
+          webhookSecretFile = config.age.secrets.github-webhook-secret.path;
+          topic = "nix-ci";
+        };
+
+        evalWorkerCount = 12;
+        evalMaxMemorySize = "16384";
+      };
+
+      worker = {
+        enable = true;
+        workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
+      };
     };
 
-    buildbot-nix-workers.file = ./buildbot-nix-workers.age;
-    github-app-secret.file = ./github-app-secret.age;
-    github-oauth-secret.file = ./github-oauth-secret.age;
-    github-webhook-secret.file = ./github-webhook-secret.age;
-  };
+    nginx.virtualHosts."ci.mndn.fr" = {
+      forceSSL = true;
+      enableACME = true;
+    };
 
-  services = {
     buildbot-master = {
+      pythonPackages = _: [
+        pkgs.buildbot-plugins.badges
+        pkgs.buildbot-plugins.www
+      ];
+
       extraConfig = ''
         c['buildbotNetUsageData'] = None
         c["www"].update({"plugins": {"badges": {
@@ -50,51 +82,6 @@
             } 
         }}})
       '';
-
-      pythonPackages = _: [
-        pkgs.buildbot-plugins.badges
-        pkgs.buildbot-plugins.www
-      ];
-    };
-
-    buildbot-nix = {
-      master = {
-        enable = true;
-        admins = [ "camillemndn" ];
-
-        buildSystems = [
-          "x86_64-linux"
-          "aarch64-linux"
-        ];
-
-        domain = "ci.mndn.fr";
-        evalMaxMemorySize = "16384";
-        evalWorkerCount = 12;
-
-        github = {
-          authType.app = {
-            id = 934127;
-            secretKeyFile = config.age.secrets.github-app-secret.path;
-          };
-
-          oauthId = "Iv23lihsrM97J1A7Wv58";
-          oauthSecretFile = config.age.secrets.github-oauth-secret.path;
-          topic = "nix-ci";
-          webhookSecretFile = config.age.secrets.github-webhook-secret.path;
-        };
-
-        workersFile = config.age.secrets.buildbot-nix-workers.path;
-      };
-
-      worker = {
-        enable = true;
-        workerPasswordFile = config.age.secrets.buildbot-nix-worker-password.path;
-      };
-    };
-
-    nginx.virtualHosts."ci.mndn.fr" = {
-      enableACME = true;
-      forceSSL = true;
     };
   };
 
@@ -107,4 +94,16 @@
     pkgs.nix-eval-jobs
     pkgs.coreutils
   ];
+
+  age.secrets = {
+    buildbot-nix-worker-password = {
+      file = ./buildbot-nix-worker-password.age;
+      owner = "buildbot-worker";
+    };
+
+    buildbot-nix-workers.file = ./buildbot-nix-workers.age;
+    github-app-secret.file = ./github-app-secret.age;
+    github-oauth-secret.file = ./github-oauth-secret.age;
+    github-webhook-secret.file = ./github-webhook-secret.age;
+  };
 }

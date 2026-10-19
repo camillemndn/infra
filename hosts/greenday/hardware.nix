@@ -2,6 +2,10 @@ _:
 
 {
   boot = {
+    loader = {
+      systemd-boot.enable = true;
+    };
+
     initrd.availableKernelModules = [
       "ehci_pci"
       "ahci"
@@ -11,10 +15,6 @@ _:
     ];
 
     kernelModules = [ "kvm-intel" ];
-
-    loader = {
-      systemd-boot.enable = true;
-    };
   };
 
   fileSystems = {
@@ -24,13 +24,13 @@ _:
     };
 
     "/boot" = {
+      device = "/dev/disk/by-uuid/D876-A829";
+      fsType = "vfat";
+
       options = [
         "fmask=0022"
         "dmask=0022"
       ];
-
-      device = "/dev/disk/by-uuid/D876-A829";
-      fsType = "vfat";
     };
   };
 

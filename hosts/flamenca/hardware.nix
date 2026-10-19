@@ -2,6 +2,10 @@ _:
 
 {
   boot = {
+    loader = {
+      systemd-boot.enable = true;
+    };
+
     initrd = {
       availableKernelModules = [
         "xhci_pci"
@@ -13,10 +17,6 @@ _:
     };
 
     kernelModules = [ "kvm-intel" ];
-
-    loader = {
-      systemd-boot.enable = true;
-    };
   };
 
   fileSystems = {
@@ -26,19 +26,19 @@ _:
     };
 
     "/boot" = {
+      device = "/dev/disk/by-uuid/8ADB-5D04";
+      fsType = "vfat";
+
       options = [
         "fmask=0077"
         "dmask=0077"
       ];
-
-      device = "/dev/disk/by-uuid/8ADB-5D04";
-      fsType = "vfat";
     };
   };
-
-  hardware.bluetooth.enable = true;
 
   swapDevices = [
     { device = "/dev/disk/by-uuid/5596fcb1-18b2-4313-a698-47bd996945e1"; }
   ];
+
+  hardware.bluetooth.enable = true;
 }

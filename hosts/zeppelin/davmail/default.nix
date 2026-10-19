@@ -9,12 +9,6 @@ let
 in
 
 {
-  networking.firewall.allowedTCPPorts = [
-    443
-    1143
-    1025
-  ];
-
   services = {
     davmail = {
       enable = true;
@@ -22,20 +16,21 @@ in
       config = {
         davmail = {
           allowRemote = true;
-          mode = "O365DeviceCode";
 
           oauth = {
             clientId = "d3590ed6-52b3-4102-aeff-aad2292ab01c";
-            persistToken = true;
             redirectUri = "urn:ietf:wg:oauth:2.0:oob";
+            persistToken = true;
             tokenFilePath = "/var/lib/davmail/token";
           };
 
+          mode = "O365DeviceCode";
+
           ssl = {
-            keyPass = "password";
+            keystoreType = "PKCS12";
             keystoreFile = "/var/lib/davmail/davmail.p12";
             keystorePass = "password";
-            keystoreType = "PKCS12";
+            keyPass = "password";
           };
         };
       };
@@ -45,6 +40,12 @@ in
 
     nginx.virtualHosts."${fqdn}" = { };
   };
+
+  networking.firewall.allowedTCPPorts = [
+    443
+    1143
+    1025
+  ];
 
   systemd.services.davmail.serviceConfig = {
     ExecStartPre =

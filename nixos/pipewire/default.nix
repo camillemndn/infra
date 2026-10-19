@@ -1,8 +1,6 @@
 { config, lib, ... }:
 
 lib.mkIf config.services.pipewire.enable {
-  security.rtkit.enable = lib.mkDefault true;
-
   services.pipewire = {
     alsa = {
       enable = lib.mkDefault true;
@@ -11,4 +9,6 @@ lib.mkIf config.services.pipewire.enable {
 
     pulse.enable = lib.mkDefault true;
   };
+
+  security.rtkit.enable = lib.mkDefault true;
 }

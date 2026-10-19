@@ -31,13 +31,8 @@ let
   nixosConfigurations = builtins.mapAttrs (
     name: _:
     import "${inputs.nixpkgs}/nixos/lib/eval-config.nix" {
+      system = null;
       inherit lib;
-      extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
-
-      modules =
-        lib.modulesIn ./nixos
-        ++ lib.modulesIn (./hosts + "/${name}")
-        ++ [ { networking.hostName = name; } ];
 
       specialArgs = {
         inherit
@@ -48,7 +43,12 @@ let
           ;
       };
 
-      system = null;
+      modules =
+        lib.modulesIn ./nixos
+        ++ lib.modulesIn (./hosts + "/${name}")
+        ++ [ { networking.hostName = name; } ];
+
+      extraModules = [ (import "${inputs.colmena}/src/nix/hive/options.nix").deploymentOptions ];
     }
   ) (lib.filterAttrs (_: type: type == "directory") (builtins.readDir ./hosts));
 
@@ -93,6 +93,7 @@ in
 
   colmena = hive;
   colmenaHive = import "${inputs.colmena}/src/nix/hive/eval.nix" { rawHive = hive; };
+  formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 
   devShells = lib.genAttrs systems (
     system:
@@ -105,40 +106,29 @@ in
           nixpkgs = inputs.nixpkgs-unstable;
         }).run
           {
+            src = ./.;
+
             hooks = {
-              commitizen.enable = true;
               deadnix.enable = true;
-
-              nix-style = {
-                enable = true;
-                # Expects nixfmt's output.
-                after = [ "rfc101" ];
-
-                entry = "${
-                  lib.getExe (
-                    pkgs.python3.withPackages (ps: [
-                      ps.tree-sitter
-                      ps.tree-sitter-grammars.tree-sitter-nix
-                    ])
-                  )
-                } ${./scripts/nix-style.py}";
-
-                excludes = [ "^lon\\.nix$" ];
-                files = "\\.nix$";
-                name = "Sorted bindings, blank lines between them";
-              };
+              statix.enable = true;
 
               rfc101 = {
                 enable = true;
+                name = "RFC-101 formatting";
                 entry = lib.getExe pkgs.nixfmt;
                 files = "\\.nix$";
-                name = "RFC-101 formatting";
               };
 
-              statix.enable = true;
-            };
+              blank-lines = {
+                enable = true;
+                name = "Blank lines between bindings";
+                entry = "${pkgs.python3.interpreter} ${./scripts/blank-lines.py}";
+                files = "\\.nix$";
+                excludes = [ "^lon\\.nix$" ];
+              };
 
-            src = ./.;
+              commitizen.enable = true;
+            };
           };
     in
     {
@@ -158,6 +148,4 @@ in
       };
     }
   );
-
-  formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 }

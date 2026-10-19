@@ -30,30 +30,33 @@ let
 in
 
 {
-  age.secrets.firefly-iii-app-key = {
-    file = ./app-key.age;
-    owner = cfg.user;
-  };
-
-  environment.systemPackages = [ firefly-iii-manage ];
-
   services = {
     firefly-iii = {
       enable = true;
+      virtualHost = "finances.kms";
       enableNginx = true;
 
       settings = {
         APP_KEY_FILE = config.age.secrets.firefly-iii-app-key.path;
         DB_CONNECTION = "pgsql";
       };
-
-      virtualHost = "finances.kms";
     };
 
     firefly-iii-data-importer = {
       enable = true;
-      enableNginx = true;
       virtualHost = "import.finances.kms";
+      enableNginx = true;
+    };
+
+    postgresql = {
+      ensureUsers = [
+        {
+          name = "firefly-iii";
+          ensureDBOwnership = true;
+        }
+      ];
+
+      ensureDatabases = [ "firefly-iii" ];
     };
 
     nginx.virtualHosts."finances.kms".locations."~ \\.php$".extraConfig = lib.mkAfter ''
@@ -61,27 +64,23 @@ in
     '';
 
     phpfpm.pools = {
-      firefly-iii-data-importer.phpOptions = ''
-        log_errors = on
-        max_execution_time = 3600
-      '';
-
       firefly-iii.phpOptions = ''
         log_errors = on
         max_execution_time = 3600
         memory_limit = 4G
       '';
-    };
 
-    postgresql = {
-      ensureDatabases = [ "firefly-iii" ];
-
-      ensureUsers = [
-        {
-          ensureDBOwnership = true;
-          name = "firefly-iii";
-        }
-      ];
+      firefly-iii-data-importer.phpOptions = ''
+        log_errors = on
+        max_execution_time = 3600
+      '';
     };
+  };
+
+  environment.systemPackages = [ firefly-iii-manage ];
+
+  age.secrets.firefly-iii-app-key = {
+    owner = cfg.user;
+    file = ./app-key.age;
   };
 }

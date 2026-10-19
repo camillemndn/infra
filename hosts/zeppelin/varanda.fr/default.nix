@@ -1,26 +1,26 @@
 _:
 
 {
-  security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
-
   services.nginx = {
     publicDomains = [ "varanda.fr" ];
 
     virtualHosts = {
       "varanda.fr" = {
-        extraConfig = ''
-          error_page 404 /404/;
-        '';
+        root = "/srv/sites/varanda.fr/www";
 
         locations."/static/".extraConfig = ''
           expires 1y;
           add_header Cache-Control "public";
         '';
 
-        root = "/srv/sites/varanda.fr/www";
+        extraConfig = ''
+          error_page 404 /404/;
+        '';
       };
 
       "www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
     };
   };
+
+  security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
 }

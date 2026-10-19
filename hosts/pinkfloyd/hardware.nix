@@ -4,6 +4,13 @@
   imports = [ "${inputs.lanzaboote}/nix/modules/lanzaboote.nix" ];
 
   boot = {
+    lanzaboote = {
+      enable = true;
+      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
+      configurationLimit = 5;
+      pkiBundle = "/var/lib/sbctl";
+    };
+
     initrd = {
       availableKernelModules = [
         "nvme"
@@ -20,13 +27,6 @@
     };
 
     kernelModules = [ "kvm-amd" ];
-
-    lanzaboote = {
-      enable = true;
-      configurationLimit = 5;
-      package = (import inputs.lanzaboote { inherit (pkgs.stdenv.hostPlatform) system; }).packages.lzbt;
-      pkiBundle = "/var/lib/sbctl";
-    };
   };
 
   hardware.bluetooth.enable = true;
