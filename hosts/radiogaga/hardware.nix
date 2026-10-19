@@ -22,15 +22,42 @@ let
   '';
 
   raspberrypi-update-3b = pkgs.writeShellScriptBin "rpi-update-3b" ''
-    mount /dev/disk/by-label/FIRMWARE
-    (cd ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot && cp bootcode.bin fixup*.dat start*.elf /mnt)
+    set -euo pipefail
+    export PATH=${
+      lib.makeBinPath [
+        pkgs.coreutils
+        pkgs.util-linux
+      ]
+    }
 
-    # Add the config
-    cp ${configTxt} /mnt/config.txt
+    firmware_dir=/boot/firmware
+    firmware_device=$(readlink -e /dev/disk/by-label/FIRMWARE)
+    if ! mountpoint -q "$firmware_dir"; then
+      mkdir -p "$firmware_dir"
+      mount -t vfat "$firmware_device" "$firmware_dir"
+    fi
 
-    # Add pi3 specific files
-    cp ${pkgs.unstable.ubootRaspberryPi3_64bit}/u-boot.bin /mnt/u-boot-rpi3.bin
-    umount /dev/disk/by-label/FIRMWARE
+    # Never write boot files into the root filesystem or an unrelated mount.
+    if ! findmnt -rn -M "$firmware_dir" -S "$firmware_device" -t vfat >/dev/null; then
+      echo "FIRMWARE is not mounted at $firmware_dir; refusing to update" >&2
+      exit 1
+    fi
+
+    staging_dir=$(mktemp -d "$firmware_dir/.rpi-update-3b.XXXXXX")
+    trap 'rm -rf -- "$staging_dir"' EXIT
+    cp ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup*.dat,start*.elf} "$staging_dir/"
+    cp ${configTxt} "$staging_dir/config.txt"
+    cp ${pkgs.unstable.ubootRaspberryPi3_64bit}/u-boot.bin "$staging_dir/u-boot-rpi3.bin"
+    sync -f "$firmware_dir"
+
+    for source in "$staging_dir"/*; do
+      destination="$firmware_dir/$(basename "$source")"
+      if ! cmp -s "$source" "$destination"; then
+        mv -f -- "$source" "$destination"
+      fi
+    done
+    sync -f "$firmware_dir"
+    # Leave the declaratively managed filesystem mounted.
   '';
 in
 
