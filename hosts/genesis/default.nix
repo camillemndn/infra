@@ -26,7 +26,6 @@
       vscodium.enable = true;
     };
 
-    stylix.targets.qt.enable = false;
     home.stateVersion = "23.05";
   };
 

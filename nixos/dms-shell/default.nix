@@ -55,6 +55,8 @@ lib.mkIf cfg.enable {
         };
       };
 
+      # Its qtct platform theme would take QT_QPA_PLATFORMTHEME from the KDE one above.
+      stylix.targets.qt.enable = false;
       # Tailscale's own tray, run with the graphical session.
       services.tailscale-systray.enable = true;
 
