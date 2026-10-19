@@ -30,8 +30,9 @@
 
     radiogaga.enable = true;
     tailscale.enable = false;
-
     # Avahi comes from librespot/; AirPlay and the network sink reuse it.
+    resolved.settings.Resolve.MulticastDNS = "no";
+    avahi.nssmdns4 = true;
 
     # AirPlay 2 receiver, playing through PipeWire's PulseAudio layer.
     shairport-sync = {
@@ -71,6 +72,12 @@
 
   # Its evaluation needs over 1 GB, more than the Pi has.
   services.comin.enable = false;
+
+  # The socket creates /run/pulse as root; the server also needs to write its PID.
+  systemd.services.pipewire-pulse.serviceConfig = {
+    RuntimeDirectory = "pulse";
+    RuntimeDirectoryPreserve = "yes";
+  };
 
   # System-wide PipeWire: audio clients need the pipewire group.
   systemd.services.gmediarender = {

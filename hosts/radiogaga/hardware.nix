@@ -10,6 +10,8 @@
 
   boot = {
     kernelPackages = pkgs.linuxPackages;
+    # VC4 needs the HDMI DDC adapter before taking over the boot framebuffer.
+    initrd.kernelModules = [ "i2c-bcm2835" ];
     # Linux uses its matching mainline device trees; firmware DTBs serve U-Boot.
     loader.generic-extlinux-compatible.useGenerationDeviceTree = true;
   };
