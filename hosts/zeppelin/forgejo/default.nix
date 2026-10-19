@@ -52,8 +52,8 @@ in
         tokenFile = runnerTokenFile;
         # Jobs run on zeppelin itself, building through its nix-daemon.
         labels = [ "native:host" ];
-        # One job per check: a host evaluation alone takes up to 3.5 GB.
-        settings.runner.capacity = 3;
+        # Serialize CI jobs to avoid exhausting memory with concurrent evaluations.
+        settings.runner.capacity = 1;
 
         hostPackages = with pkgs; [
           attic-client

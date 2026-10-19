@@ -4,11 +4,7 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
-    kernel.sysctl."vm.swappiness" = 1;
-
-    loader = {
-      systemd-boot.enable = true;
-    };
+    loader.systemd-boot.enable = true;
 
     initrd.availableKernelModules = [
       "ata_piix"
@@ -49,7 +45,7 @@
   swapDevices = [
     {
       device = "/swapfile";
-      size = 4 * 1024;
+      size = 16 * 1024;
     }
   ];
 

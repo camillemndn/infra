@@ -2,9 +2,7 @@ _:
 
 {
   boot = {
-    loader = {
-      systemd-boot.enable = true;
-    };
+    loader.systemd-boot.enable = true;
 
     initrd = {
       availableKernelModules = [

@@ -4,11 +4,9 @@
   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
   boot = {
-    loader = {
-      systemd-boot = {
-        enable = true;
-        configurationLimit = 2;
-      };
+    loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 2;
     };
 
     initrd.availableKernelModules = [
