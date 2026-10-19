@@ -43,18 +43,35 @@ let
       exit 1
     fi
 
-    staging_dir=$(mktemp -d "$firmware_dir/.rpi-update-3b.XXXXXX")
-    trap 'rm -rf -- "$staging_dir"' EXIT
-    cp ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup*.dat,start*.elf} "$staging_dir/"
-    cp ${configTxt} "$staging_dir/config.txt"
-    cp ${pkgs.unstable.ubootRaspberryPi3_64bit}/u-boot.bin "$staging_dir/u-boot-rpi3.bin"
-    sync -f "$firmware_dir"
+    staging_dir=
+    trap 'if [[ -n "$staging_dir" ]]; then rm -rf -- "$staging_dir"; fi' EXIT
 
-    for source in "$staging_dir"/*; do
-      destination="$firmware_dir/$(basename "$source")"
-      if ! cmp -s "$source" "$destination"; then
-        mv -f -- "$source" "$destination"
+    stage_if_changed() {
+      local source=$1 name=$2
+      if cmp -s "$source" "$firmware_dir/$name"; then
+        return
       fi
+      if [[ -z "$staging_dir" ]]; then
+        staging_dir=$(mktemp -d "$firmware_dir/.rpi-update-3b.XXXXXX")
+      fi
+      cp -- "$source" "$staging_dir/$name"
+    }
+
+    for source in ${pkgs.unstable.raspberrypifw}/share/raspberrypi/boot/{bootcode.bin,fixup*.dat,start*.elf}; do
+      stage_if_changed "$source" "$(basename "$source")"
+    done
+    stage_if_changed ${configTxt} config.txt
+    stage_if_changed ${pkgs.unstable.ubootRaspberryPi3_64bit}/u-boot.bin u-boot-rpi3.bin
+
+    # An unchanged activation only reads the installed files.
+    if [[ -z "$staging_dir" ]]; then
+      exit 0
+    fi
+
+    # Stage all changes successfully before replacing any installed file.
+    sync -f "$firmware_dir"
+    for source in "$staging_dir"/*; do
+      mv -f -- "$source" "$firmware_dir/$(basename "$source")"
     done
     sync -f "$firmware_dir"
     # Leave the declaratively managed filesystem mounted.
@@ -69,8 +86,6 @@ in
       generic-extlinux-compatible.enable = true;
     };
 
-    kernelModules = [ "snd-aloop" ];
-
     kernelParams = [
       "console=ttyS0,115200n8"
       "console=tty0"
@@ -78,7 +93,6 @@ in
   };
 
   environment.systemPackages = [
-    pkgs.raspberrypi-update
     pkgs.raspberrypi-utils
     raspberrypi-update-3b
   ];
@@ -97,15 +111,16 @@ in
 
   networking = {
     useDHCP = mkDefault false;
-
-    interfaces = {
-      eth0.useDHCP = mkDefault true;
-      wlan0.useDHCP = mkDefault true;
-    };
+    # NetworkManager owns DHCP for both Ethernet and Wi-Fi.
+    networkmanager.enable = true;
+    dhcpcd.enable = false;
   };
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = mkDefault "ondemand";
+  hardware.bluetooth.enable = true;
+  # Prefer compressed RAM swap before falling back to the SD card.
+  zramSwap.enable = true;
 
   swapDevices = [
     {
