@@ -6,6 +6,11 @@ window-rule {
     open-maximized true
 }
 
+// Shows through DMS's transparent workspace background until the wallpaper is drawn, in Stylix's background colour.
+overview {
+    backdrop-color "#@base00@"
+}
+
 // ROG Flow X13 keys, as wev reports them.
 binds {
     XF86KbdBrightnessUp allow-when-locked=true { spawn "asusctl" "leds" "next"; }
