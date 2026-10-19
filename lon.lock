@@ -121,6 +121,16 @@
       "url": "https://github.com/nix-community/nixos-anywhere/archive/bc36798d8fcad7ee85ac139c8473e999afbf4a1d.tar.gz",
       "hash": "sha256-kZvMi1NCIh748Gfg5d9FLkSYnwvBrxoT51w+H1PBoRo="
     },
+    "nixos-hardware": {
+      "type": "GitHub",
+      "fetchType": "tarball",
+      "owner": "NixOS",
+      "repo": "nixos-hardware",
+      "branch": "master",
+      "revision": "60a624466c08787ee8303393b7d4752d1826f14f",
+      "url": "https://github.com/NixOS/nixos-hardware/archive/60a624466c08787ee8303393b7d4752d1826f14f.tar.gz",
+      "hash": "sha256-BYhx89XJltnRyQeuDKHVL5eSqbbfAcOKuDts7QRsrxQ="
+    },
     "nixpkgs": {
       "type": "GitHub",
       "fetchType": "tarball",
