@@ -80,8 +80,9 @@ jobs:
               --systems "x86_64-linux aarch64-linux" \
               --eval-workers 4 --eval-max-memory-size 5120 \
               --attic-cache saumon:camille 2>&1 |
-            # Drops the queue counters and the warning of nix-fast-build's own `nix path-info --json`.
-            { grep --line-buffered -vxE "INFO:nix_fast_build\.workers:builds: [0-9]+, attic: [0-9]+|warning: '--json' without '--json-format' is deprecated; .*" || true; }
+            # Drops the queue counters, the warning of nix-fast-build's own `nix path-info --json`,
+            # and the store optimiser's line for every file it hard-links.
+            { grep --line-buffered -vxE "INFO:nix_fast_build\.workers:builds: [0-9]+, attic: [0-9]+|warning: '--json' without '--json-format' is deprecated; .*|.*linking \"/nix/store/[^\"]*\" to \"/nix/store/\.links/[^\"]*\"" || true; }
 
       - name: Report result on GitHub
         if: always()

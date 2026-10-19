@@ -40,15 +40,6 @@ jobs:
           git config --global user.signingKey "$key"
           git config --global commit.gpgSign true
 
-      # The bot's commits pass the same hooks as camille's: formatting and message format.
-      - name: Install the repository's git hooks
-        run: |
-          nix develop -c true
-          cat > "$RUNNER_TEMP/commit" <<'EOF'
-          # A hook that reformats a file refuses the commit; the second attempt carries the fix.
-          git commit -q "$@" || { git add -u && git commit -q "$@"; }
-          EOF
-
       - name: Update sources
         # The lon of the repo's own nixpkgs-unstable pin, the one that wrote lon.nix.
         run: |
@@ -59,11 +50,14 @@ jobs:
           fi
           echo "$out"
 
-          # lon commits on its own, past the hooks and under its own subject; its body is kept.
+          # lon commits under its own subject; its body is kept. lon.nix is rewritten from
+          # lon's template, which statix would change: it is committed as statix fixes it.
           if [ "$(git rev-parse HEAD)" != "$(git rev-parse main)" ]; then
             body=$(git log -1 --format=%b)
             git reset -q --soft HEAD~1
-            bash "$RUNNER_TEMP/commit" -m "chore(deps): update" -m "$body"
+            nix shell --impure --expr '(import (import ./inputs.nix).nixpkgs-unstable { }).statix' -c statix fix lon.nix
+            git add lon.nix
+            git commit -q -m "chore(deps): update" -m "$body"
           fi
 
       # A source whose patches are generated rather than written by hand keeps the
@@ -79,7 +73,7 @@ jobs:
             echo ">>> $hook"
             "./$hook"
             git add -A "patches/$source"
-            git diff --cached --quiet || bash "$RUNNER_TEMP/commit" -m "chore($source): run update hook"
+            git diff --cached --quiet || git commit -q -m "chore($source): run update hook"
           done
 
       - name: Open the PR and merge it once CI passes
