@@ -46,6 +46,13 @@
     networkmanager.enable = false;
   };
 
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 4 * 1024;
+    }
+  ];
+
   systemd.network = {
     enable = true;
 
@@ -56,11 +63,4 @@
       linkConfig.RequiredForOnline = "routable";
     };
   };
-
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 4 * 1024;
-    }
-  ];
 }

@@ -5,6 +5,9 @@ let
 in
 
 {
+  # SLSKD_SLSK_USERNAME, SLSKD_SLSK_PASSWORD, SLSKD_USERNAME, SLSKD_PASSWORD
+  age.secrets.slskd.file = ./env.age;
+
   services = {
     slskd = {
       enable = true;
@@ -28,7 +31,4 @@ in
     services.slskd.serviceConfig.UMask = "0002";
     tmpfiles.rules = [ "d '${downloads}' 0775 slskd media -" ];
   };
-
-  # SLSKD_SLSK_USERNAME, SLSKD_SLSK_PASSWORD, SLSKD_USERNAME, SLSKD_PASSWORD
-  age.secrets.slskd.file = ./env.age;
 }

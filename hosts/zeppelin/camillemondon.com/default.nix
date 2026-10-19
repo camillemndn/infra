@@ -14,6 +14,8 @@ let
 in
 
 {
+  security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
+
   services.nginx = {
     publicDomains = [
       "camillemondon.com"
@@ -137,6 +139,4 @@ in
       };
     };
   };
-
-  security.acme.certs."camillemondon.com".extraDomainNames = [ "www.camillemondon.com" ];
 }

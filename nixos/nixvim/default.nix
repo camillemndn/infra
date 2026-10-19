@@ -26,6 +26,7 @@ let
 in
 {
   imports = [ (import inputs.nixvim).nixosModules.nixvim ];
+  programs.neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 
   programs.nixvim = {
     autoCmd = [
@@ -333,6 +334,4 @@ in
     vimAlias = true;
     withRuby = false;
   };
-
-  programs.neovim.enable = lib.mkDefault (!config.programs.nixvim.enable);
 }

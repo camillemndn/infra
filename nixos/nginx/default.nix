@@ -89,6 +89,32 @@ with lib;
   };
 
   config = {
+    networking = {
+      firewall = {
+        allowedTCPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
+
+        allowedUDPPorts = mkIf cfg.enable [
+          80
+          443
+        ];
+      };
+    };
+
+    security.acme = {
+      defaults.email = "camillemondon@free.fr";
+      acceptTerms = true;
+    };
+
+    security.acme.certs = mapAttrs (
+      n: _:
+      mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {
+        server = mkDefault cfg.vpnAcmeServer;
+      }
+    ) cfg.virtualHosts;
+
     services.nginx = mkIf cfg.enable {
       recommendedOptimisation = mkDefault true;
       recommendedProxySettings = mkDefault true;
@@ -122,32 +148,6 @@ with lib;
         extraConfig = ''
           return 444;
         '';
-      };
-    };
-
-    security.acme = {
-      defaults.email = "camillemondon@free.fr";
-      acceptTerms = true;
-    };
-
-    security.acme.certs = mapAttrs (
-      n: _:
-      mkIf (config.services.tailscale.enable && hasSuffixIn cfg.vpnDomains n && !hasPrefix "www." n) {
-        server = mkDefault cfg.vpnAcmeServer;
-      }
-    ) cfg.virtualHosts;
-
-    networking = {
-      firewall = {
-        allowedTCPPorts = mkIf cfg.enable [
-          80
-          443
-        ];
-
-        allowedUDPPorts = mkIf cfg.enable [
-          80
-          443
-        ];
       };
     };
   };

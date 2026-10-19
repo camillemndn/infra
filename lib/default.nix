@@ -1,16 +1,6 @@
 lib: _:
 
 {
-  modulesIn =
-    dir:
-    lib.mapAttrsToList (entry: _: dir + "/${entry}") (
-      lib.filterAttrs (entry: type: type == "directory" || lib.hasSuffix ".nix" entry) (
-        builtins.readDir dir
-      )
-    );
-
-  hasSuffixIn = l: x: builtins.any (s: lib.hasSuffix s x) l;
-
   # Zones implied by public machines' nginx virtual hosts, shared by primary and secondaries.
   dnsZones =
     {
@@ -29,4 +19,14 @@ lib: _:
         lib.concatMap (name: (nginxOf name).publicDomains) (lib.attrNames publicMachines)
       );
     };
+
+  hasSuffixIn = l: x: builtins.any (s: lib.hasSuffix s x) l;
+
+  modulesIn =
+    dir:
+    lib.mapAttrsToList (entry: _: dir + "/${entry}") (
+      lib.filterAttrs (entry: type: type == "directory" || lib.hasSuffix ".nix" entry) (
+        builtins.readDir dir
+      )
+    );
 }

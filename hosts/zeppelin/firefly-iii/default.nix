@@ -30,6 +30,13 @@ let
 in
 
 {
+  age.secrets.firefly-iii-app-key = {
+    owner = cfg.user;
+    file = ./app-key.age;
+  };
+
+  environment.systemPackages = [ firefly-iii-manage ];
+
   services = {
     firefly-iii = {
       enable = true;
@@ -75,12 +82,5 @@ in
         max_execution_time = 3600
       '';
     };
-  };
-
-  environment.systemPackages = [ firefly-iii-manage ];
-
-  age.secrets.firefly-iii-app-key = {
-    owner = cfg.user;
-    file = ./app-key.age;
   };
 }

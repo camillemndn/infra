@@ -12,6 +12,7 @@ in
 
 {
   imports = [ ./module.nix ];
+  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 
   services = {
     librespot = {
@@ -38,6 +39,4 @@ in
       };
     };
   };
-
-  networking.firewall.allowedTCPPorts = [ cfg.settings.zeroconf-port ];
 }

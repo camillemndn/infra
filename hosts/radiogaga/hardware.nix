@@ -56,9 +56,6 @@ in
     raspberrypi-update-3b
   ];
 
-  system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
-  powerManagement.cpuFreqGovernor = mkDefault "ondemand";
-
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
@@ -71,13 +68,6 @@ in
     };
   };
 
-  swapDevices = [
-    {
-      device = "/swapfile";
-      size = 1024;
-    }
-  ];
-
   networking = {
     useDHCP = mkDefault false;
 
@@ -88,4 +78,14 @@ in
   };
 
   nixpkgs.hostPlatform = "aarch64-linux";
+  powerManagement.cpuFreqGovernor = mkDefault "ondemand";
+
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 1024;
+    }
+  ];
+
+  system.activationScripts.raspberrypi-update = "${raspberrypi-update-3b}/bin/rpi-update-3b";
 }

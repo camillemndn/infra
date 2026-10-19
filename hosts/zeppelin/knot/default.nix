@@ -197,6 +197,19 @@ let
 in
 
 {
+  age.secrets.knot-tsig = {
+    file = ./tsig.age;
+    owner = "knot";
+  };
+
+  # The tailnet address appears after boot.
+  boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
+  };
+
   services = {
     knot = {
       enable = true;
@@ -278,17 +291,5 @@ in
     };
   };
 
-  age.secrets.knot-tsig = {
-    file = ./tsig.age;
-    owner = "knot";
-  };
-
-  # The tailnet address appears after boot.
-  boot.kernel.sysctl."net.ipv6.ip_nonlocal_bind" = 1;
   systemd.services.knot.after = [ "tailscaled.service" ];
-
-  networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
-  };
 }

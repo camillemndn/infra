@@ -49,10 +49,11 @@
     };
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
   hardware.nvidia.open = true;
 
   services = {
     xserver.videoDrivers = [ "nvidia" ];
   };
+
+  swapDevices = [ { device = "/dev/disk/by-uuid/2deec870-eb12-4930-843f-c6603e27a424"; } ];
 }

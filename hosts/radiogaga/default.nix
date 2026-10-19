@@ -8,6 +8,18 @@ _:
     allowLocalDeployment = false;
   };
 
+  # Pulse sink, MPD, Iris, UPnP renderer, SSDP; Avahi opens 5353 itself.
+  networking.firewall = {
+    allowedTCPPorts = [
+      4713
+      6600
+      6680
+      49494
+    ];
+
+    allowedUDPPorts = [ 1900 ];
+  };
+
   services = {
     nginx = {
       enable = true;
@@ -56,21 +68,9 @@ _:
     };
   };
 
-  # Pulse sink, MPD, Iris, UPnP renderer, SSDP; Avahi opens 5353 itself.
-  networking.firewall = {
-    allowedTCPPorts = [
-      4713
-      6600
-      6680
-      49494
-    ];
-
-    allowedUDPPorts = [ 1900 ];
-  };
-
-  # System-wide PipeWire: audio clients need the pipewire group.
-  users.users.shairport.extraGroups = [ "pipewire" ];
   # Its evaluation needs over 1 GB, more than the Pi has.
   services.comin.enable = false;
+  # System-wide PipeWire: audio clients need the pipewire group.
+  users.users.shairport.extraGroups = [ "pipewire" ];
   system.stateVersion = "22.11";
 }

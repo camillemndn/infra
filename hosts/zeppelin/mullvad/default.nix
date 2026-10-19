@@ -37,6 +37,11 @@ let
   proxyName = port: "netns-vpn-proxy-${toString port}";
 in
 {
+  # Mullvad's resolver, reachable only through the tunnel.
+  environment.etc."netns/vpn/resolv.conf".text = ''
+    nameserver 10.64.0.1
+  '';
+
   networking = {
     firewall.allowedUDPPorts = [ 51820 ];
 
@@ -66,11 +71,6 @@ in
       ];
     };
   };
-
-  # Mullvad's resolver, reachable only through the tunnel.
-  environment.etc."netns/vpn/resolv.conf".text = ''
-    nameserver 10.64.0.1
-  '';
 
   services = {
     # Inside the namespace, localhost is not reachable from the relay.

@@ -1,6 +1,10 @@
 _:
 
 {
+  security.acme.certs."natachamondonericpierre.mndn.fr".extraDomainNames = [
+    "www.natachamondonericpierre.mndn.fr"
+  ];
+
   services.nginx = {
     publicDomains = [ "mndn.fr" ];
 
@@ -29,8 +33,4 @@ _:
         "301 https://www.natachamondonericpierre.mndn.fr$request_uri";
     };
   };
-
-  security.acme.certs."natachamondonericpierre.mndn.fr".extraDomainNames = [
-    "www.natachamondonericpierre.mndn.fr"
-  ];
 }

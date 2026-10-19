@@ -12,6 +12,18 @@
     "${inputs.buildbot-nix}/nix/worker.nix"
   ];
 
+  age.secrets = {
+    buildbot-nix-worker-password = {
+      file = ./buildbot-nix-worker-password.age;
+      owner = "buildbot-worker";
+    };
+
+    buildbot-nix-workers.file = ./buildbot-nix-workers.age;
+    github-app-secret.file = ./github-app-secret.age;
+    github-oauth-secret.file = ./github-oauth-secret.age;
+    github-webhook-secret.file = ./github-webhook-secret.age;
+  };
+
   services = {
     buildbot-nix = {
       master = {
@@ -94,16 +106,4 @@
     pkgs.nix-eval-jobs
     pkgs.coreutils
   ];
-
-  age.secrets = {
-    buildbot-nix-worker-password = {
-      file = ./buildbot-nix-worker-password.age;
-      owner = "buildbot-worker";
-    };
-
-    buildbot-nix-workers.file = ./buildbot-nix-workers.age;
-    github-app-secret.file = ./github-app-secret.age;
-    github-oauth-secret.file = ./github-oauth-secret.age;
-    github-webhook-secret.file = ./github-webhook-secret.age;
-  };
 }

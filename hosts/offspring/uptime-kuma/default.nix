@@ -269,6 +269,34 @@ in
 
 {
   imports = [ "${inputs.stateless-uptime-kuma}/nixos/module.nix" ];
+  age.secrets.uptime-kuma-password.file = ./password.age;
+
+  assertions = [
+    {
+      assertion = lib.allUnique (map (c: c.name) checks);
+      message = "Two Uptime Kuma monitors share a name.";
+    }
+  ];
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      statelessUptimeKuma =
+        (final.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix" {
+          python3 = prev.python3.override {
+            packageOverrides = _: pyPrev: {
+              # Fork speaking the Uptime Kuma 2.x API.
+              uptime-kuma-api = pyPrev.uptime-kuma-api.overridePythonAttrs {
+                src = inputs.uptime-kuma-api;
+              };
+            };
+          };
+        }).overridePythonAttrs
+          {
+            # Upstream's lib.fileset.gitTracked needs a .git directory.
+            src = inputs.stateless-uptime-kuma;
+          };
+    })
+  ];
 
   services = {
     uptime-kuma.enable = true;
@@ -328,35 +356,6 @@ in
       };
     };
   };
-
-  assertions = [
-    {
-      assertion = lib.allUnique (map (c: c.name) checks);
-      message = "Two Uptime Kuma monitors share a name.";
-    }
-  ];
-
-  age.secrets.uptime-kuma-password.file = ./password.age;
-
-  nixpkgs.overlays = [
-    (final: prev: {
-      statelessUptimeKuma =
-        (final.callPackage "${inputs.stateless-uptime-kuma}/stateless-uptime-kuma.nix" {
-          python3 = prev.python3.override {
-            packageOverrides = _: pyPrev: {
-              # Fork speaking the Uptime Kuma 2.x API.
-              uptime-kuma-api = pyPrev.uptime-kuma-api.overridePythonAttrs {
-                src = inputs.uptime-kuma-api;
-              };
-            };
-          };
-        }).overridePythonAttrs
-          {
-            # Upstream's lib.fileset.gitTracked needs a .git directory.
-            src = inputs.stateless-uptime-kuma;
-          };
-    })
-  ];
 
   systemd.services.ntfy-sh.serviceConfig.StateDirectory = "ntfy-sh";
 }

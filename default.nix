@@ -93,7 +93,6 @@ in
 
   colmena = hive;
   colmenaHive = import "${inputs.colmena}/src/nix/hive/eval.nix" { rawHive = hive; };
-  formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 
   devShells = lib.genAttrs systems (
     system:
@@ -148,4 +147,6 @@ in
       };
     }
   );
+
+  formatter = lib.genAttrs systems (system: unstable.${system}.nixfmt);
 }

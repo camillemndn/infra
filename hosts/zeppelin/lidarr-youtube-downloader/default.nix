@@ -99,19 +99,6 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    users = {
-      users = mkIf (cfg.user == "lidarr-youtube-downloader") {
-        lidarr-youtube-downloader = {
-          isSystemUser = true;
-          inherit (cfg) group;
-        };
-      };
-
-      groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
-        lidarr-youtube-downloader = { };
-      };
-    };
-
     systemd = {
       # The download directory must exist, group-writable.
       tmpfiles.rules = optional (
@@ -152,6 +139,19 @@ with lib;
             optional (cfg.downloadPath != null) cfg.downloadPath
             ++ optional (cfg.musicPath != null) cfg.musicPath;
         };
+      };
+    };
+
+    users = {
+      users = mkIf (cfg.user == "lidarr-youtube-downloader") {
+        lidarr-youtube-downloader = {
+          isSystemUser = true;
+          inherit (cfg) group;
+        };
+      };
+
+      groups = mkIf (cfg.group == "lidarr-youtube-downloader") {
+        lidarr-youtube-downloader = { };
       };
     };
   };

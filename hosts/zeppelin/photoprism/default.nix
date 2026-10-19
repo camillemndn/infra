@@ -5,6 +5,9 @@
 }:
 
 {
+  age.secrets.photoprism-password.file = ./password.age;
+  environment.systemPackages = [ pkgs.photoprism ];
+
   services = {
     photoprism = {
       enable = true;
@@ -30,8 +33,6 @@
       websockets = true;
     };
   };
-
-  environment.systemPackages = [ pkgs.photoprism ];
 
   systemd = {
     services = {
@@ -63,6 +64,4 @@
       };
     };
   };
-
-  age.secrets.photoprism-password.file = ./password.age;
 }

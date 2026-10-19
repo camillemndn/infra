@@ -5,6 +5,11 @@
 }:
 
 {
+  age.secrets.nextcloud-adminpass = {
+    file = ./adminpass.age;
+    owner = "nextcloud";
+  };
+
   services = {
     nextcloud = {
       enable = true;
@@ -63,10 +68,5 @@
       user = "nextcloud";
       port = 0;
     };
-  };
-
-  age.secrets.nextcloud-adminpass = {
-    file = ./adminpass.age;
-    owner = "nextcloud";
   };
 }

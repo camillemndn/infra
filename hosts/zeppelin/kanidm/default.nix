@@ -11,6 +11,16 @@ let
 in
 
 {
+  age.secrets.kanidm-idm-admin-password = {
+    file = ./idm-admin-password.age;
+    owner = "kanidm";
+  };
+
+  security.acme.certs.${hostName} = {
+    group = "acme";
+    reloadServices = [ "kanidm.service" ];
+  };
+
   services = {
     kanidm = {
       server = {
@@ -68,15 +78,5 @@ in
       kanidm.extraGroups = [ "acme" ];
       nginx.extraGroups = [ "acme" ];
     };
-  };
-
-  security.acme.certs.${hostName} = {
-    group = "acme";
-    reloadServices = [ "kanidm.service" ];
-  };
-
-  age.secrets.kanidm-idm-admin-password = {
-    file = ./idm-admin-password.age;
-    owner = "kanidm";
   };
 }

@@ -78,6 +78,25 @@ in
 
 {
   imports = [ "${inputs.nix-minecraft}/modules/minecraft-servers.nix" ];
+
+  age = {
+    secrets = {
+      minecraft-whitelist = {
+        file = ./whitelist.json.age;
+        owner = "minecraft";
+        group = "minecraft";
+        mode = "0440";
+      };
+
+      minecraft-ops = {
+        file = ./ops.json.age;
+        owner = "minecraft";
+        group = "minecraft";
+        mode = "0440";
+      };
+    };
+  };
+
   nixpkgs.overlays = [ (import "${inputs.nix-minecraft}/overlay.nix") ];
 
   services = {
@@ -196,24 +215,6 @@ in
             };
           };
         };
-      };
-    };
-  };
-
-  age = {
-    secrets = {
-      minecraft-whitelist = {
-        file = ./whitelist.json.age;
-        owner = "minecraft";
-        group = "minecraft";
-        mode = "0440";
-      };
-
-      minecraft-ops = {
-        file = ./ops.json.age;
-        owner = "minecraft";
-        group = "minecraft";
-        mode = "0440";
       };
     };
   };

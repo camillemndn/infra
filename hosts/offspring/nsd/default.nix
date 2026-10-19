@@ -40,6 +40,13 @@ let
 in
 
 {
+  age.secrets.nsd-tsig.file = ./tsig.age;
+
+  networking.firewall = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [ 53 ];
+  };
+
   services = {
     nsd = {
       enable = true;
@@ -61,12 +68,5 @@ in
         allowNotify = [ "${primaryPrefix} ${tsigKey}" ];
       });
     };
-  };
-
-  age.secrets.nsd-tsig.file = ./tsig.age;
-
-  networking.firewall = {
-    allowedTCPPorts = [ 53 ];
-    allowedUDPPorts = [ 53 ];
   };
 }

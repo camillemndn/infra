@@ -72,14 +72,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    users.users.${cfg.user} = {
-      isSystemUser = true;
-      description = "Librespot system user";
-      group = "audio";
-      home = "/var/lib/librespot";
-      createHome = true;
-    };
-
     services.librespot.args = lib.concatLists (
       lib.mapAttrsToList (
         k: v:
@@ -117,6 +109,14 @@ in
         StateDirectory = "librespot";
         CacheDirectory = "librespot";
       };
+    };
+
+    users.users.${cfg.user} = {
+      isSystemUser = true;
+      description = "Librespot system user";
+      group = "audio";
+      home = "/var/lib/librespot";
+      createHome = true;
     };
   };
 }

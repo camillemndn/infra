@@ -1,6 +1,8 @@
 { config, ... }:
 
 {
+  age.secrets.plausible-secret-key-base.file = ./secret-key-base.age;
+
   services = {
     plausible = {
       enable = true;
@@ -13,6 +15,4 @@
 
     nginx.virtualHosts."analytics.mndn.fr".port = config.services.plausible.server.port;
   };
-
-  age.secrets.plausible-secret-key-base.file = ./secret-key-base.age;
 }

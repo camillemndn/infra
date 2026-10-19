@@ -19,6 +19,13 @@ let
 in
 
 {
+  environment.systemPackages = with pkgs; [
+    shntool
+    cuetools
+    monkeysAudio
+    flac
+  ];
+
   services = {
     jellyfin = {
       enable = true;
@@ -138,18 +145,11 @@ in
     };
   };
 
+  systemd.services.calibre-server.serviceConfig.ExecStart =
+    lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
+
   users = {
     groups.${group}.name = group;
     users.camille.extraGroups = [ group ];
   };
-
-  environment.systemPackages = with pkgs; [
-    shntool
-    cuetools
-    monkeysAudio
-    flac
-  ];
-
-  systemd.services.calibre-server.serviceConfig.ExecStart =
-    lib.mkForce "${pkgs.calibre}/bin/calibre-server --enable-auth ${lib.concatStringsSep " " config.services.calibre-server.libraries} --port 8079";
 }

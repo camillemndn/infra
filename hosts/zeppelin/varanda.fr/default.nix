@@ -1,6 +1,8 @@
 _:
 
 {
+  security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
+
   services.nginx = {
     publicDomains = [ "varanda.fr" ];
 
@@ -21,6 +23,4 @@ _:
       "www.varanda.fr".locations."/".return = "301 https://varanda.fr$request_uri";
     };
   };
-
-  security.acme.certs."varanda.fr".extraDomainNames = [ "www.varanda.fr" ];
 }

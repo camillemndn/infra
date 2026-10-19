@@ -9,6 +9,12 @@ let
 in
 
 {
+  networking.firewall.allowedTCPPorts = [
+    443
+    1143
+    1025
+  ];
+
   services = {
     davmail = {
       enable = true;
@@ -40,12 +46,6 @@ in
 
     nginx.virtualHosts."${fqdn}" = { };
   };
-
-  networking.firewall.allowedTCPPorts = [
-    443
-    1143
-    1025
-  ];
 
   systemd.services.davmail.serviceConfig = {
     ExecStartPre =

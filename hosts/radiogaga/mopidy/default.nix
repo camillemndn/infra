@@ -11,6 +11,11 @@ let
   });
 in
 {
+  age.secrets.mopidy-subidy = {
+    file = ./subidy.age;
+    owner = "mopidy";
+  };
+
   services = {
     mopidy = {
       # Streams from zeppelin's Navidrome; controlled from Iris (:6680/iris) or MPD (:6600).
@@ -37,9 +42,4 @@ in
 
   # System-wide PipeWire: audio clients need the pipewire group.
   users.users.mopidy.extraGroups = [ "pipewire" ];
-
-  age.secrets.mopidy-subidy = {
-    file = ./subidy.age;
-    owner = "mopidy";
-  };
 }
