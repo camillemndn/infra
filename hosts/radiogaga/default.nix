@@ -1,4 +1,4 @@
-_:
+{ pkgs, ... }:
 
 {
   deployment = {
@@ -38,8 +38,7 @@ _:
       settings.general.name = "radiogaga";
     };
 
-    # DLNA/UPnP renderer. Its DynamicUser is only in `audio`; system-wide PipeWire
-    # may also require the pipewire group.
+    # DLNA/UPnP renderer, playing through system-wide PipeWire.
     gmediarender = {
       enable = true;
       friendlyName = "radiogaga";
@@ -70,7 +69,18 @@ _:
 
   # Its evaluation needs over 1 GB, more than the Pi has.
   services.comin.enable = false;
+
   # System-wide PipeWire: audio clients need the pipewire group.
+  systemd.services.gmediarender = {
+    serviceConfig.SupplementaryGroups = [ "pipewire" ];
+
+    environment = {
+      GST_PLUGIN_PATH_1_0 = "${pkgs.pipewire}/lib/gstreamer-1.0";
+      # GStreamer's HTTP source needs a GIO TLS backend for Navidrome HTTPS URLs.
+      GIO_EXTRA_MODULES = "${pkgs.glib-networking}/lib/gio/modules";
+    };
+  };
+
   users.users.shairport.extraGroups = [ "pipewire" ];
   system.stateVersion = "22.11";
 }
