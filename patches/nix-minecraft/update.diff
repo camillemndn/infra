@@ -7804,7 +7804,7 @@ index 324b301..b19416d 100644
  }
 \ No newline at end of file
 diff --git a/pkgs/paper-servers/lock.json b/pkgs/paper-servers/lock.json
-index 800d8ec..2caac47 100644
+index 800d8ec..ceb8d32 100644
 --- a/pkgs/paper-servers/lock.json
 +++ b/pkgs/paper-servers/lock.json
 @@ -22775,6 +22775,26 @@
@@ -7834,7 +7834,7 @@ index 800d8ec..2caac47 100644
      }
    },
    "26.2-rc-2": {
-@@ -23031,6 +23051,270 @@
+@@ -23031,6 +23051,278 @@
      "140": {
        "url": "https://fill-data.papermc.io/v1/objects/98aabc113a80b9b5e183475e839a17cf99c39c915a1f46b8f35a5e89fd5de0f1/paper-26.3-140.jar",
        "sha256": "98aabc113a80b9b5e183475e839a17cf99c39c915a1f46b8f35a5e89fd5de0f1"
@@ -8102,14 +8102,22 @@ index 800d8ec..2caac47 100644
 +    "209": {
 +      "url": "https://fill-data.papermc.io/v1/objects/0a056c7648cfa0ca8d9b8c833a2bd2e1313ed4f1393a5125dd3444a4ee257e22/paper-26.3-209.jar",
 +      "sha256": "0a056c7648cfa0ca8d9b8c833a2bd2e1313ed4f1393a5125dd3444a4ee257e22"
++    },
++    "210": {
++      "url": "https://fill-data.papermc.io/v1/objects/26425ad0dbf4da06daeb0c3b3512e03c6943949db28b31fdf2ae0a73bb192204/paper-26.3-210.jar",
++      "sha256": "26425ad0dbf4da06daeb0c3b3512e03c6943949db28b31fdf2ae0a73bb192204"
++    },
++    "211": {
++      "url": "https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar",
++      "sha256": "f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94"
      }
    },
    "26.3-rc-3": {
 diff --git a/pkgs/purpur-servers/lock.json b/pkgs/purpur-servers/lock.json
-index a18233e..0097340 100644
+index a18233e..b5c85fe 100644
 --- a/pkgs/purpur-servers/lock.json
 +++ b/pkgs/purpur-servers/lock.json
-@@ -7441,6 +7441,39 @@
+@@ -7441,6 +7441,42 @@
      },
      "2642": {
        "sha256": "cc076214fc856f55e52f7fe83e12fb4361de09677f5c89dcaf024a2a582cdb50"
@@ -8146,6 +8154,9 @@ index a18233e..0097340 100644
 +    },
 +    "2653": {
 +      "sha256": "1200f2816e841f6f01cb9af8429a9b2bf4a6e4350fb52d123a176b17a4075341"
++    },
++    "2654": {
++      "sha256": "a22d86bb993491a2d4fe77eca77c247541f1720ce19f68c7af0881c443b9878e"
      }
    }
  }
