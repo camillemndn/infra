@@ -117,9 +117,9 @@
       "owner": "nix-community",
       "repo": "nixos-anywhere",
       "branch": "main",
-      "revision": "bc36798d8fcad7ee85ac139c8473e999afbf4a1d",
-      "url": "https://github.com/nix-community/nixos-anywhere/archive/bc36798d8fcad7ee85ac139c8473e999afbf4a1d.tar.gz",
-      "hash": "sha256-kZvMi1NCIh748Gfg5d9FLkSYnwvBrxoT51w+H1PBoRo="
+      "revision": "92b94751fc010eab62d07de40972cffa6937cafd",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/92b94751fc010eab62d07de40972cffa6937cafd.tar.gz",
+      "hash": "sha256-TS1U/deeX1o65ZqFvi1vo9I7hVReqv2dOwV0tgO8TUw="
     },
     "nixos-hardware": {
       "type": "GitHub",
