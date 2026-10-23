@@ -32,6 +32,7 @@
           content = {
             type = "luks";
             name = "luks-d0de046c-c584-4761-a3cb-66fc7a1802b8";
+            settings.crypttabExtraOpts = [ "tpm2-device=auto" ];
 
             content = {
               type = "filesystem";

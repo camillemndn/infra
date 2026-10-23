@@ -21,7 +21,6 @@
         "tpm_crb"
       ];
 
-      clevisLuksAskpass.enable = true;
       secrets."/crypto_keyfile.bin" = null;
     };
 
