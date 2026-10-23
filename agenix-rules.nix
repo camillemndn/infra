@@ -9,21 +9,34 @@ let
     zeppelin = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDNKOAMN3AxfW6HKrom5s6D4Yy9WYEAK2FuOQYWLuFm3";
   };
 
-  agesIn =
-    dir:
+  filesIn =
+    suffix: dir:
     builtins.concatLists (
       builtins.attrValues (
         builtins.mapAttrs (
           name: type:
           if type == "directory" then
-            agesIn "${dir}/${name}"
-          else if builtins.match ".*\\.age" name != null then
+            filesIn suffix "${dir}/${name}"
+          else if builtins.match ".*\\${suffix}" name != null then
             [ "${dir}/${name}" ]
           else
             [ ]
         ) (builtins.readDir (./. + "/${dir}"))
       )
     );
+
+  # A secret named in a host's config (./name.age) gets its rule before the file exists.
+  agesIn =
+    dir:
+    filesIn ".age" dir
+    ++ builtins.concatMap (
+      nix:
+      map (match: "${dirOf nix}/${builtins.head match}") (
+        builtins.filter builtins.isList (
+          builtins.split "\\./([A-Za-z0-9._/-]+\\.age)" (builtins.readFile (./. + "/${nix}"))
+        )
+      )
+    ) (filesIn ".nix" dir);
 in
 
 builtins.listToAttrs (
