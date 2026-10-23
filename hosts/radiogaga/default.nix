@@ -8,27 +8,21 @@
     allowLocalDeployment = false;
   };
 
-  # Pulse sink, MPD, Iris, UPnP renderer, SSDP; Avahi opens 5353 itself.
+  # Pulse sink, UPnP renderer, SSDP; Avahi opens 5353 itself.
   networking.firewall = {
     allowedTCPPorts = [
       4713
-      6600
-      6680
       49494
     ];
 
     allowedUDPPorts = [ 1900 ];
   };
 
+  # No cellular modem; NetworkManager would otherwise start ModemManager.
+  networking.modemmanager.enable = false;
   nix.settings.auto-optimise-store = false;
 
   services = {
-    nginx = {
-      enable = true;
-      enableDefault = true;
-    };
-
-    radiogaga.enable = true;
     tailscale.enable = false;
     # Avahi comes from librespot/; AirPlay and the network sink reuse it.
     resolved.settings.Resolve.MulticastDNS = "no";
