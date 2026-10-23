@@ -137,6 +137,8 @@ in
           (import ./scripts/nixos-anywhere.nix { inherit inputs pkgs; })
           pkgs.colmena
           pkgs.lon
+          pkgs.nix-init
+          pkgs.nix-update
           pkgs.statix
         ];
 

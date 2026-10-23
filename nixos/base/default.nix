@@ -75,10 +75,8 @@ in
         lazygit
         lsof
         nh
-        nix-init
         nix-output-monitor
         nix-tree
-        nix-update
         nixos-option
         nmap
         ntfs3g
