@@ -62,8 +62,10 @@
 
   # Built with nix build .#nixosConfigurations.radiogaga.config.system.build.images.sd-card
   image.modules.sd-card =
-    { lib, ... }:
+    { lib, modulesPath, ... }:
     {
+      # The installer profile's rescue tools, filesystems and ZFS serve no purpose on this card.
+      disabledModules = [ "${modulesPath}/profiles/base.nix" ];
       # The deployed system boots without all-hardware's initrd modules and firmware.
       hardware.enableAllHardware = lib.mkForce false;
       sdImage.firmwareSize = 512;
