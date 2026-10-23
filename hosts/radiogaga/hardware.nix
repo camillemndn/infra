@@ -18,6 +18,8 @@
 
   hardware = {
     bluetooth.enable = true;
+    # nixos-hardware ships the Wi-Fi/Bluetooth firmware; nothing else on the board loads any.
+    enableRedistributableFirmware = false;
 
     # Let nixos-hardware manage config.txt, firmware, overlays and U-Boot.
     raspberry-pi.firmware = {
@@ -60,8 +62,12 @@
 
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
+
   # Prefer compressed RAM swap before falling back to the SD card.
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+  };
 
   swapDevices = [
     {
