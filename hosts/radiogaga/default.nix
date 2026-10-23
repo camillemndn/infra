@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   deployment = {
@@ -8,18 +8,49 @@
     allowLocalDeployment = false;
   };
 
-  # Pulse sink, UPnP renderer, SSDP; Avahi opens 5353 itself.
-  networking.firewall = {
-    allowedTCPPorts = [
-      4713
-      49494
-    ];
+  # Holds HOME_WIFI_SSID=<name> and HOME_WIFI_PSK=<passphrase>, substituted into the Wi-Fi profile at activation.
+  age.secrets.wifi.file = ./wifi.age;
 
-    allowedUDPPorts = [ 1900 ];
+  networking = {
+    # Pulse sink, UPnP renderer, SSDP; Avahi opens 5353 itself.
+    firewall = {
+      allowedTCPPorts = [
+        4713
+        49494
+      ];
+
+      allowedUDPPorts = [ 1900 ];
+    };
+
+    # No cellular modem; NetworkManager would otherwise start ModemManager.
+    modemmanager.enable = false;
+
+    networkmanager.ensureProfiles = {
+      environmentFiles = [ config.age.secrets.wifi.path ];
+
+      profiles.home = {
+        connection = {
+          id = "home";
+          type = "wifi";
+          interface-name = "wlan0";
+        };
+
+        wifi = {
+          mode = "infrastructure";
+          ssid = "$HOME_WIFI_SSID";
+        };
+
+        wifi-security = {
+          key-mgmt = "wpa-psk";
+          psk = "$HOME_WIFI_PSK";
+        };
+
+        ipv4.method = "auto";
+        ipv6.method = "auto";
+      };
+    };
   };
 
-  # No cellular modem; NetworkManager would otherwise start ModemManager.
-  networking.modemmanager.enable = false;
   nix.settings.auto-optimise-store = false;
 
   services = {
