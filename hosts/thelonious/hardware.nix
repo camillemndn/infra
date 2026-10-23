@@ -14,11 +14,15 @@
     initrd = {
       luks = {
         devices = {
-          "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803".device =
-            "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
+          "luks-c64c8ddc-e96f-453d-b445-98bef8fd0803" = {
+            device = "/dev/disk/by-uuid/c64c8ddc-e96f-453d-b445-98bef8fd0803";
+            crypttabExtraOpts = [ "tpm2-device=auto" ];
+          };
 
-          "luks-0a53c761-f5d4-4015-9d68-349251b71c85".device =
-            "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
+          "luks-0a53c761-f5d4-4015-9d68-349251b71c85" = {
+            device = "/dev/disk/by-uuid/0a53c761-f5d4-4015-9d68-349251b71c85";
+            crypttabExtraOpts = [ "tpm2-device=auto" ];
+          };
         };
       };
 
