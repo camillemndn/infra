@@ -16,13 +16,10 @@
         "meteo_france"
         "mobile_app"
         "picotts"
-        "piper"
         "radio_browser"
         "spotify"
-        "stt"
         "tradfri"
         "tts"
-        "wake_word"
         "zeroconf"
       ];
 
