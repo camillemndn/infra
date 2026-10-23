@@ -60,6 +60,15 @@
     };
   };
 
+  # Built with nix build .#nixosConfigurations.radiogaga.config.system.build.images.sd-card
+  image.modules.sd-card =
+    { lib, ... }:
+    {
+      # The deployed system boots without all-hardware's initrd modules and firmware.
+      hardware.enableAllHardware = lib.mkForce false;
+      sdImage.firmwareSize = 512;
+    };
+
   nixpkgs.hostPlatform = "aarch64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
