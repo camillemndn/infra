@@ -43,7 +43,18 @@
     };
 
     openssh.enable = false;
-    pipewire.jack.enable = true;
+
+    pipewire = {
+      jack.enable = true;
+
+      # Lists network PulseAudio sinks announced over Avahi, such as radiogaga.
+      extraConfig.pipewire-pulse."10-zeroconf-discover"."pulse.cmd" = [
+        {
+          cmd = "load-module";
+          args = "module-zeroconf-discover";
+        }
+      ];
+    };
 
     printing.drivers = with pkgs; [
       cups-brother-hll2340dw
