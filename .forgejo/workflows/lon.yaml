@@ -61,7 +61,8 @@ jobs:
           fi
 
       # A source whose patches are generated rather than written by hand keeps the
-      # script that regenerates them in patches/<source>/update.sh.
+      # script that regenerates them in patches/<source>/update.sh. The branch holds a
+      # single commit: regenerated patches go into the first one, each with a line in its body.
       - name: Regenerate patches
         run: |
           # Their nix-shell resolves <nixpkgs>, which the runner does not set.
@@ -79,7 +80,11 @@ jobs:
               echo "patches/$source: unchanged"
             else
               git diff --cached --stat
-              git commit -q -m "chore($source): regenerate patches"
+              if [ "$(git rev-parse HEAD)" = "$(git rev-parse main)" ]; then
+                git commit -q -m "chore($source): regenerate patches"
+              else
+                git commit -q --amend -m "$(git log -1 --format=%B)" -m "chore($source): regenerate patches"
+              fi
             fi
             echo "::endgroup::"
           done
