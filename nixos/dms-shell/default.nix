@@ -81,9 +81,22 @@ lib.mkIf cfg.enable {
   ];
 
   programs = {
-    dms-shell.systemd.target = "niri.service";
+    dms-shell = {
+      systemd.target = "niri.service";
+
+      # Bar widget driving gpu-screen-recorder, with system and microphone audio.
+      plugins.screenRecorder.src = pkgs.fetchFromGitHub {
+        owner = "arqueon";
+        repo = "dms-screen-recorder";
+        rev = "1e25de9d16e63871d53b21127d31af026fa60cd6";
+        hash = "sha256-Q0NgtSpP74Gpx5LJWslqcBuVZ2jrjpY+2Ae1sBId6Fs=";
+      };
+    };
+
     # Indexes files for the launcher's file search.
     dsearch.enable = true;
+    # setcap wrapper for gsr-kms-server: recording without a prompt.
+    gpu-screen-recorder.enable = true;
     localsend.enable = true;
     niri.enable = lib.mkDefault true;
   };
