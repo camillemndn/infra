@@ -27,9 +27,9 @@
       "owner": "zhaofengli",
       "repo": "colmena",
       "branch": "main",
-      "revision": "e269669b798a361a521029d5d15e289124a15038",
-      "url": "https://github.com/zhaofengli/colmena/archive/e269669b798a361a521029d5d15e289124a15038.tar.gz",
-      "hash": "sha256-jp+gxgnCdMhpBxxBnOoHW5fRVc+C5rKCFHsP/afoh3w="
+      "revision": "3ec48100cdc024300b0c442fff34e7b3d5c8addb",
+      "url": "https://github.com/zhaofengli/colmena/archive/3ec48100cdc024300b0c442fff34e7b3d5c8addb.tar.gz",
+      "hash": "sha256-eaU2pHtCYaICoKVZrE6kMvhjdW64i9LGgWUcfBjQAmU="
     },
     "comin": {
       "type": "GitHub",
@@ -97,9 +97,9 @@
       "owner": "mic92",
       "repo": "nix-index-database",
       "branch": "main",
-      "revision": "1b4d1758fa6053c5d6284254a793134fa602fbff",
-      "url": "https://github.com/mic92/nix-index-database/archive/1b4d1758fa6053c5d6284254a793134fa602fbff.tar.gz",
-      "hash": "sha256-2DAEMk8YkV8OF6N2uw9jQ016cYoNkcgnq50AShwWxNw="
+      "revision": "93696586f3463024cceb089353539be95a38ae2b",
+      "url": "https://github.com/mic92/nix-index-database/archive/93696586f3463024cceb089353539be95a38ae2b.tar.gz",
+      "hash": "sha256-v75hPw5NJ+mRRcwUzKi2OQtVSVv1hgq6ceAlPQB2kEE="
     },
     "nix-minecraft": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36",
-      "url": "https://github.com/NixOS/nixpkgs/archive/da6dc0e7b26060f2f71ce3ef7088fb56ee44fa36.tar.gz",
-      "hash": "sha256-MlvRfa1O5Cqc2/a+gG+l9TSuowEoCKCmrJ1d9oAVm0I="
+      "revision": "1f607aa79b6356ed45d3cd3c8079c196e79efa2c",
+      "url": "https://github.com/NixOS/nixpkgs/archive/1f607aa79b6356ed45d3cd3c8079c196e79efa2c.tar.gz",
+      "hash": "sha256-Mg3rRjsbMqhSMxop5PYMXos8SwAjejrxSgVThTvP9eg="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
