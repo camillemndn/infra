@@ -108,7 +108,8 @@ lib.mkIf cfg.enable {
     enable = lib.mkDefault true;
     compositor.name = lib.mkDefault "niri";
     # This module runs the greeter from share/quickshell/dms, which dux-shell does not install.
-    package = pkgs.dms-shell;
+    # It also adds the package to systemPackages, where the session's `dms` must take precedence.
+    package = lib.lowPrio pkgs.dms-shell;
     quickshell.package = pkgs.quickshell;
   };
 }
