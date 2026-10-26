@@ -82,6 +82,9 @@ lib.mkIf cfg.enable {
 
   programs = {
     dms-shell = {
+      # 2.x, for plugins whose manifest lists several `components`; packaged as dux-shell there.
+      package = pkgs.unstable.dux-shell;
+      quickshell.package = pkgs.unstable.quickshell;
       systemd.target = "niri.service";
 
       # Bar widget driving gpu-screen-recorder, with system and microphone audio.
@@ -104,5 +107,8 @@ lib.mkIf cfg.enable {
   services.displayManager.dms-greeter = {
     enable = lib.mkDefault true;
     compositor.name = lib.mkDefault "niri";
+    # This module runs the greeter from share/quickshell/dms, which dux-shell does not install.
+    package = pkgs.dms-shell;
+    quickshell.package = pkgs.quickshell;
   };
 }
