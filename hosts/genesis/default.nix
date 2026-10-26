@@ -47,11 +47,12 @@
     pipewire = {
       jack.enable = true;
 
-      # Lists network PulseAudio sinks announced over Avahi, such as radiogaga.
+      # Lists network PulseAudio sinks announced over Avahi, such as radiogaga,
+      # with a fixed 500 ms latency on their tunnels.
       extraConfig.pipewire-pulse."10-zeroconf-discover"."pulse.cmd" = [
         {
           cmd = "load-module";
-          args = "module-zeroconf-discover";
+          args = "module-zeroconf-discover latency_msec=500";
         }
       ];
     };
