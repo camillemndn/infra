@@ -13,7 +13,7 @@ lib.mkIf config.services.graphical-desktop.enable {
       firefoxpwa
       gimp-with-plugins
       inkscape-with-extensions
-      mpv
+      (mpv.override { scripts = [ mpvScripts.mpris ]; })
     ];
   };
 
