@@ -21639,7 +21639,7 @@ index 324b301..0ea1d38 100644
      }
    }
 diff --git a/pkgs/paper-servers/lock.json b/pkgs/paper-servers/lock.json
-index 800d8ec..0289701 100644
+index 800d8ec..eca276c 100644
 --- a/pkgs/paper-servers/lock.json
 +++ b/pkgs/paper-servers/lock.json
 @@ -22775,6 +22775,30 @@
@@ -21673,7 +21673,7 @@ index 800d8ec..0289701 100644
      }
    },
    "26.2-rc-2": {
-@@ -23031,6 +23055,326 @@
+@@ -23031,6 +23055,338 @@
      "140": {
        "url": "https://fill-data.papermc.io/v1/objects/98aabc113a80b9b5e183475e839a17cf99c39c915a1f46b8f35a5e89fd5de0f1/paper-26.3-140.jar",
        "sha256": "98aabc113a80b9b5e183475e839a17cf99c39c915a1f46b8f35a5e89fd5de0f1"
@@ -21997,6 +21997,18 @@ index 800d8ec..0289701 100644
 +    "223": {
 +      "url": "https://fill-data.papermc.io/v1/objects/f8e684a4fef2a8b46d03aac049b49d59275e9ce5367dba7c6075cb5780f38470/paper-26.3-223.jar",
 +      "sha256": "f8e684a4fef2a8b46d03aac049b49d59275e9ce5367dba7c6075cb5780f38470"
++    },
++    "224": {
++      "url": "https://fill-data.papermc.io/v1/objects/9351bfee31cb7abed138f48698a26d0f31c88bc66f25a7b9b151531f2a5ba852/paper-26.3-224.jar",
++      "sha256": "9351bfee31cb7abed138f48698a26d0f31c88bc66f25a7b9b151531f2a5ba852"
++    },
++    "225": {
++      "url": "https://fill-data.papermc.io/v1/objects/c83012d9dee2097468727e1fd96aa10a8fcab52374f3b2ab0a96360ec95b5df3/paper-26.3-225.jar",
++      "sha256": "c83012d9dee2097468727e1fd96aa10a8fcab52374f3b2ab0a96360ec95b5df3"
++    },
++    "226": {
++      "url": "https://fill-data.papermc.io/v1/objects/1373c651510d4aeee7e7903f3cfd7003919c1a364528dbe124a4ae40e11a766e/paper-26.3-226.jar",
++      "sha256": "1373c651510d4aeee7e7903f3cfd7003919c1a364528dbe124a4ae40e11a766e"
      }
    },
    "26.3-rc-3": {
