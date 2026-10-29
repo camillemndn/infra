@@ -22022,10 +22022,10 @@ index 800d8ec..4ffac95 100644
    },
    "26.3-rc-3": {
 diff --git a/pkgs/purpur-servers/lock.json b/pkgs/purpur-servers/lock.json
-index a18233e..b5c85fe 100644
+index a18233e..d804bb0 100644
 --- a/pkgs/purpur-servers/lock.json
 +++ b/pkgs/purpur-servers/lock.json
-@@ -7441,6 +7441,42 @@
+@@ -7441,6 +7441,45 @@
      },
      "2642": {
        "sha256": "cc076214fc856f55e52f7fe83e12fb4361de09677f5c89dcaf024a2a582cdb50"
@@ -22065,6 +22065,9 @@ index a18233e..b5c85fe 100644
 +    },
 +    "2654": {
 +      "sha256": "a22d86bb993491a2d4fe77eca77c247541f1720ce19f68c7af0881c443b9878e"
++    },
++    "2655": {
++      "sha256": "1feff23a8c060b51d8732814a429d0eb1d0cecd4dc8f934cb2b139dfc4e69e57"
      }
    }
  }
@@ -24206,10 +24209,10 @@ index 562dd66..fa2647c 100644
    }
  }
 diff --git a/pkgs/velocity-servers/lock.json b/pkgs/velocity-servers/lock.json
-index d19a541..aa9f80d 100644
+index d19a541..43b0db9 100644
 --- a/pkgs/velocity-servers/lock.json
 +++ b/pkgs/velocity-servers/lock.json
-@@ -2677,6 +2677,50 @@
+@@ -2677,6 +2677,57 @@
        "url": "https://fill-data.papermc.io/v1/objects/62a06a6bbf3c48b72473ac64a1bdea38e940b82780a99998e83b42d34022b42c/velocity-4.2.1-SNAPSHOT-36.jar",
        "sha256": "62a06a6bbf3c48b72473ac64a1bdea38e940b82780a99998e83b42d34022b42c",
        "channel": "STABLE"
@@ -24257,6 +24260,13 @@ index d19a541..aa9f80d 100644
 +      "url": "https://fill-data.papermc.io/v1/objects/0844bcabdcdb4f5b875906fd4c3365bc1bb76918e42bc595ed88ad195258dd75/velocity-4.3.1-45.jar",
 +      "sha256": "0844bcabdcdb4f5b875906fd4c3365bc1bb76918e42bc595ed88ad195258dd75",
 +      "channel": "STABLE"
++    }
++  },
++  "4.3.2-SNAPSHOT": {
++    "46": {
++      "url": "https://fill-data.papermc.io/v1/objects/a2b59b1f68d7cff5a8b66e26de57314438c529c3debbb0c523a39b22d1d36470/velocity-4.3.2-SNAPSHOT-46.jar",
++      "sha256": "a2b59b1f68d7cff5a8b66e26de57314438c529c3debbb0c523a39b22d1d36470",
++      "channel": "BETA"
      }
    }
  }

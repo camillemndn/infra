@@ -117,9 +117,9 @@
       "owner": "nix-community",
       "repo": "nixos-anywhere",
       "branch": "main",
-      "revision": "92b94751fc010eab62d07de40972cffa6937cafd",
-      "url": "https://github.com/nix-community/nixos-anywhere/archive/92b94751fc010eab62d07de40972cffa6937cafd.tar.gz",
-      "hash": "sha256-TS1U/deeX1o65ZqFvi1vo9I7hVReqv2dOwV0tgO8TUw="
+      "revision": "58132e1d1f813b845382a2aeca4203b18d2ac807",
+      "url": "https://github.com/nix-community/nixos-anywhere/archive/58132e1d1f813b845382a2aeca4203b18d2ac807.tar.gz",
+      "hash": "sha256-8h9MU32SjnFWIWRdtP9vYVNV5QrVbai8Oo1LW1rAmwc="
     },
     "nixos-hardware": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "NixOS",
       "repo": "nixos-hardware",
       "branch": "master",
-      "revision": "8ba09466dc929acf5c8bb3e0cc40f472a7df3630",
-      "url": "https://github.com/NixOS/nixos-hardware/archive/8ba09466dc929acf5c8bb3e0cc40f472a7df3630.tar.gz",
-      "hash": "sha256-mhud3nRH8RoP0h9MydfkJ8mISpj+QE/S//wOt9bNgC0="
+      "revision": "b6754c901c21478fd8450d62101e712b2a4f0d75",
+      "url": "https://github.com/NixOS/nixos-hardware/archive/b6754c901c21478fd8450d62101e712b2a4f0d75.tar.gz",
+      "hash": "sha256-jGFe4xdrCw6xpgH2zgKwslACyt/NGuPwGILPEMFxmcQ="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "718f670e845328e9c2cecdd832835712b2cbd065",
-      "url": "https://github.com/NixOS/nixpkgs/archive/718f670e845328e9c2cecdd832835712b2cbd065.tar.gz",
-      "hash": "sha256-Ee5BWo8sh3pGt70QUdRajnaginqFmWvrtdBc4gJzhks="
+      "revision": "08d3a97586f6b6343b3b5e799980773629432610",
+      "url": "https://github.com/NixOS/nixpkgs/archive/08d3a97586f6b6343b3b5e799980773629432610.tar.gz",
+      "hash": "sha256-56mFMf8heLNfYhcgbrh4GpN5x+G9JOfTFXZC3n6w0qM="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
