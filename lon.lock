@@ -97,9 +97,9 @@
       "owner": "mic92",
       "repo": "nix-index-database",
       "branch": "main",
-      "revision": "93696586f3463024cceb089353539be95a38ae2b",
-      "url": "https://github.com/mic92/nix-index-database/archive/93696586f3463024cceb089353539be95a38ae2b.tar.gz",
-      "hash": "sha256-v75hPw5NJ+mRRcwUzKi2OQtVSVv1hgq6ceAlPQB2kEE="
+      "revision": "cee0f879d338cf08f814210fa6c2b280594ade0a",
+      "url": "https://github.com/mic92/nix-index-database/archive/cee0f879d338cf08f814210fa6c2b280594ade0a.tar.gz",
+      "hash": "sha256-PHtGxKYM99f8WhGR5YD7iiCiwemKa2wUD4yVI2oALFg="
     },
     "nix-minecraft": {
       "type": "GitHub",
@@ -107,9 +107,9 @@
       "owner": "Yeshey",
       "repo": "nix-minecraft",
       "branch": "master",
-      "revision": "855d63e88f373f9511f682074e8d8cd2ab8c1227",
-      "url": "https://github.com/Yeshey/nix-minecraft/archive/855d63e88f373f9511f682074e8d8cd2ab8c1227.tar.gz",
-      "hash": "sha256-sOdEwMpFjO1kXafDdqq5bSRUiyTsutk2bPOkzGAid+4="
+      "revision": "b11ba942c859ca556953eb6ea35d258ee5f798aa",
+      "url": "https://github.com/Yeshey/nix-minecraft/archive/b11ba942c859ca556953eb6ea35d258ee5f798aa.tar.gz",
+      "hash": "sha256-b9UV1oaonR0atn8n6ir3yixldbLGVVYsIJsY8WzN5Vo="
     },
     "nixos-anywhere": {
       "type": "GitHub",
