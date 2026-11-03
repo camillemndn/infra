@@ -28,7 +28,17 @@ in
   };
 
   systemd = {
-    services.slskd.serviceConfig.UMask = "0002";
+    services.slskd = {
+      # .NET keeps named mutexes here, or else under the passwd home, which is /var/empty.
+      environment.XDG_RUNTIME_DIR = "/run/slskd";
+
+      serviceConfig = {
+        RuntimeDirectory = "slskd";
+        RuntimeDirectoryMode = "0700";
+        UMask = "0002";
+      };
+    };
+
     tmpfiles.rules = [ "d '${downloads}' 0775 slskd media -" ];
   };
 }
