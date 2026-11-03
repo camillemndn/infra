@@ -134,10 +134,10 @@ index 431c2a5..48ad05c 100644
        "libraries": [
          "com.electronwill.night-config:core:3.9.0",
 diff --git a/pkgs/paper-servers/lock.json b/pkgs/paper-servers/lock.json
-index 971fd44..fdf73e3 100644
+index 971fd44..0ddabac 100644
 --- a/pkgs/paper-servers/lock.json
 +++ b/pkgs/paper-servers/lock.json
-@@ -23407,6 +23407,30 @@
+@@ -23407,6 +23407,34 @@
      "231": {
        "url": "https://fill-data.papermc.io/v1/objects/a836a016be7ac52352eb3a1efb6857bb42ee73a6c78d46e292f7e87742edb0e6/paper-26.3-231.jar",
        "sha256": "a836a016be7ac52352eb3a1efb6857bb42ee73a6c78d46e292f7e87742edb0e6"
@@ -165,6 +165,10 @@ index 971fd44..fdf73e3 100644
 +    "237": {
 +      "url": "https://fill-data.papermc.io/v1/objects/57d8774be83dbe2be6a814e945f26a6b82339af9b1c82b768bbfdf4c23fda56e/paper-26.3-237.jar",
 +      "sha256": "57d8774be83dbe2be6a814e945f26a6b82339af9b1c82b768bbfdf4c23fda56e"
++    },
++    "238": {
++      "url": "https://fill-data.papermc.io/v1/objects/989f93c29d5b61fe52804f834ea6b3a0a5775d05412e238ec78107197a6b5be6/paper-26.3-238.jar",
++      "sha256": "989f93c29d5b61fe52804f834ea6b3a0a5775d05412e238ec78107197a6b5be6"
      }
    },
    "26.3-rc-3": {
