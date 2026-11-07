@@ -27,9 +27,9 @@
       "owner": "zhaofengli",
       "repo": "colmena",
       "branch": "main",
-      "revision": "fc7d67ed1cd52af91415f92ba92b543bc7245f25",
-      "url": "https://github.com/zhaofengli/colmena/archive/fc7d67ed1cd52af91415f92ba92b543bc7245f25.tar.gz",
-      "hash": "sha256-Dv4jEQeqvPpicC3H8mLTyqtTgXp23p4HPiCMKqKWXFA="
+      "revision": "d135c22028d382878f394ea5f42cd6baeae30f85",
+      "url": "https://github.com/zhaofengli/colmena/archive/d135c22028d382878f394ea5f42cd6baeae30f85.tar.gz",
+      "hash": "sha256-fOTg8KFnTZZS226jtFAmsjCBzL1dIpQI7QTImt5ZJQQ="
     },
     "comin": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "7dcdd87373d72e7a2173e4db02e20d3d7f495cfd",
-      "url": "https://github.com/NixOS/nixpkgs/archive/7dcdd87373d72e7a2173e4db02e20d3d7f495cfd.tar.gz",
-      "hash": "sha256-tItrb9M8eYA6WhFgmT9tpGKueri3+wRuVA952o/2xSU="
+      "revision": "c56a87d8e41ce69bd2af57eb35dcc117a9dfca33",
+      "url": "https://github.com/NixOS/nixpkgs/archive/c56a87d8e41ce69bd2af57eb35dcc117a9dfca33.tar.gz",
+      "hash": "sha256-/cpdPHaySDIyCgZI6EWngiM6jK3YLUNzv1b7lTzy6Bk="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
