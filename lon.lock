@@ -47,9 +47,9 @@
       "owner": "nix-community",
       "repo": "disko",
       "branch": "master",
-      "revision": "cedd626e11b635470fa6f9fdb8ad79b0075dd7f9",
-      "url": "https://github.com/nix-community/disko/archive/cedd626e11b635470fa6f9fdb8ad79b0075dd7f9.tar.gz",
-      "hash": "sha256-3hSJlv8mUVnZPMWK2+CM7a9O+nR6Z4mCh27NfLCmTPc="
+      "revision": "1dd30c29c88d99ce295f15e27f93c49bc5fbae07",
+      "url": "https://github.com/nix-community/disko/archive/1dd30c29c88d99ce295f15e27f93c49bc5fbae07.tar.gz",
+      "hash": "sha256-h2BYMW4nTFpIqnMd8gwAPFmJAp/1wWLQ6vT0NfL5qt4="
     },
     "dns": {
       "type": "GitHub",
@@ -157,9 +157,9 @@
       "owner": "nix-community",
       "repo": "nixvim",
       "branch": "nixos-26.05",
-      "revision": "4836e77b1798cd42e2de28593bec4c1788da08f5",
-      "url": "https://github.com/nix-community/nixvim/archive/4836e77b1798cd42e2de28593bec4c1788da08f5.tar.gz",
-      "hash": "sha256-9oBHyJtUyunZL+6v0Ub8Y759cXcejQiTHpXtGcx5RLs="
+      "revision": "1523bd93bd60b4a667510664e7863d8fe56eb128",
+      "url": "https://github.com/nix-community/nixvim/archive/1523bd93bd60b4a667510664e7863d8fe56eb128.tar.gz",
+      "hash": "sha256-UHEzSMFI/2M3e+tvFT+D3kHp0aAeAjb9AjVL1CEaZ3I="
     },
     "stateless-uptime-kuma": {
       "type": "Git",
