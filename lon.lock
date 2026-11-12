@@ -87,9 +87,9 @@
       "owner": "nix-community",
       "repo": "lanzaboote",
       "branch": "master",
-      "revision": "4b98333073bdaf9b1b5dd7d87c2dab96883b234e",
-      "url": "https://github.com/nix-community/lanzaboote/archive/4b98333073bdaf9b1b5dd7d87c2dab96883b234e.tar.gz",
-      "hash": "sha256-aefPlhND0AelMxBw8g1R0JZKpm/Wkamhj49sbR60pHw="
+      "revision": "2857d5b105c8c41a3f9535aeef544aa7b17ee32e",
+      "url": "https://github.com/nix-community/lanzaboote/archive/2857d5b105c8c41a3f9535aeef544aa7b17ee32e.tar.gz",
+      "hash": "sha256-l7z9fKPK6ydFFuq3ZmCoRGS+osRrqjZLyOd1ZW5VaOo="
     },
     "nix-index-database": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "NixOS",
       "repo": "nixos-hardware",
       "branch": "master",
-      "revision": "919c16cf46a7acf9b44b2c2444bc39aa094eaa85",
-      "url": "https://github.com/NixOS/nixos-hardware/archive/919c16cf46a7acf9b44b2c2444bc39aa094eaa85.tar.gz",
-      "hash": "sha256-jehPADpSIsWnyNHw/s44OHF9l6Y75QmW74sqO9cEe0A="
+      "revision": "b6ca87f78ec5bafc4b2aef7b29803dcf419266af",
+      "url": "https://github.com/NixOS/nixos-hardware/archive/b6ca87f78ec5bafc4b2aef7b29803dcf419266af.tar.gz",
+      "hash": "sha256-4s5CRvkYX4oAJVZ+zu2bBKFH2gG2GqN6OKHEWgJr1AY="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -147,9 +147,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
-      "url": "https://github.com/NixOS/nixpkgs/archive/f4a03c008967841f2a0b3cb7c436fc6fc31671f6.tar.gz",
-      "hash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U="
+      "revision": "177d0540942fb205af6993b1d5fa0b57799e09f8",
+      "url": "https://github.com/NixOS/nixpkgs/archive/177d0540942fb205af6993b1d5fa0b57799e09f8.tar.gz",
+      "hash": "sha256-SvB8u5qaJAOwZZyZciqTVOg/rBoUs2w0sFTU6ED51AQ="
     },
     "nixvim": {
       "type": "GitHub",
