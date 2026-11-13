@@ -37,9 +37,9 @@
       "owner": "nlewo",
       "repo": "comin",
       "branch": "main",
-      "revision": "004a55ced41d72340373ebc6774e29a417512638",
-      "url": "https://github.com/nlewo/comin/archive/004a55ced41d72340373ebc6774e29a417512638.tar.gz",
-      "hash": "sha256-D+wmmPytpGiLOLKtDJKv3g1XYpguvv2Bz4NSg5XRgH4="
+      "revision": "51e20d80b237b405009ddeb8c19a648eb95737e0",
+      "url": "https://github.com/nlewo/comin/archive/51e20d80b237b405009ddeb8c19a648eb95737e0.tar.gz",
+      "hash": "sha256-ZJ3VeNKZmKdCJL19bG7GBE+KjloDNGXFUyqt/Aewtzc="
     },
     "disko": {
       "type": "GitHub",
@@ -147,9 +147,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "177d0540942fb205af6993b1d5fa0b57799e09f8",
-      "url": "https://github.com/NixOS/nixpkgs/archive/177d0540942fb205af6993b1d5fa0b57799e09f8.tar.gz",
-      "hash": "sha256-SvB8u5qaJAOwZZyZciqTVOg/rBoUs2w0sFTU6ED51AQ="
+      "revision": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
+      "url": "https://github.com/NixOS/nixpkgs/archive/d4f25a3e562008648d45bcf2d70bcc7422cad84e.tar.gz",
+      "hash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ="
     },
     "nixvim": {
       "type": "GitHub",
