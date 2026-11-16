@@ -97,9 +97,9 @@
       "owner": "mic92",
       "repo": "nix-index-database",
       "branch": "main",
-      "revision": "af9249ca33bc2efaae5d071e4c67ddef19dcb681",
-      "url": "https://github.com/mic92/nix-index-database/archive/af9249ca33bc2efaae5d071e4c67ddef19dcb681.tar.gz",
-      "hash": "sha256-iGNtQnUZsi+v6/4NbtYr+dsmASa6GkzXtUcTpE8F3mE="
+      "revision": "9bd074026d6db75b59aae8cd6071b5f2fe27a36c",
+      "url": "https://github.com/mic92/nix-index-database/archive/9bd074026d6db75b59aae8cd6071b5f2fe27a36c.tar.gz",
+      "hash": "sha256-PCGNIyAydZcdUXCxEXTjrS1+wWS+k9E+ENqBkUK2Mpg="
     },
     "nix-minecraft": {
       "type": "GitHub",
@@ -147,9 +147,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
-      "url": "https://github.com/NixOS/nixpkgs/archive/d4f25a3e562008648d45bcf2d70bcc7422cad84e.tar.gz",
-      "hash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ="
+      "revision": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
+      "url": "https://github.com/NixOS/nixpkgs/archive/d5cc6833999746cffdfe0598f7bc801a57b887a9.tar.gz",
+      "hash": "sha256-Wpz/7x/YWnDIBu7yj6ixe8j6fIMsidd9Y+o1PqPF3iM="
     },
     "nixvim": {
       "type": "GitHub",
