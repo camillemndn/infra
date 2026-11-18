@@ -77,9 +77,9 @@
       "owner": "nix-community",
       "repo": "home-manager",
       "branch": "release-26.05",
-      "revision": "6eb2d33d1d0c95a37ef6443c88e6c1686012ee8b",
-      "url": "https://github.com/nix-community/home-manager/archive/6eb2d33d1d0c95a37ef6443c88e6c1686012ee8b.tar.gz",
-      "hash": "sha256-R2sZBXiOJo3HAnvTiVkbbHDJy//JMlAwUKEiPbfqPXk="
+      "revision": "5643e73425b85ac359ba2aaf83deae8ce1cd7968",
+      "url": "https://github.com/nix-community/home-manager/archive/5643e73425b85ac359ba2aaf83deae8ce1cd7968.tar.gz",
+      "hash": "sha256-Qkh6uNyMsic61gfyOO8VXnC+HEBdti6Xe2kKiMf66O0="
     },
     "lanzaboote": {
       "type": "GitHub",
@@ -127,9 +127,9 @@
       "owner": "NixOS",
       "repo": "nixos-hardware",
       "branch": "master",
-      "revision": "eb3c90bd715f7a9a28719bb014f53d309ccb2fc8",
-      "url": "https://github.com/NixOS/nixos-hardware/archive/eb3c90bd715f7a9a28719bb014f53d309ccb2fc8.tar.gz",
-      "hash": "sha256-bUkc9dMpCFiJuuf5Efr7pnCDs5q18aA8zJah+MYZl9w="
+      "revision": "d9da8426d86bd7e937226f5ecef1df1504ead2e8",
+      "url": "https://github.com/NixOS/nixos-hardware/archive/d9da8426d86bd7e937226f5ecef1df1504ead2e8.tar.gz",
+      "hash": "sha256-B3ox9O5jQ7/RU2IECjP6MtA0BRqL9+yunGJRow0c1gA="
     },
     "nixpkgs": {
       "type": "GitHub",
@@ -137,9 +137,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-26.05",
-      "revision": "b349185bb79c7cf7ad8ea8c097931730bf473c71",
-      "url": "https://github.com/NixOS/nixpkgs/archive/b349185bb79c7cf7ad8ea8c097931730bf473c71.tar.gz",
-      "hash": "sha256-IfuPcOpwC+bYvBdtUhA9hHhY7xV7k9T5LeOTZFiJB4o="
+      "revision": "f68407657ad294471eb4b2e65d193df26edf729f",
+      "url": "https://github.com/NixOS/nixpkgs/archive/f68407657ad294471eb4b2e65d193df26edf729f.tar.gz",
+      "hash": "sha256-E+XLAfnC7+bdr4qlEgRv6cdGmiqTU5oeFNKCha7epqQ="
     },
     "nixpkgs-unstable": {
       "type": "GitHub",
@@ -147,9 +147,9 @@
       "owner": "NixOS",
       "repo": "nixpkgs",
       "branch": "nixos-unstable",
-      "revision": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
-      "url": "https://github.com/NixOS/nixpkgs/archive/d5cc6833999746cffdfe0598f7bc801a57b887a9.tar.gz",
-      "hash": "sha256-Wpz/7x/YWnDIBu7yj6ixe8j6fIMsidd9Y+o1PqPF3iM="
+      "revision": "1a08097fc1ed85575db39763b2c4a5d8970a37ba",
+      "url": "https://github.com/NixOS/nixpkgs/archive/1a08097fc1ed85575db39763b2c4a5d8970a37ba.tar.gz",
+      "hash": "sha256-c6ZxSsG1c2luSrbESFfp9Jq2pSVhGst2to4aIzt2Nes="
     },
     "nixvim": {
       "type": "GitHub",
