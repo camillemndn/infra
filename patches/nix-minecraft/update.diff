@@ -49,10 +49,43 @@ index 33eefa2..fc8d9d7 100644
    }
  }
 diff --git a/pkgs/neoforge-servers/library_locks.json b/pkgs/neoforge-servers/library_locks.json
-index 98411c2..a5032b3 100644
+index 98411c2..1e1e280 100644
 --- a/pkgs/neoforge-servers/library_locks.json
 +++ b/pkgs/neoforge-servers/library_locks.json
-@@ -1903,6 +1903,14 @@
+@@ -355,6 +355,10 @@
+     "hash": "sha1-X2bMn1m476qUIVWj1aMFmb9mQN0=",
+     "url": "https://maven.neoforged.net/releases/net/fabricmc/sponge-mixin/0.17.4+mixin.0.8.7/sponge-mixin-0.17.4+mixin.0.8.7.jar"
+   },
++  "net.fabricmc:sponge-mixin:0.17.5+mixin.0.8.7": {
++    "hash": "sha1-DO+FGakRKdDCH6A7uTePDoyoEOU=",
++    "url": "https://maven.neoforged.net/releases/net/fabricmc/sponge-mixin/0.17.5+mixin.0.8.7/sponge-mixin-0.17.5+mixin.0.8.7.jar"
++  },
+   "net.jodah:typetools:0.6.3": {
+     "hash": "sha1-oBqqbdrqnsB+xPIJSHt6RqUmKDo=",
+     "url": "https://maven.neoforged.net/releases/net/jodah/typetools/0.6.3/typetools-0.6.3.jar"
+@@ -455,6 +459,10 @@
+     "hash": "sha1-CENzh/01AzseoNP6x8woztTv3Gs=",
+     "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/earlydisplay/12.0.12/earlydisplay-12.0.12.jar"
+   },
++  "net.neoforged.fancymodloader:earlydisplay:12.0.16": {
++    "hash": "sha1-76LlYRXSKFPRBSSHSnu7ZFVcKig=",
++    "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/earlydisplay/12.0.16/earlydisplay-12.0.16.jar"
++  },
+   "net.neoforged.fancymodloader:earlydisplay:2.0.17@jar": {
+     "hash": "sha1-1q8T4SkOecfkUBoJfN0b1QUx9fM=",
+     "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/earlydisplay/2.0.17/earlydisplay-2.0.17.jar"
+@@ -583,6 +591,10 @@
+     "hash": "sha1-8JeiXWKJqgsonnzbbeg6XIxy934=",
+     "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/loader/12.0.12/loader-12.0.12.jar"
+   },
++  "net.neoforged.fancymodloader:loader:12.0.16": {
++    "hash": "sha1-7bsu6CEahnIVlwvBWunDVPpW3Ak=",
++    "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/loader/12.0.16/loader-12.0.16.jar"
++  },
+   "net.neoforged.fancymodloader:loader:2.0.17@jar": {
+     "hash": "sha1-4YfpSd6hRyaSTChO+L9tUeTIdSY=",
+     "url": "https://maven.neoforged.net/releases/net/neoforged/fancymodloader/loader/2.0.17/loader-2.0.17.jar"
+@@ -1903,6 +1915,14 @@
      "hash": "sha1-/QDdGbWX+696wUyb4d8b3RKVZgs=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.265/neoforge-21.1.265-universal.jar"
    },
@@ -67,7 +100,7 @@ index 98411c2..a5032b3 100644
    "net.neoforged:neoforge:21.1.26:universal": {
      "hash": "sha1-T4r9VbOTVUZVjvbtnYQFxYiQVr4=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/21.1.26/neoforge-21.1.26-universal.jar"
-@@ -2963,6 +2971,14 @@
+@@ -2963,6 +2983,18 @@
      "hash": "sha1-tNTC4Z5UaPiSr8AnZ+xw18NKjRQ=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.125/neoforge-26.1.2.125-universal.jar"
    },
@@ -79,10 +112,14 @@ index 98411c2..a5032b3 100644
 +    "hash": "sha1-mDeRRXWFNvgHmbe3fk0NyQGfHGg=",
 +    "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.127/neoforge-26.1.2.127-universal.jar"
 +  },
++  "net.neoforged:neoforge:26.1.2.128:universal": {
++    "hash": "sha1-AERQ/CXrhqdMN5zHHSlOi2LQt+c=",
++    "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.128/neoforge-26.1.2.128-universal.jar"
++  },
    "net.neoforged:neoforge:26.1.2.71:universal": {
      "hash": "sha1-L7Yeri6ntV/hfQ26acqxML6woFQ=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.71/neoforge-26.1.2.71-universal.jar"
-@@ -3219,10 +3235,70 @@
+@@ -3219,10 +3251,78 @@
      "hash": "sha1-bIbKyuPlzVL08jB9mA9GitiGkSY=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.2.0.93/neoforge-26.2.0.93-universal.jar"
    },
@@ -150,10 +187,18 @@ index 98411c2..a5032b3 100644
 +    "hash": "sha1-eu9oa0aoFCZSb5NvEcFbEZYqOHc=",
 +    "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.113/neoforge-26.3.0.113-universal.jar"
 +  },
++  "net.neoforged:neoforge:26.3.0.114:universal": {
++    "hash": "sha1-kedDkPzTWKv+ouJaNhx8rRBMl+w=",
++    "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.114/neoforge-26.3.0.114-universal.jar"
++  },
++  "net.neoforged:neoforge:26.3.0.115:universal": {
++    "hash": "sha1-47X/gfWF8Nb83Z1zQ7cRX6ZAGhI=",
++    "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.115/neoforge-26.3.0.115-universal.jar"
++  },
    "net.neoforged:neoforge:26.3.0.76:universal": {
      "hash": "sha1-FjmT+9AnmY2NGpUfKO1bNE2WtrY=",
      "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.76/neoforge-26.3.0.76-universal.jar"
-@@ -3557,7 +3633,7 @@
+@@ -3557,7 +3657,7 @@
    },
    "org.jspecify:jspecify:1.0.1": {
      "hash": "sha1-PWD9mOuK3nMAT0GVw3tjF+As89c=",
@@ -163,7 +208,7 @@ index 98411c2..a5032b3 100644
    "org.lwjgl:lwjgl-sdl:3.4.3": {
      "hash": "sha1-wCFGc11v9w0HDHNTK0NeXIk6NGs=",
 diff --git a/pkgs/neoforge-servers/loader_locks.json b/pkgs/neoforge-servers/loader_locks.json
-index 431c2a5..01c728a 100644
+index 431c2a5..3eedfd0 100644
 --- a/pkgs/neoforge-servers/loader_locks.json
 +++ b/pkgs/neoforge-servers/loader_locks.json
 @@ -21040,6 +21040,162 @@
@@ -329,7 +374,7 @@ index 431c2a5..01c728a 100644
      "21.1.27": {
        "libraries": [
          "com.electronwill.night-config:core:3.8.0@jar",
-@@ -40639,6 +40795,82 @@
+@@ -40639,6 +40795,120 @@
          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.125/neoforge-26.1.2.125-installer.jar"
        }
      },
@@ -409,10 +454,48 @@ index 431c2a5..01c728a 100644
 +        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.127/neoforge-26.1.2.127-installer.jar"
 +      }
 +    },
++    "26.1.2.128": {
++      "libraries": [
++        "com.electronwill.night-config:core:3.8.3",
++        "com.electronwill.night-config:toml:3.8.3",
++        "com.google.errorprone:error_prone_annotations:2.41.0",
++        "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
++        "com.google.j2objc:j2objc-annotations:3.1",
++        "net.fabricmc:sponge-mixin:0.17.4+mixin.0.8.7",
++        "net.jodah:typetools:0.6.3",
++        "net.minecrell:terminalconsoleappender:1.3.0",
++        "net.neoforged.accesstransformers:at-parser:11.0.2",
++        "net.neoforged.fancymodloader:earlydisplay:11.0.15",
++        "net.neoforged.fancymodloader:loader:11.0.15",
++        "net.neoforged.installertools:installertools:4.0.12:fatjar",
++        "net.neoforged:JarJarMetadata:0.5.0",
++        "net.neoforged:JarJarSelector:0.5.0",
++        "net.neoforged:accesstransformers:11.0.2",
++        "net.neoforged:bus:8.0.5",
++        "net.neoforged:mergetool:2.0.7:api",
++        "net.neoforged:neoforge:26.1.2.128:universal",
++        "net.neoforged:srgutils:1.0.10",
++        "org.apache.maven:maven-artifact:3.9.9",
++        "org.codehaus.plexus:plexus-utils:3.5.1",
++        "org.jline:jline-reader:3.20.0",
++        "org.jline:jline-terminal:3.20.0",
++        "org.lwjgl:lwjgl-tinyfd:3.4.1",
++        "org.lwjgl:lwjgl:3.4.1",
++        "org.ow2.asm:asm-analysis:9.9.1",
++        "org.ow2.asm:asm-commons:9.9.1",
++        "org.ow2.asm:asm-tree:9.9.1",
++        "org.ow2.asm:asm-util:9.9.1",
++        "org.ow2.asm:asm:9.9.1"
++      ],
++      "src": {
++        "hash": "sha256-kI4UgCk9MyuYI9AbxpNRrXN1vbU1Mst7PCF1qmOP50I=",
++        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.1.2.128/neoforge-26.1.2.128-installer.jar"
++      }
++    },
      "26.1.2.71": {
        "libraries": [
          "com.electronwill.night-config:core:3.8.3",
-@@ -43037,10 +43269,8 @@
+@@ -43037,10 +43307,8 @@
          "hash": "sha256-dhiIO52HGGKB2ivSpemhGvBC7RURK7Y8z8YrsCMMppk=",
          "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.2.0.93/neoforge-26.2.0.93-installer.jar"
        }
@@ -425,48 +508,33 @@ index 431c2a5..01c728a 100644
        "libraries": [
          "com.electronwill.night-config:core:3.9.0",
          "com.electronwill.night-config:toml:3.9.0",
-@@ -43051,31 +43281,601 @@
+@@ -43051,7 +43319,83 @@
          "net.jodah:typetools:0.6.3",
          "net.minecrell:terminalconsoleappender:1.3.0",
          "net.neoforged.accesstransformers:at-parser:11.0.2",
 -        "net.neoforged.fancymodloader:earlydisplay:12.0.12",
--        "net.neoforged.fancymodloader:loader:12.0.12",
 +        "net.neoforged.fancymodloader:earlydisplay:11.0.16",
 +        "net.neoforged.fancymodloader:loader:11.0.16",
-         "net.neoforged.installertools:installertools:4.0.17:fatjar",
--        "net.neoforged:JarJarMetadata:0.5.3",
--        "net.neoforged:JarJarSelector:0.5.3",
++        "net.neoforged.installertools:installertools:4.0.17:fatjar",
 +        "net.neoforged:JarJarMetadata:0.5.1",
 +        "net.neoforged:JarJarSelector:0.5.1",
-         "net.neoforged:accesstransformers:11.0.2",
-         "net.neoforged:bus:8.0.5",
-         "net.neoforged:mergetool:2.0.7:api",
--        "net.neoforged:neoforge:26.3.0.100:universal",
++        "net.neoforged:accesstransformers:11.0.2",
++        "net.neoforged:bus:8.0.5",
++        "net.neoforged:mergetool:2.0.7:api",
 +        "net.neoforged:neoforge:26.2.0.94:universal",
-         "net.neoforged:srgutils:1.0.10",
--        "org.apache.maven:maven-artifact:3.10.0",
--        "org.codehaus.plexus:plexus-utils:3.6.2",
++        "net.neoforged:srgutils:1.0.10",
 +        "org.apache.maven:maven-artifact:3.9.16",
 +        "org.codehaus.plexus:plexus-utils:3.6.1",
-         "org.jline:jline-reader:3.20.0",
-         "org.jline:jline-terminal:3.20.0",
--        "org.jspecify:jspecify:1.0.1",
--        "org.lwjgl:lwjgl-sdl:3.4.3",
--        "org.ow2.asm:asm-analysis:9.11",
--        "org.ow2.asm:asm-commons:9.11",
--        "org.ow2.asm:asm-tree:9.11",
--        "org.ow2.asm:asm-util:9.11",
--        "org.ow2.asm:asm:9.11"
++        "org.jline:jline-reader:3.20.0",
++        "org.jline:jline-terminal:3.20.0",
 +        "org.lwjgl:lwjgl-tinyfd:3.4.1",
 +        "org.ow2.asm:asm-analysis:9.10.1",
 +        "org.ow2.asm:asm-commons:9.10.1",
 +        "org.ow2.asm:asm-tree:9.10.1",
 +        "org.ow2.asm:asm-util:9.10.1",
 +        "org.ow2.asm:asm:9.10.1"
-       ],
-       "src": {
--        "hash": "sha256-OP9nvjxAM+ZJbyZf6M9Tzx2yPxtBi08/PEziRm2qBbc=",
--        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.100/neoforge-26.3.0.100-installer.jar"
++      ],
++      "src": {
 +        "hash": "sha256-KDzLvBjTZvfKcu/yO6Jp8d4r6w1o/hRuTHkoJ+NAkQ4=",
 +        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.2.0.94/neoforge-26.2.0.94-installer.jar"
 +      }
@@ -522,32 +590,13 @@ index 431c2a5..01c728a 100644
 +        "net.minecrell:terminalconsoleappender:1.3.0",
 +        "net.neoforged.accesstransformers:at-parser:11.0.2",
 +        "net.neoforged.fancymodloader:earlydisplay:12.0.12",
-+        "net.neoforged.fancymodloader:loader:12.0.12",
-+        "net.neoforged.installertools:installertools:4.0.17:fatjar",
-+        "net.neoforged:JarJarMetadata:0.5.3",
-+        "net.neoforged:JarJarSelector:0.5.3",
-+        "net.neoforged:accesstransformers:11.0.2",
-+        "net.neoforged:bus:8.0.5",
-+        "net.neoforged:mergetool:2.0.7:api",
-+        "net.neoforged:neoforge:26.3.0.100:universal",
-+        "net.neoforged:srgutils:1.0.10",
-+        "org.apache.maven:maven-artifact:3.10.0",
-+        "org.codehaus.plexus:plexus-utils:3.6.2",
-+        "org.jline:jline-reader:3.20.0",
-+        "org.jline:jline-terminal:3.20.0",
-+        "org.jspecify:jspecify:1.0.1",
-+        "org.lwjgl:lwjgl-sdl:3.4.3",
-+        "org.ow2.asm:asm-analysis:9.11",
-+        "org.ow2.asm:asm-commons:9.11",
-+        "org.ow2.asm:asm-tree:9.11",
-+        "org.ow2.asm:asm-util:9.11",
-+        "org.ow2.asm:asm:9.11"
-+      ],
-+      "src": {
-+        "hash": "sha256-OP9nvjxAM+ZJbyZf6M9Tzx2yPxtBi08/PEziRm2qBbc=",
-+        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.100/neoforge-26.3.0.100-installer.jar"
-+      }
-+    },
+         "net.neoforged.fancymodloader:loader:12.0.12",
+         "net.neoforged.installertools:installertools:4.0.17:fatjar",
+         "net.neoforged:JarJarMetadata:0.5.3",
+@@ -43078,6 +43422,576 @@
+         "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.100/neoforge-26.3.0.100-installer.jar"
+       }
+     },
 +    "26.3.0.101": {
 +      "libraries": [
 +        "com.electronwill.night-config:core:3.9.0",
@@ -1040,14 +1089,92 @@ index 431c2a5..01c728a 100644
 +      "src": {
 +        "hash": "sha256-9q0eiiHecLvlo0UQ8kyxMIiR/gqqm2X/IS+4eZeAcms=",
 +        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.113/neoforge-26.3.0.113-installer.jar"
-       }
-     },
++      }
++    },
++    "26.3.0.114": {
++      "libraries": [
++        "com.electronwill.night-config:core:3.9.0",
++        "com.electronwill.night-config:toml:3.9.0",
++        "com.google.errorprone:error_prone_annotations:2.48.0",
++        "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
++        "com.google.j2objc:j2objc-annotations:3.1",
++        "net.fabricmc:sponge-mixin:0.17.4+mixin.0.8.7",
++        "net.jodah:typetools:0.6.3",
++        "net.minecrell:terminalconsoleappender:1.3.0",
++        "net.neoforged.accesstransformers:at-parser:11.0.2",
++        "net.neoforged.fancymodloader:earlydisplay:12.0.12",
++        "net.neoforged.fancymodloader:loader:12.0.12",
++        "net.neoforged.installertools:installertools:4.0.17:fatjar",
++        "net.neoforged:JarJarMetadata:0.5.3",
++        "net.neoforged:JarJarSelector:0.5.3",
++        "net.neoforged:accesstransformers:11.0.2",
++        "net.neoforged:bus:8.0.5",
++        "net.neoforged:mergetool:2.0.7:api",
++        "net.neoforged:neoforge:26.3.0.114:universal",
++        "net.neoforged:srgutils:1.0.10",
++        "org.apache.maven:maven-artifact:3.10.0",
++        "org.codehaus.plexus:plexus-utils:3.6.2",
++        "org.jline:jline-reader:3.20.0",
++        "org.jline:jline-terminal:3.20.0",
++        "org.jspecify:jspecify:1.0.1",
++        "org.lwjgl:lwjgl-sdl:3.4.3",
++        "org.ow2.asm:asm-analysis:9.11",
++        "org.ow2.asm:asm-commons:9.11",
++        "org.ow2.asm:asm-tree:9.11",
++        "org.ow2.asm:asm-util:9.11",
++        "org.ow2.asm:asm:9.11"
++      ],
++      "src": {
++        "hash": "sha256-hKlZHX53IiEynmzcmPYNirmf9lviOiqKC1XyI61WTcA=",
++        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.114/neoforge-26.3.0.114-installer.jar"
++      }
++    },
++    "26.3.0.115": {
++      "libraries": [
++        "com.electronwill.night-config:core:3.9.0",
++        "com.electronwill.night-config:toml:3.9.0",
++        "com.google.errorprone:error_prone_annotations:2.48.0",
++        "com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava",
++        "com.google.j2objc:j2objc-annotations:3.1",
++        "net.fabricmc:sponge-mixin:0.17.5+mixin.0.8.7",
++        "net.jodah:typetools:0.6.3",
++        "net.minecrell:terminalconsoleappender:1.3.0",
++        "net.neoforged.accesstransformers:at-parser:11.0.2",
++        "net.neoforged.fancymodloader:earlydisplay:12.0.16",
++        "net.neoforged.fancymodloader:loader:12.0.16",
++        "net.neoforged.installertools:installertools:4.0.17:fatjar",
++        "net.neoforged:JarJarMetadata:0.5.3",
++        "net.neoforged:JarJarSelector:0.5.3",
++        "net.neoforged:accesstransformers:11.0.2",
++        "net.neoforged:bus:8.0.5",
++        "net.neoforged:mergetool:2.0.7:api",
++        "net.neoforged:neoforge:26.3.0.115:universal",
++        "net.neoforged:srgutils:1.0.10",
++        "org.apache.maven:maven-artifact:3.10.0",
++        "org.codehaus.plexus:plexus-utils:3.6.2",
++        "org.jline:jline-reader:3.20.0",
++        "org.jline:jline-terminal:3.20.0",
++        "org.jspecify:jspecify:1.0.1",
++        "org.lwjgl:lwjgl-sdl:3.4.3",
++        "org.ow2.asm:asm-analysis:9.11",
++        "org.ow2.asm:asm-commons:9.11",
++        "org.ow2.asm:asm-tree:9.11",
++        "org.ow2.asm:asm-util:9.11",
++        "org.ow2.asm:asm:9.11"
++      ],
++      "src": {
++        "hash": "sha256-5FFJTAfve6CQ8X48XevcMYI32ykwSkDOEPdDMoTbaio=",
++        "url": "https://maven.neoforged.net/releases/net/neoforged/neoforge/26.3.0.115/neoforge-26.3.0.115-installer.jar"
++      }
++    },
      "26.3.0.76": {
+       "libraries": [
+         "com.electronwill.night-config:core:3.9.0",
 diff --git a/pkgs/paper-servers/lock.json b/pkgs/paper-servers/lock.json
-index 971fd44..771f54c 100644
+index 971fd44..41d953f 100644
 --- a/pkgs/paper-servers/lock.json
 +++ b/pkgs/paper-servers/lock.json
-@@ -23407,6 +23407,102 @@
+@@ -23407,6 +23407,110 @@
      "231": {
        "url": "https://fill-data.papermc.io/v1/objects/a836a016be7ac52352eb3a1efb6857bb42ee73a6c78d46e292f7e87742edb0e6/paper-26.3-231.jar",
        "sha256": "a836a016be7ac52352eb3a1efb6857bb42ee73a6c78d46e292f7e87742edb0e6"
@@ -1147,6 +1274,14 @@ index 971fd44..771f54c 100644
 +    "255": {
 +      "url": "https://fill-data.papermc.io/v1/objects/a7116085a8ba88cf00771d5e61a2925007942092650811da7327dc23243f0cec/paper-26.3-255.jar",
 +      "sha256": "a7116085a8ba88cf00771d5e61a2925007942092650811da7327dc23243f0cec"
++    },
++    "256": {
++      "url": "https://fill-data.papermc.io/v1/objects/c86baf83b1fb0eb0d572f39484c242210896c6adf9cc9342d5c16c4de70c9bdc/paper-26.3-256.jar",
++      "sha256": "c86baf83b1fb0eb0d572f39484c242210896c6adf9cc9342d5c16c4de70c9bdc"
++    },
++    "257": {
++      "url": "https://fill-data.papermc.io/v1/objects/64a5bd44910cb982b2648e9a35036cc95a6de4d561e15812aecf5411f84f7b01/paper-26.3-257.jar",
++      "sha256": "64a5bd44910cb982b2648e9a35036cc95a6de4d561e15812aecf5411f84f7b01"
      }
    },
    "26.3-rc-3": {
@@ -1178,13 +1313,22 @@ index d804bb0..b445f89 100644
  }
 \ No newline at end of file
 diff --git a/pkgs/quilt-servers/game_locks.json b/pkgs/quilt-servers/game_locks.json
-index be68031..73500e4 100644
+index be68031..65a8989 100644
 --- a/pkgs/quilt-servers/game_locks.json
 +++ b/pkgs/quilt-servers/game_locks.json
-@@ -1639,5 +1639,8 @@
+@@ -1639,5 +1639,17 @@
    },
    "26.4-snapshot-1": {
      "libraries": []
++  },
++  "26.4-snapshot-10": {
++    "libraries": []
++  },
++  "26.4-snapshot-9": {
++    "libraries": []
++  },
++  "26.4-snapshot-8": {
++    "libraries": []
 +  },
 +  "26.4-snapshot-7": {
 +    "libraries": []
