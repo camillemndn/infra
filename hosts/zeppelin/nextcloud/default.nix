@@ -4,6 +4,10 @@
   ...
 }:
 
+let
+  officeDomain = "office.mndn.fr";
+in
+
 {
   age.secrets.nextcloud-adminpass = {
     file = ./adminpass.age;
@@ -11,6 +15,23 @@
   };
 
   services = {
+    collabora-online = {
+      enable = true;
+      # Documents are only opened from Nextcloud.
+      aliasGroups = [ { host = "https://${config.services.nextcloud.hostName}:443"; } ];
+
+      settings = {
+        server_name = officeDomain;
+        net.listen = "loopback";
+
+        # nginx terminates TLS.
+        ssl = {
+          enable = false;
+          termination = true;
+        };
+      };
+    };
+
     nextcloud = {
       enable = true;
       package = pkgs.nextcloud34;
@@ -61,6 +82,11 @@
           "OC\\Preview\\TIFF"
         ];
       };
+    };
+
+    nginx.virtualHosts.${officeDomain} = {
+      inherit (config.services.collabora-online) port;
+      websockets = true;
     };
 
     redis.servers.nextcloud = {

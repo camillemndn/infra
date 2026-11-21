@@ -18,8 +18,6 @@ _:
   programs.nixvim.enable = true;
 
   services = {
-    collabora-online.enable = true;
-
     gramps-web = {
       enable = true;
       hostName = "genealogy.mndn.fr";
