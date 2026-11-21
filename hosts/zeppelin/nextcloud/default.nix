@@ -22,7 +22,12 @@ in
 
       settings = {
         server_name = officeDomain;
-        net.listen = "loopback";
+
+        # nginx and Nextcloud reach it on 127.0.0.1.
+        net = {
+          listen = "loopback";
+          proto = "IPv4";
+        };
 
         # nginx terminates TLS.
         ssl = {
