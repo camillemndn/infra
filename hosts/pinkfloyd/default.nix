@@ -30,9 +30,11 @@
 
     packages = with pkgs; [
       freecad
+      hydrogen
       metronome
       musescore
       qgis
+      qpwgraph
     ];
   };
 
