@@ -26,7 +26,6 @@
 
     blacklistedKernelModules = [ "nouveau" ];
     kernelModules = [ "kvm-amd" ];
-    kernelParams = [ "hibernate.compressor=lz4" ];
   };
 
   console = {
