@@ -70,12 +70,6 @@
     asusd.enable = true;
     fprintd.enable = true;
 
-    # The firmware offers only s2idle, which drains the battery: hibernate after a day asleep or on low battery.
-    logind.settings.Login = {
-      HandleLidSwitch = "suspend-then-hibernate";
-      HandleLidSwitchExternalPower = "suspend";
-    };
-
     supergfxd = {
       enable = true;
 
@@ -110,8 +104,7 @@
       '';
     };
 
-    sleep.settings.Sleep.HibernateDelaySec = "24h";
-    # 0 asks the kernel for the smallest possible hibernation image, for a faster resume.
+    # 0 asks the kernel for the smallest possible hibernation image.
     tmpfiles.rules = [ "w /sys/power/image_size - - - - 0" ];
   };
 }
